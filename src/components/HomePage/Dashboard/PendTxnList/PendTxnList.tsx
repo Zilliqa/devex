@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react'
-import { Link } from 'react-router-dom'
 import { Card, Spinner } from 'react-bootstrap'
 
 import { NetworkContext } from 'src/services/networkProvider'

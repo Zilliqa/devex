@@ -94,7 +94,7 @@ const ValTxnList: React.FC = () => {
       <Card.Header>
         <div className='valtxlist-card-header'>
           <span>Transactions</span>
-          <Link to={'tx'}>View All</Link>
+          <Link to={'tx'}>View Recent Transactions</Link>
         </div>
       </Card.Header>
       <Card.Body>

@@ -26,11 +26,10 @@ processMap.set('to-col', hexAddrToZilAddr)
 processMap.set('hash-col', (hash: number) => (<Link to={`tx/0x${hash}`}>{'0x' + hash}</Link>))
 
 const TxBlockDetailsPage = () => {
-
   const { blockNum } = useParams()
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
-
+  
   const [toHome, setToHome] = useState(false)
   const [data, setData] = useState<MappedTxBlock | null>(null)
   const [transactionData, setTransactionData] = useState<TransactionObj[] | null>(null)
@@ -92,7 +91,7 @@ const TxBlockDetailsPage = () => {
     const getData = async () => {
       try {
         setIsLoading(true)
-        let receivedData = await dataService.getTransactionsDetails(data.transactions.slice(pageIndex * 10, pageIndex * 10 + 10))
+        let receivedData = await dataService.getTransactionsDetails(data.txnHashes.slice(pageIndex * 10, pageIndex * 10 + 10))
 
         if (receivedData) {
           console.log(receivedData)
@@ -196,11 +195,11 @@ const TxBlockDetailsPage = () => {
               </Container>
             </Card.Body>
           </Card>
-          {data.transactions.length > 0
+          {data.txnHashes.length > 0
             ? <Card className='txblock-details-card'>
               <Card.Body>
                 <ViewAllTable isLoading={isLoading} fetchData={fetchData}
-                  pageCount={Math.ceil(data.transactions.length / 10)} columns={columns} data={transactionData ? transactionData : []} processMap={processMap} />
+                  pageCount={Math.ceil(data.txnHashes.length / 10)} columns={columns} data={transactionData ? transactionData : []} processMap={processMap} />
               </Card.Body>
             </Card>
             : null}
