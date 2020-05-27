@@ -1,0 +1,14 @@
+.dashboard-table table {
+  width: 100%;
+  table-layout: fixed !important;
+}
+
+.dashboard-table td {
+  padding: 0.5rem 0.25rem 0 0.1rem;
+}
+
+.dashboard-table [role=cell] {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

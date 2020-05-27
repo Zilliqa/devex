@@ -1,0 +1,16 @@
+.dsblock-details-card {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.dsblock-detail {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgb(232, 234, 237);
+}
+
+.dsblock-details-card-header {
+  padding-right: 1rem;
+  font-weight: 500;
+}

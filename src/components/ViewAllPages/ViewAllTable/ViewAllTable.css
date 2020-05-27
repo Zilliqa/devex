@@ -1,0 +1,32 @@
+.viewall-table {
+  min-height: 500px;
+}
+
+.viewall-table table {
+  width: 100%;
+  table-layout: fixed !important;
+}
+
+.viewall-table thead {
+  border-top: 2px solid #dee2e6;
+}
+
+.viewall-table tbody {
+  border-bottom: 2px solid #dee2e6;
+}
+
+.viewall-table .spinner {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+}
+
+.viewall-table td {
+  padding: 0.6rem 0.25rem 0.6rem 0.8rem;
+}
+
+.viewall-table [role=cell] {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

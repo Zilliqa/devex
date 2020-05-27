@@ -1,0 +1,29 @@
+.txblockpage-header {
+  padding-left: 0.5rem;
+}
+
+/* Hardcoded Widths (May require tweaks) */
+
+.txblockpage-table #height-col {
+  width: 8%;
+}
+
+.txblockpage-table #numTxns-col {
+  width: 11%;
+}
+
+.txblockpage-table #reward-col {
+  width: 13%;
+}
+
+.txblockpage-table #miner-col {
+  width: 26%;
+}
+
+.txblockpage-table #age-col {
+  width: 15%;
+}
+
+.txblockpage-table #hash-col {
+  width: 27%;
+}

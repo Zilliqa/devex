@@ -1,0 +1,33 @@
+.txblock-hash {
+  color: grey;
+  margin-right: 10px;
+}
+
+.txblock-hash-copy-btn {
+  cursor: pointer;
+}
+
+.txblock-details-card-body {
+  padding: 1.25rem 0.75rem;
+}
+
+.txblock-details-card {
+  width: 100%;
+  margin-top: 1rem;
+  white-space: nowrap;
+}
+
+.txblock-detail {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgb(232, 234, 237);
+}
+
+.txblock-details-card-header {
+  font-weight: 500;
+}
+
+#amount-col {
+  width: 12%;
+}

@@ -1,0 +1,35 @@
+.dsblock-card {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.dsblock-card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Hardcoded Widths (May require tweaks) */
+
+.dsblock-card #height-col {
+  width: 7%;
+}
+
+.dsblock-card #difficulty-col {
+  width: 8%;
+}
+
+.dsblock-card #ds-difficulty-col {
+  width: 10%;
+}
+
+.dsblock-card #ds-leader-col {
+  width: auto;
+}
+
+.dsblock-card #age-col {
+  width: 13%;
+}
+
+.dsblock-card #hash-col {
+  width: auto;
+}

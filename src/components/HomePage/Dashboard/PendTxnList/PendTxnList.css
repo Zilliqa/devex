@@ -1,0 +1,24 @@
+.pendtxlist-card {
+  height: 100%;
+  width: 100%;
+}
+
+.pendtxlist-card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pendtxlist-table {
+  max-height: 180px;
+  overflow: hidden auto;
+}
+
+/* Hardcoded Widths (May require tweaks) */
+
+#hash-col {
+  width: auto;
+}
+
+#status-col {
+  width: 20%;
+}

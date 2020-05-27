@@ -1,0 +1,1 @@
+export const refreshRate = 5000 // In milliseconds

@@ -1,0 +1,32 @@
+#searchbar-dropdown {
+  height: 45px;
+  border: 1px solid #ced4da;
+  background-color: #F7F7F7;
+  border-right: none;
+  color: #6c757d !important;
+  box-shadow: none !important;
+}
+
+.searchbar-ig {
+  margin-bottom: 0.5rem;
+}
+
+.searchbar-ig input {
+  height: 45px !important;
+  margin-left: 1px;
+  border-right: 0;
+}
+
+.form-control:focus {
+  z-index: 0 !important;
+  color: none;
+  background-color: none;
+  border-color: none;
+  outline: 0;
+  box-shadow: none;
+}
+
+.btn:focus {
+  outline: 0;
+  box-shadow: none;
+}
