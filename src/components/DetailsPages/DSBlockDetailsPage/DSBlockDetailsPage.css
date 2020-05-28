@@ -10,6 +10,12 @@
   border-bottom: 1px solid rgb(232, 234, 237);
 }
 
+.disabled-link {
+  cursor: none;
+  pointer-events: none;
+  opacity: 60%;
+}
+
 .dsblock-details-card-header {
   padding-right: 1rem;
   font-weight: 500;

@@ -21,6 +21,27 @@
   left: 50%;
 }
 
+.viewall-pagination {
+  justify-content: flex-end;
+}
+
+.viewall-pagination .page-item:focus {
+  outline: none;
+}
+
+.viewall-pagination .page-item.active .page-link {
+  background-color: #019c99;
+  border-color: #019c99;
+}
+
+.viewall-pagination .page-link {
+  color: #019c99;
+}
+
+.viewall-pagination .page-link:focus {
+  box-shadow: none;
+}
+
 .viewall-table td {
   padding: 0.6rem 0.25rem 0.6rem 0.8rem;
 }

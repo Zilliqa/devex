@@ -8,7 +8,7 @@ import { MappedTxBlock } from 'src/services/dataService'
 
 import { qaToZil, timestampToTimeago, hexAddrToZilAddr, timestampToDisplay, pubKeyToZilAddr } from 'src/utils/Utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCopy } from '@fortawesome/free-regular-svg-icons'
+import { faCopy, faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
 
 import './TxBlockDetailsPage.css'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
@@ -29,9 +29,10 @@ const TxBlockDetailsPage = () => {
   const { blockNum } = useParams()
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
-  
+
   const [toHome, setToHome] = useState(false)
   const [data, setData] = useState<MappedTxBlock | null>(null)
+  const [latestTxBlockNum, setLatestTxBlockNum] = useState<number | null>(null)
   const [transactionData, setTransactionData] = useState<TransactionObj[] | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const fetchIdRef = useRef(0)
@@ -43,18 +44,20 @@ const TxBlockDetailsPage = () => {
 
   // Fetch data
   useEffect(() => {
-    let isCancelled = false
     if (!dataService) return
 
+    let latestTxBlockNum: number
     let receivedData: MappedTxBlock
     const getData = async () => {
       try {
         receivedData = await dataService.getTxBlockDetails(blockNum)
-        if (!isCancelled && receivedData)
+        if (receivedData)
           setData(receivedData)
+        latestTxBlockNum = await dataService.getNumTxBlocks()
+        if (latestTxBlockNum)
+          setLatestTxBlockNum(latestTxBlockNum)
       } catch (e) {
-        if (!isCancelled)
-          console.log(e)
+        console.log(e)
       }
     }
     getData()
@@ -112,7 +115,17 @@ const TxBlockDetailsPage = () => {
       ? <Redirect to='/' />
       : data ?
         <>
-          <h3>Block <span style={{ fontWeight: 350, color: 'rgb(93, 106, 133)' }}>#{data.header.BlockNum}</span></h3>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <h3>Tx Block <span style={{ fontWeight: 350, color: 'rgb(93, 106, 133)' }}>#{data.header.BlockNum}</span></h3>
+            <span>
+              <Link style={{ marginRight: '1rem', color: '#019dac' }} className={parseInt(data.header.BlockNum) === 0 ? 'disabled-link' : ''} to={`/txbk/${parseInt(data.header.BlockNum) - 1}`}>
+                <FontAwesomeIcon  size='2x' icon={faCaretSquareLeft} />
+              </Link>
+              <Link style={{ color: '#019dac' }} className={latestTxBlockNum && parseInt(data.header.BlockNum) === latestTxBlockNum - 1 ? 'disabled-link' : ''} to={`/txbk/${parseInt(data.header.BlockNum) + 1}`}>
+                <FontAwesomeIcon size='2x' icon={faCaretSquareRight} />
+              </Link>
+            </span>
+          </div>
           <div style={{ display: 'flex' }}>
             {/* To be removed after SDK typing is updated
         // @ts-ignore */}
@@ -185,23 +198,28 @@ const TxBlockDetailsPage = () => {
               </Container>
             </Card.Body>
           </Card>
-          <Card className='txblock-details-card'>
-            <Card.Body>
-              <Container>
-                <h6>Micro Blocks</h6>
-                {/* To be removed after SDK typing is updated
+          {/* To be removed after SDK typing is updated
               // @ts-ignore */}
-                {data.body.MicroBlockInfos.map((x) => <div>[{x.MicroBlockShardId}] {x.MicroBlockHash}</div>)}
-              </Container>
-            </Card.Body>
-          </Card>
-          {data.txnHashes.length > 0
-            ? <Card className='txblock-details-card'>
+          {data.body.MicroBlockInfos.length > 0 ?
+            <Card className='txblock-details-card'>
               <Card.Body>
-                <ViewAllTable isLoading={isLoading} fetchData={fetchData}
-                  pageCount={Math.ceil(data.txnHashes.length / 10)} columns={columns} data={transactionData ? transactionData : []} processMap={processMap} />
+                <Container>
+                  <h6>Micro Blocks</h6>
+                  {/* To be removed after SDK typing is updated
+              // @ts-ignore */}
+                  {data.body.MicroBlockInfos.map((x) => <div>[{x.MicroBlockShardId}] {x.MicroBlockHash}</div>)}
+                </Container>
               </Card.Body>
-            </Card>
+            </Card> : null}
+          {data.txnHashes.length > 0
+            ? <>
+              <h4 style={{ marginTop: '1rem' }}>Transactions</h4>
+              <Card className='txblock-details-card'>
+                <Card.Body>
+                  <ViewAllTable isLoading={isLoading} fetchData={fetchData}
+                    pageCount={Math.ceil(data.txnHashes.length / 10)} columns={columns} data={transactionData ? transactionData : []} processMap={processMap} />
+                </Card.Body>
+              </Card></>
             : null}
         </>
         : null}

@@ -9,6 +9,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
-a, a:hover {
-  color: #00B2AF;
+a {
+  color: #349aeb;
+}
+
+a:hover {
+  color: #1d6fb2;
+  text-decoration: none;
 }

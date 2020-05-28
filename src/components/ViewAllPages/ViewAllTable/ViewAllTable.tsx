@@ -80,7 +80,7 @@ const ViewAllTable = ({ columns, data, isLoading, fetchData, pageCount: controll
             : <span>Items Per Page: <strong>10</strong></span>}
         </BCol>
         <BCol>
-          <Pagination style={{justifyContent: 'flex-end'}}>
+          <Pagination className='viewall-pagination'>
             <Pagination.Prev onClick={() => previousPage()} disabled={!canPreviousPage} />
             {generatePagination(pageIndex + 1, pageCount).map((page, index) => {
               if (page === -1)

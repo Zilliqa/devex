@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams, Redirect } from 'react-router-dom'
+import { useParams, Redirect, Link } from 'react-router-dom'
 import { Card, Row, Col, Container, Tabs, Tab } from 'react-bootstrap'
 
 import { NetworkContext } from 'src/services/networkProvider'
@@ -28,18 +28,16 @@ const TxnDetailsPage = () => {
 
   // Fetch data
   useEffect(() => {
-    let isCancelled = false
     if (!dataService) return
 
     let receivedData: TransactionObj
     const getData = async () => {
       try {
         receivedData = await dataService.getTransactionDetails(txnHash)
-        if (!isCancelled && receivedData)
+        if (receivedData)
           setData(receivedData)
       } catch (e) {
-        if (!isCancelled)
-          console.log(e)
+        console.log(e)
       }
     }
     getData()
@@ -124,7 +122,7 @@ const TxnDetailsPage = () => {
                       <span className='txn-details-card-header'>Transaction Block:</span>
                       {/* To be removed after SDK typing is updated
                         // @ts-ignore */}
-                      <span>{data.receipt.epoch_num}</span>
+                      <span><Link to={`/txbk/${data.receipt.epoch_num}`}>{data.receipt.epoch_num}</Link></span>
                     </div>
                   </Col>
                 </Row>
@@ -152,7 +150,13 @@ const TxnDetailsPage = () => {
                             <tbody>
                               <tr>
                                 <th>Function</th>
-                                <td>{event._eventname} ({event.params.map(param => param.type + ' ' + param.vname).join(', ')})</td>
+                                {/* <td><span style={{color:'blueviolet'}}>{event._eventname}</span> ({event.params.map(param => param.type + ' ' + param.vname).join(', ')})</td> */}
+                                <td>
+                                  <span style={{color:'blueviolet'}}>{event._eventname}</span>
+                                  {' '}
+                                  ({event.params
+                                    .map((param) => (<span><span style={{color: 'orangered'}}>{param.type}</span> {param.vname}</span>))
+                                    .reduce((acc, ele): any => (acc === null ? [ele] : [acc, ', ', ele] as any))})</td>
                               </tr>
                               <tr style={event.params.length > 0 ? { borderBottom: 'solid transparent 2rem' } : {}}>
                                 <th>Address</th>
@@ -190,7 +194,7 @@ const TxnDetailsPage = () => {
                                 </tr>
                                 <tr>
                                   <th>Amount</th>
-                                  <td>{transition.msg._amount}</td>
+                                  <td>{qaToZil(transition.msg._amount)}</td>
                                 </tr>
                                 <tr style={transition.msg.params.length > 0 ? { borderBottom: 'solid transparent 2rem' } : {}}>
                                   <th>Receipient</th>

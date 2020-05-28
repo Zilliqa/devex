@@ -102,8 +102,8 @@ const TxnsPage = () => {
       {toHome
         ? <Redirect to='/' />
         :
-        <div className='txblockpage-table'>
-          <h2 className='txblockpage-header'>Recent Transactions</h2>
+        <div className='txnpage-table'>
+          <h2 className='txnpage-header'>Recent Transactions</h2>
           <ViewAllTable
             columns={columns}
             data={data ? data : []}

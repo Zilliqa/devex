@@ -70,6 +70,12 @@ export class DataService {
   // DSBlocks-related
   //================================================================================
 
+  async getNumDSBlocks(): Promise<number> {
+    console.log("getting number of DS blocks")
+    const response = await this.zilliqa.blockchain.getNumDSBlocks()
+    return parseInt(response.result)
+  }
+
   async getDSBlockDetails(blockNum: number): Promise<DsBlockObj> {
     console.log("getting DS block details")
     const blockData = await this.zilliqa.blockchain.getDSBlock(blockNum)
@@ -118,6 +124,12 @@ export class DataService {
   //================================================================================
   // TxBlocks-related
   //================================================================================
+
+  async getNumTxBlocks(): Promise<number> {
+    console.log("getting number of tx blocks")
+    const response = await this.zilliqa.blockchain.getNumTxBlocks()
+    return parseInt(response.result)
+  }
 
   async getTxBlockDetails(blockNum: number): Promise<MappedTxBlock> {
     console.log("getting tx block details")

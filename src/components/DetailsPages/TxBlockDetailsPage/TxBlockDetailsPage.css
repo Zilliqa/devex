@@ -28,6 +28,12 @@
   font-weight: 500;
 }
 
+.disabled-link {
+  cursor: none;
+  pointer-events: none;
+  opacity: 60%;
+}
+
 #amount-col {
   width: 12%;
 }
