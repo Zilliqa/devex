@@ -2,34 +2,36 @@
   Available Async Functions
   
   Blockchain-related:
-  getBlockchainInfo(): Returns a BlockchainInfo object
+  1) getBlockchainInfo(): Promise<BlockchainInfo>
 
   DSBlocks-related:
-  getTxBlockDetails(blockNum: number): Return the details of the DSBlock with the corresponding block number
-  getLatest5DSBlocks(): Returns an array of 5 DsBlockObj objects
-  getDSBlocksListing(pageNum: number): Returns a MappedDSBlockListing object for the corresponding page number
+  1) getNumDSBlocks(): Promise<number>
+  2) getDSBlockDetails(blockNum: number): Promise<DsBlockObj>
+  3) getLatest5DSBlocks(): Promise<DsBlockObj[]>
+  4) getDSBlocksListing(pageNum: number): Promise<MappedDSBlockListing>
 
   TxBlocks-related:
-  getTxBlockDetails(blockNum: number): Return the details of the TxBlock with the corresponding block number
-  getLatest5TxBlocks(): Returns an array of 5 TxBlockObj objects
-  getTxBlocksListing(pageNum: number): Returns a MappedTxBlockListing object for the corresponding page number
+  1) getNumTxBlocks(): Promise<number>
+  2) getTxBlockDetails(blockNum: number): Promise<MappedTxBlock>
+  3) getLatest5TxBlocks(): Promise<TxBlockObj[]>
+  4) getTxBlocksListing(pageNum: number): Promise<MappedTxBlockListing>
   
   Transactions-related:
-  getTransactionDetails(txnHash: string): Return the details of the transaction with the corresponding transaction hash
-  getLatest5DSBlocks
+  1) getTransactionDetails(txnHash: string): Promise<TransactionObj>
+  2) getLatest5ValidatedTransactions(): Promise<TransactionObj[]>
+  3) getTransactionDetails(txnHash: string): Promise<TransactionObj>
+  4) getTransactionsForTxBlock(blockNum: number): Promise<string[]>
+  5) getRecentTransactions(): Promise<TxList>
+  6) getLatest5PendingTransactions(): Promise<PendingTxnResult[]>
 
 */
 
-// import { environment } from '../environments/environment';
-// import { Constants } from './constants';
-// import { sha256 } from 'bcrypto';
+// Mainnet: https://api.zilliqa.com/
+// Testnet: https://dev-api.zilliqa.com/
 
 import { Zilliqa } from '@zilliqa-js/zilliqa'
 import { BlockchainInfo, DsBlockObj, TransactionObj, TxBlockObj, TxList, PendingTxnResult } from '@zilliqa-js/core/src/types'
 import { MappedDSBlockListing, MappedTxBlockListing } from 'src/typings/api'
-
-// Mainnet: https://api.zilliqa.com/
-// Testnet: https://dev-api.zilliqa.com/
 
 export interface MappedTxBlock extends TxBlockObj {
   txnHashes: string[];

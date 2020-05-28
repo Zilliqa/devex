@@ -17,3 +17,9 @@ a:hover {
   color: #1d6fb2;
   text-decoration: none;
 }
+
+.disabled-link {
+  cursor: none;
+  pointer-events: none;
+  opacity: 60%;
+}

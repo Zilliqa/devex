@@ -7,29 +7,3 @@
   display: flex;
   justify-content: space-between;
 }
-
-/* Hardcoded Widths (May require tweaks) */
-
-.txblock-card #height-col {
-  width: 7%;
-}
-
-.txblock-card #numTxns-col {
-  width: 11%;
-}
-
-.txblock-card #reward-col {
-  width: 11%;
-}
-
-.txblock-card #miner-col {
-  width: auto;
-}
-
-.txblock-card #age-col {
-  width: 13%;
-}
-
-.txblock-card #hash-col {
-  width: auto;
-}

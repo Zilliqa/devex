@@ -3,7 +3,7 @@ import { ModalFooter } from 'react-bootstrap'
 
 import './Footer.css'
 
-const Footer = () => {
+const Footer: React.FC = () => {
   return <ModalFooter className='custom-footer'>
   </ModalFooter >
 }

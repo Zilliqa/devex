@@ -1,11 +1,11 @@
 import React from 'react'
 import { Container } from 'react-bootstrap'
 
-import Header from './header/Header'
-import Footer from './footer/Footer'
+import Header from './Header/Header'
+import Footer from './Footer/Footer'
 import './Layout.css'
 
-const Layout = (props: any) => (
+const Layout: React.FC = (props: any) => (
   <div>
     <Header />
     <Container className="app-container">

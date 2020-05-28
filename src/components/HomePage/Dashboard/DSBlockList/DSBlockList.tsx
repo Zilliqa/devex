@@ -20,14 +20,15 @@ import { timestampToTimeago, pubKeyToZilAddr } from 'src/utils/Utils'
       - Hash
 */
 
+// Pre-processing data to display
 const processMap = new Map()
-// Convert age from microseconds to milliseconds and find timeago
 processMap.set('age-col', timestampToTimeago)
 processMap.set('ds-leader-col', pubKeyToZilAddr)
 processMap.set('height-col', (height: number) => (<Link to={`dsbk/${height}`}>{height}</Link>))
 processMap.set('hash-col', (hash: number) => ('0x' + hash))
 
 const DSBlockList: React.FC = () => {
+
   const networkContext = useContext(NetworkContext)
   const { dataService, nodeUrl } = networkContext!
 
@@ -60,15 +61,10 @@ const DSBlockList: React.FC = () => {
       id: 'age-col',
       Header: 'Age',
       accessor: 'header.Timestamp',
-    },
-    {
-      id: 'hash-col',
-      Header: 'Hash',
-      accessor: 'header.Hash',
     }], []
   )
 
-  
+
   // Fetch data
   useEffect(() => {
     let isCancelled = false

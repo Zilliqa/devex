@@ -17,7 +17,12 @@ import './PendTxnList.css'
     - Age
 */
 
+// Pre-processing data to display
+const processMap = new Map()
+processMap.set('hash-col', (hash: number) => ('0x' + hash))
+
 const PendTxnList: React.FC = () => {
+  
   const networkContext = useContext(NetworkContext)
   const { dataService, nodeUrl } = networkContext!
 
@@ -25,9 +30,6 @@ const PendTxnList: React.FC = () => {
 
   const [data, setData] = useState<PendingTxnResult[] | null>(null)
 
-  const processMap = new Map()
-  processMap.set('hash-col', (hash: number) => ('0x' + hash))
-  
   const columns = useMemo(
     () => [{
       id: 'hash-col',

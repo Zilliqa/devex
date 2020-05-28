@@ -1,3 +1,20 @@
+/* Header */
+
+.txblock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.txblock-header-blocknum {
+  font-weight: 350;
+  color: rgb(93, 106, 133)
+}
+
+.txblock-header a {
+  color: #019dac
+}
+
 .txblock-hash {
   color: grey;
   margin-right: 10px;
@@ -7,13 +24,11 @@
   cursor: pointer;
 }
 
-.txblock-details-card-body {
-  padding: 1.25rem 0.75rem;
-}
+/* Card */
 
 .txblock-details-card {
   width: 100%;
-  margin-top: 1rem;
+  margin: 1rem 0;
   white-space: nowrap;
 }
 
@@ -24,16 +39,6 @@
   border-bottom: 1px solid rgb(232, 234, 237);
 }
 
-.txblock-details-card-header {
+.txblock-detail-header {
   font-weight: 500;
-}
-
-.disabled-link {
-  cursor: none;
-  pointer-events: none;
-  opacity: 60%;
-}
-
-#amount-col {
-  width: 12%;
 }

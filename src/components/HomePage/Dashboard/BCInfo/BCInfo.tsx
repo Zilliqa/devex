@@ -8,6 +8,7 @@ import { refreshRate } from 'src/constants'
 import './BCInfo.css'
 
 const BCInfo: React.FC = () => {
+  
   const networkContext = useContext(NetworkContext)
   const { dataService, nodeUrl } = networkContext!
 

@@ -12,9 +12,7 @@ import PendTxnList from './PendTxnList/PendTxnList';
     +++++++++++++++++++++++++++++++++++++
     |           BC Information          |
     +++++++++++++++++++++++++++++++++++++
-    |           DS Blocks List          |
-    +++++++++++++++++++++++++++++++++++++
-    |           Tx Blocks List         |
+    |  DS Blocks List | Tx Blocks List  |
     +++++++++++++++++++++++++++++++++++++
     |      ValTxnList     | PendTxnList |
     +++++++++++++++++++++++++++++++++++++
@@ -27,10 +25,12 @@ const Dashboard: React.FC = () => {
           <BCInfo />
         </Row>
         <Row>
+          <Col style={{padding: 0}}>
           <DSBlockList />
-        </Row>
-        <Row>
+          </Col>
+        <Col style={{padding: '0 0 0 1rem'}}>
           <TxBlockList />
+          </Col>
         </Row>
         <Row style={{ marginTop: '1rem' }}>
           <Col xs md lg={8} style={{ padding: 0 }}>

@@ -20,8 +20,8 @@ import { qaToZil, pubKeyToZilAddr, hexAddrToZilAddr } from 'src/utils/Utils'
     - Age
 */
 
+// Pre-processing data to display
 const processMap = new Map()
-// Convert from Qa to Zil to display
 processMap.set('amount-col', (amt: number) => (
   <OverlayTrigger placement='top'
     overlay={ <Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
@@ -33,6 +33,7 @@ processMap.set('to-col', hexAddrToZilAddr)
 processMap.set('hash-col', (hash: number) => (<Link to={`tx/0x${hash}`}>{'0x' + hash}</Link>))
 
 const ValTxnList: React.FC = () => {
+  
   const networkContext = useContext(NetworkContext)
   const { dataService, nodeUrl } = networkContext!
 

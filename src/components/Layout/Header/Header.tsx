@@ -6,7 +6,7 @@ import { NetworkContext } from 'src/services/networkProvider'
 import Logo from 'src/assets/images/logo.png'
 import './Header.css'
 
-const Header = () => {
+const Header: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { setNodeUrl } = networkContext!
   const [currentNetwork, setCurrentNetwork] = useState('Mainnet')

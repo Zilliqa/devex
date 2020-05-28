@@ -1,33 +1,33 @@
 import React, { useState } from 'react'
-import { withRouter } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { Form, InputGroup, Button, Dropdown, DropdownButton } from 'react-bootstrap'
 
 import './Searchbar.css'
 
-const Searchbar = (props: any) => {
+const Searchbar: React.FC = () => {
   const [input, setInput] = useState("")
   const [searchType, setSearchType] = useState('Transaction')
-  const { history } = props
+  let history = useHistory()
 
   const handleChange = (e: any) => {
     setInput(e.target.value)
   }
 
   const handleSubmit = (e: any) => {
-    switch(searchType) {
+    e.preventDefault()
+    switch (searchType) {
       case 'Transaction':
         history.push(`/tx/${input}`)
         break
       case 'Tx Block':
-          history.push(`/txbk/${input}`)
-      break
+        history.push(`/txbk/${input}`)
+        break
       case 'DS Block':
-          history.push(`/dsbk/${input}`)
-      break
+        history.push(`/dsbk/${input}`)
+        break
       case 'Address':
         break
     }
-    e.preventDefault()
   }
 
   return <>
@@ -53,4 +53,4 @@ const Searchbar = (props: any) => {
   </>
 }
 
-export default withRouter(Searchbar)
+export default Searchbar

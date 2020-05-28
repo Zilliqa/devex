@@ -1,29 +1,3 @@
 .dsblockpage-header {
   padding-left: 0.5rem;
 }
-
-/* Hardcoded Widths (May require tweaks) */
-
-.dsblockpage-table #height-col {
-  width: 7%;
-}
-
-.dsblockpage-table #difficulty-col {
-  width: 8%;
-}
-
-.dsblockpage-table #ds-difficulty-col {
-  width: 11%;
-}
-
-.dsblockpage-table #ds-leader-col {
-  width: 30%;
-}
-
-.dsblockpage-table #age-col {
-  width: 13%;
-}
-
-.dsblockpage-table #hash-col {
-  width: 31%;
-}

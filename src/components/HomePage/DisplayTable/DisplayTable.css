@@ -1,14 +1,51 @@
-.dashboard-table table {
+.display-table table {
   width: 100%;
   table-layout: fixed !important;
+  border-collapse: separate;
+  text-align: center;
 }
 
-.dashboard-table td {
-  padding: 0.5rem 0.25rem 0 0.1rem;
+.display-table th {
+  padding-bottom: 0.3rem;
+  color: dimgrey;
 }
 
-.dashboard-table [role=cell] {
+.display-table td {
+  padding: 0.3rem;
+}
+
+.display-table [role=cell] {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Hardcoded Widths (May require tweaks) */
+
+.display-table #height-col {
+  width: 75px;
+}
+
+.display-table #difficulty-col {
+  width: 85px;
+}
+
+.display-table #ds-difficulty-col {
+  width: 110px;
+}
+
+.display-table #age-col {
+  width: 120px;
+}
+
+.display-table #numTxns-col {
+  width: 110px;
+}
+
+.display-table #reward-col {
+  width: 90px;
+}
+
+.display-table #status-col {
+  width: 80px;
 }

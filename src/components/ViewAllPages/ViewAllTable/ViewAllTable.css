@@ -51,3 +51,33 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* Hardcoded Widths (May require tweaks) */
+
+.viewall-table #height-col {
+  width: 75px;
+}
+
+.viewall-table #difficulty-col {
+  width: 90px;
+}
+
+.viewall-table #ds-difficulty-col {
+  width: 120px;
+}
+
+.viewall-table #age-col {
+  width: 150px;
+}
+
+.viewall-table #amount-col {
+  width: 200px;
+}
+
+.viewall-table #numTxns-col {
+  width: 110px;
+}
+
+.viewall-table #reward-col {
+  width: 130px;
+}

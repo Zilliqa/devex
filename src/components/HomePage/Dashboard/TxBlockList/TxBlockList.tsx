@@ -21,10 +21,9 @@ import { timestampToTimeago, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
       - Hash
 */
 
+// Pre-processing data to display
 const processMap = new Map()
-// Convert age from microseconds to milliseconds and find timeago
 processMap.set('age-col', timestampToTimeago)
-// Convert from Qa to Zil to display
 processMap.set('reward-col', (amt: number) => (
   <OverlayTrigger placement='top'
     overlay={ <Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
@@ -36,6 +35,7 @@ processMap.set('height-col', (height: number) => (<Link to={`txbk/${height}`}>{h
 processMap.set('hash-col', (hash: number) => ('0x' + hash))
 
 const TxBlockList: React.FC = () => {
+  
   const networkContext = useContext(NetworkContext)
   const { dataService, nodeUrl } = networkContext!
 
@@ -56,7 +56,7 @@ const TxBlockList: React.FC = () => {
     },
     {
       id: 'reward-col',
-      Header: 'Block Reward',
+      Header: 'Reward',
       accessor: 'header.Rewards',
     },
     {
@@ -68,11 +68,6 @@ const TxBlockList: React.FC = () => {
       id: 'age-col',
       Header: 'Age',
       accessor: 'header.Timestamp',
-    },
-    {
-      id: 'hash-col',
-      Header: 'Hash',
-      accessor: 'body.BlockHash',
     }], []
   )
 

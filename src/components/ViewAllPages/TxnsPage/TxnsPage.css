@@ -1,29 +1,3 @@
-.txnpage-header {
+.txnspage-header {
   padding-left: 0.5rem;
-}
-
-/* Hardcoded Widths (May require tweaks) */
-
-.txnpage-table #height-col {
-  width: 8%;
-}
-
-.txnpage-table #numTxns-col {
-  width: 11%;
-}
-
-.txnpage-table #reward-col {
-  width: 13%;
-}
-
-.txnpage-table #miner-col {
-  width: 26%;
-}
-
-.txnpage-table #age-col {
-  width: 15%;
-}
-
-.txnpage-table #hash-col {
-  width: 27%;
 }

@@ -5,57 +5,58 @@ import { DsBlockObj, TxBlockObj, TransactionObj, PendingTxnResult } from '@zilli
 
 import './DisplayTable.css'
 
-interface ITableParams<T extends object> {
+interface IDisplayTableParams<T extends object> {
   columns: Array<Column<T>>;
   data: T[];
-  processMap?: Map<string, <T>(original: T) => T> // Additional processing of data before displaying
+  processMap?: Map<string, <T>(original: T) => T>
 }
 
 // React Table for DSBlocks, TxBlocks and TransactionObj on Dashboard 
-const DisplayTable = ({ columns, data, processMap }: ITableParams<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => {
-  const { getTableProps, headerGroups, rows, prepareRow } = useTable<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>({
-    columns,
-    data,
-  })
+const DisplayTable: React.FC<IDisplayTableParams<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>> =
+  ({ columns, data, processMap }) => {
+    const { getTableProps, headerGroups, rows, prepareRow } = useTable<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>({
+      columns,
+      data,
+    })
 
-  return (
-    <div className='dashboard-table'>
-      <table {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup: HeaderGroup<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()} id={column.id}>
-                  {column.render('Header')}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody>
-          {rows.map((row: Row<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => {
-            prepareRow(row)
-            return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell: Cell<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => {
-                  if (processMap) {
-                    const procFunc = processMap.get(cell.column.id)
-                    if (procFunc != null)
-                      cell.value = procFunc(cell.value)
-                  }
-                  return (
-                    <td {...cell.getCellProps()}>
-                      {cell.value}
-                    </td>
-                  )
-                })}
+    return (
+      <div className='display-table'>
+        <table {...getTableProps()}>
+          <thead>
+            {headerGroups.map((headerGroup: HeaderGroup<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column) => (
+                  <th {...column.getHeaderProps()} id={column.id}>
+                    {column.render('Header')}
+                  </th>
+                ))}
               </tr>
-            )
-          })}
-        </tbody>
-      </table>
-    </div>
-  )
-}
+            ))}
+          </thead>
+          <tbody>
+            {rows.map((row: Row<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => {
+              prepareRow(row)
+              return (
+                <tr {...row.getRowProps()}>
+                  {row.cells.map((cell: Cell<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => {
+                    if (processMap) {
+                      const procFunc = processMap.get(cell.column.id)
+                      if (procFunc != null)
+                        cell.value = procFunc(cell.value)
+                    }
+                    return (
+                      <td {...cell.getCellProps()}>
+                        {cell.value}
+                      </td>
+                    )
+                  })}
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+    )
+  }
 
 export default DisplayTable

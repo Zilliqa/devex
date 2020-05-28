@@ -9,16 +9,6 @@
 }
 
 .pendtxlist-table {
-  max-height: 180px;
+  max-height: 210px;
   overflow: hidden auto;
-}
-
-/* Hardcoded Widths (May require tweaks) */
-
-#hash-col {
-  width: auto;
-}
-
-#status-col {
-  width: 20%;
 }

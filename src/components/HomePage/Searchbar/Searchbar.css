@@ -17,16 +17,13 @@
   border-right: 0;
 }
 
-.form-control:focus {
+.searchbar-ig .form-control:focus {
   z-index: 0 !important;
-  color: none;
-  background-color: none;
-  border-color: none;
   outline: 0;
   box-shadow: none;
 }
 
-.btn:focus {
+.searchbar-ig .btn:focus {
   outline: 0;
   box-shadow: none;
 }
