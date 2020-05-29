@@ -218,7 +218,9 @@ const TxBlockDetailsPage: React.FC = () => {
                 <ViewAllTable
                   isLoading={isLoading}
                   fetchData={fetchData}
-                  pageCount={Math.ceil(data.txnHashes.length / 10)} columns={columns} data={transactionData ? transactionData : []}
+                  pageCount={Math.ceil(data.txnHashes.length / 10)}
+                  columns={columns}
+                  data={transactionData ? transactionData : []}
                   processMap={processMap} />
               </Card.Body>
             </Card>

@@ -28,6 +28,7 @@
 
 // Mainnet: https://api.zilliqa.com/
 // Testnet: https://dev-api.zilliqa.com/
+// Simulated Env: https://zilliqa-isolated-server.zilliqa.com/
 
 import { Zilliqa } from '@zilliqa-js/zilliqa'
 import { BlockchainInfo, DsBlockObj, TransactionObj, TxBlockObj, TxList, PendingTxnResult } from '@zilliqa-js/core/src/types'
@@ -202,6 +203,7 @@ export class DataService {
     console.log("getting transaction details")
     const blockData = await this.zilliqa.blockchain.getTransaction(txnHash.substring(2))
     blockData['hash'] = txnHash
+    console.log(blockData)
     return blockData as TransactionObj
   }
 

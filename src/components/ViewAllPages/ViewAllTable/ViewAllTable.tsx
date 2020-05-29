@@ -40,9 +40,12 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
       }, usePagination)
 
     const fetchDataDebounce = useAsyncDebounce(fetchData, 300)
+
     useEffect(() => {
       fetchDataDebounce({ pageIndex })
-    }, [fetchDataDebounce, pageIndex])
+      // fetchDataDebounce changes when fetchData function changes
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pageIndex, fetchData])
 
     const generatePagination = useCallback((currentPage: number, pageCount: number, delta: number = 2) => {
       const separate = (a: number, b: number, isLower: boolean) => {

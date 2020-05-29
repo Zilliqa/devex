@@ -44,6 +44,14 @@ const Header: React.FC = () => {
             }}>
               Testnet
             </NavDropdown.Item>
+            <NavDropdown.Item onClick={() => {
+              if (currentNetwork !== 'Simulated Env') {
+                setCurrentNetwork('Simulated Env')
+                setNodeUrl && setNodeUrl('https://zilliqa-isolated-server.zilliqa.com/')
+              }
+            }}>
+              Simulated Env
+            </NavDropdown.Item>
           </NavDropdown>
         </Nav>
       </Navbar>
