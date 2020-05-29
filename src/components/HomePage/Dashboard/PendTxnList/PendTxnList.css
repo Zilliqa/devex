@@ -12,3 +12,9 @@
   max-height: 210px;
   overflow: hidden auto;
 }
+
+.pendtxlist-status-div {
+  margin: auto;
+  border-bottom: 1.5px dotted black;
+  width: 30%;
+}

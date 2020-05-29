@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react'
-import { Card, Spinner } from 'react-bootstrap'
+import { Card, Spinner, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 import { NetworkContext } from 'src/services/networkProvider'
 import DisplayTable from '../../DisplayTable/DisplayTable'
@@ -16,10 +16,21 @@ import './PendTxnList.css'
     - Amount
     - Age
 */
+const statusMap = new Map()
+statusMap.set(0, 'Txn not pending')
+statusMap.set(1, 'Nonce too high')
+statusMap.set(2, 'Could not fit in as microblock gas limit reached')
+statusMap.set(3, 'Transaction valid but consensus not reached')
 
 // Pre-processing data to display
 const processMap = new Map()
 processMap.set('hash-col', (hash: number) => ('0x' + hash))
+processMap.set('status-col', (status: string) => (
+  <OverlayTrigger placement='top'
+    overlay={<Tooltip id={'tt'}> {statusMap.get(status)} </Tooltip>}>
+    <div className='pendtxlist-status-div'>{status}</div>
+  </OverlayTrigger>
+))
 
 const PendTxnList: React.FC = () => {
   
