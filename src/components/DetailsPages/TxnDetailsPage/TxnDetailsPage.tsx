@@ -1,14 +1,19 @@
+// @ts-nocheck
 import React, { useState, useEffect, useContext, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Card, Row, Col, Container, Tabs, Tab } from 'react-bootstrap'
 
 import { NetworkContext } from 'src/services/networkProvider'
 import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
-import { TransactionObj, EventLogEntry, TransitionEntry, EventParam } from '@zilliqa-js/core/src/types'
+import { TransactionObj } from '@zilliqa-js/core/src/types'
 import { Long } from "@zilliqa-js/util"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
+
+import TransitionsTable from './TransitionsTable'
+import EventLogsTable from './EventLogsTable'
+import ErrorsDisplay from './ErrorsDisplay'
 
 import './TxnDetailsPage.css'
 
@@ -18,18 +23,22 @@ const TxnDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
-  const [tab, setTab] = useState('eventLog')
+  const [tab, setTab] = useState('')
   const [data, setData] = useState<TransactionObj | null>(null)
 
-  const highlightEventParams = useCallback((params: EventParam[]): React.ReactNode => {
-    return params
-      .map((param) => (
-        <span>
-          <span style={{ color: 'orangered' }}>{param.type}</span>
-          {' '}
-          {param.vname}
-        </span>))
-      .reduce((acc, ele): any => (acc === null ? [ele] : [acc, ', ', ele] as any))
+  const setDefaultTab = useCallback((data) => {
+    if (!data) return
+    const tabKeys: string[] = []
+    if (data.receipt.event_logs)
+      tabKeys.push('eventLog')
+    if (data.receipt.transitions)
+      tabKeys.push('transitions')
+    // @ts-ignore
+    if (data.receipt.exceptions && Object.keys(data.receipt.exceptions).length > 0)
+      tabKeys.push('exceptions')
+    if (data.receipt.errors && Object.keys(data.receipt.errors).length > 0)
+      tabKeys.push('errors')
+    if (tabKeys.length > 0) setTab(tabKeys[0])
   }, [])
 
   // Fetch data
@@ -40,15 +49,17 @@ const TxnDetailsPage: React.FC = () => {
     const getData = async () => {
       try {
         receivedData = await dataService.getTransactionDetails(txnHash)
-        if (receivedData)
+        if (receivedData) {
           setData(receivedData)
+          setDefaultTab(receivedData)
+        }
       } catch (e) {
         console.log(e)
       }
     }
 
     getData()
-  }, [dataService, txnHash])
+  }, [dataService, txnHash, setDefaultTab])
 
   return <>
     {data && (
@@ -131,12 +142,30 @@ const TxnDetailsPage: React.FC = () => {
                   </div>
                 </Col>
               </Row>
+              <Row>
+                <Col>
+                  <div className='txn-detail'>
+                    <span className='txn-detail-header'>Success:</span>
+                    <span>{`${data.receipt.success}`}</span>
+                  </div>
+                </Col>
+                {/* To be removed after SDK typing is updated
+                        // @ts-ignore */}
+                {data.receipt.accepted !== undefined && (<Col>
+                  <div className='txn-detail'>
+                    <span className='txn-detail-header'>Accepts $ZIL:</span>
+                    {/* To be removed after SDK typing is updated
+                        // @ts-ignore */}
+                    <span>{`${data.receipt.accepted}`}</span>
+                  </div>
+                </Col>)}
+              </Row>
             </Container>
           </Card.Body>
         </Card>
-        {(data.receipt.event_logs || data.receipt.transitions) && (
+        {(tab !== '') && (
           <>
-            <div>
+            <div style={{ marginTop: '2rem' }}>
               <h4>Additional Info</h4>
             </div>
             <Card className='tabs-card'>
@@ -144,122 +173,23 @@ const TxnDetailsPage: React.FC = () => {
                 <Tabs id="additional-info-tabs" activeKey={tab} onSelect={(k: string) => setTab(k)}>
                   {data.receipt.event_logs && <Tab eventKey="eventLog" title={`Event Log (${data.receipt.event_logs.length})`} />}
                   {data.receipt.transitions && <Tab eventKey="transitions" title={`Transitions (${data.receipt.transitions.length})`} />}
+                  {/* To be removed after SDK typing is updated
+                    // @ts-ignore */}
+                  {data.receipt.exceptions && data.receipt.exceptions.length > 0 && <Tab eventKey="exceptions" title={`Exceptions (${data.receipt.exceptions.length})`} />}
+                  {data.receipt.errors && Object.keys(data.receipt.errors).length > 0 && <Tab eventKey="errors" title={'Errors'} />}
                 </Tabs>
               </Card.Header>
               <Card.Body>
                 <Container>
                   {tab === 'eventLog'
-                    ? <>
-                      {data.receipt.event_logs.map((event: EventLogEntry) => (
-                        <table className='receipt-table'>
-                          <tbody>
-                            <tr>
-                              <th>Function</th>
-                              <td>
-                                <span style={{ color: 'blueviolet' }}>
-                                  {event._eventname}
-                                </span>
-                                {' ('}{highlightEventParams(event.params)}{')'}
-                              </td>
-                            </tr>
-                            <tr>
-                              <th>Address</th>
-                              <td>{hexAddrToZilAddr(event.address)}</td>
-                            </tr>
-                            {event.params.length > 0 && (
-                              <>
-                                <tr style={{ height: '20px' }}><hr /></tr>
-                                <tr>
-                                  <td className="txn-detail-header">Variable</td>
-                                  <td className="txn-detail-header">Value</td>
-                                </tr>
-                                {event.params.map(param => (
-                                  <tr>
-                                    <td>{param.vname}</td>
-                                    {/* To be removed after SDK typing is updated
-                                  // @ts-ignore */}
-                                    <td>
-                                      {typeof param.value === 'object'
-                                        ? <pre style={{ backgroundColor: 'rgba(0, 0, 0, 0.03)' }}>
-                                          {JSON.stringify(param.value, null, '\t')}
-                                        </pre>
-                                        : Array.isArray(param.value)
-                                          ? param.value.toString()
-                                          : param.value}
-                                    </td>
-                                  </tr>
-                                ))}
-                              </>
-                            )}
-                          </tbody>
-                        </table>
-                      )).reduce((acc: (React.ReactNode | null), x) => (
-                        acc === null
-                          ? x
-                          : <>{acc}<hr />{x}</>)
-                        , null)
-                      }
-                    </>
+                    ? <EventLogsTable events={data.receipt.event_logs} />
                     : tab === 'transitions'
-                      ? <>
-                        {data.receipt.transitions.map((transition: TransitionEntry) => (
-                          <table className='receipt-table'>
-                            <tbody>
-                              <tr>
-                                <th>Tag</th>
-                                <td>{transition.msg._tag}</td>
-                              </tr>
-                              <tr>
-                                <th>Address</th>
-                                <td>{hexAddrToZilAddr(transition.addr)}</td>
-                              </tr>
-                              <tr>
-                                <th>Depth</th>
-                                {/* To be removed after SDK typing is updated
-                            // @ts-ignore */}
-                                <td>{transition.depth}</td>
-                              </tr>
-                              <tr>
-                                <th>Amount</th>
-                                <td>{qaToZil(transition.msg._amount)}</td>
-                              </tr>
-                              <tr>
-                                <th>Receipient</th>
-                                <td>{transition.msg._recipient}</td>
-                              </tr>
-                              {transition.msg.params.length > 0 && (
-                                <>
-                                  <tr style={{ height: '20px' }}><hr /></tr>
-                                  <tr>
-                                    <td className="txn-detail-header">Variable</td>
-                                    <td className="txn-detail-header">Value</td>
-                                  </tr>
-                                  {transition.msg.params.map(param => (
-                                    <tr>
-                                      <td>{param.vname}</td>
-                                      <td>
-                                        {typeof param.value === 'object'
-                                          ? <pre style={{ backgroundColor: 'rgba(0, 0, 0, 0.03)' }}>
-                                            {JSON.stringify(param.value, null, '\t')}
-                                          </pre>
-                                          : Array.isArray(param.value)
-                                            ? param.value.toString()
-                                            : param.value}
-                                      </td>
-                                    </tr>
-                                  ))}
-                                </>
-                              )}
-                            </tbody>
-                          </table>
-                        )).reduce((acc: (React.ReactNode | null), x) => (
-                          acc === null
-                            ? x
-                            : <>{acc}<hr />{x}</>)
-                          , null
-                        )}
-                      </>
-                      : null
+                      ? <TransitionsTable transitions={data.receipt.transitions} />
+                      : tab === 'errors'
+                        ? <ErrorsDisplay errors={data.receipt.errors} />
+                        : tab === 'exceptions'
+                          ? <ErrorsDisplay errors={data.receipt.exceptions} />
+                          : null
                   }
                 </Container>
               </Card.Body>

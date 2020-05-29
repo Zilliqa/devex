@@ -17,13 +17,13 @@ const Searchbar: React.FC = () => {
     e.preventDefault()
     switch (searchType) {
       case 'Transaction':
-        history.push(`/tx/${input}`)
+        history.push(`/tx/${input.trim()}`)
         break
       case 'Tx Block':
-        history.push(`/txbk/${input}`)
+        history.push(`/txbk/${input.trim()}`)
         break
       case 'DS Block':
-        history.push(`/dsbk/${input}`)
+        history.push(`/dsbk/${input.trim()}`)
         break
       case 'Address':
         break
