@@ -44,8 +44,6 @@ const EventLogsTable = ({ events }: { events: EventLogEntry[] }) => {
                 {event.params.map(param => (
                   <tr>
                     <td>{param.vname}</td>
-                    {/* To be removed after SDK typing is updated
-                    // @ts-ignore */}
                     <td>
                       {typeof param.value === 'object'
                         ? <pre style={{ backgroundColor: 'rgba(0, 0, 0, 0.03)' }}>

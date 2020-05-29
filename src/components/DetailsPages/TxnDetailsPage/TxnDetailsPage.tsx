@@ -1,11 +1,10 @@
-// @ts-nocheck
 import React, { useState, useEffect, useContext, useCallback } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Card, Row, Col, Container, Tabs, Tab } from 'react-bootstrap'
 
 import { NetworkContext } from 'src/services/networkProvider'
+import { TransactionObjWithHash } from 'src/typings/api'
 import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
-import { TransactionObj } from '@zilliqa-js/core/src/types'
 import { Long } from "@zilliqa-js/util"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -24,7 +23,7 @@ const TxnDetailsPage: React.FC = () => {
   const { dataService } = networkContext!
 
   const [tab, setTab] = useState('')
-  const [data, setData] = useState<TransactionObj | null>(null)
+  const [data, setData] = useState<TransactionObjWithHash | null>(null)
 
   const setDefaultTab = useCallback((data) => {
     if (!data) return
@@ -45,7 +44,7 @@ const TxnDetailsPage: React.FC = () => {
   useEffect(() => {
     if (!dataService) return
 
-    let receivedData: TransactionObj
+    let receivedData: TransactionObjWithHash
     const getData = async () => {
       try {
         receivedData = await dataService.getTransactionDetails(txnHash)
@@ -66,12 +65,8 @@ const TxnDetailsPage: React.FC = () => {
       <>
         <h3>Transaction</h3>
         <div style={{ display: 'flex' }}>
-          {/* To be removed after SDK typing is updated
-        // @ts-ignore */}
           <h6 className='txn-hash'>{data.hash}</h6>
           <div onClick={() => {
-            {/* To be removed after SDK typing is updated
-            // @ts-ignore */}
             navigator.clipboard.writeText(data.hash)
           }} className='txn-hash-copy-btn'>
             <FontAwesomeIcon icon={faCopy} />
@@ -136,8 +131,6 @@ const TxnDetailsPage: React.FC = () => {
                 <Col>
                   <div className='txn-detail'>
                     <span className='txn-detail-header'>Transaction Block:</span>
-                    {/* To be removed after SDK typing is updated
-                        // @ts-ignore */}
                     <span><Link to={`/txbk/${data.receipt.epoch_num}`}>{data.receipt.epoch_num}</Link></span>
                   </div>
                 </Col>

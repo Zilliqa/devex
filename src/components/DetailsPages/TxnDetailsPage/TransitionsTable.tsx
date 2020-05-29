@@ -24,8 +24,6 @@ const TransitionsTable = ({ transitions }: { transitions: TransitionEntry[] }) =
           </tr>
           <tr>
             <th>Depth</th>
-            {/* To be removed after SDK typing is updated
-            // @ts-ignore */}
             <td>{transition.depth}</td>
           </tr>
           <tr>

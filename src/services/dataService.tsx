@@ -32,15 +32,7 @@
 
 import { Zilliqa } from '@zilliqa-js/zilliqa'
 import { BlockchainInfo, DsBlockObj, TransactionObj, TxBlockObj, TxList, PendingTxnResult } from '@zilliqa-js/core/src/types'
-import { MappedDSBlockListing, MappedTxBlockListing } from 'src/typings/api'
-
-export interface MappedTxBlock extends TxBlockObj {
-  txnHashes: string[];
-}
-
-export interface MappedTxList extends TxList {
-  txnBodies: TransactionObj[];
-}
+import { MappedTxBlock, MappedDSBlockListing, MappedTxBlockListing, TransactionObjWithHash } from 'src/typings/api'
 
 export class DataService {
   zilliqa: any;
@@ -199,12 +191,12 @@ export class DataService {
     return output as TransactionObj[]
   }
 
-  async getTransactionDetails(txnHash: string): Promise<TransactionObj> {
+  async getTransactionDetails(txnHash: string): Promise<TransactionObjWithHash> {
     console.log("getting transaction details")
     const blockData = await this.zilliqa.blockchain.getTransaction(txnHash.substring(2))
     blockData['hash'] = txnHash
     console.log(blockData)
-    return blockData as TransactionObj
+    return blockData as TransactionObjWithHash
   }
 
   async getTransactionsForTxBlock(blockNum: number): Promise<string[]> {

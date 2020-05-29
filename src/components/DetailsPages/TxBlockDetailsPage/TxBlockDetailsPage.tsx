@@ -4,7 +4,7 @@ import { OverlayTrigger, Tooltip, Card, Row, Col, Container } from 'react-bootst
 
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
 import { NetworkContext } from 'src/services/networkProvider'
-import { MappedTxBlock } from 'src/services/dataService'
+import { MappedTxBlock } from 'src/typings/api'
 import { qaToZil, timestampToTimeago, hexAddrToZilAddr, timestampToDisplay, pubKeyToZilAddr } from 'src/utils/Utils'
 import { TransactionObj } from '@zilliqa-js/core/src/types'
 
@@ -125,12 +125,8 @@ const TxBlockDetailsPage: React.FC = () => {
           </span>
         </div>
         <div style={{ display: 'flex' }}>
-          {/* To be removed after SDK typing is updated
-        // @ts-ignore */}
           <h6 className='txblock-hash'>{'0x' + data.body.BlockHash}</h6>
           <div onClick={() => {
-            {/* To be removed after SDK typing is updated
-            // @ts-ignore */}
             navigator.clipboard.writeText(data.body.BlockHash)
           }} className='txblock-hash-copy-btn'>
             <FontAwesomeIcon icon={faCopy} />
@@ -196,15 +192,11 @@ const TxBlockDetailsPage: React.FC = () => {
             </Container>
           </Card.Body>
         </Card>
-        {/* To be removed after SDK typing is updated
-              // @ts-ignore */}
         {data.body.MicroBlockInfos.length > 0 && (
           <Card className='txblock-details-card'>
             <Card.Body>
               <Container>
                 <h6>Micro Blocks</h6>
-                {/* To be removed after SDK typing is updated
-              // @ts-ignore */}
                 {data.body.MicroBlockInfos.map((x) => <div>[{x.MicroBlockShardId}] {x.MicroBlockHash}</div>)}
               </Container>
             </Card.Body>
