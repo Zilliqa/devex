@@ -18,6 +18,7 @@ import DefaultTab from '../InfoTabs/DefaultTab'
 import ContractCreationTab from '../InfoTabs/ContractCreationTab'
 
 import './TxnDetailsPage.css'
+import NotFoundPage from '../NotFoundPage/NotFoundPage'
 
 const TxnDetailsPage: React.FC = () => {
 
@@ -25,6 +26,7 @@ const TxnDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
+  const [error, setError] = useState(null)
   const [data, setData] = useState<TransactionDetails | null>(null)
 
   const generateTabsObj = () => {
@@ -82,6 +84,7 @@ const TxnDetailsPage: React.FC = () => {
         }
       } catch (e) {
         console.log(e)
+        setError(e)
       }
     }
 
@@ -89,115 +92,117 @@ const TxnDetailsPage: React.FC = () => {
   }, [dataService, txnHash])
 
   return <>
-    {data && (
-      <>
-        <h3>
-          <span>
-            {data.receipt.success ? <FontAwesomeIcon color='green' icon={faExchangeAlt} /> : <FontAwesomeIcon color='red' icon={faExclamationCircle} />}
+    {error
+      ? <NotFoundPage />
+      : data && (
+        <>
+          <h3>
+            <span>
+              {data.receipt.success ? <FontAwesomeIcon color='green' icon={faExchangeAlt} /> : <FontAwesomeIcon color='red' icon={faExclamationCircle} />}
+            </span>
+            <span style={{ marginLeft: '0.75rem' }}>
+              Transaction
           </span>
-          <span style={{ marginLeft:'0.75rem' }}>
-            Transaction
-          </span>
-        </h3>
-        <div style={{ display: 'flex' }}>
-          <h6 className='txn-hash'>{data.hash}</h6>
-          <div onClick={() => {
-            navigator.clipboard.writeText(data.hash)
-          }} className='txn-hash-copy-btn'>
-            <FontAwesomeIcon icon={faCopy} />
+          </h3>
+          <div style={{ display: 'flex' }}>
+            <h6 className='txn-hash'>{data.hash}</h6>
+            <div onClick={() => {
+              navigator.clipboard.writeText(data.hash)
+            }} className='txn-hash-copy-btn'>
+              <FontAwesomeIcon icon={faCopy} />
+            </div>
           </div>
-        </div>
-        <Card className='txn-details-card'>
-          <Card.Body>
-            <Container>
-              <Row>
-                <Col>
-                  <div className='txn-detail'>
-                    <span className='txn-detail-header'>From:</span>
-                    <span>
-                    {/* To be removed after SDK typing is updated
+          <Card className='txn-details-card'>
+            <Card.Body>
+              <Container>
+                <Row>
+                  <Col>
+                    <div className='txn-detail'>
+                      <span className='txn-detail-header'>From:</span>
+                      <span>
+                        {/* To be removed after SDK typing is updated
                         // @ts-ignore */}
-                      <Link to={`/address/${hexAddrToZilAddr(data.senderAddress)}`}>{hexAddrToZilAddr(data.senderAddress)}</Link>
-                    </span>
-                  </div>
-                </Col>
-                <Col>
-                  <div className='txn-detail'>
-                    <span className='txn-detail-header'>To:</span>
-                    <span>
-                      <Link to={`/address/${hexAddrToZilAddr(data.toAddr)}`}>{hexAddrToZilAddr(data.toAddr)}</Link>
-                    </span>
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <div className='txn-detail'>
-                    <span className='txn-detail-header'>Amount:</span>
-                    <span>{qaToZil(data.amount)}</span>
-                  </div>
-                </Col>
-                <Col>
-                  <div className='txn-detail'>
-                    <span className='txn-detail-header'>Nonce:</span>
-                    <span>{data.nonce}</span>
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <div className='txn-detail'>
-                    <span className='txn-detail-header'>Gas Limit:</span>
-                    {/* To be removed after SDK typing is updated
+                        <Link to={`/address/${hexAddrToZilAddr(data.senderAddress)}`}>{hexAddrToZilAddr(data.senderAddress)}</Link>
+                      </span>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className='txn-detail'>
+                      <span className='txn-detail-header'>To:</span>
+                      <span>
+                        <Link to={`/address/${hexAddrToZilAddr(data.toAddr)}`}>{hexAddrToZilAddr(data.toAddr)}</Link>
+                      </span>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <div className='txn-detail'>
+                      <span className='txn-detail-header'>Amount:</span>
+                      <span>{qaToZil(data.amount)}</span>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className='txn-detail'>
+                      <span className='txn-detail-header'>Nonce:</span>
+                      <span>{data.nonce}</span>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <div className='txn-detail'>
+                      <span className='txn-detail-header'>Gas Limit:</span>
+                      {/* To be removed after SDK typing is updated
                         // @ts-ignore */}
-                    <span>{(new Long(data.gasLimit.low, data.gasLimit.high, data.gasLimit.unsigned)).toString()}</span>
-                  </div>
-                </Col>
-                <Col>
-                  <div className='txn-detail'>
-                    <span className='txn-detail-header'>Gas Price:</span>
-                    <span>{qaToZil(data.gasPrice)}</span>
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <div className='txn-detail'>
-                    <span className='txn-detail-header'>Cumulative Gas:</span>
-                    <span>{data.receipt.cumulative_gas}</span>
-                  </div>
-                </Col>
-                <Col>
-                  <div className='txn-detail'>
-                    <span className='txn-detail-header'>Transaction Block:</span>
-                    <span><Link to={`/txbk/${data.receipt.epoch_num}`}>{data.receipt.epoch_num}</Link></span>
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <div className='txn-detail'>
-                    <span className='txn-detail-header'>Success:</span>
-                    <span>{`${data.receipt.success}`}</span>
-                  </div>
-                </Col>
-                {/* To be removed after SDK typing is updated
+                      <span>{(new Long(data.gasLimit.low, data.gasLimit.high, data.gasLimit.unsigned)).toString()}</span>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className='txn-detail'>
+                      <span className='txn-detail-header'>Gas Price:</span>
+                      <span>{qaToZil(data.gasPrice)}</span>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <div className='txn-detail'>
+                      <span className='txn-detail-header'>Cumulative Gas:</span>
+                      <span>{data.receipt.cumulative_gas}</span>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className='txn-detail'>
+                      <span className='txn-detail-header'>Transaction Block:</span>
+                      <span><Link to={`/txbk/${data.receipt.epoch_num}`}>{data.receipt.epoch_num}</Link></span>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <div className='txn-detail'>
+                      <span className='txn-detail-header'>Success:</span>
+                      <span>{`${data.receipt.success}`}</span>
+                    </div>
+                  </Col>
+                  {/* To be removed after SDK typing is updated
                         // @ts-ignore */}
-                {data.receipt.accepted !== undefined && (<Col>
-                  <div className='txn-detail'>
-                    <span className='txn-detail-header'>Accepts $ZIL:</span>
-                    {/* To be removed after SDK typing is updated
+                  {data.receipt.accepted !== undefined && (<Col>
+                    <div className='txn-detail'>
+                      <span className='txn-detail-header'>Accepts $ZIL:</span>
+                      {/* To be removed after SDK typing is updated
                         // @ts-ignore */}
-                    <span>{`${data.receipt.accepted}`}</span>
-                  </div>
-                </Col>)}
-              </Row>
-            </Container>
-          </Card.Body>
-        </Card>
-        <InfoTabs tabs={generateTabsObj()} />
-      </>
-    )}
+                      <span>{`${data.receipt.accepted}`}</span>
+                    </div>
+                  </Col>)}
+                </Row>
+              </Container>
+            </Card.Body>
+          </Card>
+          <InfoTabs tabs={generateTabsObj()} />
+        </>
+      )}
   </>
 }
 

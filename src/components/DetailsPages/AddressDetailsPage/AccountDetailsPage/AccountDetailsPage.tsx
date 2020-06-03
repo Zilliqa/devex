@@ -52,7 +52,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
             <span>
               <FontAwesomeIcon color='grey' icon={faWallet} />
             </span>
-            <span style={{ marginLeft:'0.75rem' }}>
+            <span style={{ marginLeft: '0.75rem' }}>
               Account
             </span>
           </h3>

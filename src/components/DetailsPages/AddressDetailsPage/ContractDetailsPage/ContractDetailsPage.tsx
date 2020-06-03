@@ -77,7 +77,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
             <span>
               <FontAwesomeIcon color='grey' icon={faFileContract} />
             </span>
-            <span style={{ marginLeft:'0.75rem' }}>
+            <span style={{ marginLeft: '0.75rem' }}>
               Contract
             </span>
           </h3>

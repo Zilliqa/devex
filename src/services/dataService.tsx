@@ -84,6 +84,8 @@ export class DataService {
     console.log("getting DS block details")
     const blockData = await this.zilliqa.blockchain.getDSBlock(blockNum)
     console.log(blockData)
+    if (blockData.result.header.BlockNum !== blockNum)
+      throw new Error('Invalid DS Block Number')
     return blockData.result as DsBlockObj
   }
 
@@ -141,6 +143,8 @@ export class DataService {
     const transactionData = await this.getTransactionsForTxBlock(blockNum)
     blockData.result['txnHashes'] = transactionData
     console.log(blockData.result)
+    if (blockData.result.header.BlockNum !== blockNum)
+      throw new Error('Invalid Tx Block Number')
     return blockData.result as MappedTxBlock
   }
 
@@ -183,7 +187,6 @@ export class DataService {
 
   //================================================================================
   // Transactions-related
-  // WIP
   //================================================================================
 
   async getLatest5ValidatedTransactions(): Promise<TransactionObj[]> {
@@ -299,9 +302,11 @@ export class DataService {
     console.log('check whether is smart contract')
     const response = await this.zilliqa.blockchain.getSmartContractInit(addr)
     console.log(response)
-    if (response.result)
+    if (!response.error)
       return true
-    else
+    else if (response.error.code === -5)
       return false
+    else
+      throw new Error('Invalid Address')
   }
 }

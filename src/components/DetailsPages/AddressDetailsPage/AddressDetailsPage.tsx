@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import AccountDetailsPage from './AccountDetailsPage/AccountDetailsPage'
 import ContractDetailsPage from './ContractDetailsPage/ContractDetailsPage'
 import { NetworkContext } from 'src/services/networkProvider'
+import NotFoundPage from '../NotFoundPage/NotFoundPage'
 
 const AddressDetailsPage: React.FC = () => {
 
@@ -11,6 +12,7 @@ const AddressDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
+  const [error, setError] = useState(null)
   const [isContract, setIsContract] = useState<boolean | null>(null)
 
   // Fetch data
@@ -24,18 +26,22 @@ const AddressDetailsPage: React.FC = () => {
         setIsContract(isContractRes)
       } catch (e) {
         console.log(e)
+        setError(e)
       }
     }
     getData()
   }, [dataService, addr])
 
   return <>
-    {
-      isContract !== null
-        ? isContract
-          ? <ContractDetailsPage addr={addr} />
-          : <AccountDetailsPage addr={addr} />
-        : null
+    {error
+      ? <NotFoundPage />
+      : <>
+        {isContract !== null
+          ? isContract
+            ? <ContractDetailsPage addr={addr} />
+            : <AccountDetailsPage addr={addr} />
+          : null}
+      </>
     }
   </>
 }

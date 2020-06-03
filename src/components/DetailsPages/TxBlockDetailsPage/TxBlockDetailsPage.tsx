@@ -13,6 +13,7 @@ import { faCopy, faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free
 import { faCubes } from '@fortawesome/free-solid-svg-icons'
 
 import './TxBlockDetailsPage.css'
+import NotFoundPage from '../NotFoundPage/NotFoundPage'
 
 // Pre-processing data to display
 const processMap = new Map()
@@ -32,6 +33,7 @@ const TxBlockDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
+  const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useState<MappedTxBlock | null>(null)
   const [latestTxBlockNum, setLatestTxBlockNum] = useState<number | null>(null)
@@ -46,6 +48,7 @@ const TxBlockDetailsPage: React.FC = () => {
     const getData = async () => {
       try {
         receivedData = await dataService.getTxBlockDetails(blockNum)
+        console.log(receivedData)
         if (receivedData)
           setData(receivedData)
         latestTxBlockNum = await dataService.getNumTxBlocks()
@@ -53,6 +56,7 @@ const TxBlockDetailsPage: React.FC = () => {
           setLatestTxBlockNum(latestTxBlockNum)
       } catch (e) {
         console.log(e)
+        setError(e)
       }
     }
     getData()
@@ -103,129 +107,131 @@ const TxBlockDetailsPage: React.FC = () => {
   }, [dataService, data])
 
   return <>
-    {data && (
-      <>
-        <div className='txblock-header'>
-          <h3>
+    {error
+      ? <NotFoundPage />
+      : data && (
+        <>
+          <div className='txblock-header'>
+            <h3>
+              <span>
+                <FontAwesomeIcon color='grey' icon={faCubes} />
+              </span>
+              <span style={{ marginLeft: '0.75rem' }}>
+                Tx Block
+            </span>
+              {' '}
+              <span className='txblock-header-blocknum'>#{data.header.BlockNum}</span>
+            </h3>
             <span>
-              <FontAwesomeIcon color='grey' icon={faCubes} />
+              <Link
+                style={{ marginRight: '1rem' }}
+                className={parseInt(data.header.BlockNum) === 0 ? 'disabled-link' : ''}
+                to={`/txbk/${parseInt(data.header.BlockNum) - 1}`}>
+                <FontAwesomeIcon size='2x' icon={faCaretSquareLeft} />
+              </Link>
+              <Link
+                className={latestTxBlockNum && parseInt(data.header.BlockNum) === latestTxBlockNum - 1 ? 'disabled-link' : ''}
+                to={`/txbk/${parseInt(data.header.BlockNum) + 1}`}>
+                <FontAwesomeIcon size='2x' icon={faCaretSquareRight} />
+              </Link>
             </span>
-            <span style={{ marginLeft:'0.75rem' }}>
-              Tx Block
-            </span>
-            {' '}
-            <span className='txblock-header-blocknum'>#{data.header.BlockNum}</span>
-          </h3>
-          <span>
-            <Link
-              style={{ marginRight: '1rem' }}
-              className={parseInt(data.header.BlockNum) === 0 ? 'disabled-link' : ''}
-              to={`/txbk/${parseInt(data.header.BlockNum) - 1}`}>
-              <FontAwesomeIcon size='2x' icon={faCaretSquareLeft} />
-            </Link>
-            <Link
-              className={latestTxBlockNum && parseInt(data.header.BlockNum) === latestTxBlockNum - 1 ? 'disabled-link' : ''}
-              to={`/txbk/${parseInt(data.header.BlockNum) + 1}`}>
-              <FontAwesomeIcon size='2x' icon={faCaretSquareRight} />
-            </Link>
-          </span>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <h6 className='txblock-hash'>{'0x' + data.body.BlockHash}</h6>
-          <div onClick={() => {
-            navigator.clipboard.writeText(data.body.BlockHash)
-          }} className='txblock-hash-copy-btn'>
-            <FontAwesomeIcon icon={faCopy} />
           </div>
-        </div>
-        <Card className='txblock-details-card'>
-          <Card.Body>
-            <Container>
-              <Row>
-                <Col>
-                  <div className='txblock-detail'>
-                    <span className='txblock-detail-header'>Date:</span>
-                    <span>
-                      {timestampToDisplay(data.header.Timestamp)}
-                      {' '}
-                        ({timestampToTimeago(data.header.Timestamp)})
-                      </span>
-                  </div>
-                </Col>
-                <Col>
-                  <div className='txblock-detail'>
-                    <span className='txblock-detail-header'>Transactions:</span>
-                    <span>{data.header.NumTxns}</span>
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <div className='txblock-detail'>
-                    <span className='txblock-detail-header'>Gas Limit:</span>
-                    <span>{data.header.GasLimit}</span>
-                  </div>
-                </Col>
-                <Col>
-                  <div className='txblock-detail'>
-                    <span className='txblock-detail-header'>Gas Used:</span>
-                    <span>{data.header.GasUsed}</span>
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <div className='txblock-detail'>
-                    <span className='txblock-detail-header'>Rewards:</span>
-                    <span>{qaToZil(data.header.Rewards)}</span>
-                  </div>
-                </Col>
-                <Col>
-                  <div className='txblock-detail'>
-                    <span className='txblock-detail-header'>DS Block:</span>
-                    <span><Link to={`/dsbk/${data.header.DSBlockNum}`}>{data.header.DSBlockNum}</Link></span>
-                  </div>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <div className='txblock-detail'>
-                    <span className='txblock-detail-header'>Miner:</span>
-                    <span>{pubKeyToZilAddr(data.header.MinerPubKey)}</span>
-                  </div>
-                </Col>
-              </Row>
-            </Container>
-          </Card.Body>
-        </Card>
-        {data.body.MicroBlockInfos.length > 0 && (
+          <div style={{ display: 'flex' }}>
+            <h6 className='txblock-hash'>{'0x' + data.body.BlockHash}</h6>
+            <div onClick={() => {
+              navigator.clipboard.writeText(data.body.BlockHash)
+            }} className='txblock-hash-copy-btn'>
+              <FontAwesomeIcon icon={faCopy} />
+            </div>
+          </div>
           <Card className='txblock-details-card'>
             <Card.Body>
               <Container>
-                <h6>Micro Blocks</h6>
-                {data.body.MicroBlockInfos.map((x) => <div>[{x.MicroBlockShardId}] {x.MicroBlockHash}</div>)}
+                <Row>
+                  <Col>
+                    <div className='txblock-detail'>
+                      <span className='txblock-detail-header'>Date:</span>
+                      <span>
+                        {timestampToDisplay(data.header.Timestamp)}
+                        {' '}
+                        ({timestampToTimeago(data.header.Timestamp)})
+                      </span>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className='txblock-detail'>
+                      <span className='txblock-detail-header'>Transactions:</span>
+                      <span>{data.header.NumTxns}</span>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <div className='txblock-detail'>
+                      <span className='txblock-detail-header'>Gas Limit:</span>
+                      <span>{data.header.GasLimit}</span>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className='txblock-detail'>
+                      <span className='txblock-detail-header'>Gas Used:</span>
+                      <span>{data.header.GasUsed}</span>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <div className='txblock-detail'>
+                      <span className='txblock-detail-header'>Rewards:</span>
+                      <span>{qaToZil(data.header.Rewards)}</span>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className='txblock-detail'>
+                      <span className='txblock-detail-header'>DS Block:</span>
+                      <span><Link to={`/dsbk/${data.header.DSBlockNum}`}>{data.header.DSBlockNum}</Link></span>
+                    </div>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <div className='txblock-detail'>
+                      <span className='txblock-detail-header'>Miner:</span>
+                      <span>{pubKeyToZilAddr(data.header.MinerPubKey)}</span>
+                    </div>
+                  </Col>
+                </Row>
               </Container>
             </Card.Body>
           </Card>
-        )}
-        {data.txnHashes.length > 0 && (
-          <>
-            <h4>Transactions</h4>
+          {data.body.MicroBlockInfos.length > 0 && (
             <Card className='txblock-details-card'>
               <Card.Body>
-                <ViewAllTable
-                  isLoading={isLoading}
-                  fetchData={fetchData}
-                  pageCount={Math.ceil(data.txnHashes.length / 10)}
-                  columns={columns}
-                  data={transactionData ? transactionData : []}
-                  processMap={processMap} />
+                <Container>
+                  <h6>Micro Blocks</h6>
+                  {data.body.MicroBlockInfos.map((x) => <div>[{x.MicroBlockShardId}] {x.MicroBlockHash}</div>)}
+                </Container>
               </Card.Body>
             </Card>
-          </>
-        )}
-      </>
-    )}
+          )}
+          {data.txnHashes.length > 0 && (
+            <>
+              <h4>Transactions</h4>
+              <Card className='txblock-details-card'>
+                <Card.Body>
+                  <ViewAllTable
+                    isLoading={isLoading}
+                    fetchData={fetchData}
+                    pageCount={Math.ceil(data.txnHashes.length / 10)}
+                    columns={columns}
+                    data={transactionData ? transactionData : []}
+                    processMap={processMap} />
+                </Card.Body>
+              </Card>
+            </>
+          )}
+        </>
+      )}
   </>
 }
 
