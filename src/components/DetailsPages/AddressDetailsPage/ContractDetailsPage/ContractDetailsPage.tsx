@@ -10,6 +10,7 @@ import { ContractDetails } from 'src/typings/api'
 import { qaToZil } from 'src/utils/Utils'
 
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
+import { faFileContract } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import '../AddressDetailsPage.css'
@@ -73,8 +74,13 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
       <>
         <div className='address-header'>
           <h3>
-            Contract
-        </h3>
+            <span>
+              <FontAwesomeIcon color='grey' icon={faFileContract} />
+            </span>
+            <span style={{ marginLeft:'0.75rem' }}>
+              Contract
+            </span>
+          </h3>
         </div>
         <div style={{ display: 'flex' }}>
           <h6 className='address-hash'>{addrRef.current}</h6>

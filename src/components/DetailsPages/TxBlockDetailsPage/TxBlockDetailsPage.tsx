@@ -10,6 +10,7 @@ import { TransactionObj } from '@zilliqa-js/core/src/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy, faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
+import { faCubes } from '@fortawesome/free-solid-svg-icons'
 
 import './TxBlockDetailsPage.css'
 
@@ -106,8 +107,13 @@ const TxBlockDetailsPage: React.FC = () => {
       <>
         <div className='txblock-header'>
           <h3>
-            Tx Block
-              {' '}
+            <span>
+              <FontAwesomeIcon color='grey' icon={faCubes} />
+            </span>
+            <span style={{ marginLeft:'0.75rem' }}>
+              Tx Block
+            </span>
+            {' '}
             <span className='txblock-header-blocknum'>#{data.header.BlockNum}</span>
           </h3>
           <span>

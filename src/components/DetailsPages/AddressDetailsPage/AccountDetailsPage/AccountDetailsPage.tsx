@@ -7,6 +7,7 @@ import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
+import { faWallet } from '@fortawesome/free-solid-svg-icons'
 
 import '../AddressDetailsPage.css'
 
@@ -48,8 +49,13 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
       <>
         <div className='address-header'>
           <h3>
-            Account
-        </h3>
+            <span>
+              <FontAwesomeIcon color='grey' icon={faWallet} />
+            </span>
+            <span style={{ marginLeft:'0.75rem' }}>
+              Account
+            </span>
+          </h3>
         </div>
         <div style={{ display: 'flex' }}>
           <h6 className='address-hash'>{addrRef.current}</h6>

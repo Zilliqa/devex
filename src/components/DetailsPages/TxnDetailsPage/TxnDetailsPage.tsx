@@ -9,6 +9,7 @@ import { Long } from "@zilliqa-js/util"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
+import { faExclamationCircle, faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
 import InfoTabs from '../InfoTabs/InfoTabs'
 import TransitionsTab from '../InfoTabs/TransaitionsTab'
@@ -90,7 +91,14 @@ const TxnDetailsPage: React.FC = () => {
   return <>
     {data && (
       <>
-        <h3>Transaction</h3>
+        <h3>
+          <span>
+            {data.receipt.success ? <FontAwesomeIcon color='green' icon={faExchangeAlt} /> : <FontAwesomeIcon color='red' icon={faExclamationCircle} />}
+          </span>
+          <span style={{ marginLeft:'0.75rem' }}>
+            Transaction
+          </span>
+        </h3>
         <div style={{ display: 'flex' }}>
           <h6 className='txn-hash'>{data.hash}</h6>
           <div onClick={() => {

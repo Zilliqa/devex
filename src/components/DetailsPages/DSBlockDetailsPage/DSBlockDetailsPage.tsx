@@ -8,6 +8,7 @@ import { DsBlockObj } from '@zilliqa-js/core/src/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
+import { faCubes } from '@fortawesome/free-solid-svg-icons'
 
 import './DSBlockDetailsPage.css'
 
@@ -46,8 +47,13 @@ const DSBlockDetailsPage: React.FC = () => {
       <>
         <div className='dsblock-header'>
           <h3>
-            DS Block
-              {' '}
+            <span>
+              <FontAwesomeIcon color='grey' icon={faCubes} />
+            </span>
+            <span style={{ marginLeft:'0.75rem' }}>
+              DS Block
+            </span>
+            {' '}
             <span className='dsblock-header-blocknum'>#{data.header.BlockNum}</span>
           </h3>
           <span>
