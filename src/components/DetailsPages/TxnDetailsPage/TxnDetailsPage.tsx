@@ -1,18 +1,20 @@
-import React, { useState, useEffect, useContext, useCallback } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { useParams, Link } from 'react-router-dom'
-import { Card, Row, Col, Container, Tabs, Tab } from 'react-bootstrap'
+import { Card, Row, Col, Container } from 'react-bootstrap'
 
 import { NetworkContext } from 'src/services/networkProvider'
-import { TransactionObjWithHash } from 'src/typings/api'
+import { TransactionDetails } from 'src/typings/api'
 import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
 import { Long } from "@zilliqa-js/util"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
 
-import TransitionsTable from './TransitionsTable'
-import EventLogsTable from './EventLogsTable'
-import ErrorsDisplay from './ErrorsDisplay'
+import InfoTabs from '../InfoTabs/InfoTabs'
+import TransitionsTab from '../InfoTabs/TransaitionsTab'
+import EventsTab from '../InfoTabs/EventsTab'
+import DefaultTab from '../InfoTabs/DefaultTab'
+import ContractCreationTab from '../InfoTabs/ContractCreationTab'
 
 import './TxnDetailsPage.css'
 
@@ -22,35 +24,60 @@ const TxnDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
-  const [tab, setTab] = useState('')
-  const [data, setData] = useState<TransactionObjWithHash | null>(null)
+  const [data, setData] = useState<TransactionDetails | null>(null)
 
-  const setDefaultTab = useCallback((data) => {
-    if (!data) return
-    const tabKeys: string[] = []
-    if (data.receipt.event_logs)
-      tabKeys.push('eventLog')
-    if (data.receipt.transitions)
-      tabKeys.push('transitions')
-    // @ts-ignore
-    if (data.receipt.exceptions && Object.keys(data.receipt.exceptions).length > 0)
-      tabKeys.push('exceptions')
-    if (data.receipt.errors && Object.keys(data.receipt.errors).length > 0)
-      tabKeys.push('errors')
-    if (tabKeys.length > 0) setTab(tabKeys[0])
-  }, [])
+  const generateTabsObj = () => {
+
+    const tabs: { tabHeaders: string[], tabTitles: string[], tabContents: React.ReactNode[] } = {
+      tabHeaders: [],
+      tabTitles: [],
+      tabContents: [],
+    }
+
+    if (!data) return tabs
+
+    if (data.receipt.success && data.contractAddr) {
+      tabs.tabHeaders.push('contractAddr')
+      tabs.tabTitles.push(`Contract Creation`)
+      tabs.tabContents.push(<ContractCreationTab contractAddr={data.contractAddr!} />)
+    }
+
+    if (data.receipt.event_logs) {
+      tabs.tabHeaders.push('eventLog')
+      tabs.tabTitles.push(`Event Log (${data.receipt.event_logs.length})`)
+      tabs.tabContents.push(<EventsTab events={data.receipt.event_logs} />)
+    }
+
+    if (data.receipt.transitions) {
+      tabs.tabHeaders.push('transitions')
+      tabs.tabTitles.push(`Transitions (${data.receipt.transitions.length})`)
+      tabs.tabContents.push(<TransitionsTab transitions={data.receipt.transitions} />)
+    }
+
+    if (data.receipt.exceptions && data.receipt.exceptions.length > 0) {
+      tabs.tabHeaders.push('exceptions')
+      tabs.tabTitles.push(`Exceptions (${data.receipt.exceptions.length})`)
+      tabs.tabContents.push(<DefaultTab content={data.receipt.exceptions} />)
+    }
+
+    if (data.receipt.errors && Object.keys(data.receipt.errors).length > 0) {
+      tabs.tabHeaders.push('errors')
+      tabs.tabTitles.push('Errors')
+      tabs.tabContents.push(<DefaultTab content={data.receipt.errors} />)
+    }
+    return tabs
+  }
 
   // Fetch data
   useEffect(() => {
     if (!dataService) return
 
-    let receivedData: TransactionObjWithHash
+    let receivedData: TransactionDetails
     const getData = async () => {
       try {
         receivedData = await dataService.getTransactionDetails(txnHash)
         if (receivedData) {
           setData(receivedData)
-          setDefaultTab(receivedData)
         }
       } catch (e) {
         console.log(e)
@@ -58,7 +85,7 @@ const TxnDetailsPage: React.FC = () => {
     }
 
     getData()
-  }, [dataService, txnHash, setDefaultTab])
+  }, [dataService, txnHash])
 
   return <>
     {data && (
@@ -156,39 +183,7 @@ const TxnDetailsPage: React.FC = () => {
             </Container>
           </Card.Body>
         </Card>
-        {(tab !== '') && (
-          <>
-            <div style={{ marginTop: '2rem' }}>
-              <h4>Additional Info</h4>
-            </div>
-            <Card className='tabs-card'>
-              <Card.Header className='tabs-card-header'>
-                <Tabs id="additional-info-tabs" activeKey={tab} onSelect={(k: string) => setTab(k)}>
-                  {data.receipt.event_logs && <Tab eventKey="eventLog" title={`Event Log (${data.receipt.event_logs.length})`} />}
-                  {data.receipt.transitions && <Tab eventKey="transitions" title={`Transitions (${data.receipt.transitions.length})`} />}
-                  {/* To be removed after SDK typing is updated
-                    // @ts-ignore */}
-                  {data.receipt.exceptions && data.receipt.exceptions.length > 0 && <Tab eventKey="exceptions" title={`Exceptions (${data.receipt.exceptions.length})`} />}
-                  {data.receipt.errors && Object.keys(data.receipt.errors).length > 0 && <Tab eventKey="errors" title={'Errors'} />}
-                </Tabs>
-              </Card.Header>
-              <Card.Body>
-                <Container>
-                  {tab === 'eventLog'
-                    ? <EventLogsTable events={data.receipt.event_logs} />
-                    : tab === 'transitions'
-                      ? <TransitionsTable transitions={data.receipt.transitions} />
-                      : tab === 'errors'
-                        ? <ErrorsDisplay errors={data.receipt.errors} />
-                        : tab === 'exceptions'
-                          ? <ErrorsDisplay errors={data.receipt.exceptions} />
-                          : null
-                  }
-                </Container>
-              </Card.Body>
-            </Card>
-          </>
-        )}
+        <InfoTabs tabs={generateTabsObj()} />
       </>
     )}
   </>

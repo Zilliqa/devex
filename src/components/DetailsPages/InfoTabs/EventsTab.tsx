@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 import { hexAddrToZilAddr } from 'src/utils/Utils'
 import { EventLogEntry, EventParam } from '@zilliqa-js/core/src/types'
 
-const EventLogsTable = ({ events }: { events: EventLogEntry[] }) => {
+const EventsTab = ({ events }: { events: EventLogEntry[] }) => {
 
   const highlightEventParams = useCallback((params: EventParam[]): React.ReactNode => {
     return params
@@ -69,4 +69,4 @@ const EventLogsTable = ({ events }: { events: EventLogEntry[] }) => {
   )
 }
 
-export default EventLogsTable
+export default EventsTab

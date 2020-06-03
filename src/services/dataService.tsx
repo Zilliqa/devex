@@ -24,6 +24,19 @@
   5) getRecentTransactions(): Promise<TxList>
   6) getLatest5PendingTransactions(): Promise<PendingTxnResult[]>
 
+  * Requires Typing *
+  Account-related:
+  1) getBalance(accAddr: string): Promise<any>
+  2) getSmartContracts(accAddr: string): Promise<any>
+
+  * Requires Typing *
+  Contract-related:
+  1) getSmartContractCode(contractAddr: string): Promise<any>
+  2) getContractAddrFromTransaction(txnHash: string): Promise<string>
+  3) getContractData(contractAddr: string): Promise<any>
+
+  Util:
+  1) isContractAddr(addr: string): Promise<boolean>
 */
 
 // Mainnet: https://api.zilliqa.com/
@@ -32,12 +45,12 @@
 
 import { Zilliqa } from '@zilliqa-js/zilliqa'
 import { BlockchainInfo, DsBlockObj, TransactionObj, TxBlockObj, TxList, PendingTxnResult } from '@zilliqa-js/core/src/types'
-import { MappedTxBlock, MappedDSBlockListing, MappedTxBlockListing, TransactionObjWithHash } from 'src/typings/api'
+import { MappedTxBlock, MappedDSBlockListing, MappedTxBlockListing, TransactionDetails, ContractDetails } from 'src/typings/api'
 
 export class DataService {
   zilliqa: any;
 
-  constructor(nodeUrl?: string) {
+  constructor(nodeUrl: string | null) {
     if (nodeUrl)
       this.initDataService(nodeUrl)
     else
@@ -46,10 +59,6 @@ export class DataService {
 
   initDataService(nodeUrl: string): void {
     this.zilliqa = new Zilliqa(nodeUrl)
-  }
-
-  setNodeUrl(nodeUrl: string): void {
-    this.initDataService(nodeUrl)
   }
 
   //================================================================================
@@ -191,12 +200,15 @@ export class DataService {
     return output as TransactionObj[]
   }
 
-  async getTransactionDetails(txnHash: string): Promise<TransactionObjWithHash> {
+  async getTransactionDetails(txnHash: string): Promise<TransactionDetails> {
     console.log("getting transaction details")
     const blockData = await this.zilliqa.blockchain.getTransaction(txnHash.substring(2))
     blockData['hash'] = txnHash
+    const contractAddr = await this.getContractAddrFromTransaction(txnHash.substring(2))
+    if (contractAddr)
+      blockData['contractAddr'] = contractAddr
     console.log(blockData)
-    return blockData as TransactionObjWithHash
+    return blockData as TransactionDetails
   }
 
   async getTransactionsForTxBlock(blockNum: number): Promise<string[]> {
@@ -228,8 +240,68 @@ export class DataService {
     console.log("getting 5 pending tx")
     const response = await this.zilliqa.blockchain.getPendingTxns()
     console.log(response)
-    const output: any[] = response.result.Txns
+    return response.result.Txns as PendingTxnResult[]
+  }
+ 
+  //================================================================================
+  // Account-related
+  //================================================================================
+ 
+  async getBalance(accAddr: string): Promise<any> {
+    console.log('getting balance')
+    const response = await this.zilliqa.blockchain.getBalance(accAddr)
+    console.log(response)
+    return response.result
+  }
 
-    return output as PendingTxnResult[]
+  async getSmartContracts(accAddr: string): Promise<any> {
+    console.log('getting smart contracts for addr')
+    const response = await this.zilliqa.blockchain.getSmartContracts(accAddr)
+    console.log(response)
+    return response.result
+  }
+
+  //================================================================================
+  // Contract-related
+  //================================================================================
+
+  async getSmartContractCode(contractAddr: string): Promise<any> {
+    console.log('getting smart contracts code')
+    const response = await this.zilliqa.blockchain.getSmartContractCode(contractAddr)
+    console.log(response)
+    return response.result
+  }
+
+  async getContractAddrFromTransaction(txnHash: string): Promise<string> {
+    console.log('getting smart contracts code')
+    const response = await this.zilliqa.blockchain.getContractAddressFromTransactionID(txnHash)
+    console.log(response)
+    return response.result
+  }
+
+  async getContractData(contractAddr: string): Promise<ContractDetails> {
+    console.log('getting contract data')
+    const contractCode = async () => await this.zilliqa.blockchain.getSmartContractCode(contractAddr)
+    const contractInit = async () => await this.zilliqa.blockchain.getSmartContractInit(contractAddr)
+    const contractState = async () => await this.zilliqa.blockchain.getSmartContractState(contractAddr)
+    
+    const res = await Promise.all([contractCode(), contractInit(), contractState()])
+    const contractDetails = {code: res[0].result.code, initParams: res[1].result, state: res[2].result}
+    console.log(contractDetails)
+    return contractDetails
+  }
+
+  //================================================================================
+  // Util
+  //================================================================================: string
+  
+  async isContractAddr(addr: string): Promise<boolean> {
+    console.log('check whether is smart contract')
+    const response = await this.zilliqa.blockchain.getSmartContractInit(addr)
+    console.log(response)
+    if (response.result)
+      return true
+    else
+      return false
   }
 }

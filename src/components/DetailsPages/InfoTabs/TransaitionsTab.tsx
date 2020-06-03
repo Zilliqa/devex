@@ -3,7 +3,7 @@ import React from 'react'
 import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
 import { TransitionEntry } from '@zilliqa-js/core/src/types'
 
-const TransitionsTable = ({ transitions }: { transitions: TransitionEntry[] }) => (
+const TransitionsTab = ({ transitions }: { transitions: TransitionEntry[] }) => (
   <>
     {transitions.map((transition: TransitionEntry) => (
       <table className='receipt-table'>
@@ -68,4 +68,4 @@ const TransitionsTable = ({ transitions }: { transitions: TransitionEntry[] }) =
   </>
 )
 
-export default TransitionsTable
+export default TransitionsTab

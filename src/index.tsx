@@ -16,6 +16,7 @@ import './index.css'
 import DSBlockDetailsPage from './components/DetailsPages/DSBlockDetailsPage/DSBlockDetailsPage'
 import TxBlockDetailsPage from './components/DetailsPages/TxBlockDetailsPage/TxBlockDetailsPage'
 import TxnDetailsPage from './components/DetailsPages/TxnDetailsPage/TxnDetailsPage'
+import AddressDetailsPage from './components/DetailsPages/AddressDetailsPage/AddressDetailsPage'
 
 const ScrollToTop = ( { children }: { children: React.ReactNode }) => {
   let history = useHistory()
@@ -45,6 +46,7 @@ ReactDOM.render(
                 <Route path={`/txbk/:blockNum`}><TxBlockDetailsPage/></Route>
               <Route exact path="/tx" component={TxnsPage} />
                 <Route path={`/tx/:txnHash`}><TxnDetailsPage/></Route>
+              <Route path="/address/:addr" component={AddressDetailsPage} />
             </ScrollToTop>
           </React.StrictMode>
         </Layout>

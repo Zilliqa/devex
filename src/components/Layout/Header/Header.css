@@ -6,6 +6,17 @@
   border-bottom: solid 1px slategrey;
 }
 
+.custom-navbar .dropdown-item:active {
+  text-decoration: none;
+  color: black;
+  background: none;
+}
+
+.custom-navbar .dropdown-menu {
+  width: 225px;
+  left: -1.5rem;
+}
+
 .custom-navbar-brand {
   cursor: pointer;
 }
