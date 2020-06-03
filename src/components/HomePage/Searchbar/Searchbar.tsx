@@ -26,6 +26,7 @@ const Searchbar: React.FC = () => {
         history.push(`/dsbk/${input.trim()}`)
         break
       case 'Address':
+        history.push(`/address/${input.trim()}`)
         break
     }
   }

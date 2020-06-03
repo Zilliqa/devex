@@ -11,10 +11,7 @@ import './PendTxnList.css'
 /*
     Display first 5 Pending Txns
     - Hash
-    - From address
-    - To address
-    - Amount
-    - Age
+    - Status
 */
 const statusMap = new Map()
 statusMap.set(0, 'Txn not pending')

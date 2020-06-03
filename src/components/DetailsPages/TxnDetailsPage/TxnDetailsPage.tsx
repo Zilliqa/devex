@@ -106,15 +106,19 @@ const TxnDetailsPage: React.FC = () => {
                 <Col>
                   <div className='txn-detail'>
                     <span className='txn-detail-header'>From:</span>
+                    <span>
                     {/* To be removed after SDK typing is updated
                         // @ts-ignore */}
-                    <span>{hexAddrToZilAddr(data.senderAddress)}</span>
+                      <Link to={`/address/${hexAddrToZilAddr(data.senderAddress)}`}>{hexAddrToZilAddr(data.senderAddress)}</Link>
+                    </span>
                   </div>
                 </Col>
                 <Col>
                   <div className='txn-detail'>
                     <span className='txn-detail-header'>To:</span>
-                    <span>{hexAddrToZilAddr(data.toAddr)}</span>
+                    <span>
+                      <Link to={`/address/${hexAddrToZilAddr(data.toAddr)}`}>{hexAddrToZilAddr(data.toAddr)}</Link>
+                    </span>
                   </div>
                 </Col>
               </Row>

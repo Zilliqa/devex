@@ -12,6 +12,7 @@ import InfoTabs from 'src/components/DetailsPages/InfoTabs/InfoTabs'
 import DefaultTab from 'src/components/DetailsPages/InfoTabs/DefaultTab'
 import CodeTab from 'src/components/DetailsPages/InfoTabs/CodeTab'
 
+import { qaToZil } from 'src/utils/Utils'
 type IProps = {
   addr: string,
 }
@@ -89,7 +90,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
                 <Col>
                 <div className='txblock-detail'>
                   <span className='txblock-detail-header'>Balance:</span>
-                  <span>{contractData.state['_balance']}</span>
+                  <span>{qaToZil(contractData.state['_balance'])}</span>
                 </div>
               </Col>
             </Row>

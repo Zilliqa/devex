@@ -47,7 +47,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
       <>
       <div className='txblock-header'>
         <h3>
-          Address
+          Account
         </h3>
       </div>
       <div style={{ display: 'flex' }}>

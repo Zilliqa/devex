@@ -35,5 +35,5 @@ export const timestampToTimeago = (timestamp: string | number) => {
 // Convert from Qa to Zil
 export const qaToZil = (amount: string | number) => {
   // @ts-ignore
-  return units.fromQa(new BN(amount), units.Units.Zil) + ' ZIL'
+  return units.fromQa(new BN(amount), units.Units.Zil).replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",") + ' ZIL'
 }
