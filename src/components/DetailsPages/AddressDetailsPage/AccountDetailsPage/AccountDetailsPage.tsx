@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom'
 import { Card, Container, Row, Col } from 'react-bootstrap'
 
 import { NetworkContext } from 'src/services/networkProvider'
+import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
 
-import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
+import '../AddressDetailsPage.css'
 
 type IProps = {
   addr: string,
@@ -45,56 +46,58 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
   return <>
     {accData && (
       <>
-      <div className='txblock-header'>
-        <h3>
-          Account
+        <div className='address-header'>
+          <h3>
+            Account
         </h3>
-      </div>
-      <div style={{ display: 'flex' }}>
-        <h6 className='txblock-hash'>{addrRef.current}</h6>
-        <div onClick={() => {
-          navigator.clipboard.writeText(addrRef.current)
-        }} className='txblock-hash-copy-btn'>
-          <FontAwesomeIcon icon={faCopy} />
         </div>
-      </div>
-      <Card className='txblock-details-card'>
-        <Card.Body>
-          <Container>
-            <Row>
-              <Col>
-                <div className='txblock-detail'>
-                  <span className='txblock-detail-header'>Balance:</span>
-                  <span>{qaToZil(accData.balance)}</span>
-                </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <div className='txblock-detail'>
-                  <span className='txblock-detail-header'>Nonce:</span>
-                  <span>{accData.nonce}</span>
-                </div>
-              </Col>
-            </Row>
-          </Container>
-        </Card.Body>
-      </Card>
-      {accContracts && accContracts.length > 0 && (
-        <>
-          <h4>Deployed Contracts</h4>
-          <Card className='txblock-details-card'>
-            <Card.Body>
-              {accContracts.map((contract: any, index: number) => {
-                return <div style={{ padding: '0.25rem 0' }}>
-                  {`${index + 1}) `}
-                  {<Link to={`/address/${hexAddrToZilAddr(contract.address)}`}>{hexAddrToZilAddr(contract.address)}</Link>}
-                </div>
-              })}
-            </Card.Body>
-          </Card>
-        </>
-      )}
+        <div style={{ display: 'flex' }}>
+          <h6 className='address-hash'>{addrRef.current}</h6>
+          <div onClick={() => {
+            navigator.clipboard.writeText(addrRef.current)
+          }} className='address-hash-copy-btn'>
+            <FontAwesomeIcon icon={faCopy} />
+          </div>
+        </div>
+        <Card className='address-details-card'>
+          <Card.Body>
+            <Container>
+              <Row>
+                <Col>
+                  <div className='address-detail'>
+                    <span className='address-detail-header'>Balance:</span>
+                    <span>{qaToZil(accData.balance)}</span>
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <div className='address-detail'>
+                    <span className='address-detail-header'>Nonce:</span>
+                    <span>{accData.nonce}</span>
+                  </div>
+                </Col>
+              </Row>
+            </Container>
+          </Card.Body>
+        </Card>
+        {accContracts && accContracts.length > 0 && (
+          <>
+            <h4>Deployed Contracts</h4>
+            <Card className='address-details-card'>
+              <Card.Body>
+                {accContracts.map((contract: any, index: number) => {
+                  return <div style={{ padding: '0.25rem 0' }}>
+                    {`${index + 1}) `}
+                    {<Link to={`/address/${hexAddrToZilAddr(contract.address)}`}>
+                      {hexAddrToZilAddr(contract.address)}
+                    </Link>}
+                  </div>
+                })}
+              </Card.Body>
+            </Card>
+          </>
+        )}
       </>
     )}
   </>

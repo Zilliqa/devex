@@ -1,10 +1,9 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 
-import { NetworkContext } from 'src/services/networkProvider'
-
 import AccountDetailsPage from './AccountDetailsPage/AccountDetailsPage'
 import ContractDetailsPage from './ContractDetailsPage/ContractDetailsPage'
+import { NetworkContext } from 'src/services/networkProvider'
 
 const AddressDetailsPage: React.FC = () => {
 
@@ -33,12 +32,12 @@ const AddressDetailsPage: React.FC = () => {
   return <>
     {
       isContract !== null
-      ? isContract
-        ? <ContractDetailsPage addr={addr} />
-        : <AccountDetailsPage addr={addr} />
-      : null
+        ? isContract
+          ? <ContractDetailsPage addr={addr} />
+          : <AccountDetailsPage addr={addr} />
+        : null
     }
-    </>
+  </>
 }
 
 export default AddressDetailsPage

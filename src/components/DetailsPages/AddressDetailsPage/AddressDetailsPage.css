@@ -1,0 +1,35 @@
+/* Header */
+
+.address-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.address-hash {
+  color: grey;
+  margin-right: 10px;
+}
+
+.address-hash-copy-btn {
+  cursor: pointer;
+}
+
+/* Card */
+
+.address-details-card {
+  width: 100%;
+  margin: 1rem 0;
+  white-space: nowrap;
+}
+
+.address-detail {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgb(232, 234, 237);
+}
+
+.address-detail-header {
+  font-weight: 500;
+}

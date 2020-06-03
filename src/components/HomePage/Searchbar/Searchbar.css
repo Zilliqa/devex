@@ -7,6 +7,12 @@
   box-shadow: none !important;
 }
 
+.searchbar-ig .dropdown-item:active {
+  text-decoration: none;
+  color: black;
+  background: none;
+}
+
 .searchbar-ig {
   margin-bottom: 0.5rem;
 }

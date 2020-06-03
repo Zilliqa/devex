@@ -2,17 +2,18 @@ import React, { useContext, useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Container, Row, Col } from 'react-bootstrap'
 
-import { NetworkContext } from 'src/services/networkProvider'
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCopy } from '@fortawesome/free-regular-svg-icons'
-import { ContractDetails } from 'src/typings/api'
-
 import InfoTabs from 'src/components/DetailsPages/InfoTabs/InfoTabs'
 import DefaultTab from 'src/components/DetailsPages/InfoTabs/DefaultTab'
 import CodeTab from 'src/components/DetailsPages/InfoTabs/CodeTab'
-
+import { NetworkContext } from 'src/services/networkProvider'
+import { ContractDetails } from 'src/typings/api'
 import { qaToZil } from 'src/utils/Utils'
+
+import { faCopy } from '@fortawesome/free-regular-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import '../AddressDetailsPage.css'
+
 type IProps = {
   addr: string,
 }
@@ -70,45 +71,47 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
   return <>
     {contractData && (
       <>
-      <div className='txblock-header'>
-        <h3>
-          Contract
+        <div className='address-header'>
+          <h3>
+            Contract
         </h3>
-      </div>
-      <div style={{ display: 'flex' }}>
-        <h6 className='txblock-hash'>{addrRef.current}</h6>
-        <div onClick={() => {
-          navigator.clipboard.writeText(addrRef.current)
-        }} className='txblock-hash-copy-btn'>
-          <FontAwesomeIcon icon={faCopy} />
         </div>
-      </div>
-      <Card className='txblock-details-card'>
-        <Card.Body>
-          <Container>
-            <Row>
+        <div style={{ display: 'flex' }}>
+          <h6 className='address-hash'>{addrRef.current}</h6>
+          <div onClick={() => {
+            navigator.clipboard.writeText(addrRef.current)
+          }} className='address-hash-copy-btn'>
+            <FontAwesomeIcon icon={faCopy} />
+          </div>
+        </div>
+        <Card className='address-details-card'>
+          <Card.Body>
+            <Container>
+              <Row>
                 <Col>
-                <div className='txblock-detail'>
-                  <span className='txblock-detail-header'>Balance:</span>
-                  <span>{qaToZil(contractData.state['_balance'])}</span>
-                </div>
-              </Col>
-            </Row>
-            <Row>
-            <Col>
-              <div className='txblock-detail'>
-                <span className='txblock-detail-header'>Created:</span>
-                <span>
-                {'Block '}
-                <Link to={`/txbk/${contractData.initParams.filter(x=>x.vname==='_creation_block')[0].value}`}>{contractData.initParams.filter(x=>x.vname==='_creation_block')[0].value}</Link>
-                </span>
-              </div>
-            </Col>
-            </Row>
-          </Container>
-        </Card.Body>
-      </Card>
-      <InfoTabs tabs={generateTabsObj()} />
+                  <div className='address-detail'>
+                    <span className='address-detail-header'>Balance:</span>
+                    <span>{qaToZil(contractData.state['_balance'])}</span>
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <div className='address-detail'>
+                    <span className='address-detail-header'>Created:</span>
+                    <span>
+                      {'Block '}
+                      <Link to={`/txbk/${contractData.initParams.filter(x => x.vname === '_creation_block')[0].value}`}>
+                        {contractData.initParams.filter(x => x.vname === '_creation_block')[0].value}
+                      </Link>
+                    </span>
+                  </div>
+                </Col>
+              </Row>
+            </Container>
+          </Card.Body>
+        </Card>
+        <InfoTabs tabs={generateTabsObj()} />
       </>
     )}
   </>

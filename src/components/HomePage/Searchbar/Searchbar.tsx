@@ -37,9 +37,9 @@ const Searchbar: React.FC = () => {
         <InputGroup.Prepend>
           <DropdownButton variant="outline-secondary" id='searchbar-dropdown' title={searchType}>
             <Dropdown.Item onClick={() => setSearchType('Transaction')}>Transaction</Dropdown.Item>
+            <Dropdown.Item onClick={() => setSearchType('Address')}>Address</Dropdown.Item>
             <Dropdown.Item onClick={() => setSearchType('Tx Block')}>Tx Block</Dropdown.Item>
             <Dropdown.Item onClick={() => setSearchType('DS Block')}>DS Block</Dropdown.Item>
-            <Dropdown.Item onClick={() => setSearchType('Address')}>Address</Dropdown.Item>
           </DropdownButton>
         </InputGroup.Prepend>
         <Form.Control type="text" value={input} autoFocus
