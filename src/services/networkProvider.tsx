@@ -12,25 +12,27 @@ type NetworkState = {
   setNodeUrl: (nodeUrl: string) => void
 }
 
+export const defaultNetworks: {[key: string]: string} = {
+  'https://api.zilliqa.com/': 'Mainnet',
+  'https://dev-api.zilliqa.com/': 'Testnet',
+  'https://zilliqa-isolated-server.zilliqa.com/': 'Simulated Env'
+}
+
 export const NetworkContext = React.createContext<NetworkState | null>(null)
 
 export const NetworkProvider: React.FC = (props) => {
   let history = useHistory()
   const dataService = new DataService(localStorage.getItem('nodeUrl'))
-  const [nodeUrlMap, setNodeUrlMap] = useState<{ [key: string]: string }>(
-    localStorage.getItem('nodeUrlMap') ? JSON.parse(localStorage.getItem('nodeUrlMap')!)
-      : ({
-        'https://api.zilliqa.com/': 'Mainnet',
-        'https://dev-api.zilliqa.com/': 'Testnet',
-        'https://zilliqa-isolated-server.zilliqa.com/': 'Simulated Env'
-      })
-  )
 
   const [state, setState] = useState<NetworkState>({
     connStatus: false,
     dataService: dataService,
-    nodeUrlMap: nodeUrlMap,
-    setNodeUrlMap: setNodeUrlMap,
+    nodeUrlMap: localStorage.getItem('nodeUrlMap')
+      ? JSON.parse(localStorage.getItem('nodeUrlMap')!)
+      : {},
+    setNodeUrlMap: (newNodeUrlMap: { [key: string]: string }) => {
+      setState({ ...state, nodeUrlMap: newNodeUrlMap })
+    },
     nodeUrl: localStorage.getItem('nodeUrl') || 'https://api.zilliqa.com/',
     setNodeUrl: (newNodeUrl: string) => {
       setState({ ...state, dataService: new DataService(newNodeUrl), nodeUrl: newNodeUrl })
@@ -39,16 +41,20 @@ export const NetworkProvider: React.FC = (props) => {
 
   useEffect(() => {
     localStorage.setItem('nodeUrl', state.nodeUrl);
-  }, [state.nodeUrl]);
+  }, [state.nodeUrl])
 
   useEffect(() => {
-    localStorage.setItem('nodeUrlMap', JSON.stringify(nodeUrlMap));
-  }, [nodeUrlMap]);
+    localStorage.setItem('nodeUrlMap', JSON.stringify(state.nodeUrlMap));
+    // Needed for deep compare of nodeUrlMap
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(state.nodeUrlMap)])
 
-  // Redirect to home page of dataservice change
+  // Redirect to home page if dataservice change
   useEffect(() => {
     return () => history.push('/')
-  }, [state.dataService, history])
+    // Effect is independent of history
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.dataService])
 
   return <NetworkContext.Provider value={state}>
     {props.children}

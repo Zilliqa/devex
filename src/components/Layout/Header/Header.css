@@ -12,6 +12,40 @@
   background: none;
 }
 
+.info-icon {
+  align-self: center;
+  opacity: 60%;
+}
+
+.node-div {
+  height: 32px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.node-item {
+  padding:'0.25rem 0.9rem 0.25rem 1.5rem';
+}
+
+.minus-icon-item {
+  align-self: center;
+  width: 2rem;
+  margin: 0 0.5rem;
+  padding: 0.5rem
+}
+
+.add-node-div {
+  display: flex;
+  margin-top: 1rem;
+  padding-left: 1rem;
+}
+
+.plus-icon-item {
+  width: 2rem;
+  margin: 0 0.5rem;
+  padding: 0.5rem;
+}
+
 .custom-navbar .dropdown-menu {
   width: 225px;
   left: -1.5rem;
