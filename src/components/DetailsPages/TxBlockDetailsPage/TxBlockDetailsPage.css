@@ -1,0 +1,44 @@
+/* Header */
+
+.txblock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.txblock-header-blocknum {
+  font-weight: 350;
+  color: rgb(93, 106, 133)
+}
+
+.txblock-header a {
+  color: darkslategray;
+}
+
+.txblock-hash {
+  color: grey;
+  margin-right: 10px;
+}
+
+.txblock-hash-copy-btn {
+  cursor: pointer;
+}
+
+/* Card */
+
+.txblock-details-card {
+  width: 100%;
+  margin: 1rem 0;
+  white-space: nowrap;
+}
+
+.txblock-detail {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgb(232, 234, 237);
+}
+
+.txblock-detail-header {
+  font-weight: 500;
+}

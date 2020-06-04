@@ -1,0 +1,81 @@
+/* Header */
+.txn-hash {
+  color: grey;
+  margin-right: 10px;
+}
+
+.txn-hash-copy-btn {
+  cursor: pointer;
+}
+
+/* Card */
+.txn-details-card {
+  width: 100%;
+  margin: 1rem 0;
+  white-space: nowrap;
+}
+
+.txn-detail {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgb(232, 234, 237);
+}
+
+.txn-detail-header {
+  font-weight: 500;
+}
+
+/* Tabs */
+.tabs-card {
+  min-height: 300px;
+  margin: 1rem 0;
+}
+
+.tabs-card-header {
+  background: none;
+}
+
+.tabs-card-header .nav {
+  font-weight: 500;
+  margin: -0.25rem -0.625rem -0.825rem;;
+}
+
+.tabs-card-header a {
+  outline: none;
+  color: #495057; 
+}
+
+.tabs-card-header a:hover {
+  color: rgb(0, 198, 195); 
+  border-bottom-color: transparent !important;
+}
+
+.tabs-card-header .nav-tabs .nav-link.active {
+  color: rgb(0, 198, 195); 
+  border-bottom-color: rgb(0, 198, 195) !important;
+}
+
+.tabs-card-header .nav-tabs, .tabs-card-header .nav-link {
+  border: 0;
+  border-bottom: 2px solid transparent;
+}
+
+.receipt-table {
+  border-collapse: separate;
+  border-spacing: 0 4px;
+  width: 100%;
+}
+
+.receipt-table th {
+  width: 150px;
+  max-width: 150px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-weight: 500;
+}
+
+.receipt-table td {
+  vertical-align: top;
+}

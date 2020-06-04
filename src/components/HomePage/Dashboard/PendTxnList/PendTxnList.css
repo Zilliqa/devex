@@ -1,0 +1,20 @@
+.pendtxlist-card {
+  height: 100%;
+  width: 100%;
+}
+
+.pendtxlist-card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.pendtxlist-table {
+  max-height: 210px;
+  overflow: hidden auto;
+}
+
+.pendtxlist-status-div {
+  margin: auto;
+  border-bottom: 1.5px dotted black;
+  width: 30%;
+}

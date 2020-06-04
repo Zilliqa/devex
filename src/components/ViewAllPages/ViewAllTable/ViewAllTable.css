@@ -1,0 +1,83 @@
+.viewall-table {
+  min-height: 500px;
+}
+
+.viewall-table table {
+  width: 100%;
+  table-layout: fixed !important;
+}
+
+.viewall-table thead {
+  border-top: 2px solid #dee2e6;
+}
+
+.viewall-table tbody {
+  border-bottom: 2px solid #dee2e6;
+}
+
+.viewall-table .spinner {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+}
+
+.viewall-pagination {
+  justify-content: flex-end;
+}
+
+.viewall-pagination .page-item:focus {
+  outline: none;
+}
+
+.viewall-pagination .page-item.active .page-link {
+  background-color: #019c99;
+  border-color: #019c99;
+}
+
+.viewall-pagination .page-link {
+  color: #019c99;
+}
+
+.viewall-pagination .page-link:focus {
+  box-shadow: none;
+}
+
+.viewall-table td {
+  padding: 0.6rem 0.25rem 0.6rem 0.8rem;
+}
+
+.viewall-table [role=cell] {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Hardcoded Widths (May require tweaks) */
+
+.viewall-table #height-col {
+  width: 85px;
+}
+
+.viewall-table #difficulty-col {
+  width: 90px;
+}
+
+.viewall-table #ds-difficulty-col {
+  width: 120px;
+}
+
+.viewall-table #age-col {
+  width: 150px;
+}
+
+.viewall-table #amount-col {
+  width: 200px;
+}
+
+.viewall-table #numTxns-col {
+  width: 110px;
+}
+
+.viewall-table #reward-col {
+  width: 130px;
+}

@@ -1,0 +1,10 @@
+.not-found-card {
+  height: calc(100vh - 230px);
+}
+
+.not-found-card .card-body {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

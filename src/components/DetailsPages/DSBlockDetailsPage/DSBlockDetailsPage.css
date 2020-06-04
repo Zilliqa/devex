@@ -1,0 +1,33 @@
+/* Header */
+.dsblock-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dsblock-header-blocknum {
+  font-weight: 350;
+  color: rgb(93, 106, 133)
+}
+
+.dsblock-header a {
+  color: darkslategray;
+}
+
+/* Card */
+.dsblock-details-card {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.dsblock-detail {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgb(232, 234, 237);
+}
+
+.dsblock-detail-header {
+  padding-right: 1rem;
+  font-weight: 500;
+}

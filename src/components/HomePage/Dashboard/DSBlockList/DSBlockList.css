@@ -1,0 +1,9 @@
+.dsblock-card {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.dsblock-card-header {
+  display: flex;
+  justify-content: space-between;
+}
