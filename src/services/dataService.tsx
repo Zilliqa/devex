@@ -12,17 +12,18 @@
 
   TxBlocks-related:
   1) getNumTxBlocks(): Promise<number>
-  2) getTxBlockDetails(blockNum: number): Promise<MappedTxBlock>
+  2) getTxBlockDetails(blockNum: number): Promise<MappedTxBlock | null>
   3) getLatest5TxBlocks(): Promise<TxBlockObj[]>
   4) getTxBlocksListing(pageNum: number): Promise<MappedTxBlockListing>
   
   Transactions-related:
-  1) getTransactionDetails(txnHash: string): Promise<TransactionObj>
-  2) getLatest5ValidatedTransactions(): Promise<TransactionObj[]>
-  3) getTransactionDetails(txnHash: string): Promise<TransactionObj>
+  1) getLatest5ValidatedTransactions(): Promise<TransactionObj[]>
+  2) getTransactionOwner(txnHash: string): Promise<string>
+  3) getTransactionDetails(txnHash: string): Promise<TransactionDetails>
   4) getTransactionsForTxBlock(blockNum: number): Promise<string[]>
-  5) getRecentTransactions(): Promise<TxList>
-  6) getLatest5PendingTransactions(): Promise<PendingTxnResult[]>
+  5) getTransactionsDetails(txnHashes: string[]): Promise<TransactionObj[]>
+  6) getRecentTransactions(): Promise<TxList>
+  7) getLatest5PendingTransactions(): Promise<PendingTxnResult[]>
 
   Account-related:
   1) getAccData(accAddr: string): Promise<AccData>
@@ -30,10 +31,12 @@
 
   Contract-related:
   1) getContractAddrFromTransaction(txnHash: string): Promise<string>
-  2) getContractData(contractAddr: string): Promise<ContractDetails>
-
+  2) getTxnIdFromContractData(contractData: ContractData): Promise<string | null>
+  3) getContractData(contractAddr: string): Promise<ContractData>
+    
   Util:
-  1) isContractAddr(addr: string): Promise<boolean>
+  1) isIsolatedServer(): Promise<boolean>
+  2) isContractAddr(addr: string): Promise<boolean>
 
   Isolated Server-related:
   1) getISInfo(): Promise<any>
@@ -47,7 +50,9 @@
 
 import { Zilliqa } from '@zilliqa-js/zilliqa'
 import { BlockchainInfo, DsBlockObj, TransactionObj, TxBlockObj, TxList, PendingTxnResult } from '@zilliqa-js/core/src/types'
-import { MappedTxBlock, MappedDSBlockListing, MappedTxBlockListing, TransactionDetails, ContractDetails, AccData, AccContracts } from 'src/typings/api'
+import { MappedTxBlock, MappedDSBlockListing, MappedTxBlockListing, TransactionDetails, ContractData, AccData, AccContracts } from 'src/typings/api'
+
+import { hexAddrToZilAddr } from 'src/utils/Utils'
 
 export class DataService {
   zilliqa: any;
@@ -144,13 +149,15 @@ export class DataService {
     return parseInt(response.result)
   }
 
-  async getTxBlockDetails(blockNum: number): Promise<MappedTxBlock> {
+  async getTxBlockDetails(blockNum: number): Promise<MappedTxBlock | null> {
     console.log("getting tx block details")
     const blockData = await this.zilliqa.blockchain.getTxBlock(blockNum)
+    if (!blockData.result)
+      return null
     const transactionData = await this.getTransactionsForTxBlock(blockNum)
     blockData.result['txnHashes'] = transactionData
     console.log(blockData.result)
-    if (blockData.result.header.BlockNum !== blockNum)
+    if (parseInt(blockData.result.header.BlockNum) !== blockNum)
       throw new Error('Invalid Tx Block Number')
     return blockData.result as MappedTxBlock
   }
@@ -208,6 +215,12 @@ export class DataService {
       return { ...txn, hash: txnHash }
     }))
     return output as TransactionObj[]
+  }
+
+  async getTransactionOwner(txnHash: string): Promise<string> {
+    const blockData: TransactionObj = await this.zilliqa.blockchain.getTransaction(txnHash.substring(2))
+    // @ts-ignore
+    return hexAddrToZilAddr(blockData.senderAddress)
   }
 
   async getTransactionDetails(txnHash: string): Promise<TransactionDetails> {
@@ -276,22 +289,36 @@ export class DataService {
   //================================================================================
 
   async getContractAddrFromTransaction(txnHash: string): Promise<string> {
-    console.log('getting smart contracts code')
+    console.log('getting smart contracts addr')
     const response = await this.zilliqa.blockchain.getContractAddressFromTransactionID(txnHash)
     console.log(response)
     return response.result
   }
 
-  async getContractData(contractAddr: string): Promise<ContractDetails> {
+  async getTxnIdFromContractData(contractData: ContractData): Promise<string | null> {
+    console.log('getting transaction id from contract data')
+    const creationBlockData: MappedTxBlock | null = await this.getTxBlockDetails(
+      parseInt(contractData.initParams.filter(x => x.vname === '_creation_block')[0].value))
+    if (!creationBlockData)
+      return null
+    const contractAddrs = await Promise.all(creationBlockData.txnHashes.map(async (txnHash: string) => {
+      const contractAddr = await this.getContractAddrFromTransaction(txnHash)
+      return '0x' + contractAddr
+    }))
+    return '0x' + creationBlockData.txnHashes[contractAddrs.indexOf(
+      contractData.initParams.filter(x => x.vname === '_this_address')[0].value)]
+  }
+
+  async getContractData(contractAddr: string): Promise<ContractData> {
     console.log('getting contract data')
     const contractCode = async () => await this.zilliqa.blockchain.getSmartContractCode(contractAddr)
     const contractInit = async () => await this.zilliqa.blockchain.getSmartContractInit(contractAddr)
     const contractState = async () => await this.zilliqa.blockchain.getSmartContractState(contractAddr)
     
     const res = await Promise.all([contractCode(), contractInit(), contractState()])
-    const contractDetails = {code: res[0].result.code, initParams: res[1].result, state: res[2].result}
-    console.log(contractDetails)
-    return contractDetails
+    const contractData = {code: res[0].result.code, initParams: res[1].result, state: res[2].result}
+    console.log(contractData)
+    return contractData
   }
 
   //================================================================================

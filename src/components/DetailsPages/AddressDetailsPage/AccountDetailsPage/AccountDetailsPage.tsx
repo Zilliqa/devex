@@ -10,7 +10,7 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faWallet } from '@fortawesome/free-solid-svg-icons'
 
 import '../AddressDetailsPage.css'
-import { AccData, AccContracts } from 'src/typings/api'
+import { AccData, AccContracts, AccContract } from 'src/typings/api'
 
 type IProps = {
   addr: string,
@@ -96,7 +96,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
             <h4>Deployed Contracts</h4>
             <Card className='address-details-card'>
               <Card.Body>
-                {accContracts.map((contract: any, index: number) => {
+                {accContracts.map((contract: AccContract, index: number) => {
                   return <div key={index} style={{ padding: '0.25rem 0' }}>
                     {`${index + 1}) `}
                     {<Link to={`/address/${hexAddrToZilAddr(contract.address)}`}>

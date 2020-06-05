@@ -51,7 +51,9 @@ const IsolatedServerPage: React.FC = () => {
       }
     }
     getData()
-  }, [dataService])
+    // Run only once
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return <>
     {data && (

@@ -6,7 +6,7 @@ import InfoTabs from 'src/components/DetailsPages/InfoTabs/InfoTabs'
 import DefaultTab from 'src/components/DetailsPages/InfoTabs/DefaultTab'
 import CodeTab from 'src/components/DetailsPages/InfoTabs/CodeTab'
 import { NetworkContext } from 'src/services/networkProvider'
-import { ContractDetails } from 'src/typings/api'
+import { ContractData } from 'src/typings/api'
 import { qaToZil } from 'src/utils/Utils'
 
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
@@ -25,18 +25,32 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
   const { dataService } = networkContext!
 
   const addrRef = useRef(addr)
-  const [contractData, setContractData] = useState<ContractDetails | null>(null)
+  const [contractData, setContractData] = useState<ContractData | null>(null)
+  const [creationTxnHash, setCreationTxnHash] = useState<string | null>(null)
+  const [owner, setOwner] = useState<string | null>(null)
 
   // Fetch data
   useEffect(() => {
     if (!dataService) return
 
-    let receivedData: any
+    let contractData: ContractData
+    let creationTxnHash: string | null
+    let owner: string
     const getData = async () => {
       try {
-        receivedData = await dataService.getContractData(addrRef.current)
-        if (receivedData)
-          setContractData(receivedData)
+        contractData = await dataService.getContractData(addrRef.current)
+        creationTxnHash = await dataService.getTxnIdFromContractData(contractData)
+        if (!creationTxnHash) {
+          setContractData(contractData)
+          return
+        }
+        owner = await dataService.getTransactionOwner(creationTxnHash)
+        if (contractData)
+          setContractData(contractData)
+        if (creationTxnHash)
+          setCreationTxnHash(creationTxnHash)
+        if (owner)
+          setOwner(owner)
       } catch (e) {
         console.log(e)
       }
@@ -103,19 +117,26 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
                   </div>
                 </Col>
               </Row>
+              {creationTxnHash && <>
               <Row>
                 <Col>
-                  <div className='address-detail'>
-                    <span className='address-detail-header'>Created:</span>
-                    <span>
-                      {'Block '}
-                      <Link to={`/txbk/${contractData.initParams.filter(x => x.vname === '_creation_block')[0].value}`}>
-                        {contractData.initParams.filter(x => x.vname === '_creation_block')[0].value}
+                  <div className='address-detail' style={{ justifyContent: 'start' }}>
+                    <span className='address-detail-header' style={{ marginRight:'auto' }}>Contract Creation:</span>
+                    <span style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <Link to={`/address/${owner}`}>
+                        {owner}
+                      </Link>
+                    </span>
+                    <span>{'at'}</span>
+                    <span style={{ paddingLeft:'0.5rem', maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <Link to={`/tx/${creationTxnHash}`}>
+                        {creationTxnHash}
                       </Link>
                     </span>
                   </div>
                 </Col>
               </Row>
+              </>}
             </Container>
           </Card.Body>
         </Card>

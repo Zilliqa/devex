@@ -44,11 +44,10 @@ const TxBlockDetailsPage: React.FC = () => {
     if (!dataService) return
 
     let latestTxBlockNum: number
-    let receivedData: MappedTxBlock
+    let receivedData: MappedTxBlock | null
     const getData = async () => {
       try {
-        receivedData = await dataService.getTxBlockDetails(blockNum)
-        console.log(receivedData)
+        receivedData = await dataService.getTxBlockDetails(parseInt(blockNum))
         if (receivedData)
           setData(receivedData)
         latestTxBlockNum = await dataService.getNumTxBlocks()

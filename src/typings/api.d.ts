@@ -25,7 +25,7 @@ export interface InitParam {
   vname: string;
 }
 
-export interface ContractDetails {
+export interface ContractData {
   code: string;
   initParams: InitParam[];
   state: any;
