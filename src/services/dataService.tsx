@@ -24,16 +24,13 @@
   5) getRecentTransactions(): Promise<TxList>
   6) getLatest5PendingTransactions(): Promise<PendingTxnResult[]>
 
-  * Requires Typing *
   Account-related:
-  1) getBalance(accAddr: string): Promise<any>
-  2) getSmartContracts(accAddr: string): Promise<any>
+  1) getAccData(accAddr: string): Promise<AccData>
+  2) getAccContracts(accAddr: string): Promise<AccContracts>
 
-  * Requires Typing *
   Contract-related:
-  1) getSmartContractCode(contractAddr: string): Promise<any>
-  2) getContractAddrFromTransaction(txnHash: string): Promise<string>
-  3) getContractData(contractAddr: string): Promise<any>
+  1) getContractAddrFromTransaction(txnHash: string): Promise<string>
+  2) getContractData(contractAddr: string): Promise<ContractDetails>
 
   Util:
   1) isContractAddr(addr: string): Promise<boolean>
@@ -46,10 +43,11 @@
 // Mainnet: https://api.zilliqa.com/
 // Testnet: https://dev-api.zilliqa.com/
 // Isolated Server: https://zilliqa-isolated-server.zilliqa.com/
+// Staging Isolated Server: https://stg-zilliqa-isolated-server.zilliqa.com/
 
 import { Zilliqa } from '@zilliqa-js/zilliqa'
 import { BlockchainInfo, DsBlockObj, TransactionObj, TxBlockObj, TxList, PendingTxnResult } from '@zilliqa-js/core/src/types'
-import { MappedTxBlock, MappedDSBlockListing, MappedTxBlockListing, TransactionDetails, ContractDetails } from 'src/typings/api'
+import { MappedTxBlock, MappedDSBlockListing, MappedTxBlockListing, TransactionDetails, ContractDetails, AccData, AccContracts } from 'src/typings/api'
 
 export class DataService {
   zilliqa: any;
@@ -259,14 +257,14 @@ export class DataService {
   // Account-related
   //================================================================================
  
-  async getBalance(accAddr: string): Promise<any> {
+  async getAccData(accAddr: string): Promise<AccData> {
     console.log('getting balance')
     const response = await this.zilliqa.blockchain.getBalance(accAddr)
     console.log(response)
     return response.result
   }
 
-  async getSmartContracts(accAddr: string): Promise<any> {
+  async getAccContracts(accAddr: string): Promise<AccContracts> {
     console.log('getting smart contracts for addr')
     const response = await this.zilliqa.blockchain.getSmartContracts(accAddr)
     console.log(response)
@@ -276,13 +274,6 @@ export class DataService {
   //================================================================================
   // Contract-related
   //================================================================================
-
-  async getSmartContractCode(contractAddr: string): Promise<any> {
-    console.log('getting smart contracts code')
-    const response = await this.zilliqa.blockchain.getSmartContractCode(contractAddr)
-    console.log(response)
-    return response.result
-  }
 
   async getContractAddrFromTransaction(txnHash: string): Promise<string> {
     console.log('getting smart contracts code')
@@ -338,28 +329,28 @@ export class DataService {
   async getISInfo(): Promise<any> {
     console.log('getting isolated server info')
 
-    // const getBlockNum = async () => {
-    //   const response = await fetch(this.nodeUrl, {
-    //     method: 'POST', 
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({
-    //       "id": "1",
-    //       "jsonrpc": "2.0",
-    //       "method": "GetBlocknum",
-    //       "params": [""]
-    //     })
-    //   });
-    //   return response.json()
-    // }
+    const getBlockNum = async () => {
+      const response = await fetch(this.nodeUrl, {
+        method: 'POST', 
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          "id": "1",
+          "jsonrpc": "2.0",
+          "method": "GetBlocknum",
+          "params": [""]
+        })
+      });
+      return response.json()
+    }
 
-    const minGasPrice = async () => await this.zilliqa.blockchain.getMinimumGasPrice()
+    const getMinGasPrice = async () => await this.zilliqa.blockchain.getMinimumGasPrice()
     
-    const res: any = await Promise.all([minGasPrice()])
+    const res: any = await Promise.all([getBlockNum(), getMinGasPrice()])
     console.log(res)
     const output = {
-      minGasPrice: res[0].result
+      minGasPrice: res[1].result
     }
     console.log(output)
     return output

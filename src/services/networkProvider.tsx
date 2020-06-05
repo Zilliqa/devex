@@ -15,7 +15,8 @@ type NetworkState = {
 export const defaultNetworks: {[key: string]: string} = {
   'https://api.zilliqa.com/': 'Mainnet',
   'https://dev-api.zilliqa.com/': 'Testnet',
-  'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server'
+  'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server',
+  'https://stg-zilliqa-isolated-server.zilliqa.com/': 'Staging Isolated Server'
 }
 
 export const NetworkContext = React.createContext<NetworkState | null>(null)

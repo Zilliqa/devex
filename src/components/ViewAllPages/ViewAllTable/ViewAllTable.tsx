@@ -101,7 +101,7 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
           </BCol>
         </BRow>
         <div className='viewall-table table'>
-        {isLoading ? <div className='spinner'><Spinner animation="border" variant="secondary" /></div> : null}
+          {isLoading ? <div className='spinner'><Spinner animation="border" variant="secondary" /></div> : null}
           <table {...getTableProps()}>
             <thead>
               {headerGroups.map((headerGroup: HeaderGroup<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => (

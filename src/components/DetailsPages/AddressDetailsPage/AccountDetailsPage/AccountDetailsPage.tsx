@@ -10,6 +10,7 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faWallet } from '@fortawesome/free-solid-svg-icons'
 
 import '../AddressDetailsPage.css'
+import { AccData, AccContracts } from 'src/typings/api'
 
 type IProps = {
   addr: string,
@@ -21,22 +22,23 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
   const { dataService } = networkContext!
 
   const addrRef = useRef(addr)
-  const [accData, setAccData] = useState<any>(null)
-  const [accContracts, setAccContracts] = useState<any>(null)
+  const [accData, setAccData] = useState<AccData | null>(null)
+  const [accContracts, setAccContracts] = useState<AccContracts | null>(null)
 
   // Fetch data
   useEffect(() => {
     if (!dataService) return
 
-    let receivedData: any
+    let accData: AccData
+    let accContracts: AccContracts
     const getData = async () => {
       try {
-        receivedData = await dataService.getBalance(addrRef.current)
-        if (receivedData)
-          setAccData(receivedData)
-        receivedData = await dataService.getSmartContracts(addrRef.current)
-        if (receivedData)
-          setAccContracts(receivedData)
+        accData = await dataService.getAccData(addrRef.current)
+        if (accData)
+          setAccData(accData)
+        accContracts = await dataService.getAccContracts(addrRef.current)
+        if (accContracts)
+          setAccContracts(accContracts)
       } catch (e) {
         console.log(e)
       }

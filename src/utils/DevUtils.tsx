@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react'
 
 /* import and useTraceUpdate(props) in component */
-
 export const useTraceUpdate = (props: any) => {
   const prev = useRef(props);
   useEffect(() => {

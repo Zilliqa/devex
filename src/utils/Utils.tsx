@@ -35,7 +35,7 @@ export const timestampToTimeago = (timestamp: string | number) => {
 // Convert from Qa to Zil
 export const qaToZil = (amount: string | number) => {
   // @ts-ignore
-  const splitAmt = units.fromQa(new BN(amount), units.Units.Zil).split('.') 
+  const splitAmt = units.fromQa(new BN(amount), units.Units.Zil).split('.')
   if (splitAmt.length === 1) {
     return parseInt(splitAmt[0]).toLocaleString('en') + ' ZIL'
   } else {

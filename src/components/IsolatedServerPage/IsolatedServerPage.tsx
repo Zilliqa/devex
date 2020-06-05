@@ -24,10 +24,10 @@ GetTransaction
 
 import React, { useState, useEffect, useContext } from 'react'
 
+import ISSearchbar from './ISSearchbar/ISSearchbar'
 import { NetworkContext } from 'src/services/networkProvider'
 
 import './IsolatedServerPage.css'
-import ISSearchbar from './ISSearchbar/ISSearchbar'
 
 const IsolatedServerPage: React.FC = () => {
 
@@ -56,7 +56,7 @@ const IsolatedServerPage: React.FC = () => {
   return <>
     {data && (
       <div>
-        <ISSearchbar/>
+        <ISSearchbar />
       </div>
     )}
   </>
