@@ -27,7 +27,7 @@
 }
 
 .display-table #difficulty-col {
-  width: 85px;
+  width: 75px;
 }
 
 .display-table #ds-difficulty-col {
@@ -35,15 +35,15 @@
 }
 
 .display-table #age-col {
-  width: 130px;
+  width: 140px;
 }
 
 .display-table #numTxns-col {
-  width: 110px;
+  width: 100px;
 }
 
 .display-table #reward-col {
-  width: 90px;
+  width: 80px;
 }
 
 .display-table #status-col {

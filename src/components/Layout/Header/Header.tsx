@@ -90,7 +90,7 @@ const Header: React.FC = () => {
                   type="text"
                   value={newNode}
                   onChange={(e) => { setNewNode(e.target.value) }}
-                  placeholder="Custom Node Url" />
+                  placeholder="DevNet Url" />
               </Form>
               <NavDropdown.Item className='plus-icon-item' onClick={addNewNode}>
                 <FontAwesomeIcon size='lg' icon={faPlus} />

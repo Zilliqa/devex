@@ -10,6 +10,7 @@ const CodeTab = ({ code }: { code: any }) => {
         mode="ocaml"
         theme="texttheme-textmate"
         width="100%"
+        fontSize='14px'
         name="ace_editor"
         readOnly={true}
         value={code}

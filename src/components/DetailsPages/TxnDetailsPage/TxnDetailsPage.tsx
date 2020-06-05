@@ -39,7 +39,7 @@ const TxnDetailsPage: React.FC = () => {
 
     if (!data) return tabs
 
-    if (data.receipt.success && data.contractAddr) {
+    if (data.receipt.success === undefined || (data.receipt.success && data.contractAddr)) {
       tabs.tabHeaders.push('contractAddr')
       tabs.tabTitles.push(`Contract Creation`)
       tabs.tabContents.push(<ContractCreationTab contractAddr={data.contractAddr!} />)
@@ -98,7 +98,7 @@ const TxnDetailsPage: React.FC = () => {
         <>
           <h3>
             <span>
-              {data.receipt.success ? <FontAwesomeIcon color='green' icon={faExchangeAlt} /> : <FontAwesomeIcon color='red' icon={faExclamationCircle} />}
+              {(data.receipt.success === undefined || data.receipt.success) ? <FontAwesomeIcon color='green' icon={faExchangeAlt} /> : <FontAwesomeIcon color='red' icon={faExclamationCircle} />}
             </span>
             <span style={{ marginLeft: '0.75rem' }}>
               Transaction

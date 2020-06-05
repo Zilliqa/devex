@@ -37,11 +37,15 @@
 
   Util:
   1) isContractAddr(addr: string): Promise<boolean>
+
+  Isolated Server-related:
+  1) getISInfo(): Promise<any>
+
 */
 
 // Mainnet: https://api.zilliqa.com/
 // Testnet: https://dev-api.zilliqa.com/
-// Simulated Env: https://zilliqa-isolated-server.zilliqa.com/
+// Isolated Server: https://zilliqa-isolated-server.zilliqa.com/
 
 import { Zilliqa } from '@zilliqa-js/zilliqa'
 import { BlockchainInfo, DsBlockObj, TransactionObj, TxBlockObj, TxList, PendingTxnResult } from '@zilliqa-js/core/src/types'
@@ -49,12 +53,17 @@ import { MappedTxBlock, MappedDSBlockListing, MappedTxBlockListing, TransactionD
 
 export class DataService {
   zilliqa: any;
+  nodeUrl: string;
 
   constructor(nodeUrl: string | null) {
-    if (nodeUrl)
+    if (nodeUrl) {
+      this.nodeUrl = nodeUrl
       this.initDataService(nodeUrl)
-    else
+    }
+    else {
+      this.nodeUrl = 'https://api.zilliqa.com/'
       this.initDataService('https://api.zilliqa.com/')
+    }
   }
 
   initDataService(nodeUrl: string): void {
@@ -296,8 +305,20 @@ export class DataService {
 
   //================================================================================
   // Util
-  //================================================================================: string
+  //================================================================================
   
+  /* Until we find a better way to differentiate an isolated server, we will differentiate based
+    on the available API */
+  async isIsolatedServer(): Promise<boolean> {
+    console.log('check whether connected to isolated server')
+    const response = await this.zilliqa.blockchain.getBlockChainInfo()
+    if (response.result) {
+      return false
+    }
+    console.log(response)
+    return true  
+  }
+
   async isContractAddr(addr: string): Promise<boolean> {
     console.log('check whether is smart contract')
     const response = await this.zilliqa.blockchain.getSmartContractInit(addr)
@@ -309,4 +330,40 @@ export class DataService {
     else
       throw new Error('Invalid Address')
   }
+
+  //================================================================================
+  // Isolated Server-related
+  //================================================================================
+
+  async getISInfo(): Promise<any> {
+    console.log('getting isolated server info')
+
+    // const getBlockNum = async () => {
+    //   const response = await fetch(this.nodeUrl, {
+    //     method: 'POST', 
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({
+    //       "id": "1",
+    //       "jsonrpc": "2.0",
+    //       "method": "GetBlocknum",
+    //       "params": [""]
+    //     })
+    //   });
+    //   return response.json()
+    // }
+
+    const minGasPrice = async () => await this.zilliqa.blockchain.getMinimumGasPrice()
+    
+    const res: any = await Promise.all([minGasPrice()])
+    console.log(res)
+    const output = {
+      minGasPrice: res[0].result
+    }
+    console.log(output)
+    return output
+
+  }
+  
 }
