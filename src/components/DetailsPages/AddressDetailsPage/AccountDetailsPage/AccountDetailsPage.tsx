@@ -42,7 +42,9 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
       }
     }
     getData()
-  }, [dataService])
+    // Run only once for each block
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return <>
     {accData && (
@@ -93,7 +95,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
             <Card className='address-details-card'>
               <Card.Body>
                 {accContracts.map((contract: any, index: number) => {
-                  return <div style={{ padding: '0.25rem 0' }}>
+                  return <div key={index} style={{ padding: '0.25rem 0' }}>
                     {`${index + 1}) `}
                     {<Link to={`/address/${hexAddrToZilAddr(contract.address)}`}>
                       {hexAddrToZilAddr(contract.address)}

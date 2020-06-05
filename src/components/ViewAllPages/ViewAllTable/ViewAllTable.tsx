@@ -88,19 +88,20 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
               <Pagination.Prev onClick={() => previousPage()} disabled={!canPreviousPage} />
               {generatePagination(pageIndex + 1, pageCount).map((page) => {
                 if (page === -1)
-                  return <Pagination.Ellipsis onClick={() => gotoPage(pageIndex - 5)} />
+                  return <Pagination.Ellipsis key={page} onClick={() => gotoPage(pageIndex - 5)} />
                 else if (page === -2)
-                  return <Pagination.Ellipsis onClick={() => gotoPage(pageIndex + 5)} />
+                  return <Pagination.Ellipsis key={page} onClick={() => gotoPage(pageIndex + 5)} />
                 else if (page === pageIndex + 1)
-                  return <Pagination.Item onClick={() => gotoPage(Number(page) - 1)} active>{page}</Pagination.Item>
+                  return <Pagination.Item key={page} onClick={() => gotoPage(Number(page) - 1)} active>{page}</Pagination.Item>
                 else
-                  return <Pagination.Item onClick={() => gotoPage(Number(page) - 1)}>{page}</Pagination.Item>
+                  return <Pagination.Item key={page} onClick={() => gotoPage(Number(page) - 1)}>{page}</Pagination.Item>
               })}
               <Pagination.Next onClick={() => nextPage()} disabled={!canNextPage} />
             </Pagination>
           </BCol>
         </BRow>
         <div className='viewall-table table'>
+        {isLoading ? <div className='spinner'><Spinner animation="border" variant="secondary" /></div> : null}
           <table {...getTableProps()}>
             <thead>
               {headerGroups.map((headerGroup: HeaderGroup<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => (
@@ -113,7 +114,6 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
                 </tr>
               ))}
             </thead>
-            {isLoading ? <div className='spinner'><Spinner animation="border" variant="secondary" /></div> : null}
             <tbody style={isLoading ? { opacity: '50%' } : {}}{...getTableBodyProps()}>
               {page.map((row: Row<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => {
                 prepareRow(row)

@@ -59,7 +59,7 @@ const Header: React.FC = () => {
           </OverlayTrigger>
           <NavDropdown onToggle={(e: boolean) => { setShow(e) }} show={show} title={currentNetwork} id="basic-nav-dropdown">
             {Object.entries(defaultNetworks).map(([k, v]) => (
-              <NavDropdown.Item onClick={() => {
+              <NavDropdown.Item key={k} onClick={() => {
                 if (currentNetwork !== v) {
                   setCurrentNetwork(v)
                   setNodeUrl && setNodeUrl(k)

@@ -59,8 +59,11 @@ const TxBlockDetailsPage: React.FC = () => {
         setError(e)
       }
     }
+
     getData()
-  }, [dataService, blockNum])
+    // Run only once for each block
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blockNum])
 
   const columns = useMemo(
     () => [{
@@ -209,7 +212,7 @@ const TxBlockDetailsPage: React.FC = () => {
               <Card.Body>
                 <Container>
                   <h6>Micro Blocks</h6>
-                  {data.body.MicroBlockInfos.map((x) => <div>[{x.MicroBlockShardId}] {x.MicroBlockHash}</div>)}
+                  {data.body.MicroBlockInfos.map((x) => <div key={x.MicroBlockHash}>[{x.MicroBlockShardId}] {x.MicroBlockHash}</div>)}
                 </Container>
               </Card.Body>
             </Card>

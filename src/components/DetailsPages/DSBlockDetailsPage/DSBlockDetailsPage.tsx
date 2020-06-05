@@ -43,7 +43,9 @@ const DSBlockDetailsPage: React.FC = () => {
       }
     }
     getData()
-  }, [dataService, blockNum])
+    // Run only once for each block
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blockNum])
 
   return <>
     {error
@@ -134,7 +136,7 @@ const DSBlockDetailsPage: React.FC = () => {
               <Card.Body>
                 <Container>
                   <h6>PoW Winners</h6>
-                  {data.header.PoWWinners.map((x, index) => <div>[{index + 1}] {pubKeyToZilAddr(x)}</div>)}
+                  {data.header.PoWWinners.map((x, index) => <div key={index}>[{index + 1}] {pubKeyToZilAddr(x)}</div>)}
                 </Container>
               </Card.Body>
             </Card>

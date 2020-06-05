@@ -42,7 +42,9 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
       }
     }
     getData()
-  }, [dataService])
+    // Run only once for each block
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const generateTabsObj = () => {
 

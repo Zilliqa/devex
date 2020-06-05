@@ -12,7 +12,7 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faExclamationCircle, faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
 import InfoTabs from '../InfoTabs/InfoTabs'
-import TransitionsTab from '../InfoTabs/TransaitionsTab'
+import TransitionsTab from '../InfoTabs/TransitionsTab'
 import EventsTab from '../InfoTabs/EventsTab'
 import DefaultTab from '../InfoTabs/DefaultTab'
 import ContractCreationTab from '../InfoTabs/ContractCreationTab'

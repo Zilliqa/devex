@@ -37,10 +37,8 @@ export const qaToZil = (amount: string | number) => {
   // @ts-ignore
   const splitAmt = units.fromQa(new BN(amount), units.Units.Zil).split('.') 
   if (splitAmt.length === 1) {
-    console.log(parseInt(splitAmt[0]).toLocaleString('en') + ' ZIL')
     return parseInt(splitAmt[0]).toLocaleString('en') + ' ZIL'
   } else {
-    console.log((parseInt(splitAmt[0])).toLocaleString('en') + '.' + splitAmt[1])
     return (parseInt(splitAmt[0])).toLocaleString('en') + '.' + splitAmt[1] + ' ZIL'
   }
 }

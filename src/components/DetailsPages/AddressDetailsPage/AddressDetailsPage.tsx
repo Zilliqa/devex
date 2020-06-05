@@ -30,7 +30,9 @@ const AddressDetailsPage: React.FC = () => {
       }
     }
     getData()
-  }, [dataService, addr])
+    // Run only once for each block
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addr])
 
   return <>
     {error
