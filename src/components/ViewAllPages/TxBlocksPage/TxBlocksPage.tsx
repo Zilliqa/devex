@@ -66,6 +66,7 @@ const TxBlocksPage: React.FC = () => {
   const [data, setData] = useState<TxBlockObj[] | null>(null)
 
   const fetchData = useCallback(({ pageIndex }) => {
+    if (!dataService) return
 
     const fetchId = ++fetchIdRef.current
     const getData = async () => {

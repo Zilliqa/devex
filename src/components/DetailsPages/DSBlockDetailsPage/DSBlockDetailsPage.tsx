@@ -51,7 +51,7 @@ const DSBlockDetailsPage: React.FC = () => {
     }
     // Run only once for each block
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNum])
+  }, [blockNum, dataService])
 
   return <>
     {error

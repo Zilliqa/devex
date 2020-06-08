@@ -9,10 +9,11 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import './Searchbar.css'
 
 interface IProps {
-  isHeaderSearchbar: boolean
+  isHeaderSearchbar: boolean,
+  isISSearchbar: boolean,
 }
 
-const Searchbar: React.FC<IProps> = ({ isHeaderSearchbar }) => {
+const Searchbar: React.FC<IProps> = ({ isHeaderSearchbar, isISSearchbar }) => {
   const [input, setInput] = useState("")
   const [searchType, setSearchType] = useState('Txn/Addr')
   let history = useHistory()
@@ -46,13 +47,15 @@ const Searchbar: React.FC<IProps> = ({ isHeaderSearchbar }) => {
   return <>
     <Form onSubmit={handleSubmit}>
       <InputGroup className="searchbar-ig" id="searchbar-ig">
-        <InputGroup.Prepend>
-          <DropdownButton variant="outline-secondary" id='searchbar-dropdown' title={searchType}>
-            <Dropdown.Item onClick={() => setSearchType('Txn/Addr')}>Txn/Addr</Dropdown.Item>
-            <Dropdown.Item onClick={() => setSearchType('Tx Block')}>Tx Block</Dropdown.Item>
-            <Dropdown.Item onClick={() => setSearchType('DS Block')}>DS Block</Dropdown.Item>
-          </DropdownButton>
-        </InputGroup.Prepend>
+        {!isISSearchbar &&
+          <InputGroup.Prepend>
+            <DropdownButton variant="outline-secondary" id='searchbar-dropdown' title={searchType}>
+              <Dropdown.Item onClick={() => setSearchType('Txn/Addr')}>Txn/Addr</Dropdown.Item>
+              <Dropdown.Item onClick={() => setSearchType('Tx Block')}>Tx Block</Dropdown.Item>
+              <Dropdown.Item onClick={() => setSearchType('DS Block')}>DS Block</Dropdown.Item>
+            </DropdownButton>
+          </InputGroup.Prepend>
+        }
         <Form.Control type="text" value={input} autoFocus={!isHeaderSearchbar}
           placeholder={
             searchType === 'Txn/Addr'

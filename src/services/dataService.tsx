@@ -157,7 +157,6 @@ export class DataService {
       throw new Error('Invalid Tx Block Number')
     const transactionData = await this.getTransactionsForTxBlock(blockNum)
     blockData.result['txnHashes'] = transactionData
-    console.log(blockData.result)
     if (parseInt(blockData.result.header.BlockNum) !== blockNum)
       throw new Error('Invalid Tx Block Number')
     console.log(blockData.result)
@@ -264,7 +263,6 @@ export class DataService {
   async getLatest5PendingTransactions(): Promise<PendingTxnResult[]> {
     console.log("getting 5 pending tx")
     const response = await this.zilliqa.blockchain.getPendingTxns()
-    console.log(response)
     return response.result.Txns as PendingTxnResult[]
   }
 
@@ -329,6 +327,7 @@ export class DataService {
     on the available API i.e. getBlockChainIfo */
   async isIsolatedServer(): Promise<boolean> {
     console.log('check whether connected to isolated server')
+    console.log(this.nodeUrl)
     const response = await this.zilliqa.blockchain.getBlockChainInfo()
     if (response.result) {
       return false

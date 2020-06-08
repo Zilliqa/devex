@@ -67,7 +67,7 @@ const TxBlockDetailsPage: React.FC = () => {
     }
     // Run only once for each block
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNum])
+  }, [blockNum, dataService])
 
   const columns = useMemo(
     () => [{
@@ -93,7 +93,7 @@ const TxBlockDetailsPage: React.FC = () => {
   )
 
   const fetchData = useCallback(({ pageIndex }) => {
-    if (!data) return
+    if (!data || !dataService) return
 
     const getData = async () => {
       try {

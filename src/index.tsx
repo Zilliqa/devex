@@ -1,8 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
-import { useHistory, BrowserRouter as Router, Route } from 'react-router-dom'
+import { useLocation, BrowserRouter as Router, Route } from 'react-router-dom'
 
 import HomePage from './components/HomePage/HomePage'
 import Layout from './components/Layout/Layout'
@@ -19,17 +19,17 @@ import { NetworkProvider } from './services/networkProvider'
 import './index.css'
 
 const ScrollToTop = ({ children }: { children: React.ReactNode }) => {
-  let history = useHistory()
-  useEffect(() => {
-    const unlisten = history.listen(() => {
-      window.scrollTo(0, 0);
-    });
-    return () => {
-      unlisten();
-    }
-  }, [history]);
+  let location = useLocation()
+  const prevLocation = useRef<string>();
 
-  return <>{children}</>;
+  useEffect(() => {
+    if (prevLocation.current !== location.pathname) {
+      window.scrollTo(0, 0)
+      prevLocation.current = location.pathname;
+    }
+  }, [location])
+
+  return <>{children}</>
 }
 
 ReactDOM.render(

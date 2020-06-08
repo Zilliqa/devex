@@ -13,7 +13,7 @@
 }
 
 .header-searchbar {
-  margin: auto 2rem auto auto;
+  margin: auto;
   width: 100%;
   max-width: 550px;
 }
@@ -29,6 +29,13 @@
 }
 .header-searchbar .input-group-append {
   background-color: white;
+}
+
+#header-network-dropdown {
+  margin: 0 0.5rem;
+  background-color: white;
+  border: solid 1px rgb(206, 212, 218);
+  border-radius: 4px;
 }
 
 .info-icon {

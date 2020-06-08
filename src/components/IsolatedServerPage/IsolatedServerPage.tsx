@@ -24,7 +24,7 @@ GetTransaction
 
 import React, { useState, useEffect, useContext } from 'react'
 
-import ISSearchbar from './ISSearchbar/ISSearchbar'
+import Searchbar from 'src/components/HomePage/Searchbar/Searchbar'
 import { NetworkContext } from 'src/services/networkProvider'
 
 import './IsolatedServerPage.css'
@@ -58,7 +58,7 @@ const IsolatedServerPage: React.FC = () => {
   return <>
     {data && (
       <div>
-        <ISSearchbar isHeaderSearchbar={false} />
+        <Searchbar isISSearchbar={true} isHeaderSearchbar={false} />
       </div>
     )}
   </>

@@ -15,14 +15,13 @@ const Header: React.FC = () => {
 
   let location = useLocation();
   const networkContext = useContext(NetworkContext)
-  const { nodeUrl, setNodeUrl, nodeUrlMap, setNodeUrlMap } = networkContext!
+  const { isIsolatedServer, nodeUrl, setNodeUrl, nodeUrlMap, setNodeUrlMap } = networkContext!
   const [currentNetwork, setCurrentNetwork] = useState(nodeUrlMap[localStorage.getItem('nodeUrl')!] || defaultNetworks[nodeUrl])
   const [newNode, setNewNode] = useState('')
   const [showSearchbar, setShowSearchbar] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
 
   useEffect(() => {
-    console.log(location)
     if (location.pathname !== '/')
       setShowSearchbar(true)
     else
@@ -51,7 +50,7 @@ const Header: React.FC = () => {
   return (
     <>
       <Navbar className="custom-navbar" fixed="top">
-        <Link to={'/'} className="mr-auto">
+        <Link to={'/'} >
           <Navbar.Brand className="custom-navbar-brand">
             <img
               src={Logo}
@@ -64,19 +63,21 @@ const Header: React.FC = () => {
         </Navbar.Brand>
         </Link>
         {showSearchbar
-          ? <div className="header-searchbar"><Searchbar isHeaderSearchbar={true} /></div>
+          ? <div className="header-searchbar"><Searchbar isISSearchbar={isIsolatedServer!} isHeaderSearchbar={true} /></div>
           : null}
-        <Nav>
+        <Nav className={showSearchbar ? '' : 'ml-auto'}>
           <OverlayTrigger placement='left'
             overlay={<Tooltip id={'tt'}> {networkContext?.nodeUrl} </Tooltip>}>
             <FontAwesomeIcon className='info-icon' icon={faInfoCircle} />
           </OverlayTrigger>
-          <NavDropdown onToggle={(e: boolean) => { setShowDropdown(e) }} show={showDropdown} title={currentNetwork} id="basic-nav-dropdown">
+          <NavDropdown onToggle={(e: boolean) => { setShowDropdown(e) }} show={showDropdown} title={currentNetwork} id="header-network-dropdown">
             {Object.entries(defaultNetworks).map(([k, v]) => (
               <NavDropdown.Item key={k} onClick={() => {
                 if (currentNetwork !== v) {
+                  setShowSearchbar(false)
                   setCurrentNetwork(v)
                   setNodeUrl && setNodeUrl(k)
+
                 }
               }}>
                 {v}
@@ -87,6 +88,7 @@ const Header: React.FC = () => {
               <div key={k} className='node-div'>
                 <NavDropdown.Item className='node-item' onClick={() => {
                   if (currentNetwork !== v) {
+                    setShowSearchbar(false)
                     setCurrentNetwork(v)
                     setNodeUrl && setNodeUrl(k)
                   }

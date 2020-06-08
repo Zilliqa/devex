@@ -18,7 +18,7 @@ const AccContractCard: React.FC<IProps> = ({ contract, index }) => {
   const [ showState, setShowState ] = useState<boolean>(false)
 
   return <Card style={{ border: '1px solid rgba(0, 0, 0, .3)', marginBottom: '1rem' }}>
-    <Card.Body style={{ cursor: 'pointer' }} onClick={()=>{setShowState((prevState) => !prevState)}} key={index}>
+    <Card.Body style={{ padding: '1rem', cursor: 'pointer' }} onClick={()=>{setShowState((prevState) => !prevState)}} key={index}>
       <div style={{ display: 'flex', justifyContent: 'space-between'}}>
         <span>
           {`${index + 1}) `}
@@ -33,8 +33,8 @@ const AccContractCard: React.FC<IProps> = ({ contract, index }) => {
     </Card.Body>
     <Collapse in={showState}>
         <div style={{ borderTop: '1px solid rgba(0, 0, 0, .25)', whiteSpace: 'pre-wrap' }}>
-          <div style={{ padding: '2rem' }}>
-            <pre style={{ backgroundColor: 'rgba(0, 0, 0, 0.03)' }}>
+          <div style={{ margin: '0 1rem' }}>
+            <pre style={{ marginTop: '1rem', backgroundColor: 'rgba(0, 0, 0, 0.03)' }}>
               {JSON.stringify(contract.state, null, 2)}
             </pre>
           </div>

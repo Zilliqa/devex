@@ -36,7 +36,7 @@ const AddressDetailsPage: React.FC = () => {
     }
     // Run only once for each block
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [addr])
+  }, [addr, dataService])
 
   return <>
     {error

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext } from 'react'
 
 import { NetworkContext } from 'src/services/networkProvider'
 
@@ -20,30 +20,15 @@ import IsolatedServerPage from '../IsolatedServerPage/IsolatedServerPage'
 */
 const HomePage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
-  const { dataService } = networkContext!
-  const [isIsolatedServer, setIsolatedServer] = useState<boolean | null>(null)
+  const { isIsolatedServer } = networkContext!
 
-  useEffect(() => {
-    if (!dataService) return
-
-    const checkNetwork = async () => {
-      try {
-        setIsolatedServer(null)
-        let res: boolean = await dataService.isIsolatedServer()
-        setIsolatedServer(res)
-      } catch (e) {
-        console.log(e)
-      }
-    }
-    checkNetwork()
-  }, [dataService])
-
-  return (<>
+return (
+  <>
     {isIsolatedServer !== null
       ? isIsolatedServer
         ? <IsolatedServerPage />
         : <div>
-          <Searchbar isHeaderSearchbar={false} />
+          <Searchbar isISSearchbar={false} isHeaderSearchbar={false} />
           <Dashboard />
         </div>
       : null
