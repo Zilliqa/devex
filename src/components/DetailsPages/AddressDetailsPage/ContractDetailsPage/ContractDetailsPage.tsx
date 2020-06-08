@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import '../AddressDetailsPage.css'
 
-type IProps = {
+interface IProps {
   addr: string,
 }
 

@@ -48,7 +48,7 @@ const EventsTab = ({ events }: { events: EventLogEntry[] }) => {
                     <td>
                       {typeof param.value === 'object'
                         ? <pre style={{ backgroundColor: 'rgba(0, 0, 0, 0.03)' }}>
-                          {JSON.stringify(param.value, null, '\t')}
+                          {JSON.stringify(param.value, null, 2)}
                         </pre>
                         : Array.isArray(param.value)
                           ? param.value.toString()

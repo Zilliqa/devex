@@ -33,3 +33,40 @@
 .address-detail-header {
   font-weight: 500;
 }
+
+/* Account Contracts  */
+
+.contract-spinner {
+  text-align: center;
+  margin: 20vh;
+}
+
+.num-contracts {
+  margin: 1rem 1.25rem;
+  padding: 0.5rem;
+  height: fit-content;
+  border: solid 1px grey;
+  display: inline-flex;
+  align-items: center;
+}
+
+.contract-pagination {
+  margin: 1rem 1.25rem;
+}
+
+.contract-pagination .page-item:focus {
+  outline: none;
+}
+
+.contract-pagination .page-item.active .page-link {
+  background-color: #019c99;
+  border-color: #019c99;
+}
+
+.contract-pagination .page-link {
+  color: #019c99;
+}
+
+.contract-pagination .page-link:focus {
+  box-shadow: none;
+}

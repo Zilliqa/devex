@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Card, Container, Tabs, Tab } from 'react-bootstrap'
 
-type IProps = {
+interface IProps {
   tabs: {
     tabHeaders: string[],
     tabTitles: string[],

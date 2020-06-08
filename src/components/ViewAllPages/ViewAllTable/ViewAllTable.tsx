@@ -92,7 +92,7 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
                 else if (page === -2)
                   return <Pagination.Ellipsis key={page} onClick={() => gotoPage(pageIndex + 5)} />
                 else if (page === pageIndex + 1)
-                  return <Pagination.Item key={page} onClick={() => gotoPage(Number(page) - 1)} active>{page}</Pagination.Item>
+                  return <Pagination.Item key={page} active>{page}</Pagination.Item>
                 else
                   return <Pagination.Item key={page} onClick={() => gotoPage(Number(page) - 1)}>{page}</Pagination.Item>
               })}
