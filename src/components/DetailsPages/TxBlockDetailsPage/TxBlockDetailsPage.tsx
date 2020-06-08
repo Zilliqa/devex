@@ -33,7 +33,7 @@ const TxBlockDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useState<MappedTxBlock | null>(null)
   const [latestTxBlockNum, setLatestTxBlockNum] = useState<number | null>(null)
@@ -60,6 +60,11 @@ const TxBlockDetailsPage: React.FC = () => {
     }
 
     getData()
+    return () => {
+      setData(null)
+      setLatestTxBlockNum(null)
+      setError(null)
+    }
     // Run only once for each block
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blockNum])

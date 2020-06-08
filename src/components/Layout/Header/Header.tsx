@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Navbar, Nav, NavDropdown, Tooltip, OverlayTrigger, Form } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import Logo from 'src/assets/images/logo.png'
 import { NetworkContext, defaultNetworks } from 'src/services/networkProvider'
@@ -8,15 +8,26 @@ import { NetworkContext, defaultNetworks } from 'src/services/networkProvider'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 
+import Searchbar from 'src/components/HomePage/Searchbar/Searchbar'
 import './Header.css'
 
 const Header: React.FC = () => {
 
+  let location = useLocation();
   const networkContext = useContext(NetworkContext)
   const { nodeUrl, setNodeUrl, nodeUrlMap, setNodeUrlMap } = networkContext!
   const [currentNetwork, setCurrentNetwork] = useState(nodeUrlMap[localStorage.getItem('nodeUrl')!] || defaultNetworks[nodeUrl])
   const [newNode, setNewNode] = useState('')
-  const [show, setShow] = useState(false)
+  const [showSearchbar, setShowSearchbar] = useState(false)
+  const [showDropdown, setShowDropdown] = useState(false)
+
+  useEffect(() => {
+    console.log(location)
+    if (location.pathname !== '/')
+      setShowSearchbar(true)
+    else
+      setShowSearchbar(false)
+  }, [location]);
 
   const addNewNode = () => {
     nodeUrlMap[newNode] = newNode
@@ -24,7 +35,7 @@ const Header: React.FC = () => {
     setCurrentNetwork(newNode)
     setNodeUrl && setNodeUrl(newNode)
     setNewNode('')
-    setShow(false)
+    setShowDropdown(false)
   }
 
   const deleteNode = (k: any, v: any) => {
@@ -34,13 +45,13 @@ const Header: React.FC = () => {
       setCurrentNetwork('Mainnet')
       setNodeUrl && setNodeUrl('https://api.zilliqa.com/')
     }
-    setShow(false)
+    setShowDropdown(false)
   }
 
   return (
     <>
       <Navbar className="custom-navbar" fixed="top">
-        <Link to={'/'}>
+        <Link to={'/'} className="mr-auto">
           <Navbar.Brand className="custom-navbar-brand">
             <img
               src={Logo}
@@ -52,12 +63,15 @@ const Header: React.FC = () => {
           Dev Explorer
         </Navbar.Brand>
         </Link>
-        <Nav className="ml-auto">
+        {showSearchbar
+          ? <div className="header-searchbar"><Searchbar isHeaderSearchbar={true} /></div>
+          : null}
+        <Nav>
           <OverlayTrigger placement='left'
             overlay={<Tooltip id={'tt'}> {networkContext?.nodeUrl} </Tooltip>}>
             <FontAwesomeIcon className='info-icon' icon={faInfoCircle} />
           </OverlayTrigger>
-          <NavDropdown onToggle={(e: boolean) => { setShow(e) }} show={show} title={currentNetwork} id="basic-nav-dropdown">
+          <NavDropdown onToggle={(e: boolean) => { setShowDropdown(e) }} show={showDropdown} title={currentNetwork} id="basic-nav-dropdown">
             {Object.entries(defaultNetworks).map(([k, v]) => (
               <NavDropdown.Item key={k} onClick={() => {
                 if (currentNetwork !== v) {
@@ -70,7 +84,7 @@ const Header: React.FC = () => {
             ))}
             <NavDropdown.Divider />
             {Object.entries(nodeUrlMap).map(([k, v]) => (
-              <div className='node-div'>
+              <div key={k} className='node-div'>
                 <NavDropdown.Item className='node-item' onClick={() => {
                   if (currentNetwork !== v) {
                     setCurrentNetwork(v)
@@ -79,7 +93,7 @@ const Header: React.FC = () => {
                 }}>
                   {v}
                 </NavDropdown.Item>
-                <NavDropdown.Item className='minus-icon-item' onClick={()=>{deleteNode(k, v)}}>
+                <NavDropdown.Item className='minus-icon-item' onClick={() => { deleteNode(k, v) }}>
                   <FontAwesomeIcon size='lg' icon={faMinus} />
                 </NavDropdown.Item>
               </div>

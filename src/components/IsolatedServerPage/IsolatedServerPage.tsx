@@ -58,7 +58,7 @@ const IsolatedServerPage: React.FC = () => {
   return <>
     {data && (
       <div>
-        <ISSearchbar />
+        <ISSearchbar isHeaderSearchbar={false} />
       </div>
     )}
   </>

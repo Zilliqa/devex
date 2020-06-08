@@ -12,7 +12,7 @@ const AddressDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
   const [isContract, setIsContract] = useState<boolean | null>(null)
 
   // Fetch data
@@ -30,6 +30,10 @@ const AddressDetailsPage: React.FC = () => {
       }
     }
     getData()
+    return () => {
+      setIsContract(null)
+      setError(null)
+    }
     // Run only once for each block
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addr])

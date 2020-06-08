@@ -19,7 +19,7 @@ const DSBlockDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string| null>(null)
   const [data, setData] = useState<DsBlockObj | null>(null)
   const [latestDSBlockNum, setLatestDSBlockNum] = useState<number | null>(null)
 
@@ -42,7 +42,13 @@ const DSBlockDetailsPage: React.FC = () => {
         setError(e)
       }
     }
+    
     getData()
+    return () => {
+      setData(null)
+      setLatestDSBlockNum(null)
+      setError(null)
+    }
     // Run only once for each block
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blockNum])

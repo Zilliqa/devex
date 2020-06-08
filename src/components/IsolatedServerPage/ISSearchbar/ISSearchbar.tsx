@@ -4,9 +4,15 @@ import { Form, InputGroup, Button } from 'react-bootstrap'
 
 import { validation } from '@zilliqa-js/util'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import 'src/components/HomePage/Searchbar/Searchbar.css'
 
-const ISSearchbar: React.FC = () => {
+interface IProps {
+  isHeaderSearchbar: boolean
+}
+
+const ISSearchbar: React.FC<IProps> = ({ isHeaderSearchbar }) => {
   const [input, setInput] = useState("")
   let history = useHistory()
 
@@ -23,16 +29,17 @@ const ISSearchbar: React.FC = () => {
       history.push(`/address/${trimmedInput}`)
     else
       history.push(`/tx/${trimmedInput}`)
+    setInput('')
   }
 
   return <>
     <Form onSubmit={handleSubmit}>
-      <InputGroup className="searchbar-ig" id="contractAddress">
-        <Form.Control type="text" value={input} autoFocus
+      <InputGroup className="searchbar-ig" id="searchbar-ig">
+        <Form.Control type="text" value={input} autoFocus={!isHeaderSearchbar}
           placeholder="Search for a transaction or an address" onChange={handleChange} />
         <InputGroup.Append>
           <Button type="submit" variant="outline-secondary">
-            <div>Search</div>
+            {isHeaderSearchbar ? <FontAwesomeIcon icon={faSearch} /> : <div>Search</div>}
           </Button>
         </InputGroup.Append>
       </InputGroup>

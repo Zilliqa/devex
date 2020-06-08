@@ -4,9 +4,15 @@ import { Form, InputGroup, Button, Dropdown, DropdownButton } from 'react-bootst
 
 import { validation } from '@zilliqa-js/util'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import './Searchbar.css'
 
-const Searchbar: React.FC = () => {
+interface IProps {
+  isHeaderSearchbar: boolean
+}
+
+const Searchbar: React.FC<IProps> = ({ isHeaderSearchbar }) => {
   const [input, setInput] = useState("")
   const [searchType, setSearchType] = useState('Txn/Addr')
   let history = useHistory()
@@ -34,11 +40,12 @@ const Searchbar: React.FC = () => {
         history.push(`/dsbk/${trimmedInput}`)
         break
     }
+    setInput('')
   }
 
   return <>
     <Form onSubmit={handleSubmit}>
-      <InputGroup className="searchbar-ig" id="contractAddress">
+      <InputGroup className="searchbar-ig" id="searchbar-ig">
         <InputGroup.Prepend>
           <DropdownButton variant="outline-secondary" id='searchbar-dropdown' title={searchType}>
             <Dropdown.Item onClick={() => setSearchType('Txn/Addr')}>Txn/Addr</Dropdown.Item>
@@ -46,7 +53,7 @@ const Searchbar: React.FC = () => {
             <Dropdown.Item onClick={() => setSearchType('DS Block')}>DS Block</Dropdown.Item>
           </DropdownButton>
         </InputGroup.Prepend>
-        <Form.Control type="text" value={input} autoFocus
+        <Form.Control type="text" value={input} autoFocus={!isHeaderSearchbar}
           placeholder={
             searchType === 'Txn/Addr'
               ? 'Search for a transaction or an address'
@@ -56,7 +63,7 @@ const Searchbar: React.FC = () => {
           onChange={handleChange} />
         <InputGroup.Append>
           <Button type="submit" variant="outline-secondary">
-            <div>Search</div>
+            {isHeaderSearchbar ? <FontAwesomeIcon icon={faSearch} /> : <div>Search</div>}
           </Button>
         </InputGroup.Append>
       </InputGroup>

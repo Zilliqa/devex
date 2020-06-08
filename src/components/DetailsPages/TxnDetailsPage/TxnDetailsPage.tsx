@@ -26,7 +26,7 @@ const TxnDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string| null>(null)
   const [data, setData] = useState<TransactionDetails | null>(null)
 
   const generateTabsObj = () => {
@@ -89,6 +89,10 @@ const TxnDetailsPage: React.FC = () => {
     }
 
     getData()
+    return () => {
+      setData(null)
+      setError(null)
+    }
   }, [dataService, txnHash])
 
   return <>

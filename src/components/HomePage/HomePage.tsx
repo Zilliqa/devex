@@ -43,7 +43,7 @@ const HomePage: React.FC = () => {
       ? isIsolatedServer
         ? <IsolatedServerPage />
         : <div>
-          <Searchbar />
+          <Searchbar isHeaderSearchbar={false} />
           <Dashboard />
         </div>
       : null

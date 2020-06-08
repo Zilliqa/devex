@@ -34,25 +34,22 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
     if (!dataService) return
 
     let contractData: ContractData
-    let creationTxnHash: string | null
+    let creationTxnHash: string
     let owner: string
     const getData = async () => {
       try {
         contractData = await dataService.getContractData(addrRef.current)
         creationTxnHash = await dataService.getTxnIdFromContractData(contractData)
-        if (!creationTxnHash) {
-          setContractData(contractData)
-          return
-        }
         owner = await dataService.getTransactionOwner(creationTxnHash)
+      } catch (e) {
+        console.log(e)
+      } finally {
         if (contractData)
           setContractData(contractData)
         if (creationTxnHash)
           setCreationTxnHash(creationTxnHash)
         if (owner)
           setOwner(owner)
-      } catch (e) {
-        console.log(e)
       }
     }
     getData()

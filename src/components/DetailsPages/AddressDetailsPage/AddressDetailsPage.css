@@ -23,6 +23,10 @@
   white-space: nowrap;
 }
 
+.address-details-card .card {
+  border-radius: 0;
+}
+
 .address-detail {
   display: flex;
   justify-content: space-between;

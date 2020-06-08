@@ -12,6 +12,25 @@
   background: none;
 }
 
+.header-searchbar {
+  margin: auto 2rem auto auto;
+  width: 100%;
+  max-width: 550px;
+}
+
+.header-searchbar #searchbar-dropdown {
+  background-color: white;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.header-searchbar .searchbar-ig {
+  margin-bottom: 0;
+}
+.header-searchbar .input-group-append {
+  background-color: white;
+}
+
 .info-icon {
   align-self: center;
   opacity: 60%;
@@ -47,8 +66,7 @@
 }
 
 .custom-navbar .dropdown-menu {
-  width: 225px;
-  left: -1.5rem;
+  min-width: fit-content;
 }
 
 .custom-navbar-brand {
