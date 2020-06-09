@@ -76,11 +76,34 @@
   box-shadow: none;
 }
 
+/* Account Contracts Card */
+
 .acc-contract-card {
-  box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
   margin-bottom: 1rem;
 }
 
-.acc-contract-card :hover{
+.acc-contract-card :hover {
   background-color: #fafafa;
+}
+
+.acc-contract-card .card-body {
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.acc-contract-card .card-body div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.acc-contract-card pre {
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.acc-contract-card .collapse, .acc-contract-card .collapsing {
+  border-top: 1px solid rgba(0, 0, 0, .25);
+  white-space: pre-wrap;
+  padding: 1rem;
 }

@@ -95,7 +95,6 @@ export class DataService {
   async getDSBlockDetails(blockNum: number): Promise<DsBlockObj> {
     console.log("getting DS block details")
     const blockData = await this.zilliqa.blockchain.getDSBlock(blockNum)
-    console.log(blockData)
     if (blockData.result.header.BlockNum !== blockNum)
       throw new Error('Invalid DS Block Number')
     return blockData.result as DsBlockObj
@@ -152,14 +151,12 @@ export class DataService {
   async getTxBlockDetails(blockNum: number): Promise<MappedTxBlock> {
     console.log("getting tx block details")
     const blockData = await this.zilliqa.blockchain.getTxBlock(blockNum)
-    console.log(blockData)
     if (!blockData.result)
       throw new Error('Invalid Tx Block Number')
     const transactionData = await this.getTransactionsForTxBlock(blockNum)
     blockData.result['txnHashes'] = transactionData
     if (parseInt(blockData.result.header.BlockNum) !== blockNum)
       throw new Error('Invalid Tx Block Number')
-    console.log(blockData.result)
     return blockData.result as MappedTxBlock
   }
 
@@ -231,14 +228,12 @@ export class DataService {
     const contractAddr = await this.getContractAddrFromTransaction(txnHash.substring(2))
     if (contractAddr)
       blockData['contractAddr'] = contractAddr
-    console.log(blockData)
     return blockData as TransactionDetails
   }
 
   async getTransactionsForTxBlock(blockNum: number): Promise<string[]> {
     console.log("getting transactions for Tx block")
     const response = await this.zilliqa.blockchain.getTransactionsForTxBlock(blockNum)
-    console.log(response)
     if (response.error) return [] as string[]
     else return response.result.flat()
   }
@@ -273,14 +268,12 @@ export class DataService {
   async getAccData(accAddr: string): Promise<AccData> {
     console.log('getting balance')
     const response = await this.zilliqa.blockchain.getBalance(accAddr)
-    console.log(response)
     return response.result
   }
 
   async getAccContracts(accAddr: string): Promise<AccContracts> {
     console.log('getting smart contracts for addr')
     const response = await this.zilliqa.blockchain.getSmartContracts(accAddr)
-    console.log(response)
     return response.result
   }
 
@@ -291,7 +284,6 @@ export class DataService {
   async getContractAddrFromTransaction(txnHash: string): Promise<string> {
     console.log('getting smart contracts addr')
     const response = await this.zilliqa.blockchain.getContractAddressFromTransactionID(txnHash)
-    console.log(response)
     return response.result
   }
 
@@ -315,7 +307,6 @@ export class DataService {
 
     const res = await Promise.all([contractCode(), contractInit(), contractState()])
     const contractData = { code: res[0].result.code, initParams: res[1].result, state: res[2].result }
-    console.log(contractData)
     return contractData
   }
 
@@ -327,12 +318,10 @@ export class DataService {
     on the available API i.e. getBlockChainIfo */
   async isIsolatedServer(): Promise<boolean> {
     console.log('check whether connected to isolated server')
-    console.log(this.nodeUrl)
     const response = await this.zilliqa.blockchain.getBlockChainInfo()
     if (response.result) {
       return false
     }
-    console.log(response)
     return true
   }
 
@@ -341,7 +330,6 @@ export class DataService {
   async isContractAddr(addr: string): Promise<boolean> {
     console.log('check whether is smart contract')
     const response = await this.zilliqa.blockchain.getSmartContractInit(addr)
-    console.log(response)
     if (!response.error)
       return true
     else if (response.error.message === 'Address not contract address')
@@ -376,11 +364,9 @@ export class DataService {
     const getMinGasPrice = async () => await this.zilliqa.blockchain.getMinimumGasPrice()
 
     const res: any = await Promise.all([getBlockNum(), getMinGasPrice()])
-    console.log(res)
     const output = {
       minGasPrice: res[1].result
     }
-    console.log(output)
     return output
 
   }

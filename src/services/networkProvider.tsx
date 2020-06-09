@@ -62,8 +62,6 @@ export const NetworkProvider: React.FC = (props) => {
 
   // If nodeurl changes, update dataservice
   useEffect(()=> {
-    console.log('nodeUrl changed')
-    console.log(state.nodeUrl)
     setState((prevState: NetworkState) => (
       { ...prevState, dataService: new DataService(prevState.nodeUrl), isIsolatedServer: null }))
   }, [state.nodeUrl])
@@ -71,11 +69,9 @@ export const NetworkProvider: React.FC = (props) => {
   // If dataservice changes, update isIsolatedServer
   useEffect(() => {
     const checkNetwork = async () => {
-      console.log('checking isolated')
       try {
         if (!state.dataService) return
         let res: boolean = await state.dataService.isIsolatedServer()
-        console.log(res)
         setState((prevState: NetworkState) => (
           { ...prevState, isIsolatedServer: res }))
       } catch (e) {

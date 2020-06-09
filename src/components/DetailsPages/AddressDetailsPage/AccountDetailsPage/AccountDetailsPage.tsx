@@ -153,9 +153,9 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
                 {accContracts
                   .slice(10 * contractPageIndex, 10 * contractPageIndex + 10)
                   .map((contract: AccContract, index: number) => {
-                  return <AccContractCard key={10 * contractPageIndex + index}
-                    contract={contract} index={10 * contractPageIndex + index} />
-                })}
+                    return <AccContractCard key={10 * contractPageIndex + index}
+                      contract={contract} index={10 * contractPageIndex + index} />
+                  })}
               </Card.Body>
             </Card>
           </>
