@@ -1,4 +1,4 @@
-import { TxBlockObj, TransactionObj, TxList } from '@zilliqa-js/core/src/types'
+import { DsBlockObj, TxBlockObj, TransactionObj, TxList } from '@zilliqa-js/core/src/types'
 
 export interface MappedDSBlockListing {
   data: DsBlockObj[],
