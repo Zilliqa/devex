@@ -2,7 +2,7 @@
   padding: .5rem 10%;
   position: sticky;
   height: 70px;
-  background-color: #F8F8F8;
+  background-color: rgb(240,240,240);
   border-bottom: solid 1px slategrey;
 }
 
@@ -34,7 +34,7 @@
 #header-network-dropdown {
   margin: 0 0.5rem;
   background-color: white;
-  border: solid 1px rgb(206, 212, 218);
+  border: solid 1px rgba(0,0,0,0.4);
   border-radius: 4px;
 }
 

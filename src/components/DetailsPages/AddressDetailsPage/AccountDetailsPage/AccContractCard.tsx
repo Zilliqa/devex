@@ -17,7 +17,7 @@ const AccContractCard: React.FC<IProps> = ({ contract, index }) => {
 
   const [ showState, setShowState ] = useState<boolean>(false)
 
-  return <Card style={{ border: '1px solid rgba(0, 0, 0, .3)', marginBottom: '1rem' }}>
+  return <Card className='acc-contract-card'>
     <Card.Body style={{ padding: '1rem', cursor: 'pointer' }} onClick={()=>{setShowState((prevState) => !prevState)}} key={index}>
       <div style={{ display: 'flex', justifyContent: 'space-between'}}>
         <span>
