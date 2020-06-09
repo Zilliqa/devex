@@ -31,6 +31,8 @@ const DSBlockDetailsPage: React.FC = () => {
     let receivedData: DsBlockObj
     const getData = async () => {
       try {
+        if (isNaN(blockNum))
+          throw new Error('Not a valid block number')
         receivedData = await dataService.getDSBlockDetails(blockNum)
         if (receivedData)
           setData(receivedData)

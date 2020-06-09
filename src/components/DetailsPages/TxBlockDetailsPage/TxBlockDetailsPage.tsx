@@ -47,6 +47,9 @@ const TxBlockDetailsPage: React.FC = () => {
     let receivedData: MappedTxBlock | null
     const getData = async () => {
       try {
+        console.log(blockNum)
+        if (isNaN(blockNum))
+          throw new Error('Not a valid block number')
         receivedData = await dataService.getTxBlockDetails(parseInt(blockNum))
         if (receivedData)
           setData(receivedData)
