@@ -5,7 +5,7 @@ import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
 import { NetworkContext } from 'src/services/networkProvider'
 import { hexAddrToZilAddr, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
-import { TransactionObj } from '@zilliqa-js/core/src/types'
+import { TransactionObj, TxList } from '@zilliqa-js/core/src/types'
 
 import './TxnsPage.css'
 
@@ -59,12 +59,15 @@ const TxnsPage: React.FC = () => {
     if (!dataService) return
 
     const fetchId = ++fetchIdRef.current
+    let txnHashes: string[] | null
+    let txnList: TxList
+    let txnBodies: TransactionObj[]
     const getData = async () => {
       try {
         setIsLoading(true)
-        let txnHashes = recentTxnHashes
+        txnHashes = recentTxnHashes
         if (!txnHashes) {
-          let txnList = await dataService.getRecentTransactions()
+          txnList = await dataService.getRecentTransactions()
           txnHashes = txnList.TxnHashes
           setPageCount(Math.ceil(txnList.number / 10))
           setRecentTxnHashes(txnHashes)
@@ -72,7 +75,7 @@ const TxnsPage: React.FC = () => {
 
         let slicedTxnHashes = txnHashes.slice(pageIndex * 10, pageIndex * 10 + 10)
         if (slicedTxnHashes) {
-          let txnBodies = await dataService.getTransactionsDetails(slicedTxnHashes)
+          txnBodies = await dataService.getTransactionsDetails(slicedTxnHashes)
           setData(txnBodies)
           setIsLoading(false)
         }

@@ -45,4 +45,4 @@ export interface AccContract {
   state: any;
 }
 
-export interface AccContracts extends Array<AccContract>{}
+type AccContracts = AccContract[]

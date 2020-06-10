@@ -19,7 +19,7 @@ import { NetworkProvider } from './services/networkProvider'
 import './index.css'
 
 const ScrollToTop = ({ children }: { children: React.ReactNode }) => {
-  let location = useLocation()
+  const location = useLocation()
   const prevLocation = useRef<string>();
 
   useEffect(() => {

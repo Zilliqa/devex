@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, useEffect, SyntheticEvent } from 'react'
 import { Navbar, Nav, NavDropdown, Tooltip, OverlayTrigger, Form } from 'react-bootstrap'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -13,7 +13,7 @@ import './Header.css'
 
 const Header: React.FC = () => {
 
-  let location = useLocation();
+  const location = useLocation();
   const networkContext = useContext(NetworkContext)
   const { isIsolatedServer, nodeUrl, setNodeUrl, nodeUrlMap, setNodeUrlMap } = networkContext!
   const [currentNetwork, setCurrentNetwork] = useState(nodeUrlMap[localStorage.getItem('nodeUrl')!] || defaultNetworks[nodeUrl])
@@ -29,21 +29,26 @@ const Header: React.FC = () => {
   }, [location]);
 
   const addNewNode = () => {
-    nodeUrlMap[newNode] = newNode
-    setNodeUrlMap((prev: any) => ({ ...prev, [newNode]: newNode }))
-    setCurrentNetwork(newNode)
-    setNodeUrl && setNodeUrl(newNode)
-    setNewNode('')
-    setShowDropdown(false)
+    if (Object.keys(nodeUrlMap).includes(newNode)) {
+      setNewNode('')
+      setShowDropdown(false)
+      return
+    }
+    else {
+      nodeUrlMap[newNode] = newNode
+      setNodeUrlMap(nodeUrlMap)
+      setCurrentNetwork(newNode)
+      setNodeUrl && setNodeUrl(newNode)
+      setNewNode('')
+      setShowDropdown(false)
+    }
   }
 
-  const deleteNode = (k: any, v: any) => {
+  const deleteNode = (k: string, v: string) => {
     delete nodeUrlMap[k]
     setNodeUrlMap(nodeUrlMap)
-    if (currentNetwork === v) {
-      setCurrentNetwork('Mainnet')
-      setNodeUrl && setNodeUrl('https://api.zilliqa.com/')
-    }
+    setCurrentNetwork('Mainnet')
+    setNodeUrl && setNodeUrl('https://api.zilliqa.com/')
     setShowDropdown(false)
   }
 
@@ -77,7 +82,6 @@ const Header: React.FC = () => {
                   setShowSearchbar(false)
                   setCurrentNetwork(v)
                   setNodeUrl && setNodeUrl(k)
-
                 }
               }}>
                 {v}
@@ -101,7 +105,7 @@ const Header: React.FC = () => {
               </div>
             ))}
             <div className='add-node-div'>
-              <Form onSubmit={(e: any) => { e.preventDefault(); addNewNode() }}>
+              <Form onSubmit={(e: SyntheticEvent) => { e.preventDefault(); addNewNode() }}>
                 <Form.Control
                   type="text"
                   value={newNode}

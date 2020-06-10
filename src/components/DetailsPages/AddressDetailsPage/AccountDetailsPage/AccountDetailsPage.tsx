@@ -27,9 +27,9 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
   const [accContracts, setAccContracts] = useState<AccContracts | null>(null)
   const [contractPageIndex, setContractPageIndex] = useState<number>(0)
 
-  const generatePagination = useCallback((currentPage: number, pageCount: number, delta: number = 2) => {
+  const generatePagination = useCallback((currentPage: number, pageCount: number, delta = 2) => {
     const separate = (a: number, b: number, isLower: boolean) => {
-      let temp = b - a
+      const temp = b - a
       if (temp === 0)
         return [a]
       else if (temp === 1)

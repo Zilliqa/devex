@@ -97,13 +97,13 @@ const TxBlockDetailsPage: React.FC = () => {
   const fetchData = useCallback(({ pageIndex }) => {
     if (!data || !dataService) return
 
+    let receivedData: TransactionObj[]
     const getData = async () => {
       try {
         setIsLoading(true)
-        let receivedData = await dataService.getTransactionsDetails(data.txnHashes.slice(pageIndex * 10, pageIndex * 10 + 10))
+        receivedData = await dataService.getTransactionsDetails(data.txnHashes.slice(pageIndex * 10, pageIndex * 10 + 10))
 
         if (receivedData) {
-          console.log(receivedData)
           setTransactionData(receivedData)
           setIsLoading(false)
         }
