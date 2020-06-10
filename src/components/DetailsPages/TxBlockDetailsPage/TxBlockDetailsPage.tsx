@@ -33,7 +33,7 @@ const TxBlockDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useState<MappedTxBlock | null>(null)
   const [latestTxBlockNum, setLatestTxBlockNum] = useState<number | null>(null)
@@ -44,11 +44,12 @@ const TxBlockDetailsPage: React.FC = () => {
     if (!dataService) return
 
     let latestTxBlockNum: number
-    let receivedData: MappedTxBlock
+    let receivedData: MappedTxBlock | null
     const getData = async () => {
       try {
-        receivedData = await dataService.getTxBlockDetails(blockNum)
-        console.log(receivedData)
+        if (isNaN(blockNum))
+          throw new Error('Not a valid block number')
+        receivedData = await dataService.getTxBlockDetails(parseInt(blockNum))
         if (receivedData)
           setData(receivedData)
         latestTxBlockNum = await dataService.getNumTxBlocks()
@@ -59,8 +60,16 @@ const TxBlockDetailsPage: React.FC = () => {
         setError(e)
       }
     }
+
     getData()
-  }, [dataService, blockNum])
+    return () => {
+      setData(null)
+      setLatestTxBlockNum(null)
+      setError(null)
+    }
+    // Run only once for each block
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blockNum, dataService])
 
   const columns = useMemo(
     () => [{
@@ -86,7 +95,7 @@ const TxBlockDetailsPage: React.FC = () => {
   )
 
   const fetchData = useCallback(({ pageIndex }) => {
-    if (!data) return
+    if (!data || !dataService) return
 
     const getData = async () => {
       try {
@@ -209,7 +218,7 @@ const TxBlockDetailsPage: React.FC = () => {
               <Card.Body>
                 <Container>
                   <h6>Micro Blocks</h6>
-                  {data.body.MicroBlockInfos.map((x) => <div>[{x.MicroBlockShardId}] {x.MicroBlockHash}</div>)}
+                  {data.body.MicroBlockInfos.map((x) => <div key={x.MicroBlockHash}>[{x.MicroBlockShardId}] {x.MicroBlockHash}</div>)}
                 </Container>
               </Card.Body>
             </Card>

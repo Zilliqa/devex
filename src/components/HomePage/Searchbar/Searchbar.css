@@ -5,6 +5,12 @@
   border-right: none;
   color: #6c757d !important;
   box-shadow: none !important;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.searchbar-ig .dropdown-menu.show {
+  min-width: fit-content;
 }
 
 .searchbar-ig .dropdown-item:active {

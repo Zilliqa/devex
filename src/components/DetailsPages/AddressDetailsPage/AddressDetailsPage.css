@@ -23,6 +23,10 @@
   white-space: nowrap;
 }
 
+.address-details-card .card {
+  border-radius: 0;
+}
+
 .address-detail {
   display: flex;
   justify-content: space-between;
@@ -32,4 +36,74 @@
 
 .address-detail-header {
   font-weight: 500;
+}
+
+/* Account Contracts  */
+
+.contract-spinner {
+  text-align: center;
+  margin: 20vh;
+}
+
+.num-contracts {
+  margin: 1rem 1.25rem;
+  padding: 0.5rem;
+  height: fit-content;
+  border: solid 1px grey;
+  background-color: white;
+  display: inline-flex;
+  align-items: center;
+}
+
+.contract-pagination {
+  margin: 1rem 1.25rem;
+}
+
+.contract-pagination .page-item:focus {
+  outline: none;
+}
+
+.contract-pagination .page-item.active .page-link {
+  background-color: #019c99;
+  border-color: #019c99;
+}
+
+.contract-pagination .page-link {
+  color: #019c99;
+}
+
+.contract-pagination .page-link:focus {
+  box-shadow: none;
+}
+
+/* Account Contracts Card */
+
+.acc-contract-card {
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+}
+
+.acc-contract-card :hover {
+  background-color: #fafafa;
+}
+
+.acc-contract-card .card-body {
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.acc-contract-card .card-body div {
+  display: flex;
+  justify-content: space-between;
+}
+
+.acc-contract-card pre {
+  margin: 0;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.acc-contract-card .collapse, .acc-contract-card .collapsing {
+  border-top: 1px solid rgba(0, 0, 0, .25);
+  white-space: pre-wrap;
+  padding: 1rem;
 }

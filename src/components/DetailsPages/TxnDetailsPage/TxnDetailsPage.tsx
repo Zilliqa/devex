@@ -12,7 +12,7 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faExclamationCircle, faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
 
 import InfoTabs from '../InfoTabs/InfoTabs'
-import TransitionsTab from '../InfoTabs/TransaitionsTab'
+import TransitionsTab from '../InfoTabs/TransitionsTab'
 import EventsTab from '../InfoTabs/EventsTab'
 import DefaultTab from '../InfoTabs/DefaultTab'
 import ContractCreationTab from '../InfoTabs/ContractCreationTab'
@@ -26,7 +26,7 @@ const TxnDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string| null>(null)
   const [data, setData] = useState<TransactionDetails | null>(null)
 
   const generateTabsObj = () => {
@@ -39,7 +39,7 @@ const TxnDetailsPage: React.FC = () => {
 
     if (!data) return tabs
 
-    if (data.receipt.success && data.contractAddr) {
+    if (data.receipt.success === undefined || (data.receipt.success && data.contractAddr)) {
       tabs.tabHeaders.push('contractAddr')
       tabs.tabTitles.push(`Contract Creation`)
       tabs.tabContents.push(<ContractCreationTab contractAddr={data.contractAddr!} />)
@@ -89,6 +89,10 @@ const TxnDetailsPage: React.FC = () => {
     }
 
     getData()
+    return () => {
+      setData(null)
+      setError(null)
+    }
   }, [dataService, txnHash])
 
   return <>
@@ -98,7 +102,7 @@ const TxnDetailsPage: React.FC = () => {
         <>
           <h3>
             <span>
-              {data.receipt.success ? <FontAwesomeIcon color='green' icon={faExchangeAlt} /> : <FontAwesomeIcon color='red' icon={faExclamationCircle} />}
+              {(data.receipt.success === undefined || data.receipt.success) ? <FontAwesomeIcon color='green' icon={faExchangeAlt} /> : <FontAwesomeIcon color='red' icon={faExclamationCircle} />}
             </span>
             <span style={{ marginLeft: '0.75rem' }}>
               Transaction

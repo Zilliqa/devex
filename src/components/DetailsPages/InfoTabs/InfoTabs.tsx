@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Card, Container, Tabs, Tab } from 'react-bootstrap'
 
-type IProps = {
+interface IProps {
   tabs: {
     tabHeaders: string[],
     tabTitles: string[],
@@ -19,7 +19,7 @@ const InfoTabs: React.FC<IProps> = ({ tabs }) => {
         <Card.Header className='tabs-card-header'>
           <Tabs id="additional-info-tabs" activeKey={currTab} onSelect={(k: string) => setCurrTab(k)}>
             {tabHeaders.map((tabHeader: string, index: number) => (
-              <Tab eventKey={tabHeader} title={[tabTitles[index]]} />
+              <Tab key={index} eventKey={tabHeader} title={[tabTitles[index]]} />
             ))}
           </Tabs>
         </Card.Header>

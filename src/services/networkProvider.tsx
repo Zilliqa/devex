@@ -5,28 +5,31 @@ import { DataService } from './dataService'
 
 type NetworkState = {
   connStatus: boolean,
-  dataService: DataService,
+  isIsolatedServer: boolean | null,
+  dataService: DataService | null,
+  nodeUrl: string,
+  setNodeUrl: (nodeUrl: string) => void,
   nodeUrlMap: { [key: string]: string },
   setNodeUrlMap: any,
-  nodeUrl: string,
-  setNodeUrl: (nodeUrl: string) => void
 }
 
 export const defaultNetworks: {[key: string]: string} = {
   'https://api.zilliqa.com/': 'Mainnet',
   'https://dev-api.zilliqa.com/': 'Testnet',
-  'https://zilliqa-isolated-server.zilliqa.com/': 'Simulated Env'
+  'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server',
+  'https://stg-zilliqa-isolated-server.zilliqa.com/': 'Staging Isolated Server'
 }
 
 export const NetworkContext = React.createContext<NetworkState | null>(null)
 
 export const NetworkProvider: React.FC = (props) => {
+  
   let history = useHistory()
-  const dataService = new DataService(localStorage.getItem('nodeUrl'))
 
   const [state, setState] = useState<NetworkState>({
     connStatus: false,
-    dataService: dataService,
+    isIsolatedServer: false,
+    dataService: null,
     nodeUrlMap: localStorage.getItem('nodeUrlMap')
       ? JSON.parse(localStorage.getItem('nodeUrlMap')!)
       : {},
@@ -35,10 +38,11 @@ export const NetworkProvider: React.FC = (props) => {
     },
     nodeUrl: localStorage.getItem('nodeUrl') || 'https://api.zilliqa.com/',
     setNodeUrl: (newNodeUrl: string) => {
-      setState({ ...state, dataService: new DataService(newNodeUrl), nodeUrl: newNodeUrl })
+      setState({ ...state, nodeUrl: newNodeUrl })
     }
   })
 
+  /* Storage useEffects */
   useEffect(() => {
     localStorage.setItem('nodeUrl', state.nodeUrl);
   }, [state.nodeUrl])
@@ -49,11 +53,34 @@ export const NetworkProvider: React.FC = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(state.nodeUrlMap)])
 
-  // Redirect to home page if dataservice change
+  /* Redirect useEffect */
   useEffect(() => {
     return () => history.push('/')
     // Effect is independent of history
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.nodeUrl])
+
+  // If nodeurl changes, update dataservice
+  useEffect(()=> {
+    setState((prevState: NetworkState) => (
+      { ...prevState, dataService: new DataService(prevState.nodeUrl), isIsolatedServer: null }))
+  }, [state.nodeUrl])
+
+  // If dataservice changes, update isIsolatedServer
+  useEffect(() => {
+    const checkNetwork = async () => {
+      try {
+        if (!state.dataService) return
+        let res: boolean = await state.dataService.isIsolatedServer()
+        setState((prevState: NetworkState) => (
+          { ...prevState, isIsolatedServer: res }))
+      } catch (e) {
+        console.log(e)
+      }
+    }
+    
+    checkNetwork()
+
   }, [state.dataService])
 
   return <NetworkContext.Provider value={state}>

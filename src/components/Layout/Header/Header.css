@@ -2,7 +2,7 @@
   padding: .5rem 10%;
   position: sticky;
   height: 70px;
-  background-color: #F8F8F8;
+  background-color: rgb(240,240,240);
   border-bottom: solid 1px slategrey;
 }
 
@@ -10,6 +10,32 @@
   text-decoration: none;
   color: black;
   background: none;
+}
+
+.header-searchbar {
+  margin: auto;
+  width: 100%;
+  max-width: 550px;
+}
+
+.header-searchbar #searchbar-dropdown {
+  background-color: white;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.header-searchbar .searchbar-ig {
+  margin-bottom: 0;
+}
+.header-searchbar .input-group-append {
+  background-color: white;
+}
+
+#header-network-dropdown {
+  margin: 0 0.5rem;
+  background-color: white;
+  border: solid 1px rgba(0,0,0,0.4);
+  border-radius: 4px;
 }
 
 .info-icon {
@@ -47,8 +73,7 @@
 }
 
 .custom-navbar .dropdown-menu {
-  width: 225px;
-  left: -1.5rem;
+  min-width: fit-content;
 }
 
 .custom-navbar-brand {

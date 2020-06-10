@@ -2,11 +2,20 @@ import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Form, InputGroup, Button, Dropdown, DropdownButton } from 'react-bootstrap'
 
+import { validation } from '@zilliqa-js/util'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import './Searchbar.css'
 
-const Searchbar: React.FC = () => {
+interface IProps {
+  isHeaderSearchbar: boolean,
+  isISSearchbar: boolean,
+}
+
+const Searchbar: React.FC<IProps> = ({ isHeaderSearchbar, isISSearchbar }) => {
   const [input, setInput] = useState("")
-  const [searchType, setSearchType] = useState('Transaction')
+  const [searchType, setSearchType] = useState('Txn/Addr')
   let history = useHistory()
 
   const handleChange = (e: any) => {
@@ -15,38 +24,49 @@ const Searchbar: React.FC = () => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
+    let trimmedInput = input.trim()
     switch (searchType) {
-      case 'Transaction':
-        history.push(`/tx/${input.trim()}`)
+      case 'Txn/Addr':
+        if (trimmedInput.substring(0, 3) !== 'zil' && trimmedInput.substring(0, 2) !== '0x')
+          trimmedInput = '0x' + trimmedInput
+        if (validation.isAddress(trimmedInput) || validation.isBech32(trimmedInput))
+          history.push(`/address/${trimmedInput}`)
+        else
+          history.push(`/tx/${trimmedInput}`)
         break
       case 'Tx Block':
-        history.push(`/txbk/${input.trim()}`)
+        history.push(`/txbk/${trimmedInput}`)
         break
       case 'DS Block':
-        history.push(`/dsbk/${input.trim()}`)
-        break
-      case 'Address':
-        history.push(`/address/${input.trim()}`)
+        history.push(`/dsbk/${trimmedInput}`)
         break
     }
+    setInput('')
   }
 
   return <>
     <Form onSubmit={handleSubmit}>
-      <InputGroup className="searchbar-ig" id="contractAddress">
-        <InputGroup.Prepend>
-          <DropdownButton variant="outline-secondary" id='searchbar-dropdown' title={searchType}>
-            <Dropdown.Item onClick={() => setSearchType('Transaction')}>Transaction</Dropdown.Item>
-            <Dropdown.Item onClick={() => setSearchType('Address')}>Address</Dropdown.Item>
-            <Dropdown.Item onClick={() => setSearchType('Tx Block')}>Tx Block</Dropdown.Item>
-            <Dropdown.Item onClick={() => setSearchType('DS Block')}>DS Block</Dropdown.Item>
-          </DropdownButton>
-        </InputGroup.Prepend>
-        <Form.Control type="text" value={input} autoFocus
-          placeholder="Search for a transaction, an address or a block" onChange={handleChange} />
+      <InputGroup className="searchbar-ig" id="searchbar-ig">
+        {!isISSearchbar &&
+          <InputGroup.Prepend>
+            <DropdownButton variant="outline-secondary" id='searchbar-dropdown' title={searchType}>
+              <Dropdown.Item onClick={() => setSearchType('Txn/Addr')}>Txn/Addr</Dropdown.Item>
+              <Dropdown.Item onClick={() => setSearchType('Tx Block')}>Tx Block</Dropdown.Item>
+              <Dropdown.Item onClick={() => setSearchType('DS Block')}>DS Block</Dropdown.Item>
+            </DropdownButton>
+          </InputGroup.Prepend>
+        }
+        <Form.Control type="text" value={input} autoFocus={!isHeaderSearchbar}
+          placeholder={
+            searchType === 'Txn/Addr'
+              ? 'Search for a transaction or an address'
+              : searchType === 'Tx Block'
+                ? 'Search by Tx Block height'
+                : 'Search by DS Block height'}
+          onChange={handleChange} />
         <InputGroup.Append>
           <Button type="submit" variant="outline-secondary">
-            <div>Search</div>
+            {isHeaderSearchbar ? <FontAwesomeIcon icon={faSearch} /> : <div>Search</div>}
           </Button>
         </InputGroup.Append>
       </InputGroup>

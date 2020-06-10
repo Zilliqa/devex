@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
+
+import { NetworkContext } from 'src/services/networkProvider'
 
 import Dashboard from './Dashboard/Dashboard'
 import Searchbar from './Searchbar/Searchbar'
+import IsolatedServerPage from '../IsolatedServerPage/IsolatedServerPage'
 
 /*
             Home Layout
@@ -16,11 +19,21 @@ import Searchbar from './Searchbar/Searchbar'
     ++++++++++++++++++++++++++++
 */
 const HomePage: React.FC = () => {
-  return (
-    <div>
-      <Searchbar />
-      <Dashboard />
-    </div>
+  const networkContext = useContext(NetworkContext)
+  const { isIsolatedServer } = networkContext!
+
+return (
+  <>
+    {isIsolatedServer !== null
+      ? isIsolatedServer
+        ? <IsolatedServerPage />
+        : <div>
+          <Searchbar isISSearchbar={false} isHeaderSearchbar={false} />
+          <Dashboard />
+        </div>
+      : null
+    }
+  </>
   );
 }
 

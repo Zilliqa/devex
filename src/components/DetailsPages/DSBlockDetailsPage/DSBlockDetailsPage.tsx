@@ -19,7 +19,7 @@ const DSBlockDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string| null>(null)
   const [data, setData] = useState<DsBlockObj | null>(null)
   const [latestDSBlockNum, setLatestDSBlockNum] = useState<number | null>(null)
 
@@ -31,6 +31,8 @@ const DSBlockDetailsPage: React.FC = () => {
     let receivedData: DsBlockObj
     const getData = async () => {
       try {
+        if (isNaN(blockNum))
+          throw new Error('Not a valid block number')
         receivedData = await dataService.getDSBlockDetails(blockNum)
         if (receivedData)
           setData(receivedData)
@@ -42,8 +44,16 @@ const DSBlockDetailsPage: React.FC = () => {
         setError(e)
       }
     }
+    
     getData()
-  }, [dataService, blockNum])
+    return () => {
+      setData(null)
+      setLatestDSBlockNum(null)
+      setError(null)
+    }
+    // Run only once for each block
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blockNum, dataService])
 
   return <>
     {error
@@ -134,7 +144,7 @@ const DSBlockDetailsPage: React.FC = () => {
               <Card.Body>
                 <Container>
                   <h6>PoW Winners</h6>
-                  {data.header.PoWWinners.map((x, index) => <div>[{index + 1}] {pubKeyToZilAddr(x)}</div>)}
+                  {data.header.PoWWinners.map((x, index) => <div key={index}>[{index + 1}] {pubKeyToZilAddr(x)}</div>)}
                 </Container>
               </Card.Body>
             </Card>

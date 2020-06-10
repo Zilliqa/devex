@@ -59,7 +59,8 @@ const DSBlocksPage = () => {
   const [data, setData] = useState<DsBlockObj[] | null>(null)
 
   const fetchData = useCallback(({ pageIndex }) => {
-
+    if (!dataService) return
+    
     const fetchId = ++fetchIdRef.current
     const getData = async () => {
       try {

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
 import { TransitionEntry } from '@zilliqa-js/core/src/types'
@@ -14,7 +15,7 @@ const TransitionsTab = ({ transitions }: { transitions: TransitionEntry[] }) => 
           </tr>
           <tr>
             <th>Contract Address</th>
-            <td>{hexAddrToZilAddr(transition.addr)}</td>
+            <td>{<Link to={`/address/${hexAddrToZilAddr(transition.addr)}`}>{hexAddrToZilAddr(transition.addr)}</Link>}</td>
           </tr>
           <tr>
             <th>Accepts $ZIL</th>
@@ -32,17 +33,17 @@ const TransitionsTab = ({ transitions }: { transitions: TransitionEntry[] }) => 
           </tr>
           <tr>
             <th>Recipient</th>
-            <td>{hexAddrToZilAddr(transition.msg._recipient)}</td>
+            <td>{<Link to={`/address/${hexAddrToZilAddr(transition.msg._recipient)}`}>{hexAddrToZilAddr(transition.msg._recipient)}</Link>}</td>
           </tr>
           {transition.msg.params.length > 0 && (
             <>
-              <tr style={{ height: '20px' }}><hr /></tr>
+              <tr style={{ height: '20px' }}><td><hr /></td></tr>
               <tr>
                 <td className="txn-detail-header">Variable</td>
                 <td className="txn-detail-header">Value</td>
               </tr>
-              {transition.msg.params.map(param => (
-                <tr>
+              {transition.msg.params.map((param, index) => (
+                <tr key={index}>
                   <td>{param.vname}</td>
                   <td>
                     {typeof param.value === 'object'

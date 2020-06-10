@@ -56,6 +56,7 @@ const TxnsPage: React.FC = () => {
   const [recentTxnHashes, setRecentTxnHashes] = useState<string[] | null>(null)
 
   const fetchData = useCallback(({ pageIndex }) => {
+    if (!dataService) return
 
     const fetchId = ++fetchIdRef.current
     const getData = async () => {

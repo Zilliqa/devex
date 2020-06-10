@@ -1,4 +1,4 @@
-import {TxBlockObj, TransactionObj, TxList} from '@zilliqa-js/core/src/types'
+import { DsBlockObj, TxBlockObj, TransactionObj, TxList } from '@zilliqa-js/core/src/types'
 
 export interface MappedDSBlockListing {
   data: DsBlockObj[],
@@ -25,7 +25,7 @@ export interface InitParam {
   vname: string;
 }
 
-export interface ContractDetails {
+export interface ContractData {
   code: string;
   initParams: InitParam[];
   state: any;
@@ -34,3 +34,15 @@ export interface ContractDetails {
 export interface MappedTxList extends TxList {
   txnBodies: TransactionObj[];
 }
+
+export interface AccData {
+  balance: number;
+  nonce: number;
+}
+
+export interface AccContract {
+  address: string;
+  state: any;
+}
+
+export interface AccContracts extends Array<AccContract>{}

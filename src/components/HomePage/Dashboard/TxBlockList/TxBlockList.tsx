@@ -24,6 +24,7 @@ import { timestampToTimeago, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
 // Pre-processing data to display
 const processMap = new Map()
 processMap.set('age-col', timestampToTimeago)
+// https://github.com/react-bootstrap/react-bootstrap/issues/5075
 processMap.set('reward-col', (amt: number) => (
   <OverlayTrigger placement='top'
     overlay={ <Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
