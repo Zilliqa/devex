@@ -29,7 +29,6 @@ export const defaultNetworks: {[key: string]: string} = (process.env['REACT_APP_
 export const NetworkContext = React.createContext<NetworkState | null>(null)
 
 export const NetworkProvider: React.FC = (props) => {
-  console.log(process.env)
   
   const history = useHistory()
 
