@@ -13,12 +13,18 @@ type NetworkState = {
   setNodeUrlMap: (newNodeUrlMap: Record<string, string>) => void,
 }
 
-export const defaultNetworks: {[key: string]: string} = {
-  'https://api.zilliqa.com/': 'Mainnet',
-  'https://dev-api.zilliqa.com/': 'Testnet',
-  'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server',
-  'https://stg-zilliqa-isolated-server.zilliqa.com/': 'Staging Isolated Server'
-}
+export const defaultNetworks: {[key: string]: string} = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
+  ? {
+    'https://api.zilliqa.com/': 'Mainnet',
+    'https://dev-api.zilliqa.com/': 'Testnet',
+    'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server',
+  }
+  : {
+    'https://api.zilliqa.com/': 'Mainnet',
+    'https://dev-api.zilliqa.com/': 'Testnet',
+    'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server',
+    'https://stg-zilliqa-isolated-server.zilliqa.com/': 'Staging Isolated Server'
+  } 
 
 export const NetworkContext = React.createContext<NetworkState | null>(null)
 

@@ -11,9 +11,32 @@ commit=$(git rev-parse --short=7 $TRAVIS_COMMIT)
 accountID=$(aws sts get-caller-identity --output text --query 'Account')
 regionID=us-west-2
 
-application=dev-explorer
-registryURL=${accountID}.dkr.ecr.${regionID}.amazonaws.com/$application
+rm -rf devex-artifact
+mkdir -p devex-artifact/stg/
+mkdir -p devex-artifact/prd/
 
-eval "$(aws ecr get-login --no-include-email --region $regionID)"
-docker build -t "$registryURL:latest" -t "$registryURL:$commit" .
-docker push "$registryURL"
+docker build --build-arg REACT_APP_DEPLOY_ENV="stg" -t "tempimagestg:$commit" .
+docker create --name extractstg "tempimagestg:$commit"
+docker cp extractstg:/app/build/. $(pwd)/devex-artifact/stg/
+
+docker build --build-arg REACT_APP_DEPLOY_ENV="prd" -t "tempimageprd:$commit" .
+docker create --name extractprd "tempimageprd:$commit"
+docker cp extractprd:/app/build/. $(pwd)/devex-artifact/prd/
+
+cd devex-artifact
+cd stg
+echo $commit > devex-artifact-commit.txt
+#tar -czvf devex-artifact-stg.gz .
+zip -r devex-artifact-stg.zip .
+aws s3 sync . s3://devex-static-artifact --exclude='*' --include='devex-artifact-stg.zip'
+
+cd ..
+cd prd
+echo $commit > devex-artifact-commit.txt
+#tar -czvf devex-artifact-prd.gz .
+zip -r devex-artifact-prd.zip .
+aws s3 sync . s3://devex-static-artifact --exclude='*' --include='devex-artifact-prd.zip'
+
+cd ..
+echo $(date) > date_created.txt
+aws s3 sync . s3://devex-static-artifact --exclude='*' --include='date_created.txt'
