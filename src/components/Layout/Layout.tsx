@@ -5,7 +5,9 @@ import Header from './Header/Header'
 import Footer from './Footer/Footer'
 import './Layout.css'
 
-const Layout: React.FC = (props: any) => (
+type Props = { children: React.ReactNode }
+
+const Layout: React.FC<Props> = (props) => (
   <div>
     <Header />
     <Container className="app-container">

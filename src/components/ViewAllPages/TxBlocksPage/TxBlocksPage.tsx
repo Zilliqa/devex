@@ -8,6 +8,7 @@ import { timestampToTimeago, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
 import { TxBlockObj } from '@zilliqa-js/core/src/types'
 
 import './TxBlocksPage.css'
+import { MappedTxBlockListing } from 'src/typings/api'
 
 // Pre-processing data to display
 const processMap = new Map()
@@ -69,10 +70,11 @@ const TxBlocksPage: React.FC = () => {
     if (!dataService) return
 
     const fetchId = ++fetchIdRef.current
+    let receivedData: MappedTxBlockListing
     const getData = async () => {
       try {
         setIsLoading(true)
-        let receivedData = await dataService.getTxBlocksListing(pageIndex + 1)
+        receivedData = await dataService.getTxBlocksListing(pageIndex + 1)
 
         if (receivedData) {
           setData(receivedData.data)

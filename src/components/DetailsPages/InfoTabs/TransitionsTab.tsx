@@ -4,10 +4,14 @@ import { Link } from 'react-router-dom'
 import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
 import { TransitionEntry } from '@zilliqa-js/core/src/types'
 
-const TransitionsTab = ({ transitions }: { transitions: TransitionEntry[] }) => (
+interface IProps {
+  transitions: TransitionEntry[]
+}
+
+const TransitionsTab: React.FC<IProps> = ({ transitions }) => (
   <>
-    {transitions.map((transition: TransitionEntry) => (
-      <table className='receipt-table'>
+    {transitions.map((transition: TransitionEntry, index: number) => (
+      <table key={index} className='receipt-table'>
         <tbody>
           <tr>
             <th>Tag</th>

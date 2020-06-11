@@ -4,7 +4,11 @@ import { Link } from 'react-router-dom'
 import { hexAddrToZilAddr } from 'src/utils/Utils'
 import { EventLogEntry, EventParam } from '@zilliqa-js/core/src/types'
 
-const EventsTab = ({ events }: { events: EventLogEntry[] }) => {
+interface IProps {
+  events: EventLogEntry[]
+}
+
+const EventsTab: React.FC<IProps> = ({ events }) => {
 
   const highlightEventParams = useCallback((params: EventParam[]): React.ReactNode => {
     return params
@@ -14,13 +18,13 @@ const EventsTab = ({ events }: { events: EventLogEntry[] }) => {
           {' '}
           {param.vname}
         </span>))
-      .reduce((acc, ele): any => (acc === null ? [ele] : [acc, ', ', ele] as any))
+      .reduce((acc, ele): any => (acc === null ? [ele] : [acc, ', ', ele]))
   }, [])
 
   return (
     <>
-      {events.map((event: EventLogEntry) => (
-        <table className='receipt-table'>
+      {events.map((event: EventLogEntry, index: number) => (
+        <table key={index} className='receipt-table'>
           <tbody>
             <tr>
               <th>Function</th>

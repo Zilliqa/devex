@@ -6,7 +6,7 @@ import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 
 import './NotFoundPage.css'
 
-const NotFoundPage = () => {
+const NotFoundPage: React.FC = () => {
   return <>
     <Card className='not-found-card'>
       <Card.Body>

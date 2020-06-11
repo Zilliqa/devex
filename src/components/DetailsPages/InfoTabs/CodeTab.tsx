@@ -1,9 +1,14 @@
 import React from 'react'
 import AceEditor from 'react-ace'
+
 import "ace-builds/src-noconflict/mode-ocaml"
 import "ace-builds/src-noconflict/theme-textmate"
 
-const CodeTab = ({ code }: { code: any }) => {
+interface IProps {
+  code: string
+}
+
+const CodeTab: React.FC<IProps> = ({ code }) => {
   return (
     <>
       <AceEditor
