@@ -5,4 +5,4 @@ WORKDIR /app
 COPY ./package.json ./
 RUN yarn install 
 COPY . ./
-CMD ["yarn", "build"]
+RUN yarn build

@@ -17,13 +17,11 @@ mkdir -p devex-artifact/prd/
 
 docker build --build-arg REACT_APP_DEPLOY_ENV="stg" -t "tempimagestg:$commit" .
 docker create --name extractstg "tempimagestg:$commit"
-docker cp extractstg:/usr/share/nginx/html/. $(pwd)/devex-artifact/stg/
-docker rm extractstg
+docker cp extractstg:/app/build/. $(pwd)/devex-artifact/stg/
 
-docker build --build-arg DEPLOY_ENV="prd" -t "tempimageprd:$commit" .
+docker build --build-arg REACT_APP_DEPLOY_ENV="prd" -t "tempimageprd:$commit" .
 docker create --name extractprd "tempimageprd:$commit"
-docker cp extractprd:/usr/share/nginx/html/. $(pwd)/devex-artifact/prd/
-docker rm extractprd
+docker cp extractprd:/app/build/. $(pwd)/devex-artifact/prd/
 
 cd devex-artifact
 cd stg
