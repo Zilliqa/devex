@@ -8,7 +8,7 @@ import { refreshRate } from 'src/constants'
 import './BCInfo.css'
 
 const BCInfo: React.FC = () => {
-  
+
   const networkContext = useContext(NetworkContext)
   const { dataService, nodeUrl } = networkContext!
 
@@ -44,22 +44,19 @@ const BCInfo: React.FC = () => {
 
   return <>
     <Card className='bcstats-card'>
-      <Card.Header>
-        <span>Blockchain Info</span>
-      </Card.Header>
       <Card.Body>
         {data
           ? <Container>
             <Row style={{ marginBottom: '1rem' }}>
               <Col>
-                <span className='bcstats-header'>DS Block Height:</span>
+                <span className='bcstats-header'>Current Tx Block:</span>
                 <br />
-                <span>{data.NumDSBlocks}</span>
+                <span>{parseInt(data.NumTxBlocks).toLocaleString('en')}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>TX Block Height:</span>
+                <span className='bcstats-header'>Number of Transactions:</span>
                 <br />
-                <span>{data.NumTxBlocks}</span>
+                <span>{parseInt(data.NumTransactions).toLocaleString('en')}</span>
               </Col>
               <Col>
                 <span className='bcstats-header'>Peers:</span>
@@ -67,17 +64,34 @@ const BCInfo: React.FC = () => {
                 <span>{data.NumPeers}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>Number of Transactions:</span>
+                <span className='bcstats-header'>Sharding Structure:</span>
                 <br />
-                <span>{data.NumTransactions}</span>
+                <span>[{data.ShardingStructure.NumPeers.toString()}]</span>
               </Col>
             </Row>
-            <Row>
+            <Row style={{ marginBottom: '1rem' }}>
+              <Col>
+                <span className='bcstats-header'>Current DS Epoch:</span>
+                <br />
+                <span>{data.CurrentDSEpoch}</span>
+              </Col>
+              <Col>
+                <span className='bcstats-header'>DS Block Rate:</span>
+                <br />
+                <span>{data.DSBlockRate}</span>
+              </Col>
+              <Col>
+                <span className='bcstats-header'>Tx Block Rate:</span>
+                <br />
+                <span>{data.TxBlockRate}</span>
+              </Col>
               <Col>
                 <span className='bcstats-header'>TPS:</span>
                 <br />
                 <span>{data.TransactionRate}</span>
               </Col>
+            </Row>
+            <Row>
               <Col>
                 <span className='bcstats-header'>Number of Txns in DS Epoch:</span>
                 <br />
@@ -88,6 +102,7 @@ const BCInfo: React.FC = () => {
                 <br />
                 <span>{data.NumTxnsTxEpoch}</span>
               </Col>
+              <Col></Col>
               <Col></Col>
             </Row>
           </Container>
