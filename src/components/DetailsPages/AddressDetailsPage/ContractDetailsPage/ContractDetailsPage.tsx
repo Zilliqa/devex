@@ -8,6 +8,8 @@ import CodeTab from 'src/components/DetailsPages/InfoTabs/CodeTab'
 import { NetworkContext } from 'src/services/networkProvider'
 import { ContractData } from 'src/typings/api'
 import { qaToZil } from 'src/utils/Utils'
+import { fromBech32Address, toBech32Address } from '@zilliqa-js/crypto'
+import { validation } from '@zilliqa-js/util'
 
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faFileContract } from '@fortawesome/free-solid-svg-icons'
@@ -96,9 +98,16 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
           </h3>
         </div>
         <div style={{ display: 'flex' }}>
-          <h6 className='address-hash'>{addrRef.current}</h6>
+          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current)}</h6>
           <div onClick={() => {
-            navigator.clipboard.writeText(addrRef.current)
+            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current))
+          }} className='address-hash-copy-btn'>
+            <FontAwesomeIcon icon={faCopy} />
+          </div>
+        </div><div style={{ display: 'flex' }}>
+          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current}</h6>
+          <div onClick={() => {
+            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current)
           }} className='address-hash-copy-btn'>
             <FontAwesomeIcon icon={faCopy} />
           </div>
@@ -115,24 +124,24 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
                 </Col>
               </Row>
               {creationTxnHash && <>
-              <Row>
-                <Col>
-                  <div className='address-detail' style={{ justifyContent: 'start' }}>
-                    <span className='address-detail-header' style={{ marginRight:'auto' }}>Contract Creation:</span>
-                    <span style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      <Link to={`/address/${owner}`}>
-                        {owner}
-                      </Link>
-                    </span>
-                    <span>{'at'}</span>
-                    <span style={{ paddingLeft:'0.5rem', maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      <Link to={`/tx/${creationTxnHash}`}>
-                        {creationTxnHash}
-                      </Link>
-                    </span>
-                  </div>
-                </Col>
-              </Row>
+                <Row>
+                  <Col>
+                    <div className='address-detail' style={{ justifyContent: 'start' }}>
+                      <span className='address-detail-header' style={{ marginRight: 'auto' }}>Contract Creation:</span>
+                      <span style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        <Link to={`/address/${owner}`}>
+                          {owner}
+                        </Link>
+                      </span>
+                      <span>{'at'}</span>
+                      <span style={{ paddingLeft: '0.5rem', maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        <Link to={`/tx/${creationTxnHash}`}>
+                          {creationTxnHash}
+                        </Link>
+                      </span>
+                    </div>
+                  </Col>
+                </Row>
               </>}
             </Container>
           </Card.Body>

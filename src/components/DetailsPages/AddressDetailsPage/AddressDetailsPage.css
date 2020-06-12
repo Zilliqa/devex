@@ -9,10 +9,12 @@
 .address-hash {
   color: grey;
   margin-right: 10px;
+  margin-bottom: 0;
 }
 
 .address-hash-copy-btn {
   cursor: pointer;
+  margin-top: -3px;
 }
 
 /* Card */

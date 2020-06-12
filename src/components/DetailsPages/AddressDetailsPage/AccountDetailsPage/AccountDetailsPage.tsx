@@ -4,6 +4,8 @@ import { Card, Container, Row, Col, Pagination, Spinner } from 'react-bootstrap'
 import { NetworkContext } from 'src/services/networkProvider'
 import { AccData, AccContracts, AccContract } from 'src/typings/api'
 import { qaToZil } from 'src/utils/Utils'
+import { fromBech32Address, toBech32Address } from '@zilliqa-js/crypto'
+import { validation } from '@zilliqa-js/util'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
@@ -94,9 +96,16 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
           </h3>
         </div>
         <div style={{ display: 'flex' }}>
-          <h6 className='address-hash'>{addrRef.current}</h6>
+          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current)}</h6>
           <div onClick={() => {
-            navigator.clipboard.writeText(addrRef.current)
+            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current))
+          }} className='address-hash-copy-btn'>
+            <FontAwesomeIcon icon={faCopy} />
+          </div>
+        </div><div style={{ display: 'flex' }}>
+          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current}</h6>
+          <div onClick={() => {
+            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current)
           }} className='address-hash-copy-btn'>
             <FontAwesomeIcon icon={faCopy} />
           </div>

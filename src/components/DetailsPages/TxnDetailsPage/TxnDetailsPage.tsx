@@ -109,9 +109,9 @@ const TxnDetailsPage: React.FC = () => {
           </span>
           </h3>
           <div style={{ display: 'flex' }}>
-            <h6 className='txn-hash'>{data.hash}</h6>
+            <h6 className='txn-hash'>{'0x' + data.hash}</h6>
             <div onClick={() => {
-              navigator.clipboard.writeText(data.hash)
+              navigator.clipboard.writeText('0x' + data.hash)
             }} className='txn-hash-copy-btn'>
               <FontAwesomeIcon icon={faCopy} />
             </div>
