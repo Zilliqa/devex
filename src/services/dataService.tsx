@@ -207,11 +207,8 @@ export class DataService {
     const txnHashes: any[] = response.result.TxnHashes.slice(0, 5)
 
     // Map DSBlock with header info
-    const output = await Promise.all(txnHashes.map(async txnHash => {
-      const txn = await this.zilliqa.blockchain.getTransaction(txnHash)
-      txn.amount = txn.amount.toString()
-      return { ...txn, hash: txnHash }
-    }))
+    const output = await Promise.all(txnHashes.map(async txnHash => (
+      await this.getTransactionDetails(txnHash))))
     return output as TransactionObj[]
   }
 
@@ -223,12 +220,14 @@ export class DataService {
 
   async getTransactionDetails(txnHash: string): Promise<TransactionDetails> {
     console.log("getting transaction details")
-    const blockData = await this.zilliqa.blockchain.getTransaction(txnHash.substring(2))
-    blockData['hash'] = txnHash
-    const contractAddr = await this.getContractAddrFromTransaction(txnHash.substring(2))
-    if (contractAddr)
-      blockData['contractAddr'] = contractAddr
-    return blockData as TransactionDetails
+    if (txnHash.substring(0, 2) === '0x')
+      txnHash = txnHash.substring(2)
+    const txn = await this.zilliqa.blockchain.getTransaction(txnHash)
+    if (txn.toAddr === '0x0000000000000000000000000000000000000000') {
+      const contractAddr = await this.getContractAddrFromTransaction(txnHash)
+      return { ...txn, hash: txnHash, contractAddr: contractAddr } as TransactionDetails
+    }
+    return { ...txn, hash: txnHash } as TransactionDetails
   }
 
   async getTransactionsForTxBlock(blockNum: number): Promise<string[]> {
@@ -240,11 +239,8 @@ export class DataService {
 
   async getTransactionsDetails(txnHashes: string[]): Promise<TransactionObj[]> {
     console.log("getting transactions details")
-    const output = await Promise.all(txnHashes.map(async txnHash => {
-      const txn = await this.zilliqa.blockchain.getTransaction(txnHash)
-      txn.amount = txn.amount.toString()
-      return { ...txn, hash: txnHash }
-    }))
+    const output = await Promise.all(txnHashes.map(
+      async txnHash => (await this.getTransactionDetails(txnHash))))
     return output as TransactionObj[]
   }
 

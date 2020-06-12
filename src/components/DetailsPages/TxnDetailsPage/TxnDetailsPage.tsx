@@ -4,7 +4,7 @@ import { Card, Row, Col, Container } from 'react-bootstrap'
 
 import { NetworkContext } from 'src/services/networkProvider'
 import { TransactionDetails } from 'src/typings/api'
-import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
+import { qaToZil, hexAddrToZilAddr, pubKeyToZilAddr } from 'src/utils/Utils'
 import { Long } from "@zilliqa-js/util"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -126,7 +126,7 @@ const TxnDetailsPage: React.FC = () => {
                       <span>
                         {/* To be removed after SDK typing is updated
                         // @ts-ignore */}
-                        <Link to={`/address/${hexAddrToZilAddr(data.senderAddress)}`}>{hexAddrToZilAddr(data.senderAddress)}</Link>
+                        <Link to={`/address/${pubKeyToZilAddr(data.pubKey)}`}>{pubKeyToZilAddr(data.pubKey)}</Link>
                       </span>
                     </div>
                   </Col>

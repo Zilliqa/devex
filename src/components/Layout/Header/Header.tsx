@@ -44,7 +44,7 @@ const Header: React.FC = () => {
     }
   }
 
-  const deleteNode = (k: string, v: string) => {
+  const deleteNode = (k: string) => {
     delete nodeUrlMap[k]
     setNodeUrlMap(nodeUrlMap)
     setCurrentNetwork('Mainnet')
@@ -99,7 +99,7 @@ const Header: React.FC = () => {
                 }}>
                   {v}
                 </NavDropdown.Item>
-                <NavDropdown.Item className='minus-icon-item' onClick={() => { deleteNode(k, v) }}>
+                <NavDropdown.Item className='minus-icon-item' onClick={() => { deleteNode(k) }}>
                   <FontAwesomeIcon size='lg' icon={faMinus} />
                 </NavDropdown.Item>
               </div>

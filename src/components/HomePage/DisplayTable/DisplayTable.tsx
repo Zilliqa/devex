@@ -24,9 +24,9 @@ const DisplayTable: React.FC<IDisplayTableParams<DsBlockObj | TxBlockObj | Trans
         <table {...getTableProps()}>
           <thead>
             {headerGroups.map((headerGroup: HeaderGroup<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => (
-              <tr {...headerGroup.getHeaderGroupProps()}>
+              <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.getHeaderGroupProps().key}>
                 {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()} id={column.id}>
+                  <th {...column.getHeaderProps()} key={column.getHeaderProps().key} id={column.id}>
                     {column.render('Header')}
                   </th>
                 ))}
@@ -37,7 +37,7 @@ const DisplayTable: React.FC<IDisplayTableParams<DsBlockObj | TxBlockObj | Trans
             {rows.map((row: Row<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => {
               prepareRow(row)
               return (
-                <tr {...row.getRowProps()}>
+                <tr {...row.getRowProps()} key={row.getRowProps().key}>
                   {row.cells.map((cell: Cell<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => {
                     if (processMap) {
                       const procFunc = processMap.get(cell.column.id)
@@ -45,7 +45,7 @@ const DisplayTable: React.FC<IDisplayTableParams<DsBlockObj | TxBlockObj | Trans
                         cell.value = procFunc(cell.value)
                     }
                     return (
-                      <td {...cell.getCellProps()}>
+                      <td {...cell.getCellProps()} key={cell.getCellProps().key}>
                         {cell.value}
                       </td>
                     )

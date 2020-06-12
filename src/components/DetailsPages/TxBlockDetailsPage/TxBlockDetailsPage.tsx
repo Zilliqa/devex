@@ -10,7 +10,7 @@ import { TransactionObj } from '@zilliqa-js/core/src/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy, faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
-import { faCubes } from '@fortawesome/free-solid-svg-icons'
+import { faFileContract, faCubes } from '@fortawesome/free-solid-svg-icons'
 
 import './TxBlockDetailsPage.css'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
@@ -24,7 +24,15 @@ processMap.set('amount-col', (amt: number) => (
   </OverlayTrigger>
 ))
 processMap.set('from-col', (addr: string) => (<Link to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</Link>))
-processMap.set('to-col', (addr: string) => (<Link to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</Link>))
+processMap.set('to-col', (addr: string) => (
+  addr.includes('contract-')
+    ? <Link to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
+      <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
+      {' '}
+      Contract Creation
+    </Link>
+    : <Link to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</Link>))
+
 processMap.set('hash-col', (hash: number) => (<Link to={`/tx/0x${hash}`}>{'0x' + hash}</Link>))
 
 const TxBlockDetailsPage: React.FC = () => {
@@ -80,7 +88,7 @@ const TxBlockDetailsPage: React.FC = () => {
     {
       id: 'to-col',
       Header: 'To',
-      accessor: 'toAddr',
+      accessor: (value: any) => (value.contractAddr ? 'contract-' + value.contractAddr : value.toAddr),
     },
     {
       id: 'amount-col',

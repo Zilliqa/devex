@@ -9,6 +9,9 @@ import { TransactionObj, TxList } from '@zilliqa-js/core/src/types'
 
 import './TxnsPage.css'
 
+import { faFileContract } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 // Pre-processing data to display
 const processMap = new Map()
 processMap.set('amount-col', (amt: number) => (
@@ -18,7 +21,14 @@ processMap.set('amount-col', (amt: number) => (
   </OverlayTrigger>
 ))
 processMap.set('from-col', (addr: string) => (<Link to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</Link>))
-processMap.set('to-col', (addr: string) => (<Link to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</Link>))
+processMap.set('to-col', (addr: string) => (
+  addr.includes('contract-')
+    ? <Link to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
+      <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
+      {' '}
+      Contract Creation
+    </Link>
+    : <Link to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</Link>))
 processMap.set('hash-col', (hash: number) => (<Link to={`tx/0x${hash}`}>{'0x' + hash}</Link>))
 
 const TxnsPage: React.FC = () => {
@@ -35,7 +45,7 @@ const TxnsPage: React.FC = () => {
     {
       id: 'to-col',
       Header: 'To',
-      accessor: 'toAddr',
+      accessor: (value: any) => (value.contractAddr ? 'contract-' + value.contractAddr : value.toAddr),
     },
     {
       id: 'amount-col',
@@ -73,7 +83,7 @@ const TxnsPage: React.FC = () => {
           setRecentTxnHashes(txnHashes)
         }
 
-        let slicedTxnHashes = txnHashes.slice(pageIndex * 10, pageIndex * 10 + 10)
+        const slicedTxnHashes = txnHashes.slice(pageIndex * 10, pageIndex * 10 + 10)
         if (slicedTxnHashes) {
           txnBodies = await dataService.getTransactionsDetails(slicedTxnHashes)
           setData(txnBodies)

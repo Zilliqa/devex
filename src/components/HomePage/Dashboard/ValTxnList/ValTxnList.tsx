@@ -2,14 +2,16 @@ import React, { useState, useEffect, useMemo, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { OverlayTrigger, Tooltip, Card, Spinner } from 'react-bootstrap'
 
+import { refreshRate } from 'src/constants'
 import { NetworkContext } from 'src/services/networkProvider'
-import DisplayTable from '../../DisplayTable/DisplayTable'
+import { qaToZil, pubKeyToZilAddr, hexAddrToZilAddr } from 'src/utils/Utils'
 import { TransactionObj } from '@zilliqa-js/core/src/types'
 
-import { refreshRate } from 'src/constants'
-
+import DisplayTable from '../../DisplayTable/DisplayTable'
 import './ValTxnList.css'
-import { qaToZil, pubKeyToZilAddr, hexAddrToZilAddr } from 'src/utils/Utils'
+
+import { faFileContract } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 /*
     Display first 10 Validated Txns
@@ -29,7 +31,15 @@ processMap.set('amount-col', (amt: number) => (
   </OverlayTrigger>
 ))
 processMap.set('from-col', (addr: string) => (<Link to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</Link>))
-processMap.set('to-col', (addr: string) => (<Link to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</Link>))
+processMap.set('to-col', (addr: string) => (
+  addr.includes('contract-')
+    ? <Link to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
+      <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
+      {' '}
+      Contract Creation
+    </Link>
+    : <Link to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</Link>))
+
 processMap.set('hash-col', (hash: number) => (<Link to={`/tx/0x${hash}`}>{'0x' + hash}</Link>))
 
 const ValTxnList: React.FC = () => {
@@ -50,7 +60,7 @@ const ValTxnList: React.FC = () => {
     {
       id: 'to-col',
       Header: 'To',
-      accessor: 'toAddr',
+      accessor: (value: any) => (value.contractAddr ? 'contract-' + value.contractAddr : value.toAddr),
     },
     {
       id: 'amount-col',
