@@ -9,22 +9,28 @@ type NetworkState = {
   dataService: DataService | null,
   nodeUrl: string,
   setNodeUrl: (nodeUrl: string) => void,
-  nodeUrlMap: { [key: string]: string },
-  setNodeUrlMap: any,
+  nodeUrlMap: Record<string, string>,
+  setNodeUrlMap: (newNodeUrlMap: Record<string, string>) => void,
 }
 
-export const defaultNetworks: {[key: string]: string} = {
-  'https://api.zilliqa.com/': 'Mainnet',
-  'https://dev-api.zilliqa.com/': 'Testnet',
-  'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server',
-  'https://stg-zilliqa-isolated-server.zilliqa.com/': 'Staging Isolated Server'
-}
+export const defaultNetworks: {[key: string]: string} = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
+  ? {
+    'https://api.zilliqa.com/': 'Mainnet',
+    'https://dev-api.zilliqa.com/': 'Testnet',
+    'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server',
+  }
+  : {
+    'https://api.zilliqa.com/': 'Mainnet',
+    'https://dev-api.zilliqa.com/': 'Testnet',
+    'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server',
+    'https://stg-zilliqa-isolated-server.zilliqa.com/': 'Staging Isolated Server'
+  } 
 
 export const NetworkContext = React.createContext<NetworkState | null>(null)
 
 export const NetworkProvider: React.FC = (props) => {
   
-  let history = useHistory()
+  const history = useHistory()
 
   const [state, setState] = useState<NetworkState>({
     connStatus: false,
@@ -44,10 +50,12 @@ export const NetworkProvider: React.FC = (props) => {
 
   /* Storage useEffects */
   useEffect(() => {
+    console.log(state.nodeUrl)
     localStorage.setItem('nodeUrl', state.nodeUrl);
   }, [state.nodeUrl])
 
   useEffect(() => {
+    console.log(state.nodeUrlMap)
     localStorage.setItem('nodeUrlMap', JSON.stringify(state.nodeUrlMap));
     // Needed for deep compare of nodeUrlMap
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,12 +76,12 @@ export const NetworkProvider: React.FC = (props) => {
 
   // If dataservice changes, update isIsolatedServer
   useEffect(() => {
+    let response: boolean
     const checkNetwork = async () => {
       try {
         if (!state.dataService) return
-        let res: boolean = await state.dataService.isIsolatedServer()
-        setState((prevState: NetworkState) => (
-          { ...prevState, isIsolatedServer: res }))
+        response = await state.dataService.isIsolatedServer()
+        setState((prevState: NetworkState) => ({ ...prevState, isIsolatedServer: response }))
       } catch (e) {
         console.log(e)
       }

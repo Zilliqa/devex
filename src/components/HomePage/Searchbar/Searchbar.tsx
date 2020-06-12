@@ -16,13 +16,13 @@ interface IProps {
 const Searchbar: React.FC<IProps> = ({ isHeaderSearchbar, isISSearchbar }) => {
   const [input, setInput] = useState("")
   const [searchType, setSearchType] = useState('Txn/Addr')
-  let history = useHistory()
+  const history = useHistory()
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value)
   }
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
     let trimmedInput = input.trim()
     switch (searchType) {

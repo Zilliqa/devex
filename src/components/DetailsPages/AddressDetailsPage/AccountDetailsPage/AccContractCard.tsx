@@ -22,7 +22,7 @@ const AccContractCard: React.FC<IProps> = ({ contract, index }) => {
       <div>
         <span>
           {`${index + 1}) `}
-          {<Link onClick={(e: any) => { e.stopPropagation() }} to={`/address/${hexAddrToZilAddr(contract.address)}`}>
+          {<Link onClick={(e: React.MouseEvent<HTMLAnchorElement>) => { e.stopPropagation() }} to={`/address/${hexAddrToZilAddr(contract.address)}`}>
             {hexAddrToZilAddr(contract.address)}
           </Link>}
         </span>

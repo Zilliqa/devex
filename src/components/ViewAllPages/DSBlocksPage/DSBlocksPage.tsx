@@ -7,6 +7,7 @@ import { timestampToTimeago, pubKeyToZilAddr } from 'src/utils/Utils'
 import { DsBlockObj } from '@zilliqa-js/core/src/types'
 
 import './DSBlocksPage.css'
+import { MappedDSBlockListing } from 'src/typings/api'
 
 // Pre-processing data to display
 const processMap = new Map()
@@ -15,7 +16,7 @@ processMap.set('ds-leader-col', pubKeyToZilAddr)
 processMap.set('height-col', (height: number) => (<Link to={`dsbk/${height}`}>{height}</Link>))
 processMap.set('hash-col', (hash: number) => ('0x' + hash))
 
-const DSBlocksPage = () => {
+const DSBlocksPage: React.FC = () => {
 
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
@@ -62,10 +63,11 @@ const DSBlocksPage = () => {
     if (!dataService) return
     
     const fetchId = ++fetchIdRef.current
+    let receivedData: MappedDSBlockListing
     const getData = async () => {
       try {
         setIsLoading(true)
-        let receivedData = await dataService.getDSBlocksListing(pageIndex + 1)
+        receivedData = await dataService.getDSBlocksListing(pageIndex + 1)
 
         if (receivedData) {
           setData(receivedData.data)

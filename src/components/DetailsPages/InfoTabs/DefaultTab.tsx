@@ -1,6 +1,10 @@
 import React from 'react'
 
-const DefaultTab = ({ content }: { content: any }) => {
+interface IProps {
+  content: any
+}
+
+const DefaultTab: React.FC<IProps> = ({ content }) => {
   return (
     <>
       <pre style={{ backgroundColor: 'rgba(0, 0, 0, 0.03)' }}>

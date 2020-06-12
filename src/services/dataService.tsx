@@ -363,7 +363,7 @@ export class DataService {
 
     const getMinGasPrice = async () => await this.zilliqa.blockchain.getMinimumGasPrice()
 
-    const res: any = await Promise.all([getBlockNum(), getMinGasPrice()])
+    const res = await Promise.all([getBlockNum(), getMinGasPrice()])
     const output = {
       minGasPrice: res[1].result
     }

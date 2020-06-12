@@ -1,0 +1,8 @@
+node_modules
+devex-artifact
+build
+Dockerfile
+README.md
+.git
+.gitignore
+.vscode
