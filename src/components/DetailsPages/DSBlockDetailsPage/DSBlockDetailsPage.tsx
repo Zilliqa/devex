@@ -19,7 +19,7 @@ const DSBlockDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
-  const [error, setError] = useState<string| null>(null)
+  const [error, setError] = useState<string | null>(null)
   const [data, setData] = useState<DsBlockObj | null>(null)
   const [latestDSBlockNum, setLatestDSBlockNum] = useState<number | null>(null)
 
@@ -43,7 +43,7 @@ const DSBlockDetailsPage: React.FC = () => {
         setError(e)
       }
     }
-    
+
     getData()
     return () => {
       setData(null)
@@ -143,7 +143,9 @@ const DSBlockDetailsPage: React.FC = () => {
               <Card.Body>
                 <Container>
                   <h6>PoW Winners</h6>
-                  {data.header.PoWWinners.map((x, index) => <div key={index}>[{index + 1}] {pubKeyToZilAddr(x)}</div>)}
+                  {data.header.PoWWinners.map((x, index) => <div key={index}>[{index + 1}]
+                    {'  '}
+                    <Link to={`/address/${pubKeyToZilAddr(x)}`}>{pubKeyToZilAddr(x)}</Link></div>)}
                 </Container>
               </Card.Body>
             </Card>

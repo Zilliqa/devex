@@ -26,7 +26,7 @@ processMap.set('status-col', (status: string) => (
 ))
 
 const PendTxnList: React.FC = () => {
-  
+
   const networkContext = useContext(NetworkContext)
   const { dataService, nodeUrl } = networkContext!
 
@@ -70,7 +70,7 @@ const PendTxnList: React.FC = () => {
           setData(receivedData)
       } catch (e) {
         if (!isCancelled)
-        console.log(e)
+          console.log(e)
       }
     }
     getData()
@@ -94,8 +94,8 @@ const PendTxnList: React.FC = () => {
         {data
           ? data.length > 0
             ? <div className='pendtxlist-table'>
-                <DisplayTable columns={columns} data={data} processMap={processMap}/>
-              </div>
+              <DisplayTable columns={columns} data={data} processMap={processMap} />
+            </div>
             : 'No Pending Transactions'
           : <Spinner animation="border" role="status" />
         }
