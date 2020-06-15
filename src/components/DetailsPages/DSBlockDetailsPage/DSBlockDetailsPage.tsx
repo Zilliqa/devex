@@ -26,7 +26,6 @@ const DSBlockDetailsPage: React.FC = () => {
   // Fetch data
   useEffect(() => {
     if (!dataService) return
-
     let latestDSBlockNum: number
     let receivedData: DsBlockObj
     const getData = async () => {

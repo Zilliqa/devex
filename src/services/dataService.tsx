@@ -95,6 +95,7 @@ export class DataService {
   async getDSBlockDetails(blockNum: number): Promise<DsBlockObj> {
     console.log("getting DS block details")
     const blockData = await this.zilliqa.blockchain.getDSBlock(blockNum)
+    console.log(blockData)
     if (blockData.result.header.BlockNum !== blockNum)
       throw new Error('Invalid DS Block Number')
     return blockData.result as DsBlockObj
@@ -254,7 +255,17 @@ export class DataService {
   async getLatest5PendingTransactions(): Promise<PendingTxnResult[]> {
     console.log("getting 5 pending tx")
     const response = await this.zilliqa.blockchain.getPendingTxns()
-    return response.result.Txns as PendingTxnResult[]
+    const txnHashes = response.result.Txns.map((x: any) => x.TxnHash)
+    const output = await Promise.all(txnHashes.map(
+      async (txnHash: any) => {
+        const pendingTxn = await this.zilliqa.blockchain.getPendingTxn(txnHash)
+        return {
+          ...pendingTxn.result,
+          hash: txnHash,
+        }
+    }))
+    console.log(output)
+    return output as PendingTxnResult[]
   }
 
   //================================================================================

@@ -13,19 +13,15 @@ import './PendTxnList.css'
     - Hash
     - Status
 */
-const statusMap = new Map()
-statusMap.set(0, 'Txn not pending')
-statusMap.set(1, 'Nonce too high')
-statusMap.set(2, 'Could not fit in as microblock gas limit reached')
-statusMap.set(3, 'Transaction valid but consensus not reached')
 
 // Pre-processing data to display
 const processMap = new Map()
-processMap.set('hash-col', (hash: number) => ('0x' + hash))
+processMap.set('pend-hash-col', (hash: number) => ('0x' + hash))
+processMap.set('confirmed-col', (confirmed: boolean) => confirmed.toString())
 processMap.set('status-col', (status: string) => (
   <OverlayTrigger placement='top'
-    overlay={<Tooltip id={'tt'}> {statusMap.get(status)} </Tooltip>}>
-    <div className='pendtxlist-status-div'>{status}</div>
+    overlay={<Tooltip id={'tt'}> {status} </Tooltip>}>
+    <div>{status}</div>
   </OverlayTrigger>
 ))
 
@@ -40,14 +36,24 @@ const PendTxnList: React.FC = () => {
 
   const columns = useMemo(
     () => [{
-      id: 'hash-col',
+      id: 'pend-hash-col',
       Header: 'Hash',
-      accessor: 'TxnHash',
+      accessor: 'hash',
+    },
+    {
+      id: 'confirmed-col',
+      Header: 'Confirmed',
+      accessor: 'confirmed',
+    },
+    {
+      id: 'code-col',
+      Header: 'Code',
+      accessor: 'code',
     },
     {
       id: 'status-col',
       Header: 'Status',
-      accessor: 'Status',
+      accessor: 'info',
     }], []
   )
 

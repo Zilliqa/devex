@@ -46,6 +46,36 @@
   width: 80px;
 }
 
-.display-table #status-col {
+
+
+.display-table #from-col {
   width: 80px;
+}
+
+.display-table #to-col {
+  width: 80px;
+}
+
+.display-table #amount-col {
+  width: 80px;
+}
+
+.display-table #hash-col {
+  width: 275px;
+}
+
+.display-table #confirmed-col {
+  width: 80px;
+}
+
+.display-table #code-col {
+  width: 80px;
+}
+
+.display-table #status-col {
+  width: 300px;
+}
+
+.display-table #pend-hash-col {
+  width: 560px;
 }

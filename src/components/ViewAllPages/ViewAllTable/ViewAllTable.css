@@ -70,14 +70,26 @@
   width: 150px;
 }
 
-.viewall-table #amount-col {
-  width: 200px;
-}
-
 .viewall-table #numTxns-col {
   width: 110px;
 }
 
 .viewall-table #reward-col {
   width: 130px;
+}
+
+.viewall-table #from-col {
+  width: 80px;
+}
+
+.viewall-table #to-col {
+  width: 80px;
+}
+
+.viewall-table #amount-col {
+  width: 80px;
+}
+
+.viewall-table #hash-col {
+  width: 275px;
 }

@@ -33,13 +33,16 @@ const Dashboard: React.FC = () => {
           </Col>
         </Row>
         <Row style={{ marginTop: '1rem' }}>
-          <Col xs md lg={8} style={{ padding: 0 }}>
+          <Col style={{ padding: 0 }}>
             <ValTxnList />
           </Col>
-          <Col style={{ paddingRight: 0 }}>
+        </Row>
+        <Row style={{ marginTop: '1rem' }}>
+          <Col style={{ padding: 0 }}>
             <PendTxnList />
           </Col>
         </Row>
+
       </Container>
     </div>
   );
