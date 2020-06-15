@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import React, { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
-import { useLocation, BrowserRouter as Router, Route } from 'react-router-dom'
+import { Link, useLocation, BrowserRouter as Router, Route } from 'react-router-dom'
 
 import HomePage from './components/HomePage/HomePage'
 import Layout from './components/Layout/Layout'
@@ -30,6 +30,16 @@ const ScrollToTop = ({ children }: { children: React.ReactNode }) => {
   }, [location])
 
   return <>{children}</>
+}
+
+export const QueryPreservingLink = ({ to, style, className, onClick, children }
+    : { to: string, style?: React.CSSProperties, className?: string,
+      onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void, children: React.ReactNode }) : JSX.Element => {
+  const location = useLocation()
+  return <Link style={style} className={className} onClick={onClick} to={{
+      pathname: to,
+      search: location.search
+  }}>{children}</Link>
 }
 
 ReactDOM.render(

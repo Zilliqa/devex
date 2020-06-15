@@ -1,6 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
+import { QueryPreservingLink } from 'src'
 import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
 import { TransitionEntry } from '@zilliqa-js/core/src/types'
 
@@ -19,7 +19,7 @@ const TransitionsTab: React.FC<IProps> = ({ transitions }) => (
           </tr>
           <tr>
             <th>Contract Address</th>
-            <td>{<Link to={`/address/${hexAddrToZilAddr(transition.addr)}`}>{hexAddrToZilAddr(transition.addr)}</Link>}</td>
+            <td>{<QueryPreservingLink to={`/address/${hexAddrToZilAddr(transition.addr)}`}>{hexAddrToZilAddr(transition.addr)}</QueryPreservingLink>}</td>
           </tr>
           <tr>
             <th>Accepts $ZIL</th>
@@ -37,7 +37,7 @@ const TransitionsTab: React.FC<IProps> = ({ transitions }) => (
           </tr>
           <tr>
             <th>Recipient</th>
-            <td>{<Link to={`/address/${hexAddrToZilAddr(transition.msg._recipient)}`}>{hexAddrToZilAddr(transition.msg._recipient)}</Link>}</td>
+            <td>{<QueryPreservingLink to={`/address/${hexAddrToZilAddr(transition.msg._recipient)}`}>{hexAddrToZilAddr(transition.msg._recipient)}</QueryPreservingLink>}</td>
           </tr>
           {transition.msg.params.length > 0 && (
             <>

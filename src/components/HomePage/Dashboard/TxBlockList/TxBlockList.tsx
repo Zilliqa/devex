@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react'
-import { Link } from 'react-router-dom'
 import { OverlayTrigger, Tooltip, Card, Spinner } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src'
+import { refreshRate } from 'src/constants'
 import { NetworkContext } from 'src/services/networkProvider'
-import DisplayTable from '../../DisplayTable/DisplayTable'
+import { timestampToTimeago, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
 import { TxBlockObj } from '@zilliqa-js/core/src/types'
 
-import { refreshRate } from 'src/constants'
-
+import DisplayTable from '../../DisplayTable/DisplayTable'
 import './TxBlockList.css'
-import { timestampToTimeago, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
 
 /*
     Display first 5 Tx Block
@@ -32,7 +31,7 @@ processMap.set('reward-col', (amt: number) => (
   </OverlayTrigger>
 ))
 processMap.set('miner-col', pubKeyToZilAddr)
-processMap.set('height-col', (height: number) => (<Link to={`txbk/${height}`}>{height}</Link>))
+processMap.set('height-col', (height: number) => (<QueryPreservingLink to={`txbk/${height}`}>{height}</QueryPreservingLink>))
 processMap.set('hash-col', (hash: number) => ('0x' + hash))
 
 const TxBlockList: React.FC = () => {
@@ -104,7 +103,7 @@ const TxBlockList: React.FC = () => {
       <Card.Header>
         <div className='dsblock-card-header'>
           <span>Transaction Blocks</span>
-          <Link to={'txbk'}>View All</Link>
+          <QueryPreservingLink to={'txbk'}>View All</QueryPreservingLink>
         </div>
       </Card.Header>
       <Card.Body>

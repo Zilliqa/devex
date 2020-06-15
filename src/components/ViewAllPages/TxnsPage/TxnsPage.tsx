@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useContext } from 'react'
-import { Link } from 'react-router-dom'
 import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src/index'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
 import { NetworkContext } from 'src/services/networkProvider'
 import { hexAddrToZilAddr, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
@@ -20,16 +20,16 @@ processMap.set('amount-col', (amt: number) => (
     <span>{qaToZil(amt)}</span>
   </OverlayTrigger>
 ))
-processMap.set('from-col', (addr: string) => (<Link to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</Link>))
+processMap.set('from-col', (addr: string) => (<QueryPreservingLink to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</QueryPreservingLink>))
 processMap.set('to-col', (addr: string) => (
   addr.includes('contract-')
-    ? <Link to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
+    ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
       <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
       {' '}
       Contract Creation
-    </Link>
-    : <Link to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</Link>))
-processMap.set('hash-col', (hash: number) => (<Link to={`tx/0x${hash}`}>{'0x' + hash}</Link>))
+    </QueryPreservingLink>
+    : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</QueryPreservingLink>))
+processMap.set('hash-col', (hash: number) => (<QueryPreservingLink to={`tx/0x${hash}`}>{'0x' + hash}</QueryPreservingLink>))
 
 const TxnsPage: React.FC = () => {
 

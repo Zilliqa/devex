@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect, SyntheticEvent } from 'react'
 import { Navbar, Nav, NavDropdown, Tooltip, OverlayTrigger, Form } from 'react-bootstrap'
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
-import Logo from 'src/assets/images/logo.png'
+import { QueryPreservingLink } from 'src'
+import DevexBrand from 'src/assets/images/DevexBrand.png'
 import { NetworkContext, defaultNetworks } from 'src/services/networkProvider'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -55,18 +56,17 @@ const Header: React.FC = () => {
   return (
     <>
       <Navbar className="custom-navbar" fixed="top">
-        <Link to={'/'} >
+        <QueryPreservingLink to={'/'} >
           <Navbar.Brand className="custom-navbar-brand">
             <img
-              src={Logo}
+              src={DevexBrand}
               alt=""
-              width="30"
+              width="120"
               height="30"
               className="d-inline-block align-top"
-            />{' '}
-          Dev Explorer
+            />
         </Navbar.Brand>
-        </Link>
+        </QueryPreservingLink>
         {showSearchbar
           ? <div className="header-searchbar"><Searchbar isISSearchbar={isIsolatedServer!} isHeaderSearchbar={true} /></div>
           : null}

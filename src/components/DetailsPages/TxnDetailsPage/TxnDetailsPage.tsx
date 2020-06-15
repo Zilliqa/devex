@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Card, Row, Col, Container } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src'
 import { NetworkContext } from 'src/services/networkProvider'
 import { TransactionDetails } from 'src/typings/api'
 import { qaToZil, hexAddrToZilAddr, pubKeyToZilAddr } from 'src/utils/Utils'
@@ -126,7 +127,7 @@ const TxnDetailsPage: React.FC = () => {
                       <span>
                         {/* To be removed after SDK typing is updated
                         // @ts-ignore */}
-                        <Link to={`/address/${pubKeyToZilAddr(data.pubKey)}`}>{pubKeyToZilAddr(data.pubKey)}</Link>
+                        <QueryPreservingLink to={`/address/${pubKeyToZilAddr(data.pubKey)}`}>{pubKeyToZilAddr(data.pubKey)}</QueryPreservingLink>
                       </span>
                     </div>
                   </Col>
@@ -134,7 +135,7 @@ const TxnDetailsPage: React.FC = () => {
                     <div className='txn-detail'>
                       <span className='txn-detail-header'>To:</span>
                       <span>
-                        <Link to={`/address/${hexAddrToZilAddr(data.toAddr)}`}>{hexAddrToZilAddr(data.toAddr)}</Link>
+                        <QueryPreservingLink to={`/address/${hexAddrToZilAddr(data.toAddr)}`}>{hexAddrToZilAddr(data.toAddr)}</QueryPreservingLink>
                       </span>
                     </div>
                   </Col>
@@ -179,7 +180,7 @@ const TxnDetailsPage: React.FC = () => {
                   <Col>
                     <div className='txn-detail'>
                       <span className='txn-detail-header'>Transaction Block:</span>
-                      <span><Link to={`/txbk/${data.receipt.epoch_num}`}>{data.receipt.epoch_num}</Link></span>
+                      <span><QueryPreservingLink to={`/txbk/${data.receipt.epoch_num}`}>{data.receipt.epoch_num}</QueryPreservingLink></span>
                     </div>
                   </Col>
                 </Row>

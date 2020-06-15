@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useMemo, useContext } from 'react'
-import { Link } from 'react-router-dom'
 
+import { QueryPreservingLink } from 'src'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
 import { NetworkContext } from 'src/services/networkProvider'
 import { timestampToTimeago, pubKeyToZilAddr } from 'src/utils/Utils'
@@ -13,7 +13,7 @@ import { MappedDSBlockListing } from 'src/typings/api'
 const processMap = new Map()
 processMap.set('age-col', timestampToTimeago)
 processMap.set('ds-leader-col', pubKeyToZilAddr)
-processMap.set('height-col', (height: number) => (<Link to={`dsbk/${height}`}>{height}</Link>))
+processMap.set('height-col', (height: number) => (<QueryPreservingLink to={`dsbk/${height}`}>{height}</QueryPreservingLink>))
 processMap.set('hash-col', (hash: number) => ('0x' + hash))
 
 const DSBlocksPage: React.FC = () => {

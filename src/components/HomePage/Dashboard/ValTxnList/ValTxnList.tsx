@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react'
-import { Link } from 'react-router-dom'
 import { OverlayTrigger, Tooltip, Card, Spinner } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src'
 import { refreshRate } from 'src/constants'
 import { NetworkContext } from 'src/services/networkProvider'
 import { qaToZil, pubKeyToZilAddr, hexAddrToZilAddr } from 'src/utils/Utils'
@@ -30,17 +30,17 @@ processMap.set('amount-col', (amt: number) => (
     <span>{qaToZil(amt)}</span>
   </OverlayTrigger>
 ))
-processMap.set('from-col', (addr: string) => (<Link to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</Link>))
+processMap.set('from-col', (addr: string) => (<QueryPreservingLink to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</QueryPreservingLink>))
 processMap.set('to-col', (addr: string) => (
   addr.includes('contract-')
-    ? <Link to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
+    ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
       <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
       {' '}
       Contract Creation
-    </Link>
-    : <Link to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</Link>))
+    </QueryPreservingLink>
+    : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</QueryPreservingLink>))
 
-processMap.set('hash-col', (hash: number) => (<Link to={`/tx/0x${hash}`}>{'0x' + hash}</Link>))
+processMap.set('hash-col', (hash: number) => (<QueryPreservingLink to={`/tx/0x${hash}`}>{'0x' + hash}</QueryPreservingLink>))
 
 const ValTxnList: React.FC = () => {
   
@@ -105,7 +105,7 @@ const ValTxnList: React.FC = () => {
       <Card.Header>
         <div className='valtxlist-card-header'>
           <span>Transactions</span>
-          <Link to={'tx'}>View Recent Transactions</Link>
+          <QueryPreservingLink to={'tx'}>View Recent Transactions</QueryPreservingLink>
         </div>
       </Card.Header>
       <Card.Body>

@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
 import { Card, Container, Row, Col } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src'
 import InfoTabs from 'src/components/DetailsPages/InfoTabs/InfoTabs'
 import DefaultTab from 'src/components/DetailsPages/InfoTabs/DefaultTab'
 import CodeTab from 'src/components/DetailsPages/InfoTabs/CodeTab'
@@ -129,15 +129,15 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
                     <div className='address-detail' style={{ justifyContent: 'start' }}>
                       <span className='address-detail-header' style={{ marginRight: 'auto' }}>Contract Creation:</span>
                       <span style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        <Link to={`/address/${owner}`}>
+                        <QueryPreservingLink to={`/address/${owner}`}>
                           {owner}
-                        </Link>
+                        </QueryPreservingLink>
                       </span>
                       <span>{'at'}</span>
                       <span style={{ paddingLeft: '0.5rem', maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        <Link to={`/tx/${creationTxnHash}`}>
+                        <QueryPreservingLink to={`/tx/${creationTxnHash}`}>
                           {creationTxnHash}
-                        </Link>
+                        </QueryPreservingLink>
                       </span>
                     </div>
                   </Col>

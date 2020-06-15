@@ -264,7 +264,6 @@ export class DataService {
           hash: txnHash,
         }
     }))
-    console.log(output)
     return output as PendingTxnResult[]
   }
 

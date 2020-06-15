@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { Card, Row, Col, Container } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src'
 import { NetworkContext } from 'src/services/networkProvider'
 import { qaToZil, timestampToTimeago, timestampToDisplay, pubKeyToZilAddr } from 'src/utils/Utils'
 import { DsBlockObj } from '@zilliqa-js/core/src/types'
@@ -71,17 +72,17 @@ const DSBlockDetailsPage: React.FC = () => {
               <span className='dsblock-header-blocknum'>#{data.header.BlockNum}</span>
             </h3>
             <span>
-              <Link
+              <QueryPreservingLink
                 style={{ marginRight: '1rem' }}
                 className={parseInt(data.header.BlockNum) === 0 ? 'disabled-link' : ''}
                 to={`/dsbk/${parseInt(data.header.BlockNum) - 1}`}>
                 <FontAwesomeIcon size='2x' icon={faCaretSquareLeft} />
-              </Link>
-              <Link
+              </QueryPreservingLink>
+              <QueryPreservingLink
                 className={latestDSBlockNum && parseInt(data.header.BlockNum) === latestDSBlockNum - 1 ? 'disabled-link' : ''}
                 to={`/dsbk/${parseInt(data.header.BlockNum) + 1}`}>
                 <FontAwesomeIcon size='2x' icon={faCaretSquareRight} />
-              </Link>
+              </QueryPreservingLink>
             </span>
           </div>
           <Card className='dsblock-details-card'>
@@ -145,7 +146,7 @@ const DSBlockDetailsPage: React.FC = () => {
                   <h6>PoW Winners</h6>
                   {data.header.PoWWinners.map((x, index) => <div key={index}>[{index + 1}]
                     {'  '}
-                    <Link to={`/address/${pubKeyToZilAddr(x)}`}>{pubKeyToZilAddr(x)}</Link></div>)}
+                    <QueryPreservingLink to={`/address/${pubKeyToZilAddr(x)}`}>{pubKeyToZilAddr(x)}</QueryPreservingLink></div>)}
                 </Container>
               </Card.Body>
             </Card>

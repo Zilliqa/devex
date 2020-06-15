@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useContext } from 'react'
-import { Link } from 'react-router-dom'
 import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
 import { NetworkContext } from 'src/services/networkProvider'
 import { timestampToTimeago, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
@@ -20,7 +20,7 @@ processMap.set('reward-col', (amt: number) => (
   </OverlayTrigger>
 ))
 processMap.set('miner-col', pubKeyToZilAddr)
-processMap.set('height-col', (height: number) => (<Link to={`txbk/${height}`}>{height}</Link>))
+processMap.set('height-col', (height: number) => (<QueryPreservingLink to={`txbk/${height}`}>{height}</QueryPreservingLink>))
 processMap.set('hash-col', (hash: number) => ('0x' + hash))
 
 const TxBlocksPage: React.FC = () => {

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useRef, useState, useEffect } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 
 import { DataService } from './dataService'
 
@@ -12,6 +12,8 @@ type NetworkState = {
   nodeUrlMap: Record<string, string>,
   setNodeUrlMap: (newNodeUrlMap: Record<string, string>) => void,
 }
+
+const useQuery = () => new URLSearchParams(useLocation().search)
 
 export const defaultNetworks: {[key: string]: string} = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
   ? {
@@ -29,7 +31,9 @@ export const defaultNetworks: {[key: string]: string} = (process.env['REACT_APP_
 export const NetworkContext = React.createContext<NetworkState | null>(null)
 
 export const NetworkProvider: React.FC = (props) => {
-  
+
+  const firstUpdate = useRef(true);
+  const query = useQuery()
   const history = useHistory()
 
   const [state, setState] = useState<NetworkState>({
@@ -42,7 +46,7 @@ export const NetworkProvider: React.FC = (props) => {
     setNodeUrlMap: (newNodeUrlMap: { [key: string]: string }) => {
       setState({ ...state, nodeUrlMap: newNodeUrlMap })
     },
-    nodeUrl: localStorage.getItem('nodeUrl') || 'https://api.zilliqa.com/',
+    nodeUrl: query.get('network') || 'https://api.zilliqa.com/',
     setNodeUrl: (newNodeUrl: string) => {
       setState({ ...state, nodeUrl: newNodeUrl })
     }
@@ -50,20 +54,28 @@ export const NetworkProvider: React.FC = (props) => {
 
   /* Storage useEffects */
   useEffect(() => {
-    console.log(state.nodeUrl)
-    localStorage.setItem('nodeUrl', state.nodeUrl);
+    localStorage.setItem('nodeUrl', state.nodeUrl)
   }, [state.nodeUrl])
 
   useEffect(() => {
-    console.log(state.nodeUrlMap)
-    localStorage.setItem('nodeUrlMap', JSON.stringify(state.nodeUrlMap));
+    localStorage.setItem('nodeUrlMap', JSON.stringify(state.nodeUrlMap))
     // Needed for deep compare of nodeUrlMap
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(state.nodeUrlMap)])
 
   /* Redirect useEffect */
   useEffect(() => {
-    return () => history.push('/')
+    if (firstUpdate.current) {
+      firstUpdate.current = false
+    } else {
+      if (state.nodeUrl === 'https://api.zilliqa.com/')
+        history.push('/')
+      else
+        history.push({
+        pathname: '/',
+        search: '?' + new URLSearchParams({network: state.nodeUrl}).toString()
+      })
+  }
     // Effect is independent of history
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.nodeUrl])
@@ -88,7 +100,6 @@ export const NetworkProvider: React.FC = (props) => {
     }
     
     checkNetwork()
-
   }, [state.dataService])
 
   return <NetworkContext.Provider value={state}>

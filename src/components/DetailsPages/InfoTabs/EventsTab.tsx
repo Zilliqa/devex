@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
-import { Link } from 'react-router-dom'
 
+import { QueryPreservingLink } from 'src'
 import { hexAddrToZilAddr } from 'src/utils/Utils'
 import { EventLogEntry, EventParam } from '@zilliqa-js/core/src/types'
 
@@ -37,7 +37,7 @@ const EventsTab: React.FC<IProps> = ({ events }) => {
             </tr>
             <tr>
               <th>Address</th>
-              <td>{<Link to={`/address/${hexAddrToZilAddr(event.address)}`}>{hexAddrToZilAddr(event.address)}</Link>}</td>
+              <td>{<QueryPreservingLink to={`/address/${hexAddrToZilAddr(event.address)}`}>{hexAddrToZilAddr(event.address)}</QueryPreservingLink>}</td>
             </tr>
             {event.params.length > 0 && (
               <>

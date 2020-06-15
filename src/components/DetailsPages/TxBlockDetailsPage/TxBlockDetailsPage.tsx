@@ -1,7 +1,8 @@
 import React, { useMemo, useCallback, useState, useEffect, useContext } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import { OverlayTrigger, Tooltip, Card, Row, Col, Container } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
 import { NetworkContext } from 'src/services/networkProvider'
 import { MappedTxBlock } from 'src/typings/api'
@@ -23,17 +24,17 @@ processMap.set('amount-col', (amt: number) => (
     <span>{qaToZil(amt)}</span>
   </OverlayTrigger>
 ))
-processMap.set('from-col', (addr: string) => (<Link to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</Link>))
+processMap.set('from-col', (addr: string) => (<QueryPreservingLink to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</QueryPreservingLink>))
 processMap.set('to-col', (addr: string) => (
   addr.includes('contract-')
-    ? <Link to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
+    ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
       <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
       {' '}
       Contract Creation
-    </Link>
-    : <Link to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</Link>))
+    </QueryPreservingLink>
+    : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</QueryPreservingLink>))
 
-processMap.set('hash-col', (hash: number) => (<Link to={`/tx/0x${hash}`}>{'0x' + hash}</Link>))
+processMap.set('hash-col', (hash: number) => (<QueryPreservingLink to={`/tx/0x${hash}`}>{'0x' + hash}</QueryPreservingLink>))
 
 const TxBlockDetailsPage: React.FC = () => {
 
@@ -140,17 +141,17 @@ const TxBlockDetailsPage: React.FC = () => {
               <span className='txblock-header-blocknum'>#{data.header.BlockNum}</span>
             </h3>
             <span>
-              <Link
+              <QueryPreservingLink
                 style={{ marginRight: '1rem' }}
                 className={parseInt(data.header.BlockNum) === 0 ? 'disabled-link' : ''}
                 to={`/txbk/${parseInt(data.header.BlockNum) - 1}`}>
                 <FontAwesomeIcon size='2x' icon={faCaretSquareLeft} />
-              </Link>
-              <Link
+              </QueryPreservingLink>
+              <QueryPreservingLink
                 className={latestTxBlockNum && parseInt(data.header.BlockNum) === latestTxBlockNum - 1 ? 'disabled-link' : ''}
                 to={`/txbk/${parseInt(data.header.BlockNum) + 1}`}>
                 <FontAwesomeIcon size='2x' icon={faCaretSquareRight} />
-              </Link>
+              </QueryPreservingLink>
             </span>
           </div>
           <div style={{ display: 'flex' }}>
@@ -206,7 +207,7 @@ const TxBlockDetailsPage: React.FC = () => {
                   <Col>
                     <div className='txblock-detail'>
                       <span className='txblock-detail-header'>DS Block:</span>
-                      <span><Link to={`/dsbk/${data.header.DSBlockNum}`}>{data.header.DSBlockNum}</Link></span>
+                      <span><QueryPreservingLink to={`/dsbk/${data.header.DSBlockNum}`}>{data.header.DSBlockNum}</QueryPreservingLink></span>
                     </div>
                   </Col>
                 </Row>
