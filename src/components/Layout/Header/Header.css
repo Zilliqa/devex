@@ -73,7 +73,7 @@
 }
 
 .custom-navbar .dropdown-menu {
-  min-width: fit-content;
+  min-width: 200px;
 }
 
 .custom-navbar-brand {
