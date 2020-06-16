@@ -72,10 +72,11 @@ const DSBlocksPage: React.FC = () => {
         if (receivedData) {
           setData(receivedData.data)
           setPageCount(receivedData.maxPages)
-          setIsLoading(false)
         }
       } catch (e) {
         console.log(e)
+      } finally {
+        setIsLoading(false)
       }
     }
 

@@ -23,3 +23,8 @@ a:hover {
   pointer-events: none;
   opacity: 60%;
 }
+
+.center-spinner {
+  text-align: center;
+  margin: 20vh;
+}

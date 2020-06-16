@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import { Spinner } from 'react-bootstrap'
 
 import { NetworkContext } from 'src/services/networkProvider'
 
@@ -31,7 +32,7 @@ return (
           <Searchbar isISSearchbar={false} isHeaderSearchbar={false} />
           <Dashboard />
         </div>
-      : null
+      : <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div>
     }
   </>
   );

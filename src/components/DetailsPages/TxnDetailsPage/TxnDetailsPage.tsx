@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
-import { Card, Row, Col, Container } from 'react-bootstrap'
+import { Card, Row, Col, Container, Spinner } from 'react-bootstrap'
 
 import { QueryPreservingLink } from 'src'
 import { NetworkContext } from 'src/services/networkProvider'
@@ -27,7 +27,8 @@ const TxnDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
-  const [error, setError] = useState<string| null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
   const [data, setData] = useState<TransactionDetails | null>(null)
 
   const generateTabsObj = () => {
@@ -79,6 +80,7 @@ const TxnDetailsPage: React.FC = () => {
     let receivedData: TransactionDetails
     const getData = async () => {
       try {
+        setIsLoading(true)
         receivedData = await dataService.getTransactionDetails(txnHash)
         if (receivedData) {
           setData(receivedData)
@@ -86,6 +88,8 @@ const TxnDetailsPage: React.FC = () => {
       } catch (e) {
         console.log(e)
         setError(e)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -97,6 +101,7 @@ const TxnDetailsPage: React.FC = () => {
   }, [dataService, txnHash])
 
   return <>
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
     {error
       ? <NotFoundPage />
       : data && (

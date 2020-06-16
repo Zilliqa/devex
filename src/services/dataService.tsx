@@ -336,6 +336,7 @@ export class DataService {
   async isContractAddr(addr: string): Promise<boolean> {
     console.log('check whether is smart contract')
     const response = await this.zilliqa.blockchain.getSmartContractInit(addr)
+    console.log(response)
     if (!response.error)
       return true
     else if (response.error.message === 'Address not contract address')

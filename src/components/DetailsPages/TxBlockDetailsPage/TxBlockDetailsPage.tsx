@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback, useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
-import { OverlayTrigger, Tooltip, Card, Row, Col, Container } from 'react-bootstrap'
+import { OverlayTrigger, Tooltip, Card, Row, Col, Container, Spinner } from 'react-bootstrap'
 
 import { QueryPreservingLink } from 'src'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
@@ -44,6 +44,7 @@ const TxBlockDetailsPage: React.FC = () => {
 
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingTrans, setIsLoadingTrans] = useState(false)
   const [data, setData] = useState<MappedTxBlock | null>(null)
   const [latestTxBlockNum, setLatestTxBlockNum] = useState<number | null>(null)
   const [transactionData, setTransactionData] = useState<TransactionObj[] | null>(null)
@@ -56,17 +57,20 @@ const TxBlockDetailsPage: React.FC = () => {
     let receivedData: MappedTxBlock | null
     const getData = async () => {
       try {
+        setIsLoading(true)
         if (isNaN(blockNum))
           throw new Error('Not a valid block number')
         receivedData = await dataService.getTxBlockDetails(parseInt(blockNum))
+        latestTxBlockNum = await dataService.getNumTxBlocks()
         if (receivedData)
           setData(receivedData)
-        latestTxBlockNum = await dataService.getNumTxBlocks()
         if (latestTxBlockNum)
           setLatestTxBlockNum(latestTxBlockNum)
       } catch (e) {
         console.log(e)
         setError(e)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -109,13 +113,13 @@ const TxBlockDetailsPage: React.FC = () => {
     let receivedData: TransactionObj[]
     const getData = async () => {
       try {
-        setIsLoading(true)
+        setIsLoadingTrans(true)
         receivedData = await dataService.getTransactionsDetails(data.txnHashes.slice(pageIndex * 10, pageIndex * 10 + 10))
 
         if (receivedData) {
           setTransactionData(receivedData)
-          setIsLoading(false)
         }
+        setIsLoadingTrans(false)
       } catch (e) {
         console.log(e)
       }
@@ -125,6 +129,7 @@ const TxBlockDetailsPage: React.FC = () => {
   }, [dataService, data])
 
   return <>
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
     {error
       ? <NotFoundPage />
       : data && (
@@ -238,7 +243,7 @@ const TxBlockDetailsPage: React.FC = () => {
               <Card className='txblock-details-card'>
                 <Card.Body>
                   <ViewAllTable
-                    isLoading={isLoading}
+                    isLoading={isLoadingTrans}
                     fetchData={fetchData}
                     pageCount={Math.ceil(data.txnHashes.length / 10)}
                     columns={columns}

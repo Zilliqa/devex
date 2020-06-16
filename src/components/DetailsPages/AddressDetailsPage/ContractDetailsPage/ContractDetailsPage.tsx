@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
-import { Card, Container, Row, Col } from 'react-bootstrap'
+import { Card, Container, Row, Col, Spinner } from 'react-bootstrap'
 
 import { QueryPreservingLink } from 'src'
 import InfoTabs from 'src/components/DetailsPages/InfoTabs/InfoTabs'
@@ -30,6 +30,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
   const [contractData, setContractData] = useState<ContractData | null>(null)
   const [creationTxnHash, setCreationTxnHash] = useState<string | null>(null)
   const [owner, setOwner] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   // Fetch data
   useEffect(() => {
@@ -40,6 +41,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
     let owner: string
     const getData = async () => {
       try {
+        setIsLoading(true)
         contractData = await dataService.getContractData(addrRef.current)
         creationTxnHash = await dataService.getTxnIdFromContractData(contractData)
         owner = await dataService.getTransactionOwner(creationTxnHash)
@@ -52,6 +54,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
           setCreationTxnHash(creationTxnHash)
         if (owner)
           setOwner(owner)
+        setIsLoading(false)
       }
     }
     getData()
@@ -85,6 +88,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
   }
 
   return <>
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
     {contractData && (
       <>
         <div className='address-header'>

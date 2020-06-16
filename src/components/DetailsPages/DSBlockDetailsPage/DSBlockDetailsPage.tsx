@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
-import { Card, Row, Col, Container } from 'react-bootstrap'
+import { Card, Row, Col, Container, Spinner } from 'react-bootstrap'
 
 import { QueryPreservingLink } from 'src'
 import { NetworkContext } from 'src/services/networkProvider'
@@ -20,6 +20,7 @@ const DSBlockDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
+  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [data, setData] = useState<DsBlockObj | null>(null)
   const [latestDSBlockNum, setLatestDSBlockNum] = useState<number | null>(null)
@@ -31,17 +32,20 @@ const DSBlockDetailsPage: React.FC = () => {
     let receivedData: DsBlockObj
     const getData = async () => {
       try {
+        setIsLoading(true)
         if (isNaN(blockNum))
           throw new Error('Not a valid block number')
         receivedData = await dataService.getDSBlockDetails(blockNum)
+        latestDSBlockNum = await dataService.getNumDSBlocks()
         if (receivedData)
           setData(receivedData)
-        latestDSBlockNum = await dataService.getNumDSBlocks()
         if (latestDSBlockNum)
           setLatestDSBlockNum(latestDSBlockNum)
       } catch (e) {
         console.log(e)
         setError(e)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -56,6 +60,7 @@ const DSBlockDetailsPage: React.FC = () => {
   }, [blockNum, dataService])
 
   return <>
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
     {error
       ? <NotFoundPage />
       : data && (

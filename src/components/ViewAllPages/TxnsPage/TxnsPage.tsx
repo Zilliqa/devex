@@ -87,10 +87,11 @@ const TxnsPage: React.FC = () => {
         if (slicedTxnHashes) {
           txnBodies = await dataService.getTransactionsDetails(slicedTxnHashes)
           setData(txnBodies)
-          setIsLoading(false)
         }
       } catch (e) {
         console.log(e)
+      } finally {
+        setIsLoading(false)
       }
     }
 

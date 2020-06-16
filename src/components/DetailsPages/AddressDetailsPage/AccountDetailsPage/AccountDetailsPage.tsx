@@ -67,14 +67,15 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
       try {
         setIsLoading(true)
         accData = await dataService.getAccData(addrRef.current)
+        accContracts = await dataService.getAccContracts(addrRef.current)
         if (accData)
           setAccData(accData)
-        accContracts = await dataService.getAccContracts(addrRef.current)
         if (accContracts)
           setAccContracts(accContracts)
-        setIsLoading(false)
       } catch (e) {
         console.log(e)
+      } finally {
+        setIsLoading(false)
       }
     }
     getData()
@@ -83,6 +84,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
   }, [])
 
   return <>
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
     {accData && (
       <>
         <div className='address-header'>
@@ -132,7 +134,6 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
             </Container>
           </Card.Body>
         </Card>
-        {isLoading ? <div className='contract-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
         {accContracts && accContracts.length > 0 && (
           <>
             <h4 style={{ padding: '0.5rem 0' }}>Deployed Contracts</h4>
