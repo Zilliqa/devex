@@ -44,24 +44,15 @@ export const NetworkProvider: React.FC = (props) => {
       ? JSON.parse(localStorage.getItem('nodeUrlMap')!)
       : {},
     setNodeUrlMap: (newNodeUrlMap: { [key: string]: string }) => {
-      setState({ ...state, nodeUrlMap: newNodeUrlMap })
+      localStorage.setItem('nodeUrlMap', JSON.stringify(newNodeUrlMap))
+      setState({ ...state, nodeUrl: 'https://api.zilliqa.com/', nodeUrlMap: newNodeUrlMap })
     },
     nodeUrl: query.get('network') || 'https://api.zilliqa.com/',
     setNodeUrl: (newNodeUrl: string) => {
+      localStorage.setItem('nodeUrl', state.nodeUrl)
       setState({ ...state, nodeUrl: newNodeUrl })
     }
   })
-
-  /* Storage useEffects */
-  useEffect(() => {
-    localStorage.setItem('nodeUrl', state.nodeUrl)
-  }, [state.nodeUrl])
-
-  useEffect(() => {
-    localStorage.setItem('nodeUrlMap', JSON.stringify(state.nodeUrlMap))
-    // Needed for deep compare of nodeUrlMap
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(state.nodeUrlMap)])
 
   /* Redirect useEffect */
   useEffect(() => {
@@ -84,7 +75,8 @@ export const NetworkProvider: React.FC = (props) => {
   useEffect(()=> {
     setState((prevState: NetworkState) => (
       { ...prevState, dataService: new DataService(prevState.nodeUrl), isIsolatedServer: null }))
-  }, [state.nodeUrl])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.nodeUrl, JSON.stringify(state.nodeUrlMap)])
 
   // If dataservice changes, update isIsolatedServer
   useEffect(() => {

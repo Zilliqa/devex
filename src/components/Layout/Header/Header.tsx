@@ -49,7 +49,6 @@ const Header: React.FC = () => {
     delete nodeUrlMap[k]
     setNodeUrlMap(nodeUrlMap)
     setCurrentNetwork('Mainnet')
-    setNodeUrl && setNodeUrl('https://api.zilliqa.com/')
     setShowDropdown(false)
   }
 

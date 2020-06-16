@@ -42,7 +42,6 @@ const Dashboard: React.FC = () => {
             <PendTxnList />
           </Col>
         </Row>
-
       </Container>
     </div>
   );
