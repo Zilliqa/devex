@@ -3,7 +3,7 @@ import { Navbar, Nav, NavDropdown, Tooltip, OverlayTrigger, Form } from 'react-b
 import { useLocation } from 'react-router-dom'
 
 import { QueryPreservingLink } from 'src'
-import DevexBrand from 'src/assets/images/DevexBrand.png'
+import ZilLogo from 'src/assets/images/ZilLogo.png'
 import { NetworkContext, defaultNetworks } from 'src/services/networkProvider'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -17,7 +17,7 @@ const Header: React.FC = () => {
   const location = useLocation();
   const networkContext = useContext(NetworkContext)
   const { isIsolatedServer, nodeUrl, setNodeUrl, nodeUrlMap, setNodeUrlMap } = networkContext!
-  const [currentNetwork, setCurrentNetwork] = useState(nodeUrlMap[localStorage.getItem('nodeUrl')!] || defaultNetworks[nodeUrl])
+  const [currentNetwork, setCurrentNetwork] = useState(defaultNetworks[nodeUrl] || nodeUrl)
   const [newNode, setNewNode] = useState('')
   const [showSearchbar, setShowSearchbar] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
@@ -58,12 +58,14 @@ const Header: React.FC = () => {
         <QueryPreservingLink to={'/'} >
           <Navbar.Brand className="custom-navbar-brand">
             <img
-              src={DevexBrand}
+              src={ZilLogo}
               alt=""
-              width="120"
+              width="30"
               height="30"
               className="d-inline-block align-top"
             />
+            {' '}
+            <span style={{ color: 'white', fontFamily: 'Jura', fontSize: '20px' }}>DEVEX</span>
         </Navbar.Brand>
         </QueryPreservingLink>
         {showSearchbar

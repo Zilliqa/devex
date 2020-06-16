@@ -240,17 +240,13 @@ const TxBlockDetailsPage: React.FC = () => {
           {data.txnHashes.length > 0 && (
             <>
               <h4>Transactions</h4>
-              <Card className='txblock-details-card'>
-                <Card.Body>
-                  <ViewAllTable
-                    isLoading={isLoadingTrans}
-                    fetchData={fetchData}
-                    pageCount={Math.ceil(data.txnHashes.length / 10)}
-                    columns={columns}
-                    data={transactionData ? transactionData : []}
-                    processMap={processMap} />
-                </Card.Body>
-              </Card>
+              <ViewAllTable
+                isLoading={isLoadingTrans}
+                fetchData={fetchData}
+                pageCount={Math.ceil(data.txnHashes.length / 10)}
+                columns={columns}
+                data={transactionData ? transactionData : []}
+                processMap={processMap} />
             </>
           )}
         </>

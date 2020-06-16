@@ -59,7 +59,7 @@ const Searchbar: React.FC<IProps> = ({ isHeaderSearchbar, isISSearchbar }) => {
 
   return <>
     <Form onSubmit={handleSubmit}>
-      <InputGroup className="searchbar-ig" id="searchbar-ig">
+      <InputGroup className="searchbar-ig" id={isHeaderSearchbar ? "header-searchbar-ig" : "searchbar-ig"}>
         {!isISSearchbar &&
           <InputGroup.Prepend>
             <DropdownButton variant="outline-secondary" id='searchbar-dropdown' title={searchType}>

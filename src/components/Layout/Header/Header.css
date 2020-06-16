@@ -1,8 +1,9 @@
 .custom-navbar {
+  background-color: #343a40;
+  color: lightgrey;
   padding: .5rem 10%;
   position: sticky;
   height: 70px;
-  background-color: rgb(240,240,240);
   border-bottom: solid 1px slategrey;
 }
 
@@ -18,17 +19,8 @@
   max-width: 550px;
 }
 
-.header-searchbar #searchbar-dropdown {
-  background-color: white;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
 .header-searchbar .searchbar-ig {
   margin-bottom: 0;
-}
-.header-searchbar .input-group-append {
-  background-color: white;
 }
 
 #header-network-dropdown {
@@ -50,7 +42,10 @@
 }
 
 .node-item {
-  padding:'0.25rem 0.9rem 0.25rem 1.5rem';
+  padding: 0.25rem 0rem 0.25rem 1.5rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 175px;
 }
 
 .minus-icon-item {

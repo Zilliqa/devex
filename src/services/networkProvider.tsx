@@ -15,18 +15,20 @@ type NetworkState = {
 
 const useQuery = () => new URLSearchParams(useLocation().search)
 
-export const defaultNetworks: {[key: string]: string} = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
+export const defaultNetworks: { [key: string]: string } = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
   ? {
     'https://api.zilliqa.com/': 'Mainnet',
     'https://dev-api.zilliqa.com/': 'Testnet',
     'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server',
+    'http://52.187.126.172:4201': 'Mainnet Staked Seed Node'
   }
   : {
     'https://api.zilliqa.com/': 'Mainnet',
     'https://dev-api.zilliqa.com/': 'Testnet',
     'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server',
-    'https://stg-zilliqa-isolated-server.zilliqa.com/': 'Staging Isolated Server'
-  } 
+    'https://stg-zilliqa-isolated-server.zilliqa.com/': 'Staging Isolated Server',
+    'http://52.187.126.172:4201': 'Mainnet Staked Seed Node'
+  }
 
 export const NetworkContext = React.createContext<NetworkState | null>(null)
 
@@ -49,7 +51,6 @@ export const NetworkProvider: React.FC = (props) => {
     },
     nodeUrl: query.get('network') || 'https://api.zilliqa.com/',
     setNodeUrl: (newNodeUrl: string) => {
-      localStorage.setItem('nodeUrl', state.nodeUrl)
       setState({ ...state, nodeUrl: newNodeUrl })
     }
   })
@@ -63,19 +64,19 @@ export const NetworkProvider: React.FC = (props) => {
         history.push('/')
       else
         history.push({
-        pathname: '/',
-        search: '?' + new URLSearchParams({network: state.nodeUrl}).toString()
-      })
-  }
+          pathname: '/',
+          search: '?' + new URLSearchParams({ network: state.nodeUrl }).toString()
+        })
+    }
     // Effect is independent of history
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.nodeUrl])
 
   // If nodeurl changes, update dataservice
-  useEffect(()=> {
+  useEffect(() => {
     setState((prevState: NetworkState) => (
       { ...prevState, dataService: new DataService(prevState.nodeUrl), isIsolatedServer: null }))
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.nodeUrl, JSON.stringify(state.nodeUrlMap)])
 
   // If dataservice changes, update isIsolatedServer
@@ -90,7 +91,7 @@ export const NetworkProvider: React.FC = (props) => {
         console.log(e)
       }
     }
-    
+
     checkNetwork()
   }, [state.dataService])
 

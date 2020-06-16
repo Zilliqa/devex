@@ -1,14 +1,16 @@
-import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import React from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
 
-import BCInfo from './BCInfo/BCInfo';
-import DSBlockList from './DSBlockList/DSBlockList';
-import TxBlockList from './TxBlockList/TxBlockList';
-import ValTxnList from './ValTxnList/ValTxnList';
-import PendTxnList from './PendTxnList/PendTxnList';
+import BCInfo from './BCInfo/BCInfo'
+import DSBlockList from './DSBlockList/DSBlockList'
+import TxBlockList from './TxBlockList/TxBlockList'
+import ValTxnList from './ValTxnList/ValTxnList'
+import PendTxnList from './PendTxnList/PendTxnList'
+
+import './Dashboard.css'
 
 /*
-         Dashboard Layout
+              Dashboard Layout
     +++++++++++++++++++++++++++++++++++++
     |           BC Information          |
     +++++++++++++++++++++++++++++++++++++
@@ -20,16 +22,16 @@ import PendTxnList from './PendTxnList/PendTxnList';
 const Dashboard: React.FC = () => {
   return (
     <div>
-      <Container>
+      <Container className='dashboard-container'>
         <Row>
           <BCInfo />
         </Row>
         <Row>
-          <Col style={{padding: 0}}>
-          <DSBlockList />
+          <Col style={{ padding: 0 }}>
+            <DSBlockList />
           </Col>
-        <Col style={{padding: '0 0 0 1rem'}}>
-          <TxBlockList />
+          <Col style={{ padding: '0 0 0 1rem' }}>
+            <TxBlockList />
           </Col>
         </Row>
         <Row style={{ marginTop: '1rem' }}>
@@ -44,7 +46,7 @@ const Dashboard: React.FC = () => {
         </Row>
       </Container>
     </div>
-  );
+  )
 }
 
-export default Dashboard;
+export default Dashboard

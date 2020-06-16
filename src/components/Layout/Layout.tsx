@@ -8,7 +8,7 @@ import './Layout.css'
 type Props = { children: React.ReactNode }
 
 const Layout: React.FC<Props> = (props) => (
-  <div>
+  <div style={{ backgroundColor: 'rgba(0,0,0,.03)' }}>
     <Header />
     <Container className="app-container">
       {props.children}

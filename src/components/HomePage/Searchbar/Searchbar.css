@@ -1,7 +1,8 @@
 #searchbar-dropdown {
-  height: 45px;
+  height: 50px;
   border: 1px solid #ced4da;
-  background-color: #F7F7F7;
+  border-color: #ced4da;
+  background-color: white;
   border-right: none;
   color: #6c757d !important;
   box-shadow: none !important;
@@ -24,9 +25,10 @@
 }
 
 .searchbar-ig input {
-  height: 45px !important;
+  height: 50px !important;
   margin-left: 1px;
   border-right: 0;
+  background-clip: unset;
 }
 
 .searchbar-ig .form-control:focus {
@@ -35,7 +37,25 @@
   box-shadow: none;
 }
 
-.searchbar-ig .btn:focus {
+.searchbar-ig .btn {
+  background-color: white;
+  border-color: #ced4da;
+}
+
+.searchbar-ig .btn:hover {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.searchbar-ig .btn:focus, .searchbar-ig .btn:active, .searchbar-ig .btn:focus:active {
   outline: 0;
-  box-shadow: none;
+  box-shadow: none !important;
+}
+
+#header-searchbar-ig #searchbar-dropdown {
+  height: 45px;
+}
+
+#header-searchbar-ig input {
+  height: 45px !important;
 }
