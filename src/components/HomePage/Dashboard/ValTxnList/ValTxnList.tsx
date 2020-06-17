@@ -26,7 +26,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 const processMap = new Map()
 processMap.set('amount-col', (amt: number) => (
   <OverlayTrigger placement='top'
-    overlay={ <Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
+    overlay={<Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
     <span>{qaToZil(amt)}</span>
   </OverlayTrigger>
 ))
@@ -43,11 +43,11 @@ processMap.set('to-col', (addr: string) => (
 processMap.set('hash-col', (hash: number) => (<QueryPreservingLink to={`/tx/0x${hash}`}>{'0x' + hash}</QueryPreservingLink>))
 
 const ValTxnList: React.FC = () => {
-  
+
   const networkContext = useContext(NetworkContext)
   const { dataService, nodeUrl } = networkContext!
 
-  useEffect(() => { setData(null) }, [nodeUrl]) // Unset data on url change
+  useEffect(() => { setData(null) }, [nodeUrl])
 
   const [data, setData] = useState<TransactionObj[] | null>(null)
 
@@ -73,7 +73,7 @@ const ValTxnList: React.FC = () => {
       accessor: 'hash',
     }], []
   )
- 
+
   // Fetch Data
   useEffect(() => {
     let isCancelled = false
@@ -98,7 +98,8 @@ const ValTxnList: React.FC = () => {
       isCancelled = true
       clearInterval(getDataTimer)
     }
-  }, [dataService])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodeUrl])
 
   return <>
     <Card className='valtxlist-card'>

@@ -11,12 +11,15 @@ import { faInfoCircle, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons
 
 import Searchbar from 'src/components/HomePage/Searchbar/Searchbar'
 import './Header.css'
+import { UserPrefContext } from 'src/services/userPrefProvider'
 
 const Header: React.FC = () => {
 
   const location = useLocation();
   const networkContext = useContext(NetworkContext)
-  const { isIsolatedServer, nodeUrl, setNodeUrl, nodeUrlMap, setNodeUrlMap } = networkContext!
+  const userPrefContext = useContext(UserPrefContext)
+  const { isIsolatedServer, nodeUrl, setNodeUrl } = networkContext!
+  const { nodeUrlMap, setNodeUrlMap } = userPrefContext!
   const [currentNetwork, setCurrentNetwork] = useState(defaultNetworks[nodeUrl] || nodeUrl)
   const [newNode, setNewNode] = useState('')
   const [showSearchbar, setShowSearchbar] = useState(false)
@@ -49,6 +52,7 @@ const Header: React.FC = () => {
     delete nodeUrlMap[k]
     setNodeUrlMap(nodeUrlMap)
     setCurrentNetwork('Mainnet')
+    setNodeUrl && setNodeUrl('https://api.zilliqa.com/')
     setShowDropdown(false)
   }
 

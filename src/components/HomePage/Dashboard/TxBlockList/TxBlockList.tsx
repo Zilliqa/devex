@@ -26,7 +26,7 @@ processMap.set('age-col', timestampToTimeago)
 // https://github.com/react-bootstrap/react-bootstrap/issues/5075
 processMap.set('reward-col', (amt: number) => (
   <OverlayTrigger placement='top'
-    overlay={ <Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
+    overlay={<Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
     <span>{qaToZil(amt)}</span>
   </OverlayTrigger>
 ))
@@ -35,7 +35,7 @@ processMap.set('height-col', (height: number) => (<QueryPreservingLink to={`txbk
 processMap.set('hash-col', (hash: number) => ('0x' + hash))
 
 const TxBlockList: React.FC = () => {
-  
+
   const networkContext = useContext(NetworkContext)
   const { dataService, nodeUrl } = networkContext!
 
@@ -96,7 +96,8 @@ const TxBlockList: React.FC = () => {
       isCancelled = true
       clearInterval(getDataTimer)
     }
-  }, [dataService])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodeUrl])
 
   return <>
     <Card className='txblock-card'>

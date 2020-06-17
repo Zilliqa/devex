@@ -9,8 +9,6 @@ type NetworkState = {
   dataService: DataService | null,
   nodeUrl: string,
   setNodeUrl: (nodeUrl: string) => void,
-  nodeUrlMap: Record<string, string>,
-  setNodeUrlMap: (newNodeUrlMap: Record<string, string>) => void,
 }
 
 const useQuery = () => new URLSearchParams(useLocation().search)
@@ -42,13 +40,6 @@ export const NetworkProvider: React.FC = (props) => {
     connStatus: false,
     isIsolatedServer: false,
     dataService: null,
-    nodeUrlMap: localStorage.getItem('nodeUrlMap')
-      ? JSON.parse(localStorage.getItem('nodeUrlMap')!)
-      : {},
-    setNodeUrlMap: (newNodeUrlMap: { [key: string]: string }) => {
-      localStorage.setItem('nodeUrlMap', JSON.stringify(newNodeUrlMap))
-      setState({ ...state, nodeUrl: 'https://api.zilliqa.com/', nodeUrlMap: newNodeUrlMap })
-    },
     nodeUrl: query.get('network') || 'https://api.zilliqa.com/',
     setNodeUrl: (newNodeUrl: string) => {
       setState({ ...state, nodeUrl: newNodeUrl })
@@ -75,9 +66,8 @@ export const NetworkProvider: React.FC = (props) => {
   // If nodeurl changes, update dataservice
   useEffect(() => {
     setState((prevState: NetworkState) => (
-      { ...prevState, dataService: new DataService(prevState.nodeUrl), isIsolatedServer: null }))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.nodeUrl, JSON.stringify(state.nodeUrlMap)])
+      { ...prevState, dataService: new DataService(state.nodeUrl), isIsolatedServer: null }))
+  }, [state.nodeUrl])
 
   // If dataservice changes, update isIsolatedServer
   useEffect(() => {
