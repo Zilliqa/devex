@@ -4,6 +4,7 @@
   border: 1px solid #ced4da;
   background-color: white;
   min-height: 500px;
+  position: relative;
 }
 
 .viewall-table table {
@@ -20,7 +21,7 @@
 
 .viewall-table .spinner {
   position: absolute;
-  top: 60%;
+  top: 50%;
   left: 50%;
 }
 

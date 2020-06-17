@@ -9,6 +9,7 @@
   2) getDSBlockDetails(blockNum: number): Promise<DsBlockObj>
   3) getLatest5DSBlocks(): Promise<DsBlockObj[]>
   4) getDSBlocksListing(pageNum: number): Promise<MappedDSBlockListing>
+  5) getMinerInfo(blockNum: number): Promise<MinerInfo>
 
   TxBlocks-related:
   1) getNumTxBlocks(): Promise<number>
@@ -49,7 +50,7 @@
 // Staging Isolated Server: https://stg-zilliqa-isolated-server.zilliqa.com/
 
 import { Zilliqa } from '@zilliqa-js/zilliqa'
-import { BlockchainInfo, DsBlockObj, TransactionObj, TxBlockObj, TxList, PendingTxnResult } from '@zilliqa-js/core/src/types'
+import { BlockchainInfo, DsBlockObj, TransactionObj, TxBlockObj, TxList, PendingTxnResult, MinerInfo } from '@zilliqa-js/core/src/types'
 import { MappedTxBlock, MappedDSBlockListing, MappedTxBlockListing, TransactionDetails, ContractData, AccData, AccContracts } from 'src/typings/api'
 
 import { hexAddrToZilAddr } from 'src/utils/Utils'
@@ -136,6 +137,19 @@ export class DataService {
     return {
       maxPages: blockList.maxPages,
       data: output as DsBlockObj[]
+    }
+  }
+
+  async getMinerInfo(blockNum: number): Promise<MinerInfo | undefined> {
+    console.log("getting miner info")
+    try {
+      const response = await this.zilliqa.blockchain.getMinerInfo(blockNum)
+      if(response.error !== undefined) {
+        throw new Error(response.error.message)
+      }
+      return response.result as MinerInfo
+    } catch (e) {
+      console.log(e);
     }
   }
 

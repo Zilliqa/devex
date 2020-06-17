@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
-import { Card, Row, Col, Container, Spinner } from 'react-bootstrap'
+import { Card, Row, Col, Container, Spinner, Collapse } from 'react-bootstrap'
 
 import { QueryPreservingLink } from 'src'
 import { NetworkContext } from 'src/services/networkProvider'
 import { qaToZil, timestampToTimeago, timestampToDisplay, pubKeyToZilAddr } from 'src/utils/Utils'
-import { DsBlockObj } from '@zilliqa-js/core/src/types'
+import { DsBlockObj, MinerInfo } from '@zilliqa-js/core/src/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
-import { faCubes } from '@fortawesome/free-solid-svg-icons'
+import { faCubes, faAngleUp, faAngleLeft, faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 
 import './DSBlockDetailsPage.css'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import MinerTable from './MinerTable/MinerTable'
 
 const DSBlockDetailsPage: React.FC = () => {
 
@@ -24,12 +25,16 @@ const DSBlockDetailsPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   const [data, setData] = useState<DsBlockObj | null>(null)
   const [latestDSBlockNum, setLatestDSBlockNum] = useState<number | null>(null)
+  const [minerInfo, setMinerInfo] = useState<MinerInfo | null>(null)
+  const [currShardIdx, setCurrShardIdx] = useState<number>(0)
+  const [showMore, setShowMore] = useState<boolean>(false)
 
   // Fetch data
   useEffect(() => {
     if (!dataService) return
     let latestDSBlockNum: number
     let receivedData: DsBlockObj
+    let minerInfo: MinerInfo | undefined
     const getData = async () => {
       try {
         setIsLoading(true)
@@ -37,10 +42,15 @@ const DSBlockDetailsPage: React.FC = () => {
           throw new Error('Not a valid block number')
         receivedData = await dataService.getDSBlockDetails(blockNum)
         latestDSBlockNum = await dataService.getNumDSBlocks()
+        minerInfo = await dataService.getMinerInfo(blockNum)
         if (receivedData)
           setData(receivedData)
         if (latestDSBlockNum)
           setLatestDSBlockNum(latestDSBlockNum)
+        if (minerInfo !== undefined) {
+          console.log(minerInfo)
+          setMinerInfo(minerInfo)
+        }
       } catch (e) {
         console.log(e)
         setError(e)
@@ -53,7 +63,10 @@ const DSBlockDetailsPage: React.FC = () => {
     return () => {
       setData(null)
       setLatestDSBlockNum(null)
+      setMinerInfo(null)
       setError(null)
+      setCurrShardIdx(0)
+      setShowMore(false)
     }
     // Run only once for each block
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -72,7 +85,7 @@ const DSBlockDetailsPage: React.FC = () => {
               </span>
               <span style={{ marginLeft: '0.75rem' }}>
                 DS Block
-            </span>
+              </span>
               {' '}
               <span className='dsblock-header-blocknum'>#{data.header.BlockNum}</span>
             </h3>
@@ -156,6 +169,85 @@ const DSBlockDetailsPage: React.FC = () => {
               </Card.Body>
             </Card>
           )}
+          {minerInfo &&
+            <>
+              <Collapse in={showMore}>
+                <Row>
+                  <Col>
+                    <Card className='miner-card'>
+                      <Card.Body>
+                        <Container>
+                          <Row>
+                            <Col>
+                              <Row style={{ width: 'fit-content' }}>
+                                <h6>DS Committee</h6>
+                              </Row>
+                            </Col>
+                            <Col>
+                              <Row style={{ width: 'fit-content', marginLeft: 'auto' }}>
+                                <span>Total: <strong>{minerInfo.dscommittee.length}</strong></span>
+                              </Row>
+                            </Col>
+                          </Row>
+                          <Row style={{ justifyContent: 'center' }}>
+                            {minerInfo.dscommittee.length > 0
+                              ? <MinerTable addresses={minerInfo.dscommittee} />
+                              : <span style={{ padding: '1rem 0' }} >No addresses to show</span>
+                            }
+                          </Row>
+                        </Container>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                  <Col>
+                    <Card className='miner-card ml-auto'>
+                      <Card.Body>
+                        <Container>
+                          <Row>
+                            <Col>
+                              <Row style={{ width: 'fit-content' }}>
+                                <h6>Shard {currShardIdx + 1} of {minerInfo.shards.length}</h6>
+                              </Row>
+                            </Col>
+                            <Col style={{ textAlign: 'center', marginTop: '-0.50rem' }}>
+                              <span style={{ padding: '0 0.5rem' }}>
+                                <FontAwesomeIcon size='2x'
+                                  cursor='pointer'
+                                  onClick={currShardIdx === 0 ? undefined : () => (setCurrShardIdx(currShardIdx - 1))}
+                                  color={currShardIdx === 0 ? 'rgba(0, 0, 0, 0.25)' : 'rgba(0, 0, 0, 0.55)'} icon={faAngleLeft} />
+                              </span>
+                              <span style={{ padding: '0 0.5rem' }}>
+                                <FontAwesomeIcon size='2x'
+                                  cursor='pointer'
+                                  onClick={currShardIdx === minerInfo.shards.length - 1 ? undefined : () => (setCurrShardIdx(currShardIdx + 1))}
+                                  color={currShardIdx === minerInfo.shards.length - 1 ? 'rgba(0, 0, 0, 0.25)' : 'rgba(0, 0, 0, 0.55)'} icon={faAngleRight} />
+                              </span>
+                            </Col>
+                            <Col>
+                              <Row style={{ width: 'fit-content', marginLeft: 'auto' }}>
+                                <span>Total: <strong>{minerInfo.shards[currShardIdx].nodes.length}</strong></span>
+                              </Row>
+                            </Col>
+                          </Row>
+                          <Row style={{ justifyContent: 'center' }}>
+                            {minerInfo.shards[currShardIdx].nodes.length > 0
+                              ? <MinerTable addresses={minerInfo.shards[currShardIdx].nodes} />
+                              : <span style={{ padding: '1rem 0' }} >No addresses to show</span>
+                            }
+                          </Row>
+                        </Container>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                </Row>
+              </Collapse>
+            </>
+          }
+          <Container className='showmore-container' onClick={() => setShowMore(!showMore)}>
+            <Row>
+              <FontAwesomeIcon icon={showMore ? faAngleUp : faAngleDown} size='2x' color='rgba(0, 0, 0, 0.55)' />
+            </Row>
+          </Container>
         </>
       )}
   </>

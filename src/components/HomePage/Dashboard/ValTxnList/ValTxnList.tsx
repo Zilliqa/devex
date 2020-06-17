@@ -33,7 +33,7 @@ processMap.set('amount-col', (amt: number) => (
 processMap.set('from-col', (addr: string) => (<QueryPreservingLink to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</QueryPreservingLink>))
 processMap.set('to-col', (addr: string) => (
   addr.includes('contract-')
-    ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
+    ? <QueryPreservingLink style={{ marginLeft: '-1rem' }} to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
       <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
       {' '}
       Contract Creation
