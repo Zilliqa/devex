@@ -4,7 +4,6 @@
   padding: .5rem 10% !important;
   position: sticky;
   height: 70px;
-  border-bottom: solid 1px slategrey;
 }
 
 .custom-navbar .dropdown-item:active {
@@ -26,7 +25,7 @@
 #header-network-dropdown {
   margin: 0 0.5rem;
   background-color: white;
-  border: solid 1px rgba(0,0,0,0.4);
+  border: solid 1px rgba(0, 0, 0, 0.4);
   border-radius: 4px;
 }
 
@@ -73,4 +72,27 @@
 
 .custom-navbar-brand {
   cursor: pointer;
+}
+
+.labelbar-div {
+  background-color: rgba(52, 58, 64, 0.9);
+  padding: 0 10%;
+}
+
+.labelbar {
+  white-space: nowrap;
+  align-items: center;
+  border-bottom: 1px solid slategrey;
+  font-size: 14px;
+  width: 100%;
+  height: 45px;
+  display: flex;
+}
+
+.labelbar>* {
+  padding: 0 1rem;
+}
+
+.labelbar>*:not(:first-child) {
+  border-left: solid rgba(0, 0, 0, 0.1) 1px;
 }

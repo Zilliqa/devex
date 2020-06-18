@@ -33,6 +33,17 @@
   margin-top: 100px;
 }
 
+.label-modal .label-modal-header {
+  align-self: center;
+  padding-top: 1.5rem;
+  display: flex;
+}
+
+.label-modal .label-modal-header h6 {
+  margin: 0;
+  color: #3c4858;
+}
+
 .label-modal .modal-body {
   padding: 2rem;
 }
@@ -41,4 +52,25 @@
   background-color: mediumturquoise;
   height: 40px;
   border: 0;
+}
+
+.label-modal .form-control:focus {
+  z-index: 0 !important;
+  outline: 0;
+  box-shadow: none;
+}
+
+.label-modal .btn:hover {
+  filter: brightness(1.05);
+}
+
+.label-modal .btn:focus, .label-modal .btn:active, .label-modal .btn:focus:active {
+  background-color: mediumturquoise;
+  outline: 0;
+  box-shadow: none !important;
+}
+
+.label-modal-footer {
+  margin-top: 1rem;
+  color: #8492a6;
 }

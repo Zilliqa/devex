@@ -1,16 +1,18 @@
-import React, { useState, useContext, useEffect, SyntheticEvent } from 'react'
+import React, { useState, useContext, useEffect, useMemo, SyntheticEvent } from 'react'
+import { useLocation, Link } from 'react-router-dom'
 import { Navbar, Nav, NavDropdown, Tooltip, OverlayTrigger, Form } from 'react-bootstrap'
-import { useLocation } from 'react-router-dom'
+import PerfectScrollbar from 'react-perfect-scrollbar'
 
 import { QueryPreservingLink } from 'src'
 import ZilLogo from 'src/assets/images/ZilLogo.png'
+import Searchbar from 'src/components/HomePage/Searchbar/Searchbar'
 import { UserPrefContext } from 'src/services/userPrefProvider'
 import { NetworkContext, defaultNetworks } from 'src/services/networkProvider'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 
-import Searchbar from 'src/components/HomePage/Searchbar/Searchbar'
+import 'react-perfect-scrollbar/dist/css/styles.css'
 import './Header.css'
 
 const Header: React.FC = () => {
@@ -19,18 +21,23 @@ const Header: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const userPrefContext = useContext(UserPrefContext)
   const { isIsolatedServer, nodeUrl, setNodeUrl } = networkContext!
-  const { nodeUrlMap, setNodeUrlMap } = userPrefContext!
+  const { nodeUrlMap, setNodeUrlMap, labelMap } = userPrefContext!
   const [currentNetwork, setCurrentNetwork] = useState(defaultNetworks[nodeUrl] || nodeUrl)
   const [newNode, setNewNode] = useState('')
   const [showSearchbar, setShowSearchbar] = useState(false)
+  const [showLabelbar, setShowLabelbar] = useState(true)
   const [showDropdown, setShowDropdown] = useState(false)
 
   useEffect(() => {
-    if (location.pathname !== '/')
+    if (location.pathname !== '/') {
       setShowSearchbar(true)
-    else
+      setShowLabelbar(false)
+    }
+    else {
+      setShowLabelbar(true)
       setShowSearchbar(false)
-  }, [location]);
+    }
+  }, [location])
 
   const addNewNode = () => {
     if (Object.keys(nodeUrlMap).includes(newNode)) {
@@ -55,6 +62,12 @@ const Header: React.FC = () => {
     setNodeUrl && setNodeUrl('https://api.zilliqa.com/')
     setShowDropdown(false)
   }
+
+  const labels = useMemo(() => (
+    Object.entries(labelMap)
+      .filter(([k, v]) => (location.search === '' ? !k.includes('?network=') : k.includes(location.search))))
+    , [labelMap, location]
+  )
 
   return (
     <>
@@ -124,8 +137,17 @@ const Header: React.FC = () => {
           </NavDropdown>
         </Nav>
       </Navbar>
+      {showLabelbar && labels.length > 0 &&
+        <div className='labelbar-div'>
+          <PerfectScrollbar options={{ wheelPropagation: false }}>
+            <div className='labelbar'>
+              {labels.map(([k, v]) => (<Link key={k} to={k}>{v}</Link>))}
+            </div>
+          </PerfectScrollbar>
+        </div>
+      }
     </>
-  );
+  )
 }
 
 export default Header

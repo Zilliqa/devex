@@ -32,7 +32,7 @@ export const NetworkContext = React.createContext<NetworkState | null>(null)
 
 export const NetworkProvider: React.FC = (props) => {
 
-  const firstUpdate = useRef(true);
+  const firstUpdate = useRef(true)
   const query = useQuery()
   const history = useHistory()
 

@@ -47,20 +47,32 @@ const LabelStar: React.FC = () => {
           className={isLit ? 'star-filled-icon' : 'star-outline-icon'}
           icon={isLit ? faStarFilled : faStarOutline} size='xs' />
         <Modal className='label-modal' show={show} onHide={handleClose}>
+          <div className='label-modal-header'>
+            <h6>
+              Add Label
+            </h6>
+          </div>
           <Modal.Body>
-            <div style={{ marginBottom: '1rem' }}>
-              <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit}>
+              <div style={{ marginBottom: '1rem' }}>
                 <Form.Control
+                  autoFocus={true}
+                  required
                   type='text'
                   value={labelInput}
                   onChange={(e) => { setLabelInput(e.target.value) }}
                   placeholder='Label Name' />
-              </Form>
-            </div>
-            <div>
-              <Button block onClick={handleSubmit}>
-                Save
+              </div>
+              <div>
+                <Button block type='submit'>
+                  Save
               </Button>
+              </div>
+            </Form>
+            <div className='label-modal-footer'>
+              <span>Labels can be accessed from the Home Page</span>
+              <br />
+              <span>Label data is saved in the local storage of our browser</span>
             </div>
           </Modal.Body>
         </Modal>
