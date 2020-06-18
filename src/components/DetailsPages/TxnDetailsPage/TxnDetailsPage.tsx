@@ -20,6 +20,7 @@ import ContractCreationTab from '../InfoTabs/ContractCreationTab'
 
 import './TxnDetailsPage.css'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import LabelStar from '../LabelStart/LabelStar'
 
 const TxnDetailsPage: React.FC = () => {
 
@@ -113,6 +114,7 @@ const TxnDetailsPage: React.FC = () => {
             <span style={{ marginLeft: '0.75rem' }}>
               Transaction
           </span>
+            <LabelStar />
           </h3>
           <div style={{ display: 'flex' }}>
             <h6 className='txn-hash'>{'0x' + data.hash}</h6>

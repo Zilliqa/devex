@@ -42,20 +42,3 @@
 .txblock-detail-header {
   font-weight: 500;
 }
-
-.star-icon {
-  cursor: pointer;
-  color: rgb(93, 106, 133);
-  -moz-transition: all 0.1 ease-in;
-  -o-transition: all 0.1 ease-in;
-  -webkit-transition: all 0.1 ease-in;
-  transition: all 0.1 ease-in;
-}
-
-.star-icon :hover {
-  color: mediumturquoise;
-  -moz-transition: all 0.1 ease-in;
-  -o-transition: all 0.1 ease-in;
-  -webkit-transition: all 0.1 ease-in;
-  transition: all 0.1 ease-in;
-}

@@ -14,6 +14,7 @@ import { faCubes, faAngleUp, faAngleLeft, faAngleRight, faAngleDown } from '@for
 import './DSBlockDetailsPage.css'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import MinerTable from './MinerTable/MinerTable'
+import LabelStar from '../LabelStart/LabelStar'
 
 const DSBlockDetailsPage: React.FC = () => {
 
@@ -88,6 +89,7 @@ const DSBlockDetailsPage: React.FC = () => {
               </span>
               {' '}
               <span className='dsblock-header-blocknum'>#{data.header.BlockNum}</span>
+              <LabelStar />
             </h3>
             <span>
               <QueryPreservingLink

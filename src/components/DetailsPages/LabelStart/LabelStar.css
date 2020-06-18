@@ -1,0 +1,44 @@
+.star-outline-icon {
+  cursor: pointer;
+  color: rgb(93, 106, 133);
+  -moz-transition: all 0.1 ease-in;
+  -o-transition: all 0.1 ease-in;
+  -webkit-transition: all 0.1 ease-in;
+  transition: all 0.1 ease-in;
+}
+
+.star-span {
+  vertical-align: text-top;
+  margin-left: 1rem;
+}
+
+.star-span :hover {
+  color: mediumturquoise;
+  -moz-transition: all 0.1 ease-in;
+  -o-transition: all 0.1 ease-in;
+  -webkit-transition: all 0.1 ease-in;
+  transition: all 0.1 ease-in;
+}
+
+.star-filled-icon {
+  color: mediumturquoise;
+  cursor: pointer;
+}
+
+.modal-open[style] {
+  padding-right: 0px;
+}
+
+.label-modal {
+  margin-top: 100px;
+}
+
+.label-modal .modal-body {
+  padding: 2rem;
+}
+
+.label-modal .btn {
+  background-color: mediumturquoise;
+  height: 40px;
+  border: 0;
+}

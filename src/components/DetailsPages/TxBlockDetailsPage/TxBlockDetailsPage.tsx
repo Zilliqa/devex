@@ -10,11 +10,12 @@ import { qaToZil, timestampToTimeago, hexAddrToZilAddr, timestampToDisplay, pubK
 import { TransactionObj } from '@zilliqa-js/core/src/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCopy, faCaretSquareLeft, faCaretSquareRight, faStar as faStarOutline } from '@fortawesome/free-regular-svg-icons'
-import { faFileContract, faCubes, faStar } from '@fortawesome/free-solid-svg-icons'
+import { faCopy, faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
+import { faFileContract, faCubes } from '@fortawesome/free-solid-svg-icons'
 
 import './TxBlockDetailsPage.css'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import LabelStar from '../LabelStart/LabelStar'
 
 // Pre-processing data to display
 const processMap = new Map()
@@ -144,9 +145,7 @@ const TxBlockDetailsPage: React.FC = () => {
               </span>
               {' '}
               <span className='txblock-header-blocknum'>#{data.header.BlockNum}</span>
-              <span style={{ verticalAlign: 'text-top', marginLeft: '1rem' }} className='star-icon'>
-                <FontAwesomeIcon onClick={()=>console.log('star clicked')} color='grey' icon={faStarOutline} size='xs' />
-              </span>
+              <LabelStar />
             </h3>
             <span>
               <QueryPreservingLink

@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 
 import { QueryPreservingLink } from 'src'
 import ZilLogo from 'src/assets/images/ZilLogo.png'
+import { UserPrefContext } from 'src/services/userPrefProvider'
 import { NetworkContext, defaultNetworks } from 'src/services/networkProvider'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -11,7 +12,6 @@ import { faInfoCircle, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons
 
 import Searchbar from 'src/components/HomePage/Searchbar/Searchbar'
 import './Header.css'
-import { UserPrefContext } from 'src/services/userPrefProvider'
 
 const Header: React.FC = () => {
 
@@ -70,7 +70,7 @@ const Header: React.FC = () => {
             />
             {' '}
             <span style={{ color: 'white', fontFamily: 'Jura', fontSize: '20px' }}>DEVEX</span>
-        </Navbar.Brand>
+          </Navbar.Brand>
         </QueryPreservingLink>
         {showSearchbar
           ? <div className="header-searchbar"><Searchbar isISSearchbar={isIsolatedServer!} isHeaderSearchbar={true} /></div>

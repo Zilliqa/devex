@@ -1,7 +1,7 @@
 .custom-navbar {
   background-color: #343a40;
   color: lightgrey;
-  padding: .5rem 10%;
+  padding: .5rem 10% !important;
   position: sticky;
   height: 70px;
   border-bottom: solid 1px slategrey;

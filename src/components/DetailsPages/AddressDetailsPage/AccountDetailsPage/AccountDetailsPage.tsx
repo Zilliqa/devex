@@ -13,6 +13,7 @@ import { faWallet } from '@fortawesome/free-solid-svg-icons'
 
 import AccContractCard from './AccContractCard'
 import '../AddressDetailsPage.css'
+import LabelStar from '../../LabelStart/LabelStar'
 
 interface IProps {
   addr: string,
@@ -95,6 +96,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
             <span style={{ marginLeft: '0.75rem' }}>
               Account
             </span>
+            <LabelStar />
           </h3>
         </div>
         <div style={{ display: 'flex' }}>

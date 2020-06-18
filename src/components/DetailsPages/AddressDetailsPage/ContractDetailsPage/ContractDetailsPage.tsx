@@ -15,6 +15,7 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faFileContract } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import LabelStar from '../../LabelStart/LabelStar'
 import '../AddressDetailsPage.css'
 
 interface IProps {
@@ -99,6 +100,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
             <span style={{ marginLeft: '0.75rem' }}>
               Contract
             </span>
+            <LabelStar />
           </h3>
         </div>
         <div style={{ display: 'flex' }}>
