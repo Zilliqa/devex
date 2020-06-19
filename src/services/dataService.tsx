@@ -144,7 +144,7 @@ export class DataService {
     console.log("getting miner info")
     try {
       const response = await this.zilliqa.blockchain.getMinerInfo(blockNum)
-      if(response.error !== undefined) {
+      if (response.error !== undefined) {
         throw new Error(response.error.message)
       }
       return response.result as MinerInfo
@@ -277,7 +277,7 @@ export class DataService {
           ...pendingTxn.result,
           hash: txnHash,
         }
-    }))
+      }))
     return output as PendingTxnResult[]
   }
 

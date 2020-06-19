@@ -23,8 +23,14 @@ import './DSBlockList.css'
 // Pre-processing data to display
 const processMap = new Map()
 processMap.set('age-col', timestampToTimeago)
-processMap.set('ds-leader-col', pubKeyToZilAddr)
-processMap.set('height-col', (height: number) => (<QueryPreservingLink to={`dsbk/${height}`}>{height}</QueryPreservingLink>))
+processMap.set('ds-leader-col', (addr: string) =>(
+  <QueryPreservingLink to={`address/${pubKeyToZilAddr(addr)}`}>
+    {pubKeyToZilAddr(addr)}
+  </QueryPreservingLink>))
+processMap.set('height-col', (height: number) => (
+  <QueryPreservingLink to={`dsbk/${height}`}>
+    {height}
+  </QueryPreservingLink>))
 processMap.set('hash-col', (hash: number) => ('0x' + hash))
 
 const DSBlockList: React.FC = () => {
@@ -44,12 +50,12 @@ const DSBlockList: React.FC = () => {
     },
     {
       id: 'difficulty-col',
-      Header: 'Difficulty',
+      Header: 'Diff',
       accessor: 'header.Difficulty',
     },
     {
       id: 'ds-difficulty-col',
-      Header: 'DS Difficulty',
+      Header: 'DS Diff',
       accessor: 'header.DifficultyDS',
     },
     {

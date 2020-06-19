@@ -3,6 +3,16 @@
   src: local('Jura'), url(./fonts/Jura-VariableFont_wght.ttf) format('truetype');
 }
 
+@font-face {
+  font-family: 'OpenSans';
+  src: local('OpenSans'), url(./fonts/OpenSans-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'RobotoMono';
+  src: local('RobotoMono'), url(./fonts/RobotoMono-Regular.ttf) format('truetype');
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -32,4 +42,9 @@ a:hover {
 .center-spinner {
   text-align: center;
   margin: 20vh;
+}
+
+.mono {
+  font-family: RobotoMono;
+  font-size: 15px;
 }

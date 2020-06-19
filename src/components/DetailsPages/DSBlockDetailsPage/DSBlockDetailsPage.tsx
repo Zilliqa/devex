@@ -144,7 +144,11 @@ const DSBlockDetailsPage: React.FC = () => {
                   <Col>
                     <div className='dsblock-detail'>
                       <span className='dsblock-detail-header'>DS Leader:</span>
-                      <span>{pubKeyToZilAddr(data.header.LeaderPubKey)}</span>
+                      <span>
+                        <QueryPreservingLink to={`address/${pubKeyToZilAddr(data.header.LeaderPubKey)}`}>
+                          {pubKeyToZilAddr(data.header.LeaderPubKey)}
+                        </QueryPreservingLink>
+                      </span>
                     </div>
                   </Col>
                 </Row>
@@ -152,7 +156,7 @@ const DSBlockDetailsPage: React.FC = () => {
                   <Col>
                     <div className='dsblock-detail'>
                       <span className='dsblock-detail-header'>Signature:</span>
-                      <span style={{ maxWidth: 'calc(100% - 90px)' }}>{data.signature}</span>
+                      <span style={{ lineHeight: '25px', fontSize: '13.2px', maxWidth: 'calc(100% - 90px)' }}>{data.signature}</span>
                     </div>
                   </Col>
                 </Row>
@@ -162,9 +166,9 @@ const DSBlockDetailsPage: React.FC = () => {
           {data.header.PoWWinners.length > 0 && (
             <Card className='dsblock-details-card'>
               <Card.Body>
-                <Container>
+                <Container style={{ fontFamily: 'monospace', fontSize: '14px' }}>
                   <h6>PoW Winners</h6>
-                  {data.header.PoWWinners.map((x, index) => <div key={index}>[{index + 1}]
+                  {data.header.PoWWinners.map((x, index) => <div key={index}>[{index}]
                     {'  '}
                     <QueryPreservingLink to={`/address/${pubKeyToZilAddr(x)}`}>{pubKeyToZilAddr(x)}</QueryPreservingLink></div>)}
                 </Container>
@@ -178,7 +182,7 @@ const DSBlockDetailsPage: React.FC = () => {
                   <Col>
                     <Card className='miner-card'>
                       <Card.Body>
-                        <Container>
+                        <Container style={{ fontSize: '15px', fontFamily: 'monospace' }}>
                           <Row>
                             <Col>
                               <Row style={{ width: 'fit-content' }}>
@@ -204,7 +208,7 @@ const DSBlockDetailsPage: React.FC = () => {
                   <Col>
                     <Card className='miner-card ml-auto'>
                       <Card.Body>
-                        <Container>
+                        <Container style={{ fontSize: '15px', fontFamily: 'monospace' }}>
                           <Row>
                             <Col>
                               <Row style={{ width: 'fit-content' }}>

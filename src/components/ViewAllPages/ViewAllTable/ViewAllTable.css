@@ -67,29 +67,41 @@
 }
 
 .viewall-table #ds-difficulty-col {
-  width: 120px;
+  width: 110px;
 }
 
 .viewall-table #age-col {
-  width: 150px;
+  width: 160px;
 }
 
 .viewall-table #numTxns-col {
-  width: 120px;
+  width: 100px;
 }
 
 .viewall-table #reward-col {
-  width: 130px;
+  width: 100px;
+  padding-right: 1rem;
+  text-align: right;
 }
 
 .viewall-table #from-col {
-  width: 200px;
+  width: 150px;
 }
 
 .viewall-table #to-col {
-  width: 200px;
+  width: 150px;
+}
+
+.viewall-table #hash-col {
+  width: 600px;
+}
+
+.viewall-table #bkhash-col {
+  width: 300px;
 }
 
 .viewall-table #amount-col {
-  width: 130px;
+  padding-right: 1rem;
+  text-align: right;
+  width: 200px;
 }

@@ -52,7 +52,7 @@ const MinerTable: React.FC<IMinerTableParams> = ({ addresses }) => {
       // eslint-disable-next-line react/display-name
       Cell: (props: Cell<IMinerObj>) =>
         (<>
-          [{props.row.index + 1}]
+          [{props.row.index}]
           {' '}
           <QueryPreservingLink to={pubKeyToZilAddr(props.value)}>{pubKeyToZilAddr(props.value)}</QueryPreservingLink>
         </>)

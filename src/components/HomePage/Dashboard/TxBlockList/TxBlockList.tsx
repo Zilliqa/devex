@@ -30,8 +30,14 @@ processMap.set('reward-col', (amt: number) => (
     <span>{qaToZil(amt)}</span>
   </OverlayTrigger>
 ))
-processMap.set('miner-col', pubKeyToZilAddr)
-processMap.set('height-col', (height: number) => (<QueryPreservingLink to={`txbk/${height}`}>{height}</QueryPreservingLink>))
+processMap.set('miner-col', (addr: string) => (
+  <QueryPreservingLink to={`address/${pubKeyToZilAddr(addr)}`}>
+    {pubKeyToZilAddr(addr)}
+  </QueryPreservingLink>))
+processMap.set('height-col', (height: number) => (
+  <QueryPreservingLink to={`txbk/${height}`}>
+    {height}
+  </QueryPreservingLink>))
 processMap.set('hash-col', (hash: number) => ('0x' + hash))
 
 const TxBlockList: React.FC = () => {
@@ -51,7 +57,7 @@ const TxBlockList: React.FC = () => {
     },
     {
       id: 'numTxns-col',
-      Header: 'Transactions',
+      Header: 'Txns',
       accessor: 'header.NumTxns',
     },
     {

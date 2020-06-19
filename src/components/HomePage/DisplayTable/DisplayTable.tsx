@@ -45,7 +45,9 @@ const DisplayTable: React.FC<IDisplayTableParams<DsBlockObj | TxBlockObj | Trans
                         cell.value = procFunc(cell.value)
                     }
                     return (
-                      <td {...cell.getCellProps()} key={cell.getCellProps().key}>
+                      <td {...cell.getCellProps()}
+                        style={cell.column.Header === 'Amount' ? { textAlign: 'right' } : {}}
+                        key={cell.getCellProps().key}>
                         {cell.value}
                       </td>
                     )

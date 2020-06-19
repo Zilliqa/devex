@@ -29,7 +29,10 @@ processMap.set('to-col', (addr: string) => (
       Contract Creation
     </QueryPreservingLink>
     : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</QueryPreservingLink>))
-processMap.set('hash-col', (hash: number) => (<QueryPreservingLink to={`tx/0x${hash}`}>{'0x' + hash}</QueryPreservingLink>))
+processMap.set('hash-col', (hash: number) => (
+  <QueryPreservingLink to={`tx/0x${hash}`}>
+    <span className='mono'>{'0x' + hash}</span>
+  </QueryPreservingLink>))
 
 const TxnsPage: React.FC = () => {
 
@@ -48,14 +51,14 @@ const TxnsPage: React.FC = () => {
       accessor: (value: any) => (value.contractAddr ? 'contract-' + value.contractAddr : value.toAddr),
     },
     {
-      id: 'amount-col',
-      Header: 'Amount',
-      accessor: 'amount',
-    },
-    {
       id: 'hash-col',
       Header: 'Hash',
       accessor: 'hash',
+    },
+    {
+      id: 'amount-col',
+      Header: 'Amount',
+      accessor: 'amount',
     }], []
   )
 

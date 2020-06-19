@@ -62,7 +62,7 @@ const BCInfo: React.FC = () => {
               <Col>
                 <span className='bcstats-header'>Peers:</span>
                 <br />
-                <span>{data.NumPeers}</span>
+                <span>{(data.NumPeers).toLocaleString('en')}</span>
               </Col>
               <Col>
                 <span className='bcstats-header'>Sharding Structure:</span>
@@ -74,12 +74,12 @@ const BCInfo: React.FC = () => {
               <Col>
                 <span className='bcstats-header'>Current DS Epoch:</span>
                 <br />
-                <span>{data.CurrentDSEpoch}</span>
+                <span>{parseInt(data.CurrentDSEpoch).toLocaleString('en')}</span>
               </Col>
               <Col>
                 <span className='bcstats-header'>DS Block Rate:</span>
                 <br />
-                <span>{data.DSBlockRate}</span>
+                <span>{data.DSBlockRate.toLocaleString('en')}</span>
               </Col>
               <Col>
                 <span className='bcstats-header'>Tx Block Rate:</span>
@@ -96,12 +96,12 @@ const BCInfo: React.FC = () => {
               <Col>
                 <span className='bcstats-header'>Number of Txns in DS Epoch:</span>
                 <br />
-                <span>{data.NumTxnsDSEpoch}</span>
+                <span>{parseInt(data.NumTxnsDSEpoch).toLocaleString('en')}</span>
               </Col>
               <Col>
                 <span className='bcstats-header'>Number of Txns in Txn Epoch:</span>
                 <br />
-                <span>{data.NumTxnsTxEpoch}</span>
+                <span>{parseInt(data.NumTxnsTxEpoch).toLocaleString('en')}</span>
               </Col>
               <Col></Col>
               <Col></Col>

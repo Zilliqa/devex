@@ -27,11 +27,11 @@
 }
 
 .display-table #difficulty-col {
-  width: 75px;
+  width: 70px;
 }
 
 .display-table #ds-difficulty-col {
-  width: 110px;
+  width: 80px;
 }
 
 .display-table #age-col {
@@ -39,29 +39,29 @@
 }
 
 .display-table #numTxns-col {
-  width: 100px;
+  width: 70px;
 }
 
 .display-table #reward-col {
   width: 80px;
 }
 
-
-
 .display-table #from-col {
-  width: 80px;
+  width: 70px;
 }
 
 .display-table #to-col {
-  width: 80px;
+  width: 70px;
 }
 
 .display-table #amount-col {
+  padding-right: 1rem;
+  text-align: right;
   width: 80px;
 }
 
 .display-table #hash-col {
-  width: 275px;
+  width: 290px;
 }
 
 .display-table #confirmed-col {
