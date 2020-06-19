@@ -1,11 +1,26 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Container, Row, Col, Card, Spinner } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src'
 import { NetworkContext } from 'src/services/networkProvider'
 import { BlockchainInfo } from '@zilliqa-js/core/src/types'
 import { refreshRate } from 'src/constants'
 
 import './BCInfo.css'
+
+interface BCInfoState {
+  maxTPS: number | null,
+  maxTPSTxBlockNum: number | null,
+  maxTxnCount: number | null,
+  maxTxnCountTxBlockNum: number | null
+}
+
+const defaultBCInfoState = {
+  maxTPS: null,
+  maxTPSTxBlockNum: null,
+  maxTxnCount: null,
+  maxTxnCountTxBlockNum: null
+}
 
 const BCInfo: React.FC = () => {
 
@@ -13,8 +28,26 @@ const BCInfo: React.FC = () => {
   const { dataService, nodeUrl } = networkContext!
 
   const [data, setData] = useState<BlockchainInfo | null>(null)
+  const [state, setState] = useState<BCInfoState>(defaultBCInfoState)
 
-  useEffect(() => { setData(null) }, [nodeUrl]) // Unset data on url change
+  useEffect(() => { setData(null); setState(defaultBCInfoState) }, [nodeUrl]) // Unset data on url change
+
+  useEffect(() => {
+    if (!data) return
+
+    setState((prevState: BCInfoState) => {
+      const newState: BCInfoState = { ...defaultBCInfoState }
+      if (!prevState.maxTPS || prevState.maxTPS <= data.TransactionRate) {
+        newState.maxTPS = data.TransactionRate
+        newState.maxTPSTxBlockNum = parseInt(data.NumTxBlocks, 10) - 1
+      }
+      if (!prevState.maxTxnCount || prevState.maxTxnCount <= parseInt(data.NumTxnsTxEpoch, 10)) {
+        newState.maxTxnCount = parseInt(data.NumTxnsTxEpoch, 10)
+        newState.maxTxnCountTxBlockNum = parseInt(data.NumTxBlocks, 10) - 1
+      }
+      return newState
+    })
+  }, [data])
 
   // Fetch data
   useEffect(() => {
@@ -103,8 +136,27 @@ const BCInfo: React.FC = () => {
                 <br />
                 <span>{parseInt(data.NumTxnsTxEpoch).toLocaleString('en')}</span>
               </Col>
-              <Col></Col>
-              <Col></Col>
+              <Col>
+                <span className='bcstats-header'>Max TPS (w/o historical data):</span>
+                <br />
+                <span>{state.maxTPS}</span>
+                <br />
+                <span>
+                  <small style={{ color: 'rgb(0,0,0,0.7)' }}>
+                    (TxBlock <QueryPreservingLink to={`/txbk/${state.maxTPSTxBlockNum}`}>{state.maxTPSTxBlockNum}</QueryPreservingLink>)
+                  </small>
+                </span>
+              </Col>
+              <Col>
+                <span className='bcstats-header'>Max Txns (w/o historical data):</span>
+                <br />
+                <span>{state.maxTxnCount}
+                  {' '}
+                  <small style={{ color: 'rgb(0,0,0,0.7)' }}>
+                    (TxBlock <QueryPreservingLink to={`/txbk/${state.maxTxnCountTxBlockNum}`}>{state.maxTxnCountTxBlockNum}</QueryPreservingLink>)
+                  </small>
+                </span>
+              </Col>
             </Row>
           </Container>
           : <Spinner animation="border" role="status" />
