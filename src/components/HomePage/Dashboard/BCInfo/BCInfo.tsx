@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Container, Row, Col, Card, Spinner } from 'react-bootstrap'
+import { Container, Row, Col, Card, Spinner, Tooltip, OverlayTrigger } from 'react-bootstrap'
 
 import { QueryPreservingLink } from 'src'
 import { NetworkContext } from 'src/services/networkProvider'
 import { BlockchainInfo } from '@zilliqa-js/core/src/types'
 import { refreshRate } from 'src/constants'
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 
 import './BCInfo.css'
 
@@ -36,7 +39,7 @@ const BCInfo: React.FC = () => {
     if (!data) return
 
     setState((prevState: BCInfoState) => {
-      const newState: BCInfoState = { ...defaultBCInfoState }
+      const newState: BCInfoState = { ...prevState }
       if (!prevState.maxTPS || prevState.maxTPS <= data.TransactionRate) {
         newState.maxTPS = data.TransactionRate
         newState.maxTPSTxBlockNum = parseInt(data.NumTxBlocks, 10) - 1
@@ -137,17 +140,27 @@ const BCInfo: React.FC = () => {
                 <span>{parseInt(data.NumTxnsTxEpoch).toLocaleString('en')}</span>
               </Col>
               <Col>
+                <OverlayTrigger placement='left'
+                  overlay={<Tooltip id={'tt'}>This statistic does not take historical data into account. Requires user to stay on the Home Page</Tooltip>}>
+                  <FontAwesomeIcon className='info-icon' icon={faInfoCircle} />
+                </OverlayTrigger>
+                {' '}
                 <span className='bcstats-header'>Max TPS (w/o historical data):</span>
                 <br />
                 <span>{state.maxTPS}</span>
-                <br />
                 <span>
-                  <small style={{ color: 'rgb(0,0,0,0.7)' }}>
+                  {' '}
+                  <small style={{ whiteSpace:'nowrap', color: 'rgb(0,0,0,0.7)' }}>
                     (TxBlock <QueryPreservingLink to={`/txbk/${state.maxTPSTxBlockNum}`}>{state.maxTPSTxBlockNum}</QueryPreservingLink>)
                   </small>
                 </span>
               </Col>
               <Col>
+                <OverlayTrigger placement='left'
+                  overlay={<Tooltip id={'tt'}>This statistic does not take historical data into account. Requires user to stay on the Home Page</Tooltip>}>
+                  <FontAwesomeIcon className='info-icon' icon={faInfoCircle} />
+                </OverlayTrigger>
+                {' '}
                 <span className='bcstats-header'>Max Txns (w/o historical data):</span>
                 <br />
                 <span>{state.maxTxnCount}
