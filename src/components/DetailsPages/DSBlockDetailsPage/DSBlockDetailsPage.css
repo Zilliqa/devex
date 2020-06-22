@@ -1,4 +1,5 @@
 /* Header */
+
 .dsblock-header {
   display: flex;
   align-items: center;
@@ -7,7 +8,7 @@
 
 .dsblock-header-blocknum {
   font-weight: 350;
-  color: rgb(93, 106, 133)
+  color: rgb(93, 106, 133);
 }
 
 .dsblock-header a {
@@ -15,6 +16,7 @@
 }
 
 /* Card */
+
 .dsblock-details-card {
   width: 100%;
   margin-top: 1rem;
@@ -33,6 +35,7 @@
 }
 
 /* Miner Info */
+
 .miner-card {
   width: 100%;
   margin-top: 1rem;
@@ -52,6 +55,7 @@
   margin-top: 1rem;
   cursor: pointer;
 }
+
 .showmore-container .row {
   padding: 0.25rem 0;
   justify-content: center;

@@ -1,5 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
+import React, { useState, useEffect, useCallback } from 'react'
+import { useLocation, useHistory } from 'react-router-dom'
 
 import { DataService } from './dataService'
 
@@ -11,9 +11,15 @@ type NetworkState = {
   setNodeUrl: (nodeUrl: string) => void,
 }
 
-const useQuery = () => new URLSearchParams(useLocation().search)
+export const useNetworkUrl = (): string => (
+  new URLSearchParams(useLocation().search).get('network') || 'https://api.zilliqa.com/')
+  
+export const useNetworkName = (): string => {
+  const network = useNetworkUrl()
+  return defaultNetworks[network] || network
+}
 
-export const defaultNetworks: { [key: string]: string } = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
+export const defaultNetworks: Record<string, string> = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
   ? {
     'https://api.zilliqa.com/': 'Mainnet',
     'https://dev-api.zilliqa.com/': 'Testnet',
@@ -32,36 +38,40 @@ export const NetworkContext = React.createContext<NetworkState | null>(null)
 
 export const NetworkProvider: React.FC = (props) => {
 
-  const firstUpdate = useRef(true)
-  const query = useQuery()
+  const network = useNetworkUrl()
   const history = useHistory()
+
+  const redirectToHomepage = useCallback((k: string) => {
+    if (k === 'https://api.zilliqa.com/')
+      history.push('/')
+    else
+      history.push({
+        pathname: '/',
+        search: '?' + new URLSearchParams({ network: k }).toString()
+      })
+  }, [history])
 
   const [state, setState] = useState<NetworkState>({
     connStatus: false,
     isIsolatedServer: false,
     dataService: null,
-    nodeUrl: query.get('network') || 'https://api.zilliqa.com/',
+    nodeUrl: network,
     setNodeUrl: (newNodeUrl: string) => {
-      setState({ ...state, nodeUrl: newNodeUrl })
+      console.log(newNodeUrl)
+      setState((prevState: NetworkState) => {
+        if (newNodeUrl === prevState.nodeUrl) return prevState
+        else {
+          redirectToHomepage(newNodeUrl)
+          return { ...prevState, nodeUrl: newNodeUrl }
+        }
+      })
     }
   })
 
-  /* Redirect useEffect */
   useEffect(() => {
-    if (firstUpdate.current) {
-      firstUpdate.current = false
-    } else {
-      if (state.nodeUrl === 'https://api.zilliqa.com/')
-        history.push('/')
-      else
-        history.push({
-          pathname: '/',
-          search: '?' + new URLSearchParams({ network: state.nodeUrl }).toString()
-        })
-    }
-    // Effect is independent of history
+    state.setNodeUrl(network)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.nodeUrl])
+  }, [network])
 
   // If nodeurl changes, update dataservice
   useEffect(() => {

@@ -36,7 +36,7 @@ processMap.set('from-col', (addr: string) => (
   </QueryPreservingLink>))
 processMap.set('to-col', (addr: string) => (
   addr.includes('contract-')
-    ? <QueryPreservingLink style={{ marginLeft: '-1rem' }} to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
+    ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
       <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
       {' '}
       Contract Creation

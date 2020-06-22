@@ -13,9 +13,19 @@
   src: local('RobotoMono'), url(./fonts/RobotoMono-Regular.ttf) format('truetype');
 }
 
+@font-face {
+  font-family: 'Muli';
+  src: local('Muli'), url(./fonts/Muli-VariableFont_wght.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Nunito';
+  src: local('Nunito'), url(./fonts/Nunito-Regular.ttf) format('truetype');
+}
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -47,4 +57,8 @@ a:hover {
 .mono {
   font-family: RobotoMono;
   font-size: 15px;
+}
+
+.subtext {
+  color: rgb(93, 106, 133);
 }

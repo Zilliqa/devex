@@ -13,6 +13,7 @@ import DSBlockDetailsPage from './components/DetailsPages/DSBlockDetailsPage/DSB
 import TxBlockDetailsPage from './components/DetailsPages/TxBlockDetailsPage/TxBlockDetailsPage'
 import TxnDetailsPage from './components/DetailsPages/TxnDetailsPage/TxnDetailsPage'
 import AddressDetailsPage from './components/DetailsPages/AddressDetailsPage/AddressDetailsPage'
+import LabelsPage from './components/LabelsPage/LabelsPage'
 import * as serviceWorker from './serviceWorker'
 import { NetworkProvider } from './services/networkProvider'
 import { UserPrefProvider } from './services/userPrefProvider'
@@ -61,6 +62,7 @@ ReactDOM.render(
                 <Route exact path="/tx" component={TxnsPage} />
                 <Route path={`/tx/:txnHash`}><TxnDetailsPage /></Route>
                 <Route path="/address/:addr" component={AddressDetailsPage} />
+                <Route path="/labels" component={LabelsPage} />
               </ScrollToTop>
             </React.StrictMode>
           </Layout>

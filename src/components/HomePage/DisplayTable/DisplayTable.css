@@ -23,7 +23,7 @@
 /* Hardcoded Widths (May require tweaks) */
 
 .display-table #height-col {
-  width: 75px;
+  width: 80px;
 }
 
 .display-table #difficulty-col {
@@ -35,7 +35,7 @@
 }
 
 .display-table #age-col {
-  width: 140px;
+  width: 150px;
 }
 
 .display-table #numTxns-col {
@@ -47,11 +47,11 @@
 }
 
 .display-table #from-col {
-  width: 70px;
+  width: 72px;
 }
 
 .display-table #to-col {
-  width: 70px;
+  width: 72px;
 }
 
 .display-table #amount-col {

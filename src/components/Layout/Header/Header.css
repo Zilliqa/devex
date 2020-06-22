@@ -12,6 +12,15 @@
   background: none;
 }
 
+.label-link {
+  margin-left: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.label-link:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
 .header-searchbar {
   margin: auto;
   width: 100%;

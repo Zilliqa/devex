@@ -12,6 +12,11 @@
   margin-left: 1rem;
 }
 
+.label-name {
+  margin-left: 0.25rem;
+  font-size: 18px;
+} 
+
 .star-span :hover {
   color: mediumturquoise;
   -moz-transition: all 0.1 ease-in;
