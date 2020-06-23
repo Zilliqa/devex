@@ -13,7 +13,7 @@ type NetworkState = {
 
 export const useNetworkUrl = (): string => (
   new URLSearchParams(useLocation().search).get('network') || 'https://api.zilliqa.com/')
-  
+
 export const useNetworkName = (): string => {
   const network = useNetworkUrl()
   return defaultNetworks[network] || network
@@ -41,14 +41,16 @@ export const NetworkProvider: React.FC = (props) => {
   const network = useNetworkUrl()
   const history = useHistory()
 
-  const redirectToHomepage = useCallback((k: string) => {
-    if (k === 'https://api.zilliqa.com/')
-      history.push('/')
-    else
-      history.push({
-        pathname: '/',
-        search: '?' + new URLSearchParams({ network: k }).toString()
-      })
+  const changeNetwork = useCallback((k: string) => {
+    return () => { // avoid redirecting on initial render
+      if (k === 'https://api.zilliqa.com/')
+        history.push('/')
+      else
+        history.push({
+          pathname: '/',
+          search: '?' + new URLSearchParams({ network: k }).toString()
+        })
+    }
   }, [history])
 
   const [state, setState] = useState<NetworkState>({
@@ -59,11 +61,8 @@ export const NetworkProvider: React.FC = (props) => {
     setNodeUrl: (newNodeUrl: string) => {
       console.log(newNodeUrl)
       setState((prevState: NetworkState) => {
-        if (newNodeUrl === prevState.nodeUrl) return prevState
-        else {
-          redirectToHomepage(newNodeUrl)
-          return { ...prevState, nodeUrl: newNodeUrl }
-        }
+        changeNetwork(newNodeUrl)
+        return { ...prevState, nodeUrl: newNodeUrl }
       })
     }
   })

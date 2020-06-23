@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import React, { useState, useContext, useEffect, useCallback } from 'react'
+import { useLocation, useHistory } from 'react-router-dom'
 import { Navbar, Nav, NavDropdown, Tooltip, OverlayTrigger, Form } from 'react-bootstrap'
 
 import { QueryPreservingLink } from 'src'
@@ -15,17 +15,28 @@ import './Header.css'
 
 const Header: React.FC = () => {
 
+  const history = useHistory()
   const location = useLocation()
   const networkName = useNetworkName()
   const networkContext = useContext(NetworkContext)
   const userPrefContext = useContext(UserPrefContext)
-  const { isIsolatedServer, nodeUrl, setNodeUrl } = networkContext!
+  const { isIsolatedServer, nodeUrl } = networkContext!
   const { nodeUrlMap, setNodeUrlMap } = userPrefContext!
 
   const [newNode, setNewNode] = useState('')
   const [showDropdown, setShowDropdown] = useState(false)
   const [showSearchbar, setShowSearchbar] = useState(false)
   const [currentNetwork, setCurrentNetwork] = useState(defaultNetworks[nodeUrl] || nodeUrl)
+
+  const changeNetwork = useCallback((k: string) => {
+    if (k === 'https://api.zilliqa.com/')
+      history.push('/')
+    else
+      history.push({
+        pathname: '/',
+        search: '?' + new URLSearchParams({ network: k }).toString()
+      })
+  }, [history])
 
   useEffect(() => {
     if (location.pathname !== '/') {
@@ -41,24 +52,19 @@ const Header: React.FC = () => {
   }, [networkName])
 
   const addNewNode = () => {
-    if (Object.keys({ ...defaultNetworks, ...nodeUrlMap }).includes(newNode)) {
-      setNodeUrl && setNodeUrl(newNode)
-      setNewNode('')
-      setShowDropdown(false)
-    }
-    else {
+    if (!Object.keys({ ...defaultNetworks, ...nodeUrlMap }).includes(newNode)) {
       nodeUrlMap[newNode] = newNode
       setNodeUrlMap(nodeUrlMap)
-      setNodeUrl && setNodeUrl(newNode)
-      setNewNode('')
-      setShowDropdown(false)
     }
+    changeNetwork(newNode)
+    setNewNode('')
+    setShowDropdown(false)
   }
 
   const deleteNode = (k: string) => {
     delete nodeUrlMap[k]
     setNodeUrlMap(nodeUrlMap)
-    setNodeUrl && setNodeUrl('https://api.zilliqa.com/')
+    changeNetwork('https://api.zilliqa.com/')
     setShowDropdown(false)
   }
 
@@ -92,7 +98,7 @@ const Header: React.FC = () => {
               <NavDropdown.Item key={k} onClick={() => {
                 if (currentNetwork !== v) {
                   setShowSearchbar(false)
-                  setNodeUrl && setNodeUrl(k)
+                  changeNetwork(k)
                 }
               }}>
                 {v}
@@ -104,7 +110,7 @@ const Header: React.FC = () => {
                 <NavDropdown.Item className='node-item' onClick={() => {
                   if (currentNetwork !== v) {
                     setShowSearchbar(false)
-                    setNodeUrl && setNodeUrl(k)
+                    changeNetwork(k)
                   }
                 }}>
                   {v}
