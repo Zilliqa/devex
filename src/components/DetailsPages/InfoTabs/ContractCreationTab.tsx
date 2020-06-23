@@ -1,7 +1,7 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 
 import { hexAddrToZilAddr } from 'src/utils/Utils'
+import { QueryPreservingLink } from 'src'
 
 interface IProps {
   contractAddr: string
@@ -10,7 +10,7 @@ interface IProps {
 const ContractCreationTab: React.FC<IProps> = ({ contractAddr }) => {
   return (
     <>
-      {<Link to={`/address/${hexAddrToZilAddr(contractAddr)}`} >{hexAddrToZilAddr(contractAddr)}</Link>}
+      {<QueryPreservingLink to={`/address/${hexAddrToZilAddr(contractAddr)}`} >{hexAddrToZilAddr(contractAddr)}</QueryPreservingLink>}
     </>
   )
 }

@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useMemo, useContext } from 'react'
-import { Link } from 'react-router-dom'
 
+import { QueryPreservingLink } from 'src'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
 import { NetworkContext } from 'src/services/networkProvider'
 import { timestampToTimeago, pubKeyToZilAddr } from 'src/utils/Utils'
@@ -12,8 +12,14 @@ import { MappedDSBlockListing } from 'src/typings/api'
 // Pre-processing data to display
 const processMap = new Map()
 processMap.set('age-col', timestampToTimeago)
-processMap.set('ds-leader-col', pubKeyToZilAddr)
-processMap.set('height-col', (height: number) => (<Link to={`dsbk/${height}`}>{height}</Link>))
+processMap.set('ds-leader-col', (addr: string) => (
+  <QueryPreservingLink to={`address/${pubKeyToZilAddr(addr)}`}>
+    {pubKeyToZilAddr(addr)}
+  </QueryPreservingLink>))
+processMap.set('height-col', (height: number) => (
+  <QueryPreservingLink to={`dsbk/${height}`}>
+    {height}
+  </QueryPreservingLink>))
 processMap.set('hash-col', (hash: number) => ('0x' + hash))
 
 const DSBlocksPage: React.FC = () => {
@@ -48,7 +54,7 @@ const DSBlocksPage: React.FC = () => {
       accessor: 'header.Timestamp',
     },
     {
-      id: 'hash-col',
+      id: 'bkhash-col',
       Header: 'Hash',
       accessor: 'header.Hash',
     }], []
@@ -61,7 +67,7 @@ const DSBlocksPage: React.FC = () => {
 
   const fetchData = useCallback(({ pageIndex }) => {
     if (!dataService) return
-    
+
     const fetchId = ++fetchIdRef.current
     let receivedData: MappedDSBlockListing
     const getData = async () => {
@@ -72,10 +78,11 @@ const DSBlocksPage: React.FC = () => {
         if (receivedData) {
           setData(receivedData.data)
           setPageCount(receivedData.maxPages)
-          setIsLoading(false)
         }
       } catch (e) {
         console.log(e)
+      } finally {
+        setIsLoading(false)
       }
     }
 

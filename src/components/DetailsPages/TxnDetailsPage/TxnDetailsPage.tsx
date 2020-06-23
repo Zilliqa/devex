@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { Card, Row, Col, Container } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
+import { Card, Row, Col, Container, Spinner } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src'
 import { NetworkContext } from 'src/services/networkProvider'
 import { TransactionDetails } from 'src/typings/api'
-import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
+import { qaToZil, hexAddrToZilAddr, pubKeyToZilAddr } from 'src/utils/Utils'
 import { Long } from "@zilliqa-js/util"
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -19,6 +20,7 @@ import ContractCreationTab from '../InfoTabs/ContractCreationTab'
 
 import './TxnDetailsPage.css'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import LabelStar from '../LabelStart/LabelStar'
 
 const TxnDetailsPage: React.FC = () => {
 
@@ -26,7 +28,8 @@ const TxnDetailsPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
-  const [error, setError] = useState<string| null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
   const [data, setData] = useState<TransactionDetails | null>(null)
 
   const generateTabsObj = () => {
@@ -78,6 +81,7 @@ const TxnDetailsPage: React.FC = () => {
     let receivedData: TransactionDetails
     const getData = async () => {
       try {
+        setIsLoading(true)
         receivedData = await dataService.getTransactionDetails(txnHash)
         if (receivedData) {
           setData(receivedData)
@@ -85,6 +89,8 @@ const TxnDetailsPage: React.FC = () => {
       } catch (e) {
         console.log(e)
         setError(e)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -96,6 +102,7 @@ const TxnDetailsPage: React.FC = () => {
   }, [dataService, txnHash])
 
   return <>
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
     {error
       ? <NotFoundPage />
       : data && (
@@ -107,11 +114,12 @@ const TxnDetailsPage: React.FC = () => {
             <span style={{ marginLeft: '0.75rem' }}>
               Transaction
           </span>
+            <LabelStar />
           </h3>
           <div style={{ display: 'flex' }}>
-            <h6 className='txn-hash'>{data.hash}</h6>
+            <h6 className='txn-hash'>{'0x' + data.hash}</h6>
             <div onClick={() => {
-              navigator.clipboard.writeText(data.hash)
+              navigator.clipboard.writeText('0x' + data.hash)
             }} className='txn-hash-copy-btn'>
               <FontAwesomeIcon icon={faCopy} />
             </div>
@@ -126,7 +134,7 @@ const TxnDetailsPage: React.FC = () => {
                       <span>
                         {/* To be removed after SDK typing is updated
                         // @ts-ignore */}
-                        <Link to={`/address/${hexAddrToZilAddr(data.senderAddress)}`}>{hexAddrToZilAddr(data.senderAddress)}</Link>
+                        <QueryPreservingLink to={`/address/${pubKeyToZilAddr(data.pubKey)}`}>{pubKeyToZilAddr(data.pubKey)}</QueryPreservingLink>
                       </span>
                     </div>
                   </Col>
@@ -134,7 +142,7 @@ const TxnDetailsPage: React.FC = () => {
                     <div className='txn-detail'>
                       <span className='txn-detail-header'>To:</span>
                       <span>
-                        <Link to={`/address/${hexAddrToZilAddr(data.toAddr)}`}>{hexAddrToZilAddr(data.toAddr)}</Link>
+                        <QueryPreservingLink to={`/address/${hexAddrToZilAddr(data.toAddr)}`}>{hexAddrToZilAddr(data.toAddr)}</QueryPreservingLink>
                       </span>
                     </div>
                   </Col>
@@ -179,7 +187,7 @@ const TxnDetailsPage: React.FC = () => {
                   <Col>
                     <div className='txn-detail'>
                       <span className='txn-detail-header'>Transaction Block:</span>
-                      <span><Link to={`/txbk/${data.receipt.epoch_num}`}>{data.receipt.epoch_num}</Link></span>
+                      <span><QueryPreservingLink to={`/txbk/${data.receipt.epoch_num}`}>{data.receipt.epoch_num}</QueryPreservingLink></span>
                     </div>
                   </Col>
                 </Row>

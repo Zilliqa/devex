@@ -9,10 +9,12 @@
 .address-hash {
   color: grey;
   margin-right: 10px;
+  margin-bottom: 0;
 }
 
 .address-hash-copy-btn {
   cursor: pointer;
+  margin-top: -3px;
 }
 
 /* Card */
@@ -39,11 +41,6 @@
 }
 
 /* Account Contracts  */
-
-.contract-spinner {
-  text-align: center;
-  margin: 20vh;
-}
 
 .num-contracts {
   margin: 1rem 1.25rem;
@@ -88,8 +85,8 @@
 }
 
 .acc-contract-card .card-body {
-  padding: 1rem;
   cursor: pointer;
+  padding: 1rem;
 }
 
 .acc-contract-card .card-body div {
@@ -102,8 +99,11 @@
   background-color: rgba(0, 0, 0, 0.03);
 }
 
+.acc-contract-card .collapse pre, .acc-contract-card .collapsing pre {
+  padding: 1rem;
+}
+
 .acc-contract-card .collapse, .acc-contract-card .collapsing {
   border-top: 1px solid rgba(0, 0, 0, .25);
   white-space: pre-wrap;
-  padding: 1rem;
 }

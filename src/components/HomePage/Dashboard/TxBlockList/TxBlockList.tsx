@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react'
-import { Link } from 'react-router-dom'
 import { OverlayTrigger, Tooltip, Card, Spinner } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src'
+import { refreshRate } from 'src/constants'
 import { NetworkContext } from 'src/services/networkProvider'
-import DisplayTable from '../../DisplayTable/DisplayTable'
+import { timestampToTimeago, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
 import { TxBlockObj } from '@zilliqa-js/core/src/types'
 
-import { refreshRate } from 'src/constants'
-
+import DisplayTable from '../../DisplayTable/DisplayTable'
 import './TxBlockList.css'
-import { timestampToTimeago, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
 
 /*
     Display first 5 Tx Block
@@ -27,16 +26,22 @@ processMap.set('age-col', timestampToTimeago)
 // https://github.com/react-bootstrap/react-bootstrap/issues/5075
 processMap.set('reward-col', (amt: number) => (
   <OverlayTrigger placement='top'
-    overlay={ <Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
+    overlay={<Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
     <span>{qaToZil(amt)}</span>
   </OverlayTrigger>
 ))
-processMap.set('miner-col', pubKeyToZilAddr)
-processMap.set('height-col', (height: number) => (<Link to={`txbk/${height}`}>{height}</Link>))
+processMap.set('miner-col', (addr: string) => (
+  <QueryPreservingLink to={`address/${pubKeyToZilAddr(addr)}`}>
+    {pubKeyToZilAddr(addr)}
+  </QueryPreservingLink>))
+processMap.set('height-col', (height: number) => (
+  <QueryPreservingLink to={`txbk/${height}`}>
+    {height}
+  </QueryPreservingLink>))
 processMap.set('hash-col', (hash: number) => ('0x' + hash))
 
 const TxBlockList: React.FC = () => {
-  
+
   const networkContext = useContext(NetworkContext)
   const { dataService, nodeUrl } = networkContext!
 
@@ -52,7 +57,7 @@ const TxBlockList: React.FC = () => {
     },
     {
       id: 'numTxns-col',
-      Header: 'Transactions',
+      Header: 'Txns',
       accessor: 'header.NumTxns',
     },
     {
@@ -97,14 +102,15 @@ const TxBlockList: React.FC = () => {
       isCancelled = true
       clearInterval(getDataTimer)
     }
-  }, [dataService])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodeUrl])
 
   return <>
     <Card className='txblock-card'>
       <Card.Header>
         <div className='dsblock-card-header'>
           <span>Transaction Blocks</span>
-          <Link to={'txbk'}>View All</Link>
+          <QueryPreservingLink to={'txbk'}>View All</QueryPreservingLink>
         </div>
       </Card.Header>
       <Card.Body>

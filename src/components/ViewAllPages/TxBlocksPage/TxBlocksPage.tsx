@@ -1,7 +1,7 @@
 import React, { useState, useRef, useCallback, useMemo, useContext } from 'react'
-import { Link } from 'react-router-dom'
 import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
 import { NetworkContext } from 'src/services/networkProvider'
 import { timestampToTimeago, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
@@ -19,8 +19,14 @@ processMap.set('reward-col', (amt: number) => (
     <span>{qaToZil(amt)}</span>
   </OverlayTrigger>
 ))
-processMap.set('miner-col', pubKeyToZilAddr)
-processMap.set('height-col', (height: number) => (<Link to={`txbk/${height}`}>{height}</Link>))
+processMap.set('miner-col', (addr: string) => (
+  <QueryPreservingLink to={`address/${pubKeyToZilAddr(addr)}`}>
+    {pubKeyToZilAddr(addr)}
+  </QueryPreservingLink>))
+processMap.set('height-col', (height: number) => (
+  <QueryPreservingLink to={`txbk/${height}`}>
+    {height}
+  </QueryPreservingLink>))
 processMap.set('hash-col', (hash: number) => ('0x' + hash))
 
 const TxBlocksPage: React.FC = () => {
@@ -40,11 +46,6 @@ const TxBlocksPage: React.FC = () => {
       accessor: 'header.NumTxns',
     },
     {
-      id: 'reward-col',
-      Header: 'Reward',
-      accessor: 'header.Rewards',
-    },
-    {
       id: 'miner-col',
       Header: 'Miner',
       accessor: 'header.MinerPubKey',
@@ -55,9 +56,13 @@ const TxBlocksPage: React.FC = () => {
       accessor: 'header.Timestamp',
     },
     {
-      id: 'hash-col',
+      id: 'bkhash-col',
       Header: 'Hash',
       accessor: 'body.BlockHash',
+    }, {
+      id: 'reward-col',
+      Header: 'Reward',
+      accessor: 'header.Rewards',
     }], []
   )
 
@@ -79,10 +84,11 @@ const TxBlocksPage: React.FC = () => {
         if (receivedData) {
           setData(receivedData.data)
           setPageCount(receivedData.maxPages)
-          setIsLoading(false)
         }
       } catch (e) {
         console.log(e)
+      } finally {
+        setIsLoading(false)
       }
     }
 

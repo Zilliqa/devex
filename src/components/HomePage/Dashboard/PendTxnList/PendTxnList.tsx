@@ -13,24 +13,20 @@ import './PendTxnList.css'
     - Hash
     - Status
 */
-const statusMap = new Map()
-statusMap.set(0, 'Txn not pending')
-statusMap.set(1, 'Nonce too high')
-statusMap.set(2, 'Could not fit in as microblock gas limit reached')
-statusMap.set(3, 'Transaction valid but consensus not reached')
 
 // Pre-processing data to display
 const processMap = new Map()
-processMap.set('hash-col', (hash: number) => ('0x' + hash))
+processMap.set('pend-hash-col', (hash: number) => ('0x' + hash))
+processMap.set('confirmed-col', (confirmed: boolean) => confirmed.toString())
 processMap.set('status-col', (status: string) => (
   <OverlayTrigger placement='top'
-    overlay={<Tooltip id={'tt'}> {statusMap.get(status)} </Tooltip>}>
-    <div className='pendtxlist-status-div'>{status}</div>
+    overlay={<Tooltip id={'tt'}> {status} </Tooltip>}>
+    <div>{status}</div>
   </OverlayTrigger>
 ))
 
 const PendTxnList: React.FC = () => {
-  
+
   const networkContext = useContext(NetworkContext)
   const { dataService, nodeUrl } = networkContext!
 
@@ -40,14 +36,24 @@ const PendTxnList: React.FC = () => {
 
   const columns = useMemo(
     () => [{
-      id: 'hash-col',
+      id: 'pend-hash-col',
       Header: 'Hash',
-      accessor: 'TxnHash',
+      accessor: 'hash',
+    },
+    {
+      id: 'confirmed-col',
+      Header: 'Confirmed',
+      accessor: 'confirmed',
+    },
+    {
+      id: 'code-col',
+      Header: 'Code',
+      accessor: 'code',
     },
     {
       id: 'status-col',
       Header: 'Status',
-      accessor: 'Status',
+      accessor: 'info',
     }], []
   )
 
@@ -64,7 +70,7 @@ const PendTxnList: React.FC = () => {
           setData(receivedData)
       } catch (e) {
         if (!isCancelled)
-        console.log(e)
+          console.log(e)
       }
     }
     getData()
@@ -75,7 +81,8 @@ const PendTxnList: React.FC = () => {
       isCancelled = true
       clearInterval(getDataTimer)
     }
-  }, [dataService])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodeUrl])
 
   return <>
     <Card className='pendtxlist-card'>
@@ -88,8 +95,8 @@ const PendTxnList: React.FC = () => {
         {data
           ? data.length > 0
             ? <div className='pendtxlist-table'>
-                <DisplayTable columns={columns} data={data} processMap={processMap}/>
-              </div>
+              <DisplayTable columns={columns} data={data} processMap={processMap} />
+            </div>
             : 'No Pending Transactions'
           : <Spinner animation="border" role="status" />
         }

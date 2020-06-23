@@ -1,7 +1,8 @@
 import React, { useMemo, useCallback, useState, useEffect, useContext } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import { OverlayTrigger, Tooltip, Card, Row, Col, Container } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
+import { OverlayTrigger, Tooltip, Card, Row, Col, Container, Spinner } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
 import { NetworkContext } from 'src/services/networkProvider'
 import { MappedTxBlock } from 'src/typings/api'
@@ -10,10 +11,11 @@ import { TransactionObj } from '@zilliqa-js/core/src/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy, faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
-import { faCubes } from '@fortawesome/free-solid-svg-icons'
+import { faFileContract, faCubes } from '@fortawesome/free-solid-svg-icons'
 
 import './TxBlockDetailsPage.css'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import LabelStar from '../LabelStart/LabelStar'
 
 // Pre-processing data to display
 const processMap = new Map()
@@ -23,9 +25,17 @@ processMap.set('amount-col', (amt: number) => (
     <span>{qaToZil(amt)}</span>
   </OverlayTrigger>
 ))
-processMap.set('from-col', (addr: string) => (<Link to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</Link>))
-processMap.set('to-col', (addr: string) => (<Link to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</Link>))
-processMap.set('hash-col', (hash: number) => (<Link to={`/tx/0x${hash}`}>{'0x' + hash}</Link>))
+processMap.set('from-col', (addr: string) => (<QueryPreservingLink to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</QueryPreservingLink>))
+processMap.set('to-col', (addr: string) => (
+  addr.includes('contract-')
+    ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
+      <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
+      {' '}
+      Contract Creation
+    </QueryPreservingLink>
+    : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</QueryPreservingLink>))
+
+processMap.set('hash-col', (hash: number) => (<QueryPreservingLink to={`/tx/0x${hash}`}>{'0x' + hash}</QueryPreservingLink>))
 
 const TxBlockDetailsPage: React.FC = () => {
 
@@ -35,6 +45,7 @@ const TxBlockDetailsPage: React.FC = () => {
 
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingTrans, setIsLoadingTrans] = useState(false)
   const [data, setData] = useState<MappedTxBlock | null>(null)
   const [latestTxBlockNum, setLatestTxBlockNum] = useState<number | null>(null)
   const [transactionData, setTransactionData] = useState<TransactionObj[] | null>(null)
@@ -47,17 +58,20 @@ const TxBlockDetailsPage: React.FC = () => {
     let receivedData: MappedTxBlock | null
     const getData = async () => {
       try {
+        setIsLoading(true)
         if (isNaN(blockNum))
           throw new Error('Not a valid block number')
         receivedData = await dataService.getTxBlockDetails(parseInt(blockNum))
+        latestTxBlockNum = await dataService.getNumTxBlocks()
         if (receivedData)
           setData(receivedData)
-        latestTxBlockNum = await dataService.getNumTxBlocks()
         if (latestTxBlockNum)
           setLatestTxBlockNum(latestTxBlockNum)
       } catch (e) {
         console.log(e)
         setError(e)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -80,7 +94,7 @@ const TxBlockDetailsPage: React.FC = () => {
     {
       id: 'to-col',
       Header: 'To',
-      accessor: 'toAddr',
+      accessor: (value: any) => (value.contractAddr ? 'contract-' + value.contractAddr : value.toAddr),
     },
     {
       id: 'amount-col',
@@ -100,13 +114,13 @@ const TxBlockDetailsPage: React.FC = () => {
     let receivedData: TransactionObj[]
     const getData = async () => {
       try {
-        setIsLoading(true)
+        setIsLoadingTrans(true)
         receivedData = await dataService.getTransactionsDetails(data.txnHashes.slice(pageIndex * 10, pageIndex * 10 + 10))
 
         if (receivedData) {
           setTransactionData(receivedData)
-          setIsLoading(false)
         }
+        setIsLoadingTrans(false)
       } catch (e) {
         console.log(e)
       }
@@ -116,6 +130,7 @@ const TxBlockDetailsPage: React.FC = () => {
   }, [dataService, data])
 
   return <>
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
     {error
       ? <NotFoundPage />
       : data && (
@@ -127,22 +142,23 @@ const TxBlockDetailsPage: React.FC = () => {
               </span>
               <span style={{ marginLeft: '0.75rem' }}>
                 Tx Block
-            </span>
+              </span>
               {' '}
               <span className='txblock-header-blocknum'>#{data.header.BlockNum}</span>
+              <LabelStar />
             </h3>
             <span>
-              <Link
+              <QueryPreservingLink
                 style={{ marginRight: '1rem' }}
                 className={parseInt(data.header.BlockNum) === 0 ? 'disabled-link' : ''}
                 to={`/txbk/${parseInt(data.header.BlockNum) - 1}`}>
                 <FontAwesomeIcon size='2x' icon={faCaretSquareLeft} />
-              </Link>
-              <Link
+              </QueryPreservingLink>
+              <QueryPreservingLink
                 className={latestTxBlockNum && parseInt(data.header.BlockNum) === latestTxBlockNum - 1 ? 'disabled-link' : ''}
                 to={`/txbk/${parseInt(data.header.BlockNum) + 1}`}>
                 <FontAwesomeIcon size='2x' icon={faCaretSquareRight} />
-              </Link>
+              </QueryPreservingLink>
             </span>
           </div>
           <div style={{ display: 'flex' }}>
@@ -198,7 +214,7 @@ const TxBlockDetailsPage: React.FC = () => {
                   <Col>
                     <div className='txblock-detail'>
                       <span className='txblock-detail-header'>DS Block:</span>
-                      <span><Link to={`/dsbk/${data.header.DSBlockNum}`}>{data.header.DSBlockNum}</Link></span>
+                      <span><QueryPreservingLink to={`/dsbk/${data.header.DSBlockNum}`}>{data.header.DSBlockNum}</QueryPreservingLink></span>
                     </div>
                   </Col>
                 </Row>
@@ -226,17 +242,13 @@ const TxBlockDetailsPage: React.FC = () => {
           {data.txnHashes.length > 0 && (
             <>
               <h4>Transactions</h4>
-              <Card className='txblock-details-card'>
-                <Card.Body>
-                  <ViewAllTable
-                    isLoading={isLoading}
-                    fetchData={fetchData}
-                    pageCount={Math.ceil(data.txnHashes.length / 10)}
-                    columns={columns}
-                    data={transactionData ? transactionData : []}
-                    processMap={processMap} />
-                </Card.Body>
-              </Card>
+              <ViewAllTable
+                isLoading={isLoadingTrans}
+                fetchData={fetchData}
+                pageCount={Math.ceil(data.txnHashes.length / 10)}
+                columns={columns}
+                data={transactionData ? transactionData : []}
+                processMap={processMap} />
             </>
           )}
         </>

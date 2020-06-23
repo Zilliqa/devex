@@ -1,15 +1,17 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react'
-import { Link } from 'react-router-dom'
 import { OverlayTrigger, Tooltip, Card, Spinner } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src'
+import { refreshRate } from 'src/constants'
 import { NetworkContext } from 'src/services/networkProvider'
-import DisplayTable from '../../DisplayTable/DisplayTable'
+import { qaToZil, pubKeyToZilAddr, hexAddrToZilAddr } from 'src/utils/Utils'
 import { TransactionObj } from '@zilliqa-js/core/src/types'
 
-import { refreshRate } from 'src/constants'
-
+import DisplayTable from '../../DisplayTable/DisplayTable'
 import './ValTxnList.css'
-import { qaToZil, pubKeyToZilAddr, hexAddrToZilAddr } from 'src/utils/Utils'
+
+import { faFileContract } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 /*
     Display first 10 Validated Txns
@@ -24,20 +26,36 @@ import { qaToZil, pubKeyToZilAddr, hexAddrToZilAddr } from 'src/utils/Utils'
 const processMap = new Map()
 processMap.set('amount-col', (amt: number) => (
   <OverlayTrigger placement='top'
-    overlay={ <Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
+    overlay={<Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
     <span>{qaToZil(amt)}</span>
   </OverlayTrigger>
 ))
-processMap.set('from-col', (addr: string) => (<Link to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</Link>))
-processMap.set('to-col', (addr: string) => (<Link to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</Link>))
-processMap.set('hash-col', (hash: number) => (<Link to={`/tx/0x${hash}`}>{'0x' + hash}</Link>))
+processMap.set('from-col', (addr: string) => (
+  <QueryPreservingLink to={`/address/${pubKeyToZilAddr(addr)}`}>
+    {pubKeyToZilAddr(addr)}
+  </QueryPreservingLink>))
+processMap.set('to-col', (addr: string) => (
+  addr.includes('contract-')
+    ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
+      <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
+      {' '}
+      Contract Creation
+    </QueryPreservingLink>
+    : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>
+      {hexAddrToZilAddr(addr)}
+    </QueryPreservingLink>))
+
+processMap.set('hash-col', (hash: number) => (
+  <QueryPreservingLink to={`/tx/0x${hash}`}>
+    <span className='mono'>{'0x' + hash}</span>
+  </QueryPreservingLink>))
 
 const ValTxnList: React.FC = () => {
-  
+
   const networkContext = useContext(NetworkContext)
   const { dataService, nodeUrl } = networkContext!
 
-  useEffect(() => { setData(null) }, [nodeUrl]) // Unset data on url change
+  useEffect(() => { setData(null) }, [nodeUrl])
 
   const [data, setData] = useState<TransactionObj[] | null>(null)
 
@@ -50,20 +68,20 @@ const ValTxnList: React.FC = () => {
     {
       id: 'to-col',
       Header: 'To',
-      accessor: 'toAddr',
+      accessor: (value: any) => (value.contractAddr ? 'contract-' + value.contractAddr : value.toAddr),
     },
-    {
-      id: 'amount-col',
-      Header: 'Amount',
-      accessor: 'amount',
-    },
+
     {
       id: 'hash-col',
       Header: 'Hash',
       accessor: 'hash',
+    }, {
+      id: 'amount-col',
+      Header: 'Amount',
+      accessor: 'amount',
     }], []
   )
- 
+
   // Fetch Data
   useEffect(() => {
     let isCancelled = false
@@ -88,14 +106,15 @@ const ValTxnList: React.FC = () => {
       isCancelled = true
       clearInterval(getDataTimer)
     }
-  }, [dataService])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodeUrl])
 
   return <>
     <Card className='valtxlist-card'>
       <Card.Header>
         <div className='valtxlist-card-header'>
           <span>Transactions</span>
-          <Link to={'tx'}>View Recent Transactions</Link>
+          <QueryPreservingLink to={'tx'}>View Recent Transactions</QueryPreservingLink>
         </div>
       </Card.Header>
       <Card.Body>

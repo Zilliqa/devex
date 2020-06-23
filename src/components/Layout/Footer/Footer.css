@@ -1,6 +1,16 @@
 .custom-footer {
-  height: 100px;
+  height: 150px;
   background-color: #343a40;
-  padding: '0 2rem' !important;
   color: white;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10%;
+  border-top: 1px solid #dee2e6;
+}
+
+.custom-footer a {
+  padding: 0 0.3rem;
+  color: rgb(205, 205, 205);
 }

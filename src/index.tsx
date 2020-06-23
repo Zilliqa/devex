@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 
 import React, { useEffect, useRef } from 'react'
 import ReactDOM from 'react-dom'
-import { useLocation, BrowserRouter as Router, Route } from 'react-router-dom'
+import { Link, useLocation, BrowserRouter as Router, Route } from 'react-router-dom'
 
 import HomePage from './components/HomePage/HomePage'
 import Layout from './components/Layout/Layout'
@@ -13,8 +13,10 @@ import DSBlockDetailsPage from './components/DetailsPages/DSBlockDetailsPage/DSB
 import TxBlockDetailsPage from './components/DetailsPages/TxBlockDetailsPage/TxBlockDetailsPage'
 import TxnDetailsPage from './components/DetailsPages/TxnDetailsPage/TxnDetailsPage'
 import AddressDetailsPage from './components/DetailsPages/AddressDetailsPage/AddressDetailsPage'
+import LabelsPage from './components/LabelsPage/LabelsPage'
 import * as serviceWorker from './serviceWorker'
 import { NetworkProvider } from './services/networkProvider'
+import { UserPrefProvider } from './services/userPrefProvider'
 
 import './index.css'
 
@@ -32,24 +34,39 @@ const ScrollToTop = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>
 }
 
+export const QueryPreservingLink = ({ to, style, className, onClick, children }
+  : {
+    to: string, style?: React.CSSProperties, className?: string,
+    onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void, children: React.ReactNode
+  }): JSX.Element => {
+  const location = useLocation()
+  return <Link style={style} className={className} onClick={onClick} to={{
+    pathname: to,
+    search: location.search
+  }}>{children}</Link>
+}
+
 ReactDOM.render(
   <>
     <Router>
       <NetworkProvider>
-        <Layout>
-          <React.StrictMode>
-            <ScrollToTop>
-              <Route exact path="/" component={HomePage} />
-              <Route exact path="/dsbk" component={DSBlocksPage} />
-              <Route path={`/dsbk/:blockNum`}><DSBlockDetailsPage /></Route>
-              <Route exact path="/txbk" component={TxBlocksPage} />
-              <Route path={`/txbk/:blockNum`}><TxBlockDetailsPage /></Route>
-              <Route exact path="/tx" component={TxnsPage} />
-              <Route path={`/tx/:txnHash`}><TxnDetailsPage /></Route>
-              <Route path="/address/:addr" component={AddressDetailsPage} />
-            </ScrollToTop>
-          </React.StrictMode>
-        </Layout>
+        <UserPrefProvider>
+          <Layout>
+            <React.StrictMode>
+              <ScrollToTop>
+                <Route exact path="/" component={HomePage} />
+                <Route exact path="/dsbk" component={DSBlocksPage} />
+                <Route path={`/dsbk/:blockNum`}><DSBlockDetailsPage /></Route>
+                <Route exact path="/txbk" component={TxBlocksPage} />
+                <Route path={`/txbk/:blockNum`}><TxBlockDetailsPage /></Route>
+                <Route exact path="/tx" component={TxnsPage} />
+                <Route path={`/tx/:txnHash`}><TxnDetailsPage /></Route>
+                <Route path="/address/:addr" component={AddressDetailsPage} />
+                <Route path="/labels" component={LabelsPage} />
+              </ScrollToTop>
+            </React.StrictMode>
+          </Layout>
+        </UserPrefProvider>
       </NetworkProvider>
     </Router>
   </>,
