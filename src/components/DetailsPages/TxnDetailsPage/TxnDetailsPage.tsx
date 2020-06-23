@@ -130,7 +130,7 @@ const TxnDetailsPage: React.FC = () => {
                 <Row>
                   <Col>
                     <div className='txn-detail'>
-                      <span className='txn-detail-header'>From:</span>
+                      <span>From:</span>
                       <span>
                         {/* To be removed after SDK typing is updated
                         // @ts-ignore */}
@@ -140,7 +140,7 @@ const TxnDetailsPage: React.FC = () => {
                   </Col>
                   <Col>
                     <div className='txn-detail'>
-                      <span className='txn-detail-header'>To:</span>
+                      <span>To:</span>
                       <span>
                         <QueryPreservingLink to={`/address/${hexAddrToZilAddr(data.toAddr)}`}>{hexAddrToZilAddr(data.toAddr)}</QueryPreservingLink>
                       </span>
@@ -150,13 +150,13 @@ const TxnDetailsPage: React.FC = () => {
                 <Row>
                   <Col>
                     <div className='txn-detail'>
-                      <span className='txn-detail-header'>Amount:</span>
+                      <span>Amount:</span>
                       <span>{qaToZil(data.amount)}</span>
                     </div>
                   </Col>
                   <Col>
                     <div className='txn-detail'>
-                      <span className='txn-detail-header'>Nonce:</span>
+                      <span>Nonce:</span>
                       <span>{data.nonce}</span>
                     </div>
                   </Col>
@@ -164,7 +164,7 @@ const TxnDetailsPage: React.FC = () => {
                 <Row>
                   <Col>
                     <div className='txn-detail'>
-                      <span className='txn-detail-header'>Gas Limit:</span>
+                      <span>Gas Limit:</span>
                       {/* To be removed after SDK typing is updated
                         // @ts-ignore */}
                       <span>{(new Long(data.gasLimit.low, data.gasLimit.high, data.gasLimit.unsigned)).toString()}</span>
@@ -172,7 +172,7 @@ const TxnDetailsPage: React.FC = () => {
                   </Col>
                   <Col>
                     <div className='txn-detail'>
-                      <span className='txn-detail-header'>Gas Price:</span>
+                      <span>Gas Price:</span>
                       <span>{qaToZil(data.gasPrice)}</span>
                     </div>
                   </Col>
@@ -180,13 +180,13 @@ const TxnDetailsPage: React.FC = () => {
                 <Row>
                   <Col>
                     <div className='txn-detail'>
-                      <span className='txn-detail-header'>Cumulative Gas:</span>
+                      <span>Cumulative Gas:</span>
                       <span>{data.receipt.cumulative_gas}</span>
                     </div>
                   </Col>
                   <Col>
                     <div className='txn-detail'>
-                      <span className='txn-detail-header'>Transaction Block:</span>
+                      <span>Transaction Block:</span>
                       <span><QueryPreservingLink to={`/txbk/${data.receipt.epoch_num}`}>{data.receipt.epoch_num}</QueryPreservingLink></span>
                     </div>
                   </Col>
@@ -194,7 +194,7 @@ const TxnDetailsPage: React.FC = () => {
                 <Row>
                   <Col>
                     <div className='txn-detail'>
-                      <span className='txn-detail-header'>Success:</span>
+                      <span>Success:</span>
                       <span>{`${data.receipt.success}`}</span>
                     </div>
                   </Col>
@@ -202,7 +202,7 @@ const TxnDetailsPage: React.FC = () => {
                         // @ts-ignore */}
                   {data.receipt.accepted !== undefined && (<Col>
                     <div className='txn-detail'>
-                      <span className='txn-detail-header'>Accepts $ZIL:</span>
+                      <span>Accepts $ZIL:</span>
                       {/* To be removed after SDK typing is updated
                         // @ts-ignore */}
                       <span>{`${data.receipt.accepted}`}</span>

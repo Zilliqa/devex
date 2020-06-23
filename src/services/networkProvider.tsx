@@ -42,15 +42,13 @@ export const NetworkProvider: React.FC = (props) => {
   const history = useHistory()
 
   const changeNetwork = useCallback((k: string) => {
-    return () => { // avoid redirecting on initial render
-      if (k === 'https://api.zilliqa.com/')
-        history.push('/')
-      else
-        history.push({
-          pathname: '/',
-          search: '?' + new URLSearchParams({ network: k }).toString()
-        })
-    }
+    if (k === 'https://api.zilliqa.com/')
+      history.push('/')
+    else
+      history.push({
+        pathname: '/',
+        search: '?' + new URLSearchParams({ network: k }).toString()
+      })
   }, [history])
 
   const [state, setState] = useState<NetworkState>({
@@ -59,10 +57,13 @@ export const NetworkProvider: React.FC = (props) => {
     dataService: null,
     nodeUrl: network,
     setNodeUrl: (newNodeUrl: string) => {
-      console.log(newNodeUrl)
       setState((prevState: NetworkState) => {
-        changeNetwork(newNodeUrl)
-        return { ...prevState, nodeUrl: newNodeUrl }
+        if (prevState.nodeUrl === newNodeUrl) return prevState
+        else {
+          console.log(newNodeUrl)
+          changeNetwork(newNodeUrl)
+          return { ...prevState, nodeUrl: newNodeUrl }
+        }
       })
     }
   })

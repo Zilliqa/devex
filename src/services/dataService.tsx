@@ -13,9 +13,8 @@
 
   TxBlocks-related:
   1) getNumTxBlocks(): Promise<number>
-  2) getTxBlockDetails(blockNum: number): Promise<MappedTxBlock>
-  3) getLatest5TxBlocks(): Promise<TxBlockObj[]>
-  4) getTxBlocksListing(pageNum: number): Promise<MappedTxBlockListing>
+  2) getLatest5TxBlocks(): Promise<TxBlockObj[]>
+  3) getTxBlocksListing(pageNum: number): Promise<MappedTxBlockListing>
   
   Transactions-related:
   1) getLatest5ValidatedTransactions(): Promise<TransactionObj[]>
@@ -51,7 +50,7 @@
 
 import { Zilliqa } from '@zilliqa-js/zilliqa'
 import { BlockchainInfo, DsBlockObj, TransactionObj, TxBlockObj, TxList, PendingTxnResult, MinerInfo } from '@zilliqa-js/core/src/types'
-import { MappedTxBlock, MappedDSBlockListing, MappedTxBlockListing, TransactionDetails, ContractData, AccData, AccContracts } from 'src/typings/api'
+import { MappedDSBlockListing, MappedTxBlockListing, TransactionDetails, ContractData, AccData, AccContracts } from 'src/typings/api'
 
 import { hexAddrToZilAddr } from 'src/utils/Utils'
 
@@ -163,16 +162,11 @@ export class DataService {
     return parseInt(response.result)
   }
 
-  async getTxBlockDetails(blockNum: number): Promise<MappedTxBlock> {
-    console.log("getting tx block details")
+  async getTxBlockObj(blockNum: number): Promise<TxBlockObj> {
     const blockData = await this.zilliqa.blockchain.getTxBlock(blockNum)
-    if (!blockData.result)
+    if (!blockData.result || parseInt(blockData.result.header.BlockNum) !== blockNum)
       throw new Error('Invalid Tx Block Number')
-    const transactionData = await this.getTransactionsForTxBlock(blockNum)
-    blockData.result['txnHashes'] = transactionData
-    if (parseInt(blockData.result.header.BlockNum) !== blockNum)
-      throw new Error('Invalid Tx Block Number')
-    return blockData.result as MappedTxBlock
+    return blockData.result as TxBlockObj
   }
 
   async getLatest5TxBlocks(): Promise<TxBlockObj[]> {
@@ -309,13 +303,13 @@ export class DataService {
 
   async getTxnIdFromContractData(contractData: ContractData): Promise<string> {
     console.log('getting transaction id from contract data')
-    const creationBlockData: MappedTxBlock = await this.getTxBlockDetails(
+    const txBlockTxns: string[] = await this.getTransactionsForTxBlock(
       parseInt(contractData.initParams.filter(x => x.vname === '_creation_block')[0].value))
-    const contractAddrs = await Promise.all(creationBlockData.txnHashes.map(async (txnHash: string) => {
+    const contractAddrs = await Promise.all(txBlockTxns.map(async (txnHash: string) => {
       const contractAddr = await this.getContractAddrFromTransaction(txnHash)
       return '0x' + contractAddr
     }))
-    return '0x' + creationBlockData.txnHashes[contractAddrs.indexOf(
+    return '0x' + txBlockTxns[contractAddrs.indexOf(
       contractData.initParams.filter(x => x.vname === '_this_address')[0].value)]
   }
 
@@ -386,6 +380,7 @@ export class DataService {
 
     const res = await Promise.all([getBlockNum(), getMinGasPrice()])
     const output = {
+      blockNum: res[0].result,
       minGasPrice: res[1].result
     }
     return output

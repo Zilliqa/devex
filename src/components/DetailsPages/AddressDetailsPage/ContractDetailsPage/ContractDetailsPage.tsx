@@ -124,7 +124,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
               <Row>
                 <Col>
                   <div className='address-detail'>
-                    <span className='address-detail-header'>Balance:</span>
+                    <span>Balance:</span>
                     <span>{qaToZil(contractData.state['_balance'])}</span>
                   </div>
                 </Col>
@@ -133,7 +133,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
                 <Row>
                   <Col>
                     <div className='address-detail' style={{ justifyContent: 'start' }}>
-                      <span className='address-detail-header' style={{ marginRight: 'auto' }}>Contract Creation:</span>
+                      <span style={{ marginRight: 'auto' }}>Contract Creation:</span>
                       <span style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         <QueryPreservingLink to={`/address/${owner}`}>
                           {owner}

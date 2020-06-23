@@ -120,7 +120,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
               <Row>
                 <Col>
                   <div className='address-detail'>
-                    <span className='address-detail-header'>Balance:</span>
+                    <span>Balance:</span>
                     <span>{qaToZil(accData.balance)}</span>
                   </div>
                 </Col>
@@ -128,7 +128,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
               <Row>
                 <Col>
                   <div className='address-detail'>
-                    <span className='address-detail-header'>Nonce:</span>
+                    <span>Nonce:</span>
                     <span>{accData.nonce}</span>
                   </div>
                 </Col>

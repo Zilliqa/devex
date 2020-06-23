@@ -111,7 +111,7 @@ const DSBlockDetailsPage: React.FC = () => {
                 <Row>
                   <Col>
                     <div className='dsblock-detail'>
-                      <span className='dsblock-detail-header'>Date:</span>
+                      <span>Date:</span>
                       <span>
                         {timestampToDisplay(data.header.Timestamp)}
                         {' '}
@@ -121,7 +121,7 @@ const DSBlockDetailsPage: React.FC = () => {
                   </Col>
                   <Col>
                     <div className='dsblock-detail'>
-                      <span className='dsblock-detail-header'>Difficulty:</span>
+                      <span>Difficulty:</span>
                       <span>{data.header.Difficulty}</span>
                     </div>
                   </Col>
@@ -129,13 +129,13 @@ const DSBlockDetailsPage: React.FC = () => {
                 <Row>
                   <Col>
                     <div className='dsblock-detail'>
-                      <span className='dsblock-detail-header'>DS Difficulty:</span>
+                      <span>DS Difficulty:</span>
                       <span>{data.header.DifficultyDS}</span>
                     </div>
                   </Col>
                   <Col>
                     <div className='dsblock-detail'>
-                      <span className='dsblock-detail-header'>Gas Price:</span>
+                      <span>Gas Price:</span>
                       <span>{qaToZil(data.header.GasPrice)}</span>
                     </div>
                   </Col>
@@ -143,7 +143,7 @@ const DSBlockDetailsPage: React.FC = () => {
                 <Row>
                   <Col>
                     <div className='dsblock-detail'>
-                      <span className='dsblock-detail-header'>DS Leader:</span>
+                      <span>DS Leader:</span>
                       <span>
                         <QueryPreservingLink to={`address/${pubKeyToZilAddr(data.header.LeaderPubKey)}`}>
                           {pubKeyToZilAddr(data.header.LeaderPubKey)}
@@ -155,7 +155,7 @@ const DSBlockDetailsPage: React.FC = () => {
                 <Row>
                   <Col>
                     <div className='dsblock-detail'>
-                      <span className='dsblock-detail-header'>Signature:</span>
+                      <span>Signature:</span>
                       <span style={{ lineHeight: '25px', fontSize: '13.2px', maxWidth: 'calc(100% - 90px)' }}>{data.signature}</span>
                     </div>
                   </Col>

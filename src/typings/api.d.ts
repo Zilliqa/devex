@@ -10,10 +10,6 @@ export interface MappedTxBlockListing {
   maxPages: number,
 }
 
-export interface MappedTxBlock extends TxBlockObj {
-  txnHashes: string[];
-}
-
 export interface TransactionDetails extends TransactionObj {
   hash: string;
   contractAddr?: string;

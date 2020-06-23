@@ -43,8 +43,8 @@ const TransitionsTab: React.FC<IProps> = ({ transitions }) => (
             <>
               <tr style={{ height: '20px' }}><td><hr /></td></tr>
               <tr>
-                <td className="txn-detail-header">Variable</td>
-                <td className="txn-detail-header">Value</td>
+                <td>Variable</td>
+                <td>Value</td>
               </tr>
               {transition.msg.params.map((param, index) => (
                 <tr key={index}>

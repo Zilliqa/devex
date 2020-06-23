@@ -5,9 +5,8 @@ import { OverlayTrigger, Tooltip, Card, Row, Col, Container, Spinner } from 'rea
 import { QueryPreservingLink } from 'src'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
 import { NetworkContext } from 'src/services/networkProvider'
-import { MappedTxBlock } from 'src/typings/api'
 import { qaToZil, timestampToTimeago, hexAddrToZilAddr, timestampToDisplay, pubKeyToZilAddr } from 'src/utils/Utils'
-import { TransactionObj } from '@zilliqa-js/core/src/types'
+import { TransactionObj, TxBlockObj } from '@zilliqa-js/core/src/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy, faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
@@ -46,7 +45,8 @@ const TxBlockDetailsPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingTrans, setIsLoadingTrans] = useState(false)
-  const [data, setData] = useState<MappedTxBlock | null>(null)
+  const [txBlockObj, setTxBlockObj] = useState<TxBlockObj | null>(null)
+  const [txBlockTxns, setTxBlockTxns] = useState<string[] | null>(null)
   const [latestTxBlockNum, setLatestTxBlockNum] = useState<number | null>(null)
   const [transactionData, setTransactionData] = useState<TransactionObj[] | null>(null)
 
@@ -55,16 +55,20 @@ const TxBlockDetailsPage: React.FC = () => {
     if (!dataService) return
 
     let latestTxBlockNum: number
-    let receivedData: MappedTxBlock | null
+    let txBlockObj: TxBlockObj | null
+    let txBlockTxns: string[] | null
     const getData = async () => {
       try {
         setIsLoading(true)
         if (isNaN(blockNum))
           throw new Error('Not a valid block number')
-        receivedData = await dataService.getTxBlockDetails(parseInt(blockNum))
+        txBlockObj = await dataService.getTxBlockObj(parseInt(blockNum))
+        txBlockTxns = await dataService.getTransactionsForTxBlock(parseInt(blockNum))
         latestTxBlockNum = await dataService.getNumTxBlocks()
-        if (receivedData)
-          setData(receivedData)
+        if (txBlockObj)
+          setTxBlockObj(txBlockObj)
+        if (txBlockTxns)
+          setTxBlockTxns(txBlockTxns)
         if (latestTxBlockNum)
           setLatestTxBlockNum(latestTxBlockNum)
       } catch (e) {
@@ -77,7 +81,8 @@ const TxBlockDetailsPage: React.FC = () => {
 
     getData()
     return () => {
-      setData(null)
+      setTxBlockObj(null)
+      setTxBlockTxns(null)
       setLatestTxBlockNum(null)
       setError(null)
     }
@@ -109,13 +114,13 @@ const TxBlockDetailsPage: React.FC = () => {
   )
 
   const fetchData = useCallback(({ pageIndex }) => {
-    if (!data || !dataService) return
+    if (!txBlockTxns || !dataService) return
 
     let receivedData: TransactionObj[]
     const getData = async () => {
       try {
         setIsLoadingTrans(true)
-        receivedData = await dataService.getTransactionsDetails(data.txnHashes.slice(pageIndex * 10, pageIndex * 10 + 10))
+        receivedData = await dataService.getTransactionsDetails(txBlockTxns.slice(pageIndex * 10, pageIndex * 10 + 10))
 
         if (receivedData) {
           setTransactionData(receivedData)
@@ -127,132 +132,135 @@ const TxBlockDetailsPage: React.FC = () => {
     }
 
     getData()
-  }, [dataService, data])
+  }, [dataService, txBlockTxns])
 
   return <>
     {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
     {error
       ? <NotFoundPage />
-      : data && (
-        <>
-          <div className='txblock-header'>
-            <h3>
+      : <>
+        {txBlockObj && (
+          <>
+            <div className='txblock-header'>
+              <h3>
+                <span>
+                  <FontAwesomeIcon color='grey' icon={faCubes} />
+                </span>
+                <span style={{ marginLeft: '0.75rem' }}>
+                  Tx Block
+              </span>
+                {' '}
+                <span className='txblock-header-blocknum'>#{txBlockObj.header.BlockNum}</span>
+                <LabelStar />
+              </h3>
               <span>
-                <FontAwesomeIcon color='grey' icon={faCubes} />
+                <QueryPreservingLink
+                  style={{ marginRight: '1rem' }}
+                  className={parseInt(txBlockObj.header.BlockNum) === 0 ? 'disabled-link' : ''}
+                  to={`/txbk/${parseInt(txBlockObj.header.BlockNum) - 1}`}>
+                  <FontAwesomeIcon size='2x' icon={faCaretSquareLeft} />
+                </QueryPreservingLink>
+                <QueryPreservingLink
+                  className={latestTxBlockNum && parseInt(txBlockObj.header.BlockNum) === latestTxBlockNum - 1 ? 'disabled-link' : ''}
+                  to={`/txbk/${parseInt(txBlockObj.header.BlockNum) + 1}`}>
+                  <FontAwesomeIcon size='2x' icon={faCaretSquareRight} />
+                </QueryPreservingLink>
               </span>
-              <span style={{ marginLeft: '0.75rem' }}>
-                Tx Block
-              </span>
-              {' '}
-              <span className='txblock-header-blocknum'>#{data.header.BlockNum}</span>
-              <LabelStar />
-            </h3>
-            <span>
-              <QueryPreservingLink
-                style={{ marginRight: '1rem' }}
-                className={parseInt(data.header.BlockNum) === 0 ? 'disabled-link' : ''}
-                to={`/txbk/${parseInt(data.header.BlockNum) - 1}`}>
-                <FontAwesomeIcon size='2x' icon={faCaretSquareLeft} />
-              </QueryPreservingLink>
-              <QueryPreservingLink
-                className={latestTxBlockNum && parseInt(data.header.BlockNum) === latestTxBlockNum - 1 ? 'disabled-link' : ''}
-                to={`/txbk/${parseInt(data.header.BlockNum) + 1}`}>
-                <FontAwesomeIcon size='2x' icon={faCaretSquareRight} />
-              </QueryPreservingLink>
-            </span>
-          </div>
-          <div style={{ display: 'flex' }}>
-            <h6 className='txblock-hash'>{'0x' + data.body.BlockHash}</h6>
-            <div onClick={() => {
-              navigator.clipboard.writeText(data.body.BlockHash)
-            }} className='txblock-hash-copy-btn'>
-              <FontAwesomeIcon icon={faCopy} />
             </div>
-          </div>
-          <Card className='txblock-details-card'>
-            <Card.Body>
-              <Container>
-                <Row>
-                  <Col>
-                    <div className='txblock-detail'>
-                      <span className='txblock-detail-header'>Date:</span>
-                      <span>
-                        {timestampToDisplay(data.header.Timestamp)}
-                        {' '}
-                        ({timestampToTimeago(data.header.Timestamp)})
-                      </span>
-                    </div>
-                  </Col>
-                  <Col>
-                    <div className='txblock-detail'>
-                      <span className='txblock-detail-header'>Transactions:</span>
-                      <span>{data.header.NumTxns}</span>
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <div className='txblock-detail'>
-                      <span className='txblock-detail-header'>Gas Limit:</span>
-                      <span>{data.header.GasLimit}</span>
-                    </div>
-                  </Col>
-                  <Col>
-                    <div className='txblock-detail'>
-                      <span className='txblock-detail-header'>Gas Used:</span>
-                      <span>{data.header.GasUsed}</span>
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <div className='txblock-detail'>
-                      <span className='txblock-detail-header'>Rewards:</span>
-                      <span>{qaToZil(data.header.Rewards)}</span>
-                    </div>
-                  </Col>
-                  <Col>
-                    <div className='txblock-detail'>
-                      <span className='txblock-detail-header'>DS Block:</span>
-                      <span><QueryPreservingLink to={`/dsbk/${data.header.DSBlockNum}`}>{data.header.DSBlockNum}</QueryPreservingLink></span>
-                    </div>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <div className='txblock-detail'>
-                      <span className='txblock-detail-header'>Miner:</span>
-                      <span>{pubKeyToZilAddr(data.header.MinerPubKey)}</span>
-                    </div>
-                  </Col>
-                </Row>
-              </Container>
-            </Card.Body>
-          </Card>
-          {data.body.MicroBlockInfos.length > 0 && (
+            <div style={{ display: 'flex' }}>
+              <h6 className='txblock-hash'>{'0x' + txBlockObj.body.BlockHash}</h6>
+              <div onClick={() => {
+                navigator.clipboard.writeText(txBlockObj.body.BlockHash)
+              }} className='txblock-hash-copy-btn'>
+                <FontAwesomeIcon icon={faCopy} />
+              </div>
+            </div>
             <Card className='txblock-details-card'>
               <Card.Body>
                 <Container>
-                  <h6>Micro Blocks</h6>
-                  {data.body.MicroBlockInfos.map((x) => <div key={x.MicroBlockHash}>[{x.MicroBlockShardId}] {x.MicroBlockHash}</div>)}
+                  <Row>
+                    <Col>
+                      <div className='txblock-detail'>
+                        <span>Date:</span>
+                        <span>
+                          {timestampToDisplay(txBlockObj.header.Timestamp)}
+                          {' '}
+                        ({timestampToTimeago(txBlockObj.header.Timestamp)})
+                      </span>
+                      </div>
+                    </Col>
+                    <Col>
+                      <div className='txblock-detail'>
+                        <span>Transactions:</span>
+                        <span>{txBlockObj.header.NumTxns}</span>
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <div className='txblock-detail'>
+                        <span>Gas Limit:</span>
+                        <span>{txBlockObj.header.GasLimit}</span>
+                      </div>
+                    </Col>
+                    <Col>
+                      <div className='txblock-detail'>
+                        <span>Gas Used:</span>
+                        <span>{txBlockObj.header.GasUsed}</span>
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <div className='txblock-detail'>
+                        <span>Rewards:</span>
+                        <span>{qaToZil(txBlockObj.header.Rewards)}</span>
+                      </div>
+                    </Col>
+                    <Col>
+                      <div className='txblock-detail'>
+                        <span>DS Block:</span>
+                        <span><QueryPreservingLink to={`/dsbk/${txBlockObj.header.DSBlockNum}`}>{txBlockObj.header.DSBlockNum}</QueryPreservingLink></span>
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <div className='txblock-detail'>
+                        <span>Miner:</span>
+                        <span><QueryPreservingLink to={`/address/${pubKeyToZilAddr(txBlockObj.header.MinerPubKey)}`}>{pubKeyToZilAddr(txBlockObj.header.MinerPubKey)}</QueryPreservingLink></span>
+                      </div>
+                    </Col>
+                  </Row>
                 </Container>
               </Card.Body>
             </Card>
-          )}
-          {data.txnHashes.length > 0 && (
-            <>
-              <h4>Transactions</h4>
-              <ViewAllTable
-                isLoading={isLoadingTrans}
-                fetchData={fetchData}
-                pageCount={Math.ceil(data.txnHashes.length / 10)}
-                columns={columns}
-                data={transactionData ? transactionData : []}
-                processMap={processMap} />
-            </>
-          )}
-        </>
-      )}
+            {txBlockObj.body.MicroBlockInfos.length > 0 && (
+              <Card className='txblock-details-card'>
+                <Card.Body>
+                  <Container>
+                    <h6>Micro Blocks</h6>
+                    {txBlockObj.body.MicroBlockInfos.map((x) => <div key={x.MicroBlockHash}>[{x.MicroBlockShardId}] {x.MicroBlockHash}</div>)}
+                  </Container>
+                </Card.Body>
+              </Card>
+            )}
+          </>
+        )}
+        {txBlockTxns && txBlockTxns.length > 0 && (
+          <>
+            <h4>Transactions</h4>
+            <ViewAllTable
+              isLoading={isLoadingTrans}
+              fetchData={fetchData}
+              pageCount={Math.ceil(txBlockTxns.length / 10)}
+              columns={columns}
+              data={transactionData ? transactionData : []}
+              processMap={processMap} />
+          </>
+        )}
+      </>
+    }
   </>
 }
 
