@@ -1,18 +1,21 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
-import { Card, Container, Row, Col } from 'react-bootstrap'
+import { Card, Container, Row, Col, Spinner } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src'
 import InfoTabs from 'src/components/DetailsPages/InfoTabs/InfoTabs'
 import DefaultTab from 'src/components/DetailsPages/InfoTabs/DefaultTab'
 import CodeTab from 'src/components/DetailsPages/InfoTabs/CodeTab'
 import { NetworkContext } from 'src/services/networkProvider'
 import { ContractData } from 'src/typings/api'
 import { qaToZil } from 'src/utils/Utils'
+import { fromBech32Address, toBech32Address } from '@zilliqa-js/crypto'
+import { validation } from '@zilliqa-js/util'
 
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faFileContract } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import LabelStar from '../../LabelStart/LabelStar'
 import '../AddressDetailsPage.css'
 
 interface IProps {
@@ -28,6 +31,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
   const [contractData, setContractData] = useState<ContractData | null>(null)
   const [creationTxnHash, setCreationTxnHash] = useState<string | null>(null)
   const [owner, setOwner] = useState<string | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   // Fetch data
   useEffect(() => {
@@ -38,6 +42,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
     let owner: string
     const getData = async () => {
       try {
+        setIsLoading(true)
         contractData = await dataService.getContractData(addrRef.current)
         creationTxnHash = await dataService.getTxnIdFromContractData(contractData)
         owner = await dataService.getTransactionOwner(creationTxnHash)
@@ -50,6 +55,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
           setCreationTxnHash(creationTxnHash)
         if (owner)
           setOwner(owner)
+        setIsLoading(false)
       }
     }
     getData()
@@ -83,6 +89,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
   }
 
   return <>
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
     {contractData && (
       <>
         <div className='address-header'>
@@ -93,12 +100,20 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
             <span style={{ marginLeft: '0.75rem' }}>
               Contract
             </span>
+            <LabelStar />
           </h3>
         </div>
         <div style={{ display: 'flex' }}>
-          <h6 className='address-hash'>{addrRef.current}</h6>
+          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current)}</h6>
           <div onClick={() => {
-            navigator.clipboard.writeText(addrRef.current)
+            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current))
+          }} className='address-hash-copy-btn'>
+            <FontAwesomeIcon icon={faCopy} />
+          </div>
+        </div><div style={{ display: 'flex' }}>
+          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current}</h6>
+          <div onClick={() => {
+            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current)
           }} className='address-hash-copy-btn'>
             <FontAwesomeIcon icon={faCopy} />
           </div>
@@ -115,24 +130,24 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
                 </Col>
               </Row>
               {creationTxnHash && <>
-              <Row>
-                <Col>
-                  <div className='address-detail' style={{ justifyContent: 'start' }}>
-                    <span className='address-detail-header' style={{ marginRight:'auto' }}>Contract Creation:</span>
-                    <span style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      <Link to={`/address/${owner}`}>
-                        {owner}
-                      </Link>
-                    </span>
-                    <span>{'at'}</span>
-                    <span style={{ paddingLeft:'0.5rem', maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                      <Link to={`/tx/${creationTxnHash}`}>
-                        {creationTxnHash}
-                      </Link>
-                    </span>
-                  </div>
-                </Col>
-              </Row>
+                <Row>
+                  <Col>
+                    <div className='address-detail' style={{ justifyContent: 'start' }}>
+                      <span className='address-detail-header' style={{ marginRight: 'auto' }}>Contract Creation:</span>
+                      <span style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        <QueryPreservingLink to={`/address/${owner}`}>
+                          {owner}
+                        </QueryPreservingLink>
+                      </span>
+                      <span>{'at'}</span>
+                      <span style={{ paddingLeft: '0.5rem', maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                        <QueryPreservingLink to={`/tx/${creationTxnHash}`}>
+                          {creationTxnHash}
+                        </QueryPreservingLink>
+                      </span>
+                    </div>
+                  </Col>
+                </Row>
               </>}
             </Container>
           </Card.Body>

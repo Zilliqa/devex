@@ -1,13 +1,16 @@
 import React, { useState, useRef, useCallback, useMemo, useContext } from 'react'
-import { Link } from 'react-router-dom'
 import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src/index'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
 import { NetworkContext } from 'src/services/networkProvider'
 import { hexAddrToZilAddr, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
 import { TransactionObj, TxList } from '@zilliqa-js/core/src/types'
 
 import './TxnsPage.css'
+
+import { faFileContract } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 // Pre-processing data to display
 const processMap = new Map()
@@ -17,9 +20,19 @@ processMap.set('amount-col', (amt: number) => (
     <span>{qaToZil(amt)}</span>
   </OverlayTrigger>
 ))
-processMap.set('from-col', (addr: string) => (<Link to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</Link>))
-processMap.set('to-col', (addr: string) => (<Link to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</Link>))
-processMap.set('hash-col', (hash: number) => (<Link to={`tx/0x${hash}`}>{'0x' + hash}</Link>))
+processMap.set('from-col', (addr: string) => (<QueryPreservingLink to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</QueryPreservingLink>))
+processMap.set('to-col', (addr: string) => (
+  addr.includes('contract-')
+    ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
+      <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
+      {' '}
+      Contract Creation
+    </QueryPreservingLink>
+    : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</QueryPreservingLink>))
+processMap.set('hash-col', (hash: number) => (
+  <QueryPreservingLink to={`tx/0x${hash}`}>
+    <span className='mono'>{'0x' + hash}</span>
+  </QueryPreservingLink>))
 
 const TxnsPage: React.FC = () => {
 
@@ -35,17 +48,17 @@ const TxnsPage: React.FC = () => {
     {
       id: 'to-col',
       Header: 'To',
-      accessor: 'toAddr',
-    },
-    {
-      id: 'amount-col',
-      Header: 'Amount',
-      accessor: 'amount',
+      accessor: (value: any) => (value.contractAddr ? 'contract-' + value.contractAddr : value.toAddr),
     },
     {
       id: 'hash-col',
       Header: 'Hash',
       accessor: 'hash',
+    },
+    {
+      id: 'amount-col',
+      Header: 'Amount',
+      accessor: 'amount',
     }], []
   )
 
@@ -73,14 +86,15 @@ const TxnsPage: React.FC = () => {
           setRecentTxnHashes(txnHashes)
         }
 
-        let slicedTxnHashes = txnHashes.slice(pageIndex * 10, pageIndex * 10 + 10)
+        const slicedTxnHashes = txnHashes.slice(pageIndex * 10, pageIndex * 10 + 10)
         if (slicedTxnHashes) {
           txnBodies = await dataService.getTransactionsDetails(slicedTxnHashes)
           setData(txnBodies)
-          setIsLoading(false)
         }
       } catch (e) {
         console.log(e)
+      } finally {
+        setIsLoading(false)
       }
     }
 

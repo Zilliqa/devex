@@ -4,6 +4,8 @@
 }
 
 .pendtxlist-card-header {
+  height: 30px;
+  align-items: center;
   display: flex;
   justify-content: space-between;
 }

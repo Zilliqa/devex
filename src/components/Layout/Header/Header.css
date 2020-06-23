@@ -1,9 +1,9 @@
 .custom-navbar {
-  padding: .5rem 10%;
+  background-color: #343a40;
+  color: lightgrey;
+  padding: .5rem 10% !important;
   position: sticky;
   height: 70px;
-  background-color: rgb(240,240,240);
-  border-bottom: solid 1px slategrey;
 }
 
 .custom-navbar .dropdown-item:active {
@@ -12,29 +12,29 @@
   background: none;
 }
 
+.label-link {
+  margin-left: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.label-link:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
 .header-searchbar {
   margin: auto;
   width: 100%;
   max-width: 550px;
 }
 
-.header-searchbar #searchbar-dropdown {
-  background-color: white;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
-}
-
 .header-searchbar .searchbar-ig {
   margin-bottom: 0;
-}
-.header-searchbar .input-group-append {
-  background-color: white;
 }
 
 #header-network-dropdown {
   margin: 0 0.5rem;
   background-color: white;
-  border: solid 1px rgba(0,0,0,0.4);
+  border: solid 1px rgba(0, 0, 0, 0.4);
   border-radius: 4px;
 }
 
@@ -50,7 +50,10 @@
 }
 
 .node-item {
-  padding:'0.25rem 0.9rem 0.25rem 1.5rem';
+  padding: 0.25rem 0rem 0.25rem 1.5rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 175px;
 }
 
 .minus-icon-item {
@@ -73,9 +76,31 @@
 }
 
 .custom-navbar .dropdown-menu {
-  min-width: fit-content;
+  min-width: 200px;
 }
 
 .custom-navbar-brand {
   cursor: pointer;
+}
+
+.labelbar-div {
+  background-color: rgba(52, 58, 64, 0.1);
+  padding: 0 10%;
+}
+
+.labelbar {
+  white-space: nowrap;
+  align-items: center;
+  font-size: 14px;
+  width: 100%;
+  height: 45px;
+  display: flex;
+}
+
+.labelbar>* {
+  padding: 0 1rem;
+}
+
+.labelbar>*:not(:first-child) {
+  border-left: solid rgba(0, 0, 0, 0.1) 1px;
 }

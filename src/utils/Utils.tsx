@@ -3,6 +3,8 @@ import { units, BN, validation } from '@zilliqa-js/util'
 import { getAddressFromPublicKey, toBech32Address } from '@zilliqa-js/crypto'
 
 export const pubKeyToZilAddr: ((k: string) => string) = (pubKey: string) => {
+  if (pubKey.substring(0, 2) === '0x')
+      pubKey = pubKey.substring(2)
   if (!validation.isPubKey(pubKey))
     return 'Invalid public key'
   else

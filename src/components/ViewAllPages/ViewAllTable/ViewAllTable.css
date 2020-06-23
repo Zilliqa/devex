@@ -1,5 +1,10 @@
 .viewall-table {
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid #ced4da;
+  background-color: white;
   min-height: 500px;
+  position: relative;
 }
 
 .viewall-table table {
@@ -7,17 +12,16 @@
   table-layout: fixed !important;
 }
 
-.viewall-table thead {
-  border-top: 2px solid #dee2e6;
-}
-
-.viewall-table tbody {
-  border-bottom: 2px solid #dee2e6;
+.viewall-table thead th {
+  padding: 1rem 0.75rem;
+  border-top: 0;
+  font-weight: 500;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
 }
 
 .viewall-table .spinner {
   position: absolute;
-  top: 60%;
+  top: 50%;
   left: 50%;
 }
 
@@ -43,7 +47,7 @@
 }
 
 .viewall-table td {
-  padding: 0.6rem 0.25rem 0.6rem 0.8rem;
+  padding: 0.8rem 0.25rem 0.8rem 0.8rem;
 }
 
 .viewall-table [role=cell] {
@@ -63,21 +67,41 @@
 }
 
 .viewall-table #ds-difficulty-col {
-  width: 120px;
-}
-
-.viewall-table #age-col {
-  width: 150px;
-}
-
-.viewall-table #amount-col {
-  width: 200px;
-}
-
-.viewall-table #numTxns-col {
   width: 110px;
 }
 
+.viewall-table #age-col {
+  width: 160px;
+}
+
+.viewall-table #numTxns-col {
+  width: 100px;
+}
+
 .viewall-table #reward-col {
-  width: 130px;
+  width: 100px;
+  padding-right: 1rem;
+  text-align: right;
+}
+
+.viewall-table #from-col {
+  width: 160px;
+}
+
+.viewall-table #to-col {
+  width: 160px;
+}
+
+.viewall-table #hash-col {
+  width: 600px;
+}
+
+.viewall-table #bkhash-col {
+  width: 300px;
+}
+
+.viewall-table #amount-col {
+  padding-right: 1rem;
+  text-align: right;
+  width: 200px;
 }

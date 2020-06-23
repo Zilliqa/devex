@@ -1,72 +1,90 @@
-import React, { useState, useContext, useEffect, SyntheticEvent } from 'react'
+import React, { useState, useContext, useEffect, useCallback } from 'react'
+import { useLocation, useHistory } from 'react-router-dom'
 import { Navbar, Nav, NavDropdown, Tooltip, OverlayTrigger, Form } from 'react-bootstrap'
-import { Link, useLocation } from 'react-router-dom'
 
-import Logo from 'src/assets/images/logo.png'
-import { NetworkContext, defaultNetworks } from 'src/services/networkProvider'
+import { QueryPreservingLink } from 'src'
+import ZilLogo from 'src/assets/images/ZilLogo.png'
+import Searchbar from 'src/components/HomePage/Searchbar/Searchbar'
+import { NetworkContext, defaultNetworks, useNetworkName } from 'src/services/networkProvider'
+import { UserPrefContext } from 'src/services/userPrefProvider'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
 
-import Searchbar from 'src/components/HomePage/Searchbar/Searchbar'
 import './Header.css'
 
 const Header: React.FC = () => {
 
-  const location = useLocation();
+  const history = useHistory()
+  const location = useLocation()
+  const networkName = useNetworkName()
   const networkContext = useContext(NetworkContext)
-  const { isIsolatedServer, nodeUrl, setNodeUrl, nodeUrlMap, setNodeUrlMap } = networkContext!
-  const [currentNetwork, setCurrentNetwork] = useState(nodeUrlMap[localStorage.getItem('nodeUrl')!] || defaultNetworks[nodeUrl])
+  const userPrefContext = useContext(UserPrefContext)
+  const { isIsolatedServer, nodeUrl } = networkContext!
+  const { nodeUrlMap, setNodeUrlMap } = userPrefContext!
+
   const [newNode, setNewNode] = useState('')
-  const [showSearchbar, setShowSearchbar] = useState(false)
   const [showDropdown, setShowDropdown] = useState(false)
+  const [showSearchbar, setShowSearchbar] = useState(false)
+  const [currentNetwork, setCurrentNetwork] = useState(defaultNetworks[nodeUrl] || nodeUrl)
+
+  const changeNetwork = useCallback((k: string) => {
+    if (k === 'https://api.zilliqa.com/')
+      history.push('/')
+    else
+      history.push({
+        pathname: '/',
+        search: '?' + new URLSearchParams({ network: k }).toString()
+      })
+  }, [history])
 
   useEffect(() => {
-    if (location.pathname !== '/')
+    if (location.pathname !== '/') {
       setShowSearchbar(true)
-    else
-      setShowSearchbar(false)
-  }, [location]);
-
-  const addNewNode = () => {
-    if (Object.keys(nodeUrlMap).includes(newNode)) {
-      setNewNode('')
-      setShowDropdown(false)
-      return
     }
     else {
+      setShowSearchbar(false)
+    }
+  }, [location])
+
+  useEffect(() => {
+    setCurrentNetwork(networkName)
+  }, [networkName])
+
+  const addNewNode = () => {
+    if (!Object.keys({ ...defaultNetworks, ...nodeUrlMap }).includes(newNode)) {
       nodeUrlMap[newNode] = newNode
       setNodeUrlMap(nodeUrlMap)
-      setCurrentNetwork(newNode)
-      setNodeUrl && setNodeUrl(newNode)
-      setNewNode('')
-      setShowDropdown(false)
     }
+    changeNetwork(newNode)
+    setNewNode('')
+    setShowDropdown(false)
   }
 
-  const deleteNode = (k: string, v: string) => {
+  const deleteNode = (k: string) => {
     delete nodeUrlMap[k]
     setNodeUrlMap(nodeUrlMap)
-    setCurrentNetwork('Mainnet')
-    setNodeUrl && setNodeUrl('https://api.zilliqa.com/')
+    changeNetwork('https://api.zilliqa.com/')
     setShowDropdown(false)
   }
 
   return (
     <>
       <Navbar className="custom-navbar" fixed="top">
-        <Link to={'/'} >
+        <QueryPreservingLink to={'/'} >
           <Navbar.Brand className="custom-navbar-brand">
             <img
-              src={Logo}
+              src={ZilLogo}
               alt=""
               width="30"
               height="30"
               className="d-inline-block align-top"
-            />{' '}
-          Dev Explorer
-        </Navbar.Brand>
-        </Link>
+            />
+            {' '}
+            <span style={{ color: 'white', fontFamily: 'Jura', fontSize: '20px' }}>DEVEX</span>
+          </Navbar.Brand>
+        </QueryPreservingLink>
+        <QueryPreservingLink className='label-link' to={'/labels'}>My Labels</QueryPreservingLink>
         {showSearchbar
           ? <div className="header-searchbar"><Searchbar isISSearchbar={isIsolatedServer!} isHeaderSearchbar={true} /></div>
           : null}
@@ -80,8 +98,7 @@ const Header: React.FC = () => {
               <NavDropdown.Item key={k} onClick={() => {
                 if (currentNetwork !== v) {
                   setShowSearchbar(false)
-                  setCurrentNetwork(v)
-                  setNodeUrl && setNodeUrl(k)
+                  changeNetwork(k)
                 }
               }}>
                 {v}
@@ -93,19 +110,18 @@ const Header: React.FC = () => {
                 <NavDropdown.Item className='node-item' onClick={() => {
                   if (currentNetwork !== v) {
                     setShowSearchbar(false)
-                    setCurrentNetwork(v)
-                    setNodeUrl && setNodeUrl(k)
+                    changeNetwork(k)
                   }
                 }}>
                   {v}
                 </NavDropdown.Item>
-                <NavDropdown.Item className='minus-icon-item' onClick={() => { deleteNode(k, v) }}>
+                <NavDropdown.Item className='minus-icon-item' onClick={() => { deleteNode(k) }}>
                   <FontAwesomeIcon size='lg' icon={faMinus} />
                 </NavDropdown.Item>
               </div>
             ))}
             <div className='add-node-div'>
-              <Form onSubmit={(e: SyntheticEvent) => { e.preventDefault(); addNewNode() }}>
+              <Form onSubmit={(e: React.SyntheticEvent) => { e.preventDefault(); addNewNode() }}>
                 <Form.Control
                   type="text"
                   value={newNode}
@@ -120,7 +136,7 @@ const Header: React.FC = () => {
         </Nav>
       </Navbar>
     </>
-  );
+  )
 }
 
 export default Header

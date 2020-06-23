@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 import { Form, InputGroup, Button, Dropdown, DropdownButton } from 'react-bootstrap'
 
 import { validation } from '@zilliqa-js/util'
@@ -17,6 +17,7 @@ const Searchbar: React.FC<IProps> = ({ isHeaderSearchbar, isISSearchbar }) => {
   const [input, setInput] = useState("")
   const [searchType, setSearchType] = useState('Txn/Addr')
   const history = useHistory()
+  const location = useLocation()
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value)
@@ -30,15 +31,27 @@ const Searchbar: React.FC<IProps> = ({ isHeaderSearchbar, isISSearchbar }) => {
         if (trimmedInput.substring(0, 3) !== 'zil' && trimmedInput.substring(0, 2) !== '0x')
           trimmedInput = '0x' + trimmedInput
         if (validation.isAddress(trimmedInput) || validation.isBech32(trimmedInput))
-          history.push(`/address/${trimmedInput}`)
+          history.push({
+            pathname: `/address/${trimmedInput}`,
+            search: location.search
+          })
         else
-          history.push(`/tx/${trimmedInput}`)
+          history.push({
+            pathname: `/tx/${trimmedInput}`,
+            search: location.search
+          })
         break
       case 'Tx Block':
-        history.push(`/txbk/${trimmedInput}`)
+        history.push({
+          pathname: `/txbk/${trimmedInput}`,
+          search: location.search
+        })
         break
       case 'DS Block':
-        history.push(`/dsbk/${trimmedInput}`)
+        history.push({
+          pathname: `/dsbk/${trimmedInput}`,
+          search: location.search
+        })
         break
     }
     setInput('')
@@ -46,7 +59,7 @@ const Searchbar: React.FC<IProps> = ({ isHeaderSearchbar, isISSearchbar }) => {
 
   return <>
     <Form onSubmit={handleSubmit}>
-      <InputGroup className="searchbar-ig" id="searchbar-ig">
+      <InputGroup className="searchbar-ig" id={isHeaderSearchbar ? "header-searchbar-ig" : "searchbar-ig"}>
         {!isISSearchbar &&
           <InputGroup.Prepend>
             <DropdownButton variant="outline-secondary" id='searchbar-dropdown' title={searchType}>

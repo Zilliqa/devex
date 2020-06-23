@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react'
-import { Link } from 'react-router-dom'
 import { Card, Spinner } from 'react-bootstrap'
 
-import DisplayTable from '../../DisplayTable/DisplayTable'
-import { NetworkContext } from 'src/services/networkProvider'
-import { DsBlockObj } from '@zilliqa-js/core/src/types'
+import { QueryPreservingLink } from 'src'
 import { refreshRate } from 'src/constants'
-
-import './DSBlockList.css'
+import { NetworkContext } from 'src/services/networkProvider'
 import { timestampToTimeago, pubKeyToZilAddr } from 'src/utils/Utils'
+import { DsBlockObj } from '@zilliqa-js/core/src/types'
+
+import DisplayTable from '../../DisplayTable/DisplayTable'
+import './DSBlockList.css'
 
 /*
     Display first 5 DS Block
@@ -23,8 +23,14 @@ import { timestampToTimeago, pubKeyToZilAddr } from 'src/utils/Utils'
 // Pre-processing data to display
 const processMap = new Map()
 processMap.set('age-col', timestampToTimeago)
-processMap.set('ds-leader-col', pubKeyToZilAddr)
-processMap.set('height-col', (height: number) => (<Link to={`dsbk/${height}`}>{height}</Link>))
+processMap.set('ds-leader-col', (addr: string) =>(
+  <QueryPreservingLink to={`address/${pubKeyToZilAddr(addr)}`}>
+    {pubKeyToZilAddr(addr)}
+  </QueryPreservingLink>))
+processMap.set('height-col', (height: number) => (
+  <QueryPreservingLink to={`dsbk/${height}`}>
+    {height}
+  </QueryPreservingLink>))
 processMap.set('hash-col', (hash: number) => ('0x' + hash))
 
 const DSBlockList: React.FC = () => {
@@ -44,12 +50,12 @@ const DSBlockList: React.FC = () => {
     },
     {
       id: 'difficulty-col',
-      Header: 'Difficulty',
+      Header: 'Diff',
       accessor: 'header.Difficulty',
     },
     {
       id: 'ds-difficulty-col',
-      Header: 'DS Difficulty',
+      Header: 'DS Diff',
       accessor: 'header.DifficultyDS',
     },
     {
@@ -89,14 +95,15 @@ const DSBlockList: React.FC = () => {
       isCancelled = true
       clearInterval(getDataTimer)
     }
-  }, [dataService])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nodeUrl])
 
   return <>
     <Card className='dsblock-card'>
       <Card.Header>
         <div className='dsblock-card-header'>
           <span>DS Blocks</span>
-          <Link to={'dsbk'}>View All</Link>
+          <QueryPreservingLink to={'dsbk'}>View All</QueryPreservingLink>
         </div>
       </Card.Header>
       <Card.Body>

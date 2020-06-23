@@ -4,6 +4,8 @@ import { Card, Container, Row, Col, Pagination, Spinner } from 'react-bootstrap'
 import { NetworkContext } from 'src/services/networkProvider'
 import { AccData, AccContracts, AccContract } from 'src/typings/api'
 import { qaToZil } from 'src/utils/Utils'
+import { fromBech32Address, toBech32Address } from '@zilliqa-js/crypto'
+import { validation } from '@zilliqa-js/util'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
@@ -11,6 +13,7 @@ import { faWallet } from '@fortawesome/free-solid-svg-icons'
 
 import AccContractCard from './AccContractCard'
 import '../AddressDetailsPage.css'
+import LabelStar from '../../LabelStart/LabelStar'
 
 interface IProps {
   addr: string,
@@ -65,14 +68,15 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
       try {
         setIsLoading(true)
         accData = await dataService.getAccData(addrRef.current)
+        accContracts = await dataService.getAccContracts(addrRef.current)
         if (accData)
           setAccData(accData)
-        accContracts = await dataService.getAccContracts(addrRef.current)
         if (accContracts)
           setAccContracts(accContracts)
-        setIsLoading(false)
       } catch (e) {
         console.log(e)
+      } finally {
+        setIsLoading(false)
       }
     }
     getData()
@@ -81,6 +85,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
   }, [])
 
   return <>
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
     {accData && (
       <>
         <div className='address-header'>
@@ -91,12 +96,20 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
             <span style={{ marginLeft: '0.75rem' }}>
               Account
             </span>
+            <LabelStar />
           </h3>
         </div>
         <div style={{ display: 'flex' }}>
-          <h6 className='address-hash'>{addrRef.current}</h6>
+          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current)}</h6>
           <div onClick={() => {
-            navigator.clipboard.writeText(addrRef.current)
+            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current))
+          }} className='address-hash-copy-btn'>
+            <FontAwesomeIcon icon={faCopy} />
+          </div>
+        </div><div style={{ display: 'flex' }}>
+          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current}</h6>
+          <div onClick={() => {
+            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current)
           }} className='address-hash-copy-btn'>
             <FontAwesomeIcon icon={faCopy} />
           </div>
@@ -123,7 +136,6 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
             </Container>
           </Card.Body>
         </Card>
-        {isLoading ? <div className='contract-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
         {accContracts && accContracts.length > 0 && (
           <>
             <h4 style={{ padding: '0.5rem 0' }}>Deployed Contracts</h4>

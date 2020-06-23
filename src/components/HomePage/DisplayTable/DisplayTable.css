@@ -23,29 +23,59 @@
 /* Hardcoded Widths (May require tweaks) */
 
 .display-table #height-col {
-  width: 75px;
+  width: 80px;
 }
 
 .display-table #difficulty-col {
-  width: 75px;
+  width: 70px;
 }
 
 .display-table #ds-difficulty-col {
-  width: 110px;
+  width: 80px;
 }
 
 .display-table #age-col {
-  width: 140px;
+  width: 150px;
 }
 
 .display-table #numTxns-col {
-  width: 100px;
+  width: 70px;
 }
 
 .display-table #reward-col {
   width: 80px;
 }
 
-.display-table #status-col {
+.display-table #from-col {
+  width: 72px;
+}
+
+.display-table #to-col {
+  width: 72px;
+}
+
+.display-table #amount-col {
+  padding-right: 1rem;
+  text-align: right;
   width: 80px;
+}
+
+.display-table #hash-col {
+  width: 290px;
+}
+
+.display-table #confirmed-col {
+  width: 80px;
+}
+
+.display-table #code-col {
+  width: 80px;
+}
+
+.display-table #status-col {
+  width: 300px;
+}
+
+.display-table #pend-hash-col {
+  width: 560px;
 }

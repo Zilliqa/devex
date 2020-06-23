@@ -47,9 +47,9 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageIndex, fetchData])
 
-    const generatePagination = useCallback((currentPage: number, pageCount: number, delta: number = 2) => {
+    const generatePagination = useCallback((currentPage: number, pageCount: number, delta = 2) => {
       const separate = (a: number, b: number, isLower: boolean) => {
-        let temp = b - a
+        const temp = b - a
         if (temp === 0)
           return [a]
         else if (temp === 1)
@@ -105,9 +105,9 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
           <table {...getTableProps()}>
             <thead>
               {headerGroups.map((headerGroup: HeaderGroup<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => (
-                <tr {...headerGroup.getHeaderGroupProps()}>
+                <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.getHeaderGroupProps().key} >
                   {headerGroup.headers.map((column) => (
-                    <th {...column.getHeaderProps()} id={column.id}>
+                    <th {...column.getHeaderProps()} key={column.getHeaderProps().key} id={column.id}>
                       {column.render('Header')}
                     </th>
                   ))}
@@ -118,7 +118,7 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
               {page.map((row: Row<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => {
                 prepareRow(row)
                 return (
-                  <tr {...row.getRowProps()}>
+                  <tr {...row.getRowProps()} key={row.getRowProps().key}>
                     {row.cells.map((cell: Cell<DsBlockObj | TxBlockObj | TransactionObj | PendingTxnResult>) => {
                       if (processMap) {
                         const procFunc = processMap.get(cell.column.id)
@@ -126,7 +126,11 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
                           cell.value = procFunc(cell.value)
                       }
                       return (
-                        <td {...cell.getCellProps()}>
+                        <td {...cell.getCellProps()}
+                          style={cell.column.Header === 'Amount' || cell.column.Header === 'Reward'
+                            ? { textAlign: 'right', paddingRight: '1rem' }
+                            : {}}
+                          key={cell.getCellProps().key}>
                           {cell.value}
                         </td>
                       )
