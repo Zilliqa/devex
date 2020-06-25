@@ -8,6 +8,7 @@ type NetworkState = {
   isIsolatedServer: boolean | null,
   dataService: DataService | null,
   nodeUrl: string,
+  inTransition: boolean,
 }
 
 export const useNetworkUrl = (): string => (
@@ -43,18 +44,16 @@ export const NetworkProvider: React.FC = (props) => {
     connStatus: false,
     isIsolatedServer: false,
     dataService: null,
-    nodeUrl: network
+    nodeUrl: network,
+    inTransition: false,
   })
 
   useEffect(() => {
-    setState((prevState: NetworkState) => ({ ...prevState, nodeUrl: network }))
+    setState((prevState: NetworkState) => ({
+      ...prevState, dataService: new DataService(network),
+      inTransition: true, isIsolatedServer: null, nodeUrl: network
+    }))
   }, [network])
-
-  // If nodeurl changes, update dataservice
-  useEffect(() => {
-    setState((prevState: NetworkState) => (
-      { ...prevState, dataService: new DataService(state.nodeUrl), isIsolatedServer: null }))
-  }, [state.nodeUrl])
 
   // If dataservice changes, update isIsolatedServer
   useEffect(() => {
@@ -63,13 +62,11 @@ export const NetworkProvider: React.FC = (props) => {
       try {
         if (!state.dataService) return
         response = await state.dataService.isIsolatedServer()
-        if (response !== undefined)
-          setState((prevState: NetworkState) => ({ ...prevState, isIsolatedServer: response }))
+        setState((prevState: NetworkState) => ({ ...prevState, isIsolatedServer: response, inTransition: false }))
       } catch (e) {
         console.log(e)
       }
     }
-
     checkNetwork()
   }, [state.dataService])
 

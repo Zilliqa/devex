@@ -76,7 +76,7 @@ const PendTxnList: React.FC = () => {
     getData()
     const getDataTimer = setInterval(async () => {
       await getData()
-    }, refreshRate);
+    }, refreshRate)
     return () => {
       isCancelled = true
       clearInterval(getDataTimer)
