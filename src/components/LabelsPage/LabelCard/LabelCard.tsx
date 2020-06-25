@@ -1,4 +1,5 @@
 import React, { useState, useRef, useContext, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { Card } from 'react-bootstrap'
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable'
 
@@ -70,7 +71,7 @@ const LabelCard: React.FC<IProps> = ({ k, v }) => {
               html={text.current}
               onBlur={handleBlur}
               onChange={handleChange} />
-            : <a href={k}>{v.name}</a>
+            : <Link to={k}>{v.name}</Link>
           }
         </div>
         <div>

@@ -19,7 +19,7 @@ export const useNetworkName = (): string => {
   return defaultNetworks[network] || network
 }
 
-export const defaultNetworks: Record<string, string> = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
+export let defaultNetworks: Record<string, string> = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
   ? {
     'https://api.zilliqa.com/': 'Mainnet',
     'https://dev-api.zilliqa.com/': 'Testnet',
@@ -47,6 +47,20 @@ export const NetworkProvider: React.FC = (props) => {
     nodeUrl: network,
     inTransition: false,
   })
+
+  useEffect(() => { // Load optional urls from public folder
+    let urls: Record<string, string>
+    const getUrls = async () => {
+      try {
+        const response = await fetch(process.env.PUBLIC_URL + '/urls.json')
+        urls = await response.json()
+      } catch (e) {
+        console.log(e)
+      }
+      defaultNetworks = urls
+    }
+    getUrls()
+  }, [])
 
   useEffect(() => {
     setState((prevState: NetworkState) => ({
