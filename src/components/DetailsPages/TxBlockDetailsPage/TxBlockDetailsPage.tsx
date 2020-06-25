@@ -5,16 +5,17 @@ import { OverlayTrigger, Tooltip, Card, Row, Col, Container, Spinner } from 'rea
 import { QueryPreservingLink } from 'src'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
 import { NetworkContext } from 'src/services/networkProvider'
+import { TransactionDetails } from 'src/typings/api'
 import { qaToZil, timestampToTimeago, hexAddrToZilAddr, timestampToDisplay, pubKeyToZilAddr } from 'src/utils/Utils'
-import { TransactionObj, TxBlockObj } from '@zilliqa-js/core/src/types'
+import { TxBlockObj } from '@zilliqa-js/core/src/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy, faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
 import { faFileContract, faCubes } from '@fortawesome/free-solid-svg-icons'
 
-import './TxBlockDetailsPage.css'
+import LabelStar from '../LabelStar/LabelStar'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
-import LabelStar from '../LabelStart/LabelStar'
+import './TxBlockDetailsPage.css'
 
 // Pre-processing data to display
 const processMap = new Map()
@@ -24,7 +25,7 @@ processMap.set('amount-col', (amt: number) => (
     <span>{qaToZil(amt)}</span>
   </OverlayTrigger>
 ))
-processMap.set('from-col', (addr: string) => (<QueryPreservingLink to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</QueryPreservingLink>))
+processMap.set('from-col', (addr: string) => (<QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</QueryPreservingLink>))
 processMap.set('to-col', (addr: string) => (
   addr.includes('contract-')
     ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
@@ -40,7 +41,7 @@ const TxBlockDetailsPage: React.FC = () => {
 
   const { blockNum } = useParams()
   const networkContext = useContext(NetworkContext)
-  const { dataService } = networkContext!
+  const { dataService, isIsolatedServer } = networkContext!
 
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
@@ -48,23 +49,29 @@ const TxBlockDetailsPage: React.FC = () => {
   const [txBlockObj, setTxBlockObj] = useState<TxBlockObj | null>(null)
   const [txBlockTxns, setTxBlockTxns] = useState<string[] | null>(null)
   const [latestTxBlockNum, setLatestTxBlockNum] = useState<number | null>(null)
-  const [transactionData, setTransactionData] = useState<TransactionObj[] | null>(null)
+  const [transactionData, setTransactionData] = useState<TransactionDetails[] | null>(null)
 
   // Fetch data
   useEffect(() => {
-    if (!dataService) return
+    setIsLoading(true)
+    if (!dataService || isIsolatedServer === null) return
 
     let latestTxBlockNum: number
-    let txBlockObj: TxBlockObj | null
-    let txBlockTxns: string[] | null
+    let txBlockObj: TxBlockObj
+    let txBlockTxns: string[]
     const getData = async () => {
+      if (isNaN(blockNum))
+        throw new Error('Not a valid block number')
       try {
-        setIsLoading(true)
-        if (isNaN(blockNum))
-          throw new Error('Not a valid block number')
-        txBlockObj = await dataService.getTxBlockObj(parseInt(blockNum))
-        txBlockTxns = await dataService.getTransactionsForTxBlock(parseInt(blockNum))
-        latestTxBlockNum = await dataService.getNumTxBlocks()
+        if (isIsolatedServer) {
+          txBlockTxns = await dataService.getISTransactionsForTxBlock(parseInt(blockNum))
+        } else {
+          txBlockObj = await dataService.getTxBlockObj(parseInt(blockNum))
+          latestTxBlockNum = await dataService.getNumTxBlocks()
+          try {
+            txBlockTxns = await dataService.getTransactionsForTxBlock(parseInt(blockNum))
+          } catch (e) { console.log(e) }
+        }
         if (txBlockObj)
           setTxBlockObj(txBlockObj)
         if (txBlockTxns)
@@ -86,20 +93,21 @@ const TxBlockDetailsPage: React.FC = () => {
       setLatestTxBlockNum(null)
       setError(null)
     }
-    // Run only once for each block
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [blockNum, dataService])
+  }, [blockNum, dataService, isIsolatedServer])
 
   const columns = useMemo(
     () => [{
       id: 'from-col',
       Header: 'From',
-      accessor: 'pubKey',
+      accessor: 'txn.senderAddress',
     },
     {
       id: 'to-col',
       Header: 'To',
-      accessor: (value: any) => (value.contractAddr ? 'contract-' + value.contractAddr : value.toAddr),
+      accessor: (txnData: any) => (
+        txnData.contractAddr
+          ? 'contract-' + txnData.contractAddr
+          : txnData.txn.txParams.toAddr),
     },
     {
       id: 'amount-col',
@@ -116,18 +124,18 @@ const TxBlockDetailsPage: React.FC = () => {
   const fetchData = useCallback(({ pageIndex }) => {
     if (!txBlockTxns || !dataService) return
 
-    let receivedData: TransactionObj[]
+    let receivedData: TransactionDetails[]
     const getData = async () => {
       try {
         setIsLoadingTrans(true)
         receivedData = await dataService.getTransactionsDetails(txBlockTxns.slice(pageIndex * 10, pageIndex * 10 + 10))
 
-        if (receivedData) {
+        if (receivedData)
           setTransactionData(receivedData)
-        }
-        setIsLoadingTrans(false)
       } catch (e) {
         console.log(e)
+      } finally {
+        setIsLoadingTrans(false)
       }
     }
 
@@ -139,6 +147,23 @@ const TxBlockDetailsPage: React.FC = () => {
     {error
       ? <NotFoundPage />
       : <>
+        {!isLoading && isIsolatedServer && (
+          <>
+            <div style={{ marginBottom: '1rem' }} className='txblock-header'>
+              <h3>
+                <span>
+                  <FontAwesomeIcon color='grey' icon={faCubes} />
+                </span>
+                <span style={{ marginLeft: '0.75rem' }}>
+                  Tx Block
+              </span>
+                {' '}
+                <span className='txblock-header-blocknum'>#{blockNum}</span>
+                <LabelStar />
+              </h3>
+            </div>
+          </>
+        )}
         {txBlockObj && (
           <>
             <div className='txblock-header'>
@@ -150,7 +175,7 @@ const TxBlockDetailsPage: React.FC = () => {
                   Tx Block
               </span>
                 {' '}
-                <span className='txblock-header-blocknum'>#{txBlockObj.header.BlockNum}</span>
+                <span className='txblock-header-blocknum'>#{blockNum}</span>
                 <LabelStar />
               </h3>
               <span>

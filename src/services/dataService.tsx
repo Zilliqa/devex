@@ -1,76 +1,78 @@
 /* 
   Available Async Functions
-  
+
   Blockchain-related:
   1) getBlockchainInfo(): Promise<BlockchainInfo>
-
+  
   DSBlocks-related:
   1) getNumDSBlocks(): Promise<number>
-  2) getDSBlockDetails(blockNum: number): Promise<DsBlockObj>
+  2) getDSBlockDetails(blockNum: string): Promise<DsBlockObj>
   3) getLatest5DSBlocks(): Promise<DsBlockObj[]>
-  4) getDSBlocksListing(pageNum: number): Promise<MappedDSBlockListing>
-  5) getMinerInfo(blockNum: number): Promise<MinerInfo>
+  4) getDSBlocksListing(pageNum: number): Promise<DsBlockObjWithHashListing>
+  5) getMinerInfo(blockNum: string): Promise<MinerInfo>
 
   TxBlocks-related:
   1) getNumTxBlocks(): Promise<number>
-  2) getLatest5TxBlocks(): Promise<TxBlockObj[]>
-  3) getTxBlocksListing(pageNum: number): Promise<MappedTxBlockListing>
-  
+  2) getTxBlockObj(blockNum: number): Promise<TxBlockObj>
+  3) getLatest5TxBlocks(): Promise<TxBlockObj[]>
+  4) getTxBlocksListing(pageNum: number): Promise<TxBlockObjListing>
+
   Transactions-related:
-  1) getLatest5ValidatedTransactions(): Promise<TransactionObj[]>
+  1) getLatest5ValidatedTransactions(): Promise<TransactionDetails[]>
   2) getTransactionOwner(txnHash: string): Promise<string>
   3) getTransactionDetails(txnHash: string): Promise<TransactionDetails>
   4) getTransactionsForTxBlock(blockNum: number): Promise<string[]>
-  5) getTransactionsDetails(txnHashes: string[]): Promise<TransactionObj[]>
+  5) getTransactionsDetails(txnHashes: string[]): Promise<TransactionDetails[]>
   6) getRecentTransactions(): Promise<TxList>
-  7) getLatest5PendingTransactions(): Promise<PendingTxnResult[]>
+  7) getLatest5PendingTransactions(): Promise<PendingTxnResultWithHash[]>
 
   Account-related:
   1) getAccData(accAddr: string): Promise<AccData>
-  2) getAccContracts(accAddr: string): Promise<AccContracts>
+  2) getAccContracts(accAddr: string): Promise<ContractObj[]>
 
   Contract-related:
   1) getContractAddrFromTransaction(txnHash: string): Promise<string>
   2) getTxnIdFromContractData(contractData: ContractData): Promise<string>
   3) getContractData(contractAddr: string): Promise<ContractData>
-    
+  
+  Isolated Server-related:
+  1) getISInfo(): Promise<ISInfo>
+
   Util:
   1) isIsolatedServer(): Promise<boolean>
   2) isContractAddr(addr: string): Promise<boolean>
-
-  Isolated Server-related:
-  1) getISInfo(): Promise<any>
-
+  
 */
 
 // Mainnet: https://api.zilliqa.com/
 // Testnet: https://dev-api.zilliqa.com/
 // Isolated Server: https://zilliqa-isolated-server.zilliqa.com/
 // Staging Isolated Server: https://stg-zilliqa-isolated-server.zilliqa.com/
+// Seeds: https://stat.zilliqa.com/api/seeds
 
 import { Zilliqa } from '@zilliqa-js/zilliqa'
-import { BlockchainInfo, DsBlockObj, TransactionObj, TxBlockObj, TxList, PendingTxnResult, MinerInfo } from '@zilliqa-js/core/src/types'
-import { MappedDSBlockListing, MappedTxBlockListing, TransactionDetails, ContractData, AccData, AccContracts } from 'src/typings/api'
+import { ContractObj } from '@zilliqa-js/contract/src/types'
+import { BlockchainInfo, DsBlockObj, TxBlockObj, TxList, MinerInfo, TransactionObj } from '@zilliqa-js/core/src/types'
 
-import { hexAddrToZilAddr } from 'src/utils/Utils'
+import {
+  DsBlockObjWithHashListing, TxBlockObjListing, TransactionDetails, ContractData,
+  AccData, DsBlockObjWithHash, PendingTxnResultWithHash, ISInfo
+} from 'src/typings/api'
+import { hexAddrToZilAddr, stripHexPrefix } from 'src/utils/Utils'
 
 export class DataService {
-  zilliqa: any;
-  nodeUrl: string;
+  zilliqa: Zilliqa
+  nodeUrl: string
 
   constructor(nodeUrl: string | null) {
     if (nodeUrl) {
       this.nodeUrl = nodeUrl
-      this.initDataService(nodeUrl)
+      this.zilliqa = new Zilliqa(nodeUrl)
     }
     else {
       this.nodeUrl = 'https://api.zilliqa.com/'
-      this.initDataService('https://api.zilliqa.com/')
+      this.zilliqa = new Zilliqa('https://api.zilliqa.com/')
     }
-  }
-
-  initDataService(nodeUrl: string): void {
-    this.zilliqa = new Zilliqa(nodeUrl)
   }
 
   //================================================================================
@@ -78,8 +80,11 @@ export class DataService {
   //================================================================================
 
   async getBlockchainInfo(): Promise<BlockchainInfo> {
-    const blockChainInfo = await this.zilliqa.blockchain.getBlockChainInfo()
-    return blockChainInfo.result as BlockchainInfo
+    console.log('getting blockchain info')
+    const response = await this.zilliqa.blockchain.getBlockChainInfo()
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    return response.result as BlockchainInfo
   }
 
   //================================================================================
@@ -89,67 +94,68 @@ export class DataService {
   async getNumDSBlocks(): Promise<number> {
     console.log("getting number of DS blocks")
     const response = await this.zilliqa.blockchain.getNumDSBlocks()
-    return parseInt(response.result)
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    return parseInt(response.result, 10)
   }
 
-  async getDSBlockDetails(blockNum: number): Promise<DsBlockObj> {
+  async getDSBlockDetails(blockNum: string): Promise<DsBlockObj> {
     console.log("getting DS block details")
-    const blockData = await this.zilliqa.blockchain.getDSBlock(blockNum)
-    console.log(blockData)
-    if (blockData.result.header.BlockNum !== blockNum)
+    const response = await this.zilliqa.blockchain.getDSBlock(parseInt(blockNum, 10))
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    if (response.result.header.BlockNum !== blockNum)
       throw new Error('Invalid DS Block Number')
-    return blockData.result as DsBlockObj
+    return response.result as DsBlockObj
   }
 
   async getLatest5DSBlocks(): Promise<DsBlockObj[]> {
     console.log("getting 5 ds blocks")
     const response = await this.zilliqa.blockchain.getDSBlockListing(1)
-    const DSBlockListing: any[] = response.result.data.slice(0, 5)
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
 
+    const latest5DSBlockShort = response.result.data.slice(0, 5)
     // Map DSBlock with header info
-    const output = await Promise.all(DSBlockListing.map(async block => {
-      const blockData = await this.zilliqa.blockchain.getDSBlock(block.BlockNum)
-
-      return {
-        header: { ...blockData.result.header, Hash: block.Hash },
-        signature: blockData.result.signature,
-      }
+    const output = await Promise.all(latest5DSBlockShort.map(async blockShort => {
+      const response = await this.zilliqa.blockchain.getDSBlock(blockShort.BlockNum)
+      if (response.error !== undefined)
+        throw new Error(response.error.message)
+      return response.result as DsBlockObj
     }))
     return output as DsBlockObj[]
   }
 
-  async getDSBlocksListing(pageNum: number): Promise<MappedDSBlockListing> {
+  async getDSBlocksListing(pageNum: number): Promise<DsBlockObjWithHashListing> {
     console.log("getting ds blocks")
     const response = await this.zilliqa.blockchain.getDSBlockListing(pageNum)
-    const blockList = response.result
-    const blockListData: any[] = blockList.data
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    const blockShorts = response.result.data
 
     // Map DSBlock with header info
-    const output = await Promise.all(blockListData.map(async block => {
-      const blockData = await this.zilliqa.blockchain.getDSBlock(block.BlockNum)
-
+    const blockData = await Promise.all(blockShorts.map(async blockShort => {
+      const response = await this.zilliqa.blockchain.getDSBlock(blockShort.BlockNum)
+      if (response.error !== undefined)
+        throw new Error(response.error.message)
       return {
-        header: { ...blockData.result.header, Hash: block.Hash },
-        signature: blockData.result.signature,
-      }
+        ...response.result,
+        Hash: blockShort.Hash
+      } as DsBlockObjWithHash
     }))
     return {
-      maxPages: blockList.maxPages,
-      data: output as DsBlockObj[]
+      maxPages: response.result.maxPages,
+      data: blockData
     }
   }
 
-  async getMinerInfo(blockNum: number): Promise<MinerInfo | undefined> {
+  async getMinerInfo(blockNum: string): Promise<MinerInfo> {
     console.log("getting miner info")
-    try {
-      const response = await this.zilliqa.blockchain.getMinerInfo(blockNum)
-      if (response.error !== undefined) {
-        throw new Error(response.error.message)
-      }
-      return response.result as MinerInfo
-    } catch (e) {
-      console.log(e);
-    }
+    const response = await this.zilliqa.blockchain.getMinerInfo(blockNum)
+    console.log(response)
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    return response.result as MinerInfo
   }
 
   //================================================================================
@@ -159,50 +165,58 @@ export class DataService {
   async getNumTxBlocks(): Promise<number> {
     console.log("getting number of tx blocks")
     const response = await this.zilliqa.blockchain.getNumTxBlocks()
-    return parseInt(response.result)
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    return parseInt(response.result, 10)
   }
 
   async getTxBlockObj(blockNum: number): Promise<TxBlockObj> {
-    const blockData = await this.zilliqa.blockchain.getTxBlock(blockNum)
-    if (!blockData.result || parseInt(blockData.result.header.BlockNum) !== blockNum)
+    console.log('getting tx block obj')
+    const response = await this.zilliqa.blockchain.getTxBlock(blockNum)
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    if (parseInt(response.result.header.BlockNum) !== blockNum)
       throw new Error('Invalid Tx Block Number')
-    return blockData.result as TxBlockObj
+    // @ts-ignore  
+    return response.result as TxBlockObj
   }
 
   async getLatest5TxBlocks(): Promise<TxBlockObj[]> {
     console.log("getting 5 tx blocks")
     const response = await this.zilliqa.blockchain.getTxBlockListing(1)
-    const txBlockListing: any[] = response.result.data.slice(0, 5)
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    const blockShorts = response.result.data.slice(0, 5)
 
     // Map TxBlock with header info
-    const output = await Promise.all(txBlockListing.map(async block => {
-      const blockData = await this.zilliqa.blockchain.getTxBlock(block.BlockNum)
-      return {
-        header: { ...blockData.result.header },
-        body: blockData.result.body,
-      }
+    const output = await Promise.all(blockShorts.map(async blockShort => {
+      const response = await this.zilliqa.blockchain.getTxBlock(blockShort.BlockNum)
+      if (response.error !== undefined)
+        throw new Error(response.error.message)
+      // @ts-ignore  
+      return response.result as TxBlockObj
     }))
     return output as TxBlockObj[]
   }
 
-  async getTxBlocksListing(pageNum: number): Promise<MappedTxBlockListing> {
+  async getTxBlocksListing(pageNum: number): Promise<TxBlockObjListing> {
     console.log("getting tx blocks")
     const response = await this.zilliqa.blockchain.getTxBlockListing(pageNum)
-    const blockList = response.result
-    const blockListData: any[] = blockList.data
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    const blockShorts = response.result.data
 
     // Map TxBlock with header info
-    const output = await Promise.all(blockListData.map(async block => {
-      const blockData = await this.zilliqa.blockchain.getTxBlock(block.BlockNum)
-
-      return {
-        header: { ...blockData.result.header },
-        body: blockData.result.body,
-      }
-    }))
+    const blockData = await Promise.all(blockShorts.map(async blockShort => {
+      const response = await this.zilliqa.blockchain.getTxBlock(blockShort.BlockNum)
+      if (response.error !== undefined)
+        throw new Error(response.error.message)
+      // @ts-ignore
+      return response.result as TxBlockObj
+    })) as TxBlockObj[]
     return {
-      maxPages: blockList.maxPages,
-      data: output as TxBlockObj[]
+      maxPages: response.result.maxPages,
+      data: blockData
     }
   }
 
@@ -210,69 +224,82 @@ export class DataService {
   // Transactions-related
   //================================================================================
 
-  async getLatest5ValidatedTransactions(): Promise<TransactionObj[]> {
+  async getLatest5ValidatedTransactions(): Promise<TransactionDetails[]> {
     console.log("getting 5 validated tx")
     const response = await this.zilliqa.blockchain.getRecentTransactions()
-    const txnHashes: any[] = response.result.TxnHashes.slice(0, 5)
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    const txnHashes = response.result.TxnHashes.slice(0, 5)
 
     // Map DSBlock with header info
-    const output = await Promise.all(txnHashes.map(async txnHash => (
-      await this.getTransactionDetails(txnHash))))
-    return output as TransactionObj[]
+    const output = await Promise.all(
+      txnHashes.map(async txnHash => (await this.getTransactionDetails(txnHash))))
+    return output as TransactionDetails[]
   }
 
   async getTransactionOwner(txnHash: string): Promise<string> {
-    const blockData: TransactionObj = await this.zilliqa.blockchain.getTransaction(txnHash.substring(2))
-    // @ts-ignore
-    return hexAddrToZilAddr(blockData.senderAddress)
+    const txn = await this.zilliqa.blockchain.getTransaction(stripHexPrefix(txnHash))
+    if (txn.senderAddress)
+      return hexAddrToZilAddr(txn.senderAddress)
+    else
+      throw new Error('Invalid Transaction')
   }
 
   async getTransactionDetails(txnHash: string): Promise<TransactionDetails> {
     console.log("getting transaction details")
-    if (txnHash.substring(0, 2) === '0x')
-      txnHash = txnHash.substring(2)
+    txnHash = stripHexPrefix(txnHash)
     const txn = await this.zilliqa.blockchain.getTransaction(txnHash)
-    if (txn.toAddr === '0x0000000000000000000000000000000000000000') {
+    if (txn.txParams && txn.txParams.toAddr === '0x0000000000000000000000000000000000000000') {
       const contractAddr = await this.getContractAddrFromTransaction(txnHash)
-      return { ...txn, hash: txnHash, contractAddr: contractAddr } as TransactionDetails
+      // event emitter
+      // @ts-ignore
+      return { txn: txn, hash: txnHash, contractAddr: contractAddr } as TransactionDetails
     }
-    return { ...txn, hash: txnHash } as TransactionDetails
+    // @ts-ignore
+    return { txn: txn, hash: txnHash } as TransactionDetails
   }
 
   async getTransactionsForTxBlock(blockNum: number): Promise<string[]> {
     console.log("getting transactions for Tx block")
     const response = await this.zilliqa.blockchain.getTransactionsForTxBlock(blockNum)
-    if (response.error) return [] as string[]
-    else return response.result.flat()
+    console.log(response)
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    return response.result.flat().filter(x => x !== null) as string[]
   }
 
-  async getTransactionsDetails(txnHashes: string[]): Promise<TransactionObj[]> {
+  async getTransactionsDetails(txnHashes: string[]): Promise<TransactionDetails[]> {
     console.log("getting transactions details")
     const output = await Promise.all(txnHashes.map(
       async txnHash => (await this.getTransactionDetails(txnHash))))
-    return output as TransactionObj[]
+    return output as TransactionDetails[]
   }
 
   async getRecentTransactions(): Promise<TxList> {
     console.log("getting recent transactions")
     const response = await this.zilliqa.blockchain.getRecentTransactions()
-    const result: TxList = response.result
-    return result
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    return response.result as TxList
   }
 
-  async getLatest5PendingTransactions(): Promise<PendingTxnResult[]> {
+  async getLatest5PendingTransactions(): Promise<PendingTxnResultWithHash[]> {
     console.log("getting 5 pending tx")
     const response = await this.zilliqa.blockchain.getPendingTxns()
-    const txnHashes = response.result.Txns.map((x: any) => x.TxnHash)
-    const output = await Promise.all(txnHashes.map(
-      async (txnHash: any) => {
-        const pendingTxn = await this.zilliqa.blockchain.getPendingTxn(txnHash)
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    const txnHashes = response.result.Txns.map((x) => x.TxnHash)
+    const output = await Promise.all(
+      txnHashes.map(async (txnHash: string) => {
+        const response = await this.zilliqa.blockchain.getPendingTxn(txnHash)
+        if (response.error !== undefined)
+          throw new Error(response.error.message)
         return {
-          ...pendingTxn.result,
+          ...response.result,
           hash: txnHash,
-        }
+        } as PendingTxnResultWithHash
       }))
-    return output as PendingTxnResult[]
+    return output as PendingTxnResultWithHash[]
   }
 
   //================================================================================
@@ -282,82 +309,24 @@ export class DataService {
   async getAccData(accAddr: string): Promise<AccData> {
     console.log('getting balance')
     const response = await this.zilliqa.blockchain.getBalance(accAddr)
-    return response.result
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    return response.result as AccData
   }
 
-  async getAccContracts(accAddr: string): Promise<AccContracts> {
+  async getAccContracts(accAddr: string): Promise<ContractObj[]> {
     console.log('getting smart contracts for addr')
     const response = await this.zilliqa.blockchain.getSmartContracts(accAddr)
-    return response.result
-  }
-
-  //================================================================================
-  // Contract-related
-  //================================================================================
-
-  async getContractAddrFromTransaction(txnHash: string): Promise<string> {
-    console.log('getting smart contracts addr')
-    const response = await this.zilliqa.blockchain.getContractAddressFromTransactionID(txnHash)
-    return response.result
-  }
-
-  async getTxnIdFromContractData(contractData: ContractData): Promise<string> {
-    console.log('getting transaction id from contract data')
-    const txBlockTxns: string[] = await this.getTransactionsForTxBlock(
-      parseInt(contractData.initParams.filter(x => x.vname === '_creation_block')[0].value))
-    const contractAddrs = await Promise.all(txBlockTxns.map(async (txnHash: string) => {
-      const contractAddr = await this.getContractAddrFromTransaction(txnHash)
-      return '0x' + contractAddr
-    }))
-    return '0x' + txBlockTxns[contractAddrs.indexOf(
-      contractData.initParams.filter(x => x.vname === '_this_address')[0].value)]
-  }
-
-  async getContractData(contractAddr: string): Promise<ContractData> {
-    console.log('getting contract data')
-    const contractCode = async () => await this.zilliqa.blockchain.getSmartContractCode(contractAddr)
-    const contractInit = async () => await this.zilliqa.blockchain.getSmartContractInit(contractAddr)
-    const contractState = async () => await this.zilliqa.blockchain.getSmartContractState(contractAddr)
-
-    const res = await Promise.all([contractCode(), contractInit(), contractState()])
-    const contractData = { code: res[0].result.code, initParams: res[1].result, state: res[2].result }
-    return contractData
-  }
-
-  //================================================================================
-  // Util
-  //================================================================================
-
-  /* Until we find a better way to differentiate an isolated server, we will differentiate based
-    on the available API i.e. getBlockChainIfo */
-  async isIsolatedServer(): Promise<boolean> {
-    console.log('check whether connected to isolated server')
-    const response = await this.zilliqa.blockchain.getBlockChainInfo()
-    if (response.result) {
-      return false
-    }
-    return true
-  }
-
-  /* Until we find a better way to differentiate an account address from a smart contract address, we will differentiate based
-    on the the response error message if any */
-  async isContractAddr(addr: string): Promise<boolean> {
-    console.log('check whether is smart contract')
-    const response = await this.zilliqa.blockchain.getSmartContractInit(addr)
-    console.log(response)
-    if (!response.error)
-      return true
-    else if (response.error.message === 'Address not contract address')
-      return false
-    else
-      throw new Error('Invalid Address')
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    return response.result as ContractObj[]
   }
 
   //================================================================================
   // Isolated Server-related
   //================================================================================
 
-  async getISInfo(): Promise<any> {
+  async getISInfo(): Promise<ISInfo> {
     console.log('getting isolated server info')
 
     const getBlockNum = async () => {
@@ -372,18 +341,116 @@ export class DataService {
           "method": "GetBlocknum",
           "params": [""]
         })
-      });
+      })
       return response.json()
     }
 
     const getMinGasPrice = async () => await this.zilliqa.blockchain.getMinimumGasPrice()
 
     const res = await Promise.all([getBlockNum(), getMinGasPrice()])
-    const output = {
+    if (res[0].error !== undefined)
+      throw new Error(res[0].error.message)
+    if (res[1].error !== undefined)
+      throw new Error(res[1].error.message)
+
+    return {
       blockNum: res[0].result,
       minGasPrice: res[1].result
-    }
-    return output
+    } as ISInfo
+  }
 
+
+  async getISTransactionsForTxBlock(blockNum: number): Promise<string[]> {
+    console.log("getting transactions for Tx block")
+    const response = await fetch(this.nodeUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "id": "1",
+        "jsonrpc": "2.0",
+        "method": "GetTransactionsForTxBlock",
+        "params": [`${blockNum}`]
+      })
+    })
+    const res = await response.json()
+    return res.result.map((txnObj: TransactionObj) => txnObj.ID) as string[]
+  }
+
+  //================================================================================
+  // Contract-related
+  //================================================================================
+
+  async getContractAddrFromTransaction(txnHash: string): Promise<string> {
+    console.log('getting smart contracts addr')
+    const response = await this.zilliqa.blockchain.getContractAddressFromTransactionID(txnHash)
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
+    return response.result as string
+  }
+
+  async getTxnIdFromContractData(contractData: ContractData): Promise<string> {
+    console.log('getting transaction id from contract data')
+    const _creationTxBlock = contractData.initParams.filter(x => x.vname === '_creation_block')[0].value
+    const _contractAddr = contractData.initParams.filter(x => x.vname === '_this_address')[0].value
+
+    if (typeof _creationTxBlock !== 'string' || typeof _contractAddr !== 'string')
+      throw new Error('Type Error: Tx BlockNum or Contract Address not string')
+    const txBlockTxns = await this.getTransactionsForTxBlock(parseInt(_creationTxBlock, 10))
+    const contractAddrs = await Promise.all(
+      txBlockTxns.map(async (txnHash: string) => {
+        let contractAddr: string | null
+        try {
+          contractAddr = await this.getContractAddrFromTransaction(txnHash)
+        } catch (e) {
+          contractAddr = null
+        }
+        return '0x' + contractAddr
+      }))
+    return '0x' + txBlockTxns[contractAddrs.indexOf(_contractAddr)]
+  }
+
+  async getContractData(contractAddr: string): Promise<ContractData> {
+    console.log('getting contract data')
+    const contractCode = async () => await this.zilliqa.blockchain.getSmartContractCode(contractAddr)
+    const contractInit = async () => await this.zilliqa.blockchain.getSmartContractInit(contractAddr)
+    const contractState = async () => await this.zilliqa.blockchain.getSmartContractState(contractAddr)
+
+    const res = await Promise.all([contractCode(), contractInit(), contractState()])
+    if (res[0].error !== undefined)
+      throw new Error(res[0].error.message)
+    if (res[1].error !== undefined)
+      throw new Error(res[1].error.message)
+    if (res[2].error !== undefined)
+      throw new Error(res[2].error.message)
+
+    const contractData = { code: res[0].result.code, initParams: res[1].result, state: res[2].result }
+    return contractData as ContractData
+  }
+
+  //================================================================================
+  // Util
+  //================================================================================
+
+  /* Until we find a better way to differentiate an isolated server, we will differentiate based
+    on the available API i.e. getBlockChainIfo */
+  async isIsolatedServer(): Promise<boolean> {
+    console.log('check whether connected to isolated server')
+    const response = await this.zilliqa.blockchain.getBlockChainInfo()
+    return !response.result
+  }
+
+  /* Until we find a better way to differentiate an account address from a smart contract address, we will differentiate based
+    on the the response error message if any */
+  async isContractAddr(addr: string): Promise<boolean> {
+    console.log('check whether is smart contract')
+    const response = await this.zilliqa.blockchain.getSmartContractInit(addr)
+    if (!response.error)
+      return true
+    else if (response.error.message === 'Address not contract address')
+      return false
+    else
+      throw new Error('Invalid Address')
   }
 }

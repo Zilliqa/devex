@@ -3,11 +3,11 @@ import React, { useState, useRef, useCallback, useMemo, useContext } from 'react
 import { QueryPreservingLink } from 'src'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
 import { NetworkContext } from 'src/services/networkProvider'
+import { DsBlockObjWithHashListing } from 'src/typings/api'
 import { timestampToTimeago, pubKeyToZilAddr } from 'src/utils/Utils'
 import { DsBlockObj } from '@zilliqa-js/core/src/types'
 
 import './DSBlocksPage.css'
-import { MappedDSBlockListing } from 'src/typings/api'
 
 // Pre-processing data to display
 const processMap = new Map()
@@ -56,7 +56,7 @@ const DSBlocksPage: React.FC = () => {
     {
       id: 'bkhash-col',
       Header: 'Hash',
-      accessor: 'header.Hash',
+      accessor: 'Hash',
     }], []
   )
 
@@ -69,7 +69,7 @@ const DSBlocksPage: React.FC = () => {
     if (!dataService) return
 
     const fetchId = ++fetchIdRef.current
-    let receivedData: MappedDSBlockListing
+    let receivedData: DsBlockObjWithHashListing
     const getData = async () => {
       try {
         setIsLoading(true)

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { useLocation, useHistory } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 import { DataService } from './dataService'
 
@@ -8,7 +8,6 @@ type NetworkState = {
   isIsolatedServer: boolean | null,
   dataService: DataService | null,
   nodeUrl: string,
-  setNodeUrl: (nodeUrl: string) => void,
 }
 
 export const useNetworkUrl = (): string => (
@@ -39,38 +38,16 @@ export const NetworkContext = React.createContext<NetworkState | null>(null)
 export const NetworkProvider: React.FC = (props) => {
 
   const network = useNetworkUrl()
-  const history = useHistory()
-
-  const changeNetwork = useCallback((k: string) => {
-    if (k === 'https://api.zilliqa.com/')
-      history.push('/')
-    else
-      history.push({
-        pathname: '/',
-        search: '?' + new URLSearchParams({ network: k }).toString()
-      })
-  }, [history])
 
   const [state, setState] = useState<NetworkState>({
     connStatus: false,
     isIsolatedServer: false,
     dataService: null,
-    nodeUrl: network,
-    setNodeUrl: (newNodeUrl: string) => {
-      setState((prevState: NetworkState) => {
-        if (prevState.nodeUrl === newNodeUrl) return prevState
-        else {
-          console.log(newNodeUrl)
-          changeNetwork(newNodeUrl)
-          return { ...prevState, nodeUrl: newNodeUrl }
-        }
-      })
-    }
+    nodeUrl: network
   })
 
   useEffect(() => {
-    state.setNodeUrl(network)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    setState((prevState: NetworkState) => ({ ...prevState, nodeUrl: network }))
   }, [network])
 
   // If nodeurl changes, update dataservice
@@ -86,7 +63,8 @@ export const NetworkProvider: React.FC = (props) => {
       try {
         if (!state.dataService) return
         response = await state.dataService.isIsolatedServer()
-        setState((prevState: NetworkState) => ({ ...prevState, isIsolatedServer: response }))
+        if (response !== undefined)
+          setState((prevState: NetworkState) => ({ ...prevState, isIsolatedServer: response }))
       } catch (e) {
         console.log(e)
       }

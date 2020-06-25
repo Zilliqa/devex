@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react'
 import { Card, Spinner, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
-import { NetworkContext } from 'src/services/networkProvider'
-import DisplayTable from '../../DisplayTable/DisplayTable'
-import { PendingTxnResult } from '@zilliqa-js/core/src/types'
 import { refreshRate } from 'src/constants'
+import { NetworkContext } from 'src/services/networkProvider'
+import { PendingTxnResultWithHash } from 'src/typings/api'
 
+import DisplayTable from '../../DisplayTable/DisplayTable'
 import './PendTxnList.css'
 
 /*
@@ -32,7 +32,7 @@ const PendTxnList: React.FC = () => {
 
   useEffect(() => { setData(null) }, [nodeUrl]) // Unset data on url change
 
-  const [data, setData] = useState<PendingTxnResult[] | null>(null)
+  const [data, setData] = useState<PendingTxnResultWithHash[] | null>(null)
 
   const columns = useMemo(
     () => [{
@@ -62,7 +62,7 @@ const PendTxnList: React.FC = () => {
     let isCancelled = false
     if (!dataService) return
 
-    let receivedData: PendingTxnResult[]
+    let receivedData: PendingTxnResultWithHash[]
     const getData = async () => {
       try {
         receivedData = await dataService.getLatest5PendingTransactions()

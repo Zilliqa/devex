@@ -4,11 +4,11 @@ import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { QueryPreservingLink } from 'src'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
 import { NetworkContext } from 'src/services/networkProvider'
+import { TxBlockObjListing } from 'src/typings/api'
 import { timestampToTimeago, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
 import { TxBlockObj } from '@zilliqa-js/core/src/types'
 
 import './TxBlocksPage.css'
-import { MappedTxBlockListing } from 'src/typings/api'
 
 // Pre-processing data to display
 const processMap = new Map()
@@ -75,7 +75,7 @@ const TxBlocksPage: React.FC = () => {
     if (!dataService) return
 
     const fetchId = ++fetchIdRef.current
-    let receivedData: MappedTxBlockListing
+    let receivedData: TxBlockObjListing
     const getData = async () => {
       try {
         setIsLoading(true)

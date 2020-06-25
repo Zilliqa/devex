@@ -4,8 +4,9 @@ import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { QueryPreservingLink } from 'src/index'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
 import { NetworkContext } from 'src/services/networkProvider'
-import { hexAddrToZilAddr, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
-import { TransactionObj, TxList } from '@zilliqa-js/core/src/types'
+import { TransactionDetails } from 'src/typings/api'
+import { hexAddrToZilAddr, qaToZil } from 'src/utils/Utils'
+import { TxList } from '@zilliqa-js/core/src/types'
 
 import './TxnsPage.css'
 
@@ -20,7 +21,7 @@ processMap.set('amount-col', (amt: number) => (
     <span>{qaToZil(amt)}</span>
   </OverlayTrigger>
 ))
-processMap.set('from-col', (addr: string) => (<QueryPreservingLink to={`/address/${pubKeyToZilAddr(addr)}`}>{pubKeyToZilAddr(addr)}</QueryPreservingLink>))
+processMap.set('from-col', (addr: string) => (<QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</QueryPreservingLink>))
 processMap.set('to-col', (addr: string) => (
   addr.includes('contract-')
     ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
@@ -43,12 +44,15 @@ const TxnsPage: React.FC = () => {
     () => [{
       id: 'from-col',
       Header: 'From',
-      accessor: 'pubKey',
+      accessor: 'txn.senderAddress',
     },
     {
       id: 'to-col',
       Header: 'To',
-      accessor: (value: any) => (value.contractAddr ? 'contract-' + value.contractAddr : value.toAddr),
+      accessor: (txnDetails: any) => (
+        txnDetails.contractAddr
+          ? 'contract-' + txnDetails.contractAddr
+          : txnDetails.txn.toAddr),
     },
     {
       id: 'hash-col',
@@ -65,7 +69,7 @@ const TxnsPage: React.FC = () => {
   const fetchIdRef = useRef(0)
   const [isLoading, setIsLoading] = useState(false)
   const [pageCount, setPageCount] = useState(0)
-  const [data, setData] = useState<TransactionObj[] | null>(null)
+  const [data, setData] = useState<TransactionDetails[] | null>(null)
   const [recentTxnHashes, setRecentTxnHashes] = useState<string[] | null>(null)
 
   const fetchData = useCallback(({ pageIndex }) => {
@@ -74,13 +78,14 @@ const TxnsPage: React.FC = () => {
     const fetchId = ++fetchIdRef.current
     let txnHashes: string[] | null
     let txnList: TxList
-    let txnBodies: TransactionObj[]
+    let txnBodies: TransactionDetails[]
     const getData = async () => {
       try {
         setIsLoading(true)
         txnHashes = recentTxnHashes
         if (!txnHashes) {
           txnList = await dataService.getRecentTransactions()
+          if(!txnList) return
           txnHashes = txnList.TxnHashes
           setPageCount(Math.ceil(txnList.number / 10))
           setRecentTxnHashes(txnHashes)
@@ -89,7 +94,8 @@ const TxnsPage: React.FC = () => {
         const slicedTxnHashes = txnHashes.slice(pageIndex * 10, pageIndex * 10 + 10)
         if (slicedTxnHashes) {
           txnBodies = await dataService.getTransactionsDetails(slicedTxnHashes)
-          setData(txnBodies)
+          if (txnBodies)
+            setData(txnBodies)
         }
       } catch (e) {
         console.log(e)
