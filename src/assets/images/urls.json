@@ -1,6 +1,0 @@
-{
-  "https://dev-api.zilliqa.com/": "Testasdnet",
-  "https://api.zilliqa.com/": "Mainneasdt",
-  "https://zilliqa-isolated-server.zilliqa.com/": "Isolatedasdasd Server",
-  "http://52.187.126.172:4201": "Mainnet Staked Seed Node"
-}
