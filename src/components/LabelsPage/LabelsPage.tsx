@@ -24,7 +24,7 @@ const LabelsPage: React.FC = () => {
           </h4>
         </Row>
         <Row style={{ margin: 0, padding: '0 0 1rem' }}>
-          <span className='subtext'>Label data is stored in your browser's local storage. To browse labels in different networks, switch to that network using network selector.</span>
+          <span className='subtext'>Label data is stored in your browser&apos;s local storage. To browse labels in different networks, switch to that network using network selector.</span>
         </Row>
         <Row style={{ alignItems: 'baseline' }}>
           <span style={{ marginLeft: '1rem' }}>
@@ -56,8 +56,8 @@ const LabelsPage: React.FC = () => {
         </Row>
         <Row style={{ marginTop: '1rem' }}>
           {Object.entries(labelMap)
-            .filter(([k, v]) => (typefilter === 'All' || v.type === typefilter))
-            .filter(([k, v]) => (networkFilter === 'All' || v.network === networkFilter))
+            .filter(([, v]) => (typefilter === 'All' || v.type === typefilter))
+            .filter(([, v]) => (networkFilter === 'All' || v.network === networkFilter))
             .map(([k, v]) => (
               <Col style={{ marginBottom: '2rem' }} key={k} md={6} lg={4} >
                 <LabelCard k={k} v={v} />

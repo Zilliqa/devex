@@ -8,11 +8,11 @@ import { DsBlockObj, TxBlockObj, PendingTxnResult } from '@zilliqa-js/core/src/t
 import './ViewAllTable.css'
 
 interface IViewAllTableParams<T extends object> {
-  columns: Array<Column<T>>;
-  data: T[];
-  isLoading: boolean;
-  fetchData: (...args: any[]) => void;
-  pageCount: number;
+  columns: Array<Column<T>>,
+  data: T[],
+  isLoading: boolean,
+  fetchData: ({ pageIndex }: { pageIndex: number }) => void,
+  pageCount: number,
   processMap?: Map<string, <T>(original: T) => T>
 }
 

@@ -18,7 +18,11 @@ const EventsTab: React.FC<IProps> = ({ events }) => {
           {' '}
           {param.vname}
         </span>))
-      .reduce((acc, ele): any => (acc === null ? [ele] : [acc, ', ', ele]))
+      .reduce((acc: React.ReactNode | null, ele) => (
+        acc === null
+          ? <>{[ele]}</>
+          : <>{[acc, ', ', ele]}</>
+      ))
   }, [])
 
   return (

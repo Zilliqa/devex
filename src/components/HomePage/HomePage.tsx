@@ -32,7 +32,7 @@ const HomePage: React.FC = () => {
         : <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div>
       }
     </>
-  );
+  )
 }
 
-export default HomePage;
+export default HomePage

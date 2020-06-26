@@ -7,8 +7,8 @@ import { DsBlockObj, TxBlockObj, PendingTxnResult } from '@zilliqa-js/core/src/t
 import './DisplayTable.css'
 
 interface IDisplayTableParams<T extends object> {
-  columns: Array<Column<T>>;
-  data: T[];
+  columns: Array<Column<T>>,
+  data: T[],
   processMap?: Map<string, <T>(original: T) => T>
 }
 
