@@ -11,7 +11,11 @@ import { faStar as faStarFilled } from '@fortawesome/free-solid-svg-icons'
 
 import './LabelStar.css'
 
-const LabelStar: React.FC = () => {
+interface IProps {
+  type : string
+}
+
+const LabelStar: React.FC<IProps> = ({ type }) => {
   const location = useLocation()
   const network = useNetworkUrl()
   const userPrefContext = useContext(UserPrefContext)
@@ -35,24 +39,11 @@ const LabelStar: React.FC = () => {
     setLabelMap(temp)
   }, [labelMap, setLabelMap, currPath])
 
-  const getTypeFromPathname = useCallback((pathname: string) => {
-    if (pathname.includes('address'))
-      return 'Address'
-    else if (pathname.includes('txbk'))
-      return 'Tx Block'
-    else if (pathname.includes('dsbk'))
-      return 'DS Block'
-    else if (pathname.includes('tx'))
-      return 'Transaction'
-    else
-      return ''
-  }, [])
-
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault()
     const newLabelInfo: LabelInfo = {
       name: labelInput,
-      type: getTypeFromPathname(location.pathname),
+      type: type,
       network: network,
       timeAdded: Date.now()
     }

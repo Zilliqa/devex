@@ -94,7 +94,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
             <span style={{ marginLeft: '0.75rem' }}>
               Account
             </span>
-            <LabelStar />
+            <LabelStar type='Account'/>
           </h3>
         </div>
         <div style={{ display: 'flex' }}>

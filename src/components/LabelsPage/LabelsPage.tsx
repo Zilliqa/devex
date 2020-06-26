@@ -46,7 +46,8 @@ const LabelsPage: React.FC = () => {
             <Dropdown.Toggle id="label-type-toggle">{typefilter}</Dropdown.Toggle>
             <Dropdown.Menu>
               <Dropdown.Item onClick={() => setTypefilter('All')}>All</Dropdown.Item>
-              <Dropdown.Item onClick={() => setTypefilter('Address')}>Addresss</Dropdown.Item>
+              <Dropdown.Item onClick={() => setTypefilter('Account')}>Accounts</Dropdown.Item>
+              <Dropdown.Item onClick={() => setTypefilter('Contract')}>Contracts</Dropdown.Item>
               <Dropdown.Item onClick={() => setTypefilter('Transaction')}>Transactions</Dropdown.Item>
               <Dropdown.Item onClick={() => setTypefilter('Tx Block')}>Tx Blocks</Dropdown.Item>
               <Dropdown.Item onClick={() => setTypefilter('DS Block')}>DS Blocks</Dropdown.Item>

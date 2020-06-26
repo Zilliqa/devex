@@ -160,7 +160,7 @@ const TxBlockDetailsPage: React.FC = () => {
               </span>
                 {' '}
                 <span className='txblock-header-blocknum'>#{blockNum}</span>
-                <LabelStar />
+                <LabelStar type='Tx Block'/>
               </h3>
               <span>
                 <QueryPreservingLink
@@ -190,7 +190,7 @@ const TxBlockDetailsPage: React.FC = () => {
               </span>
                 {' '}
                 <span className='txblock-header-blocknum'>#{blockNum}</span>
-                <LabelStar />
+                <LabelStar type='Tx Block'/>
               </h3>
               <span>
                 <QueryPreservingLink

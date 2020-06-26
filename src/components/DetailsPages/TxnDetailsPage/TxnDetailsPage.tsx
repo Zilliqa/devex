@@ -70,7 +70,7 @@ const TxnDetailsPage: React.FC = () => {
             <span style={{ marginLeft: '0.75rem' }}>
               Transaction
           </span>
-            <LabelStar />
+            <LabelStar type='Transaction'/>
           </h3>
           <div style={{ display: 'flex' }}>
             <h6 className='txn-hash'>{'0x' + data.hash}</h6>

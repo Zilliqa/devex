@@ -87,7 +87,7 @@ const DSBlockDetailsPage: React.FC = () => {
               </span>
               {' '}
               <span className='dsblock-header-blocknum'>#{data.header.BlockNum}</span>
-              <LabelStar />
+              <LabelStar type='DS Block'/>
             </h3>
             <span>
               <QueryPreservingLink

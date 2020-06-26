@@ -102,7 +102,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
             <span style={{ marginLeft: '0.75rem' }}>
               Contract
             </span>
-            <LabelStar />
+            <LabelStar type='Contract'/>
           </h3>
         </div>
         <div style={{ display: 'flex' }}>
