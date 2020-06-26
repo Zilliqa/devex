@@ -44,7 +44,7 @@ export interface PendingTxnResultWithHash extends PendingTxnResult {
   hash: string
 }
 
-export interface ISInfo {
+export interface IISInfo {
   blockNum: string,
   minGasPrice: string
 }

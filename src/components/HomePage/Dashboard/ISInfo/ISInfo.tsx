@@ -33,19 +33,20 @@ import { NetworkContext } from 'src/services/networkProvider'
 
 import './ISInfo.css'
 import { QueryPreservingLink } from 'src'
+import { IISInfo } from 'src/typings/api'
 
 const ISInfo: React.FC = () => {
 
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
-  const [data, setData] = useState<any>(null)
+  const [data, setData] = useState<IISInfo | null>(null)
 
   // Fetch data
   useEffect(() => {
     if (!dataService) return
 
-    let receivedData: any
+    let receivedData: IISInfo
     const getData = async () => {
       try {
         receivedData = await dataService.getISInfo()
@@ -56,9 +57,7 @@ const ISInfo: React.FC = () => {
       }
     }
     getData()
-    // Run only once
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [dataService])
 
   return <>
     <Container style={{ padding: 0 }}>

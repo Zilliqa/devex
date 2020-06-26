@@ -76,8 +76,7 @@ const BCInfo: React.FC = () => {
       isCancelled = true
       clearInterval(getDataTimer)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nodeUrl])
+  }, [dataService])
 
   return <>
     <Card className='bcstats-card'>

@@ -36,7 +36,7 @@
   3) getContractData(contractAddr: string): Promise<ContractData>
   
   Isolated Server-related:
-  1) getISInfo(): Promise<ISInfo>
+  1) getISInfo(): Promise<IISInfo>
 
   Util:
   1) isIsolatedServer(): Promise<boolean>
@@ -56,7 +56,7 @@ import { BlockchainInfo, DsBlockObj, TxBlockObj, TxList, MinerInfo, TransactionO
 
 import {
   DsBlockObjWithHashListing, TxBlockObjListing, TransactionDetails, ContractData,
-  AccData, DsBlockObjWithHash, PendingTxnResultWithHash, ISInfo
+  AccData, DsBlockObjWithHash, PendingTxnResultWithHash, IISInfo
 } from 'src/typings/api'
 import { hexAddrToZilAddr, stripHexPrefix } from 'src/utils/Utils'
 
@@ -326,7 +326,7 @@ export class DataService {
   // Isolated Server-related
   //================================================================================
 
-  async getISInfo(): Promise<ISInfo> {
+  async getISInfo(): Promise<IISInfo> {
     console.log('getting isolated server info')
 
     const getBlockNum = async () => {
@@ -356,7 +356,7 @@ export class DataService {
     return {
       blockNum: res[0].result,
       minGasPrice: res[1].result
-    } as ISInfo
+    } as IISInfo
   }
 
 

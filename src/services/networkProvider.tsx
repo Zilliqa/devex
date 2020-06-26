@@ -9,10 +9,11 @@ type NetworkState = {
   dataService: DataService | null,
   nodeUrl: string,
   inTransition: boolean,
+  isLoadingUrls: boolean
 }
 
 export const useNetworkUrl = (): string => (
-  new URLSearchParams(useLocation().search).get('network') || 'https://api.zilliqa.com/')
+  new URLSearchParams(useLocation().search).get('network') || Object.keys(defaultNetworks)[0])
 
 export const useNetworkName = (): string => {
   const network = useNetworkUrl()
@@ -45,29 +46,35 @@ export const NetworkProvider: React.FC = (props) => {
     isIsolatedServer: false,
     dataService: null,
     nodeUrl: network,
-    inTransition: false,
+    inTransition: true,
+    isLoadingUrls: true
   })
 
-  useEffect(() => { // Load optional urls from public folder
-    let urls: Record<string, string>
-    const getUrls = async () => {
+  // Load optional urls from public folder
+  useEffect(() => {
+    let localUrls: Record<string, string> = {}
+    const loadUrls = async () => {
+      console.log('loading urls')
       try {
         const response = await fetch(process.env.PUBLIC_URL + '/urls.json')
-        urls = await response.json()
+        localUrls = await response.json()
+        defaultNetworks = localUrls
       } catch (e) {
-        console.log(e)
+        console.log('no local urls found')
+      } finally {
+        setState((prevState: NetworkState) => ({ ...prevState, isLoadingUrls: false }))
       }
-      defaultNetworks = urls
     }
-    getUrls()
+    loadUrls()
   }, [])
 
   useEffect(() => {
-    setState((prevState: NetworkState) => ({
+    if (state.isLoadingUrls) return
+    return setState((prevState: NetworkState) => ({
       ...prevState, dataService: new DataService(network),
       inTransition: true, isIsolatedServer: null, nodeUrl: network
     }))
-  }, [network])
+  }, [network, state.isLoadingUrls])
 
   // If dataservice changes, update isIsolatedServer
   useEffect(() => {
