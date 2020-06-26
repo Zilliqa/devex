@@ -45,6 +45,6 @@ export interface PendingTxnResultWithHash extends PendingTxnResult {
 }
 
 export interface IISInfo {
-  blockNum: string,
+  blockNum: number,
   minGasPrice: string
 }

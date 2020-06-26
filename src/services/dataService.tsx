@@ -326,36 +326,37 @@ export class DataService {
   // Isolated Server-related
   //================================================================================
 
+  async getISBlockNum(): Promise<number> {
+    console.log('getting isolated server tx block num')
+
+    const response = await fetch(this.nodeUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "id": "1",
+        "jsonrpc": "2.0",
+        "method": "GetBlocknum",
+        "params": [""]
+      })
+    })
+    const parsedRes = await response.json()
+    return parseInt(parsedRes.result, 10) as number
+  }
+
   async getISInfo(): Promise<IISInfo> {
     console.log('getting isolated server info')
 
-    const getBlockNum = async () => {
-      const response = await fetch(this.nodeUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          "id": "1",
-          "jsonrpc": "2.0",
-          "method": "GetBlocknum",
-          "params": [""]
-        })
-      })
-      return response.json()
-    }
+    const blockNum = await this.getISBlockNum()
 
-    const getMinGasPrice = async () => await this.zilliqa.blockchain.getMinimumGasPrice()
-
-    const res = await Promise.all([getBlockNum(), getMinGasPrice()])
-    if (res[0].error !== undefined)
-      throw new Error(res[0].error.message)
-    if (res[1].error !== undefined)
-      throw new Error(res[1].error.message)
+    const response = await this.zilliqa.blockchain.getMinimumGasPrice()
+    if (response.error !== undefined)
+      throw new Error(response.error.message)
 
     return {
-      blockNum: res[0].result,
-      minGasPrice: res[1].result
+      blockNum: blockNum,
+      minGasPrice: response.result
     } as IISInfo
   }
 

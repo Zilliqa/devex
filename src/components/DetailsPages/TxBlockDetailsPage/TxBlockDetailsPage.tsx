@@ -65,6 +65,7 @@ const TxBlockDetailsPage: React.FC = () => {
       try {
         if (isIsolatedServer) {
           txBlockTxns = await dataService.getISTransactionsForTxBlock(parseInt(blockNum))
+          latestTxBlockNum = await dataService.getISBlockNum()
         } else {
           txBlockObj = await dataService.getTxBlockObj(parseInt(blockNum))
           latestTxBlockNum = await dataService.getNumTxBlocks()
@@ -161,6 +162,19 @@ const TxBlockDetailsPage: React.FC = () => {
                 <span className='txblock-header-blocknum'>#{blockNum}</span>
                 <LabelStar />
               </h3>
+              <span>
+                <QueryPreservingLink
+                  style={{ marginRight: '1rem' }}
+                  className={parseInt(blockNum, 10) === 1 ? 'disabled-link' : ''}
+                  to={`/txbk/${parseInt(blockNum, 10) - 1}`}>
+                  <FontAwesomeIcon size='2x' icon={faCaretSquareLeft} />
+                </QueryPreservingLink>
+                <QueryPreservingLink
+                  className={latestTxBlockNum && parseInt(blockNum, 10) === latestTxBlockNum ? 'disabled-link' : ''}
+                  to={`/txbk/${parseInt(blockNum, 10) + 1}`}>
+                  <FontAwesomeIcon size='2x' icon={faCaretSquareRight} />
+                </QueryPreservingLink>
+              </span>
             </div>
           </>
         )}
@@ -181,13 +195,13 @@ const TxBlockDetailsPage: React.FC = () => {
               <span>
                 <QueryPreservingLink
                   style={{ marginRight: '1rem' }}
-                  className={parseInt(txBlockObj.header.BlockNum) === 0 ? 'disabled-link' : ''}
-                  to={`/txbk/${parseInt(txBlockObj.header.BlockNum) - 1}`}>
+                  className={parseInt(blockNum, 10) === 0 ? 'disabled-link' : ''}
+                  to={`/txbk/${parseInt(blockNum, 10) - 1}`}>
                   <FontAwesomeIcon size='2x' icon={faCaretSquareLeft} />
                 </QueryPreservingLink>
                 <QueryPreservingLink
-                  className={latestTxBlockNum && parseInt(txBlockObj.header.BlockNum) === latestTxBlockNum - 1 ? 'disabled-link' : ''}
-                  to={`/txbk/${parseInt(txBlockObj.header.BlockNum) + 1}`}>
+                  className={latestTxBlockNum && parseInt(blockNum, 10) === latestTxBlockNum - 1 ? 'disabled-link' : ''}
+                  to={`/txbk/${parseInt(blockNum, 10) + 1}`}>
                   <FontAwesomeIcon size='2x' icon={faCaretSquareRight} />
                 </QueryPreservingLink>
               </span>
