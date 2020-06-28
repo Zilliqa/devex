@@ -12,6 +12,7 @@
 /build
 
 # misc
+/public/urls.json
 .vscode
 .DS_Store
 .env.local

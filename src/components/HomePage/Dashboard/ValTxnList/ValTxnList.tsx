@@ -4,14 +4,14 @@ import { OverlayTrigger, Tooltip, Card, Spinner } from 'react-bootstrap'
 import { QueryPreservingLink } from 'src'
 import { refreshRate } from 'src/constants'
 import { NetworkContext } from 'src/services/networkProvider'
-import { qaToZil, pubKeyToZilAddr, hexAddrToZilAddr } from 'src/utils/Utils'
-import { TransactionObj } from '@zilliqa-js/core/src/types'
-
-import DisplayTable from '../../DisplayTable/DisplayTable'
-import './ValTxnList.css'
+import { TransactionDetails } from 'src/typings/api'
+import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
 
 import { faFileContract } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
+import DisplayTable from '../../DisplayTable/DisplayTable'
+import './ValTxnList.css'
 
 /*
     Display first 10 Validated Txns
@@ -31,8 +31,8 @@ processMap.set('amount-col', (amt: number) => (
   </OverlayTrigger>
 ))
 processMap.set('from-col', (addr: string) => (
-  <QueryPreservingLink to={`/address/${pubKeyToZilAddr(addr)}`}>
-    {pubKeyToZilAddr(addr)}
+  <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>
+    {hexAddrToZilAddr(addr)}
   </QueryPreservingLink>))
 processMap.set('to-col', (addr: string) => (
   addr.includes('contract-')
@@ -57,18 +57,21 @@ const ValTxnList: React.FC = () => {
 
   useEffect(() => { setData(null) }, [nodeUrl])
 
-  const [data, setData] = useState<TransactionObj[] | null>(null)
+  const [data, setData] = useState<TransactionDetails[] | null>(null)
 
   const columns = useMemo(
     () => [{
       id: 'from-col',
       Header: 'From',
-      accessor: 'pubKey',
+      accessor: 'txn.senderAddress',
     },
     {
       id: 'to-col',
       Header: 'To',
-      accessor: (value: any) => (value.contractAddr ? 'contract-' + value.contractAddr : value.toAddr),
+      accessor: (txnDetails: any) => (
+        txnDetails.contractAddr
+          ? 'contract-' + txnDetails.contractAddr
+          : txnDetails.txn.txParams.toAddr),
     },
 
     {
@@ -87,7 +90,7 @@ const ValTxnList: React.FC = () => {
     let isCancelled = false
     if (!dataService) return
 
-    let receivedData: TransactionObj[]
+    let receivedData: TransactionDetails[]
     const getData = async () => {
       try {
         receivedData = await dataService.getLatest5ValidatedTransactions()
@@ -101,13 +104,12 @@ const ValTxnList: React.FC = () => {
     getData()
     const getDataTimer = setInterval(async () => {
       await getData()
-    }, refreshRate);
+    }, refreshRate)
     return () => {
       isCancelled = true
       clearInterval(getDataTimer)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nodeUrl])
+  }, [nodeUrl, dataService])
 
   return <>
     <Card className='valtxlist-card'>

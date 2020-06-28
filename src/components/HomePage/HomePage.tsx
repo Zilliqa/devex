@@ -5,7 +5,6 @@ import { NetworkContext } from 'src/services/networkProvider'
 
 import Dashboard from './Dashboard/Dashboard'
 import Searchbar from './Searchbar/Searchbar'
-import IsolatedServerPage from '../IsolatedServerPage/IsolatedServerPage'
 
 /*
             Home Layout
@@ -23,18 +22,16 @@ const HomePage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { isIsolatedServer } = networkContext!
 
-return (
-  <>
-    {isIsolatedServer !== null
-      ? isIsolatedServer
-        ? <IsolatedServerPage />
-        : <div>
-          <Searchbar isISSearchbar={false} isHeaderSearchbar={false} />
+  return (
+    <>
+      {isIsolatedServer !== null // check if isolated server to display different home page
+        ? <div>
+          <Searchbar isISSearchbar={isIsolatedServer} isHeaderSearchbar={false} />
           <Dashboard />
         </div>
-      : <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div>
-    }
-  </>
+        : <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div>
+      }
+    </>
   );
 }
 

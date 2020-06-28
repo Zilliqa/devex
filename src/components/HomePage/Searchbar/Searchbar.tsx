@@ -60,7 +60,14 @@ const Searchbar: React.FC<IProps> = ({ isHeaderSearchbar, isISSearchbar }) => {
   return <>
     <Form onSubmit={handleSubmit}>
       <InputGroup className="searchbar-ig" id={isHeaderSearchbar ? "header-searchbar-ig" : "searchbar-ig"}>
-        {!isISSearchbar &&
+        {isISSearchbar
+          ? <InputGroup.Prepend>
+            <DropdownButton variant="outline-secondary" id='searchbar-dropdown' title={searchType}>
+              <Dropdown.Item onClick={() => setSearchType('Txn/Addr')}>Txn/Addr</Dropdown.Item>
+              <Dropdown.Item onClick={() => setSearchType('Tx Block')}>Tx Block</Dropdown.Item>
+            </DropdownButton>
+          </InputGroup.Prepend>
+          :
           <InputGroup.Prepend>
             <DropdownButton variant="outline-secondary" id='searchbar-dropdown' title={searchType}>
               <Dropdown.Item onClick={() => setSearchType('Txn/Addr')}>Txn/Addr</Dropdown.Item>

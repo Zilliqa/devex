@@ -14,11 +14,11 @@ import { faCubes, faAngleUp, faAngleLeft, faAngleRight, faAngleDown } from '@for
 import './DSBlockDetailsPage.css'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import MinerTable from './MinerTable/MinerTable'
-import LabelStar from '../LabelStart/LabelStar'
+import LabelStar from '../LabelStar/LabelStar'
 
 const DSBlockDetailsPage: React.FC = () => {
 
-  const { blockNum } = useParams() // From url params
+  const { blockNum } = useParams()
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
@@ -35,7 +35,7 @@ const DSBlockDetailsPage: React.FC = () => {
     if (!dataService) return
     let latestDSBlockNum: number
     let receivedData: DsBlockObj
-    let minerInfo: MinerInfo | undefined
+    let minerInfo: MinerInfo
     const getData = async () => {
       try {
         setIsLoading(true)
@@ -43,15 +43,15 @@ const DSBlockDetailsPage: React.FC = () => {
           throw new Error('Not a valid block number')
         receivedData = await dataService.getDSBlockDetails(blockNum)
         latestDSBlockNum = await dataService.getNumDSBlocks()
-        minerInfo = await dataService.getMinerInfo(blockNum)
+        try { // wrapped in another try catch because it is optional
+          minerInfo = await dataService.getMinerInfo(blockNum)
+        } catch (e) {console.log(e)}
         if (receivedData)
           setData(receivedData)
         if (latestDSBlockNum)
           setLatestDSBlockNum(latestDSBlockNum)
-        if (minerInfo !== undefined) {
-          console.log(minerInfo)
+        if (minerInfo)
           setMinerInfo(minerInfo)
-        }
       } catch (e) {
         console.log(e)
         setError(e)
@@ -69,8 +69,6 @@ const DSBlockDetailsPage: React.FC = () => {
       setCurrShardIdx(0)
       setShowMore(false)
     }
-    // Run only once for each block
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blockNum, dataService])
 
   return <>
@@ -111,7 +109,7 @@ const DSBlockDetailsPage: React.FC = () => {
                 <Row>
                   <Col>
                     <div className='dsblock-detail'>
-                      <span className='dsblock-detail-header'>Date:</span>
+                      <span>Date:</span>
                       <span>
                         {timestampToDisplay(data.header.Timestamp)}
                         {' '}
@@ -121,7 +119,7 @@ const DSBlockDetailsPage: React.FC = () => {
                   </Col>
                   <Col>
                     <div className='dsblock-detail'>
-                      <span className='dsblock-detail-header'>Difficulty:</span>
+                      <span>Difficulty:</span>
                       <span>{data.header.Difficulty}</span>
                     </div>
                   </Col>
@@ -129,13 +127,13 @@ const DSBlockDetailsPage: React.FC = () => {
                 <Row>
                   <Col>
                     <div className='dsblock-detail'>
-                      <span className='dsblock-detail-header'>DS Difficulty:</span>
+                      <span>DS Difficulty:</span>
                       <span>{data.header.DifficultyDS}</span>
                     </div>
                   </Col>
                   <Col>
                     <div className='dsblock-detail'>
-                      <span className='dsblock-detail-header'>Gas Price:</span>
+                      <span>Gas Price:</span>
                       <span>{qaToZil(data.header.GasPrice)}</span>
                     </div>
                   </Col>
@@ -143,7 +141,7 @@ const DSBlockDetailsPage: React.FC = () => {
                 <Row>
                   <Col>
                     <div className='dsblock-detail'>
-                      <span className='dsblock-detail-header'>DS Leader:</span>
+                      <span>DS Leader:</span>
                       <span>
                         <QueryPreservingLink to={`address/${pubKeyToZilAddr(data.header.LeaderPubKey)}`}>
                           {pubKeyToZilAddr(data.header.LeaderPubKey)}
@@ -155,7 +153,7 @@ const DSBlockDetailsPage: React.FC = () => {
                 <Row>
                   <Col>
                     <div className='dsblock-detail'>
-                      <span className='dsblock-detail-header'>Signature:</span>
+                      <span>Signature:</span>
                       <span style={{ lineHeight: '25px', fontSize: '13.2px', maxWidth: 'calc(100% - 90px)' }}>{data.signature}</span>
                     </div>
                   </Col>

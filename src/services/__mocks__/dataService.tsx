@@ -6,7 +6,6 @@ export const getLatest5DSBlocks = jest.fn()
 export const getDSBlocksListing = jest.fn()
 
 export const getNumTxBlocks = jest.fn()
-export const getTxBlockDetails = jest.fn()
 export const getLatest5TxBlocks = jest.fn()
 export const getTxBlocksListing = jest.fn()
 

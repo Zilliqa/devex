@@ -90,13 +90,12 @@ const DSBlockList: React.FC = () => {
     getData()
     const getDataTimer = setInterval(async () => {
       await getData()
-    }, refreshRate);
+    }, refreshRate)
     return () => {
       isCancelled = true
       clearInterval(getDataTimer)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nodeUrl])
+  }, [dataService])
 
   return <>
     <Card className='dsblock-card'>
