@@ -26,12 +26,12 @@ const LabelsPage: React.FC = () => {
             Labels
           </h4>
         </Row>
-        <Row style={{ margin: 0, padding: '0 0 1rem' }}>
+        <Row className='m-0 pb-3'>
           <span className='subtext'>Label data is stored in your browser&apos;s local storage. To browse labels in different networks, switch to that network using network selector.</span>
         </Row>
-        <Row style={{ justifyContent: 'space-between', flexFlow: 'nowrap' }}>
-          <div style={{ alignItems: 'baseline', display: 'flex', whiteSpace: 'nowrap', width: '100%' }}>
-            <span style={{ marginLeft: '1rem' }}>
+        <Row className='justify-content-between flex-nowrap m-0'>
+          <div className='filter-div'>
+            <span>
               Network:
             </span>
             <Dropdown className="label-filter">
@@ -43,7 +43,7 @@ const LabelsPage: React.FC = () => {
                 )}
               </Dropdown.Menu>
             </Dropdown>
-            <span style={{ marginLeft: '1rem' }}>
+            <span className='ml-3'>
               Label Type:
             </span>
             <Dropdown className="label-filter">
@@ -58,7 +58,7 @@ const LabelsPage: React.FC = () => {
               </Dropdown.Menu>
             </Dropdown>
             <Form.Control
-              style={{ margin: '0 1rem', alignSelf: 'center', height: '38px', outline: 0, boxShadow: 'none' }}
+              className='search-filter-form'
               type="text"
               value={searchFilter}
               autoFocus
@@ -67,7 +67,7 @@ const LabelsPage: React.FC = () => {
           </div>
           <ImportExport labelMap={labelMap} setLabelCb={setLabelMap} />
         </Row>
-        <Row style={{ marginTop: '1rem' }}>
+        <Row className='mt-3'>
           {Object.entries(labelMap).length === 0
             ? <Dropzone setLabelCb={setLabelMap} />
             : Object.entries(labelMap)
@@ -75,7 +75,7 @@ const LabelsPage: React.FC = () => {
               .filter(([, v]) => (networkFilter === 'All' || v.network === networkFilter))
               .filter(([, v]) => (v.name.includes(searchFilter)))
               .map(([k, v]) => (
-                <Col style={{ marginBottom: '2rem' }} key={k} md={6} lg={4} >
+                <Col className='my-3' key={k} md={6} lg={4} >
                   <LabelCard k={k} v={v} />
                 </Col>
               ))}

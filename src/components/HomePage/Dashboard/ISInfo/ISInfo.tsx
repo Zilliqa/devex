@@ -60,7 +60,7 @@ const ISInfo: React.FC = () => {
   }, [dataService])
 
   return <>
-    <Container style={{ padding: 0 }}>
+    <Container className='p-0'>
       <Row>
         <Col>
           <Card className='isinfo-card'>

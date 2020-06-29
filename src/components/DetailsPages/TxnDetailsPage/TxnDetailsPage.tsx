@@ -62,17 +62,17 @@ const TxnDetailsPage: React.FC = () => {
       : data && data.txn.txParams.receipt && (
         <>
           <h3>
-            <span>
+            <span className='mr-1'>
               {(data.txn.txParams.receipt.success === undefined || data.txn.txParams.receipt.success)
                 ? <FontAwesomeIcon color='green' icon={faExchangeAlt} />
                 : <FontAwesomeIcon color='red' icon={faExclamationCircle} />}
             </span>
-            <span style={{ marginLeft: '0.75rem' }}>
+            <span className='ml-2'>
               Transaction
           </span>
             <LabelStar type='Transaction'/>
           </h3>
-          <div style={{ display: 'flex' }}>
+          <div className='d-flex'>
             <h6 className='txn-hash'>{'0x' + data.hash}</h6>
             <div onClick={() => {
               navigator.clipboard.writeText('0x' + data.hash)

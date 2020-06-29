@@ -83,7 +83,7 @@ const BCInfo: React.FC = () => {
       <Card.Body>
         {data
           ? <Container>
-            <Row style={{ marginBottom: '1rem' }}>
+            <Row className='mb-3'>
               <Col>
                 <span className='bcstats-header'>Current Tx Block:</span>
                 <br />
@@ -105,7 +105,7 @@ const BCInfo: React.FC = () => {
                 <span>[{data.ShardingStructure.NumPeers.toString()}]</span>
               </Col>
             </Row>
-            <Row style={{ marginBottom: '1rem' }}>
+            <Row className='mb-3'>
               <Col>
                 <span className='bcstats-header'>Current DS Epoch:</span>
                 <br />
@@ -149,7 +149,7 @@ const BCInfo: React.FC = () => {
                 <span>{state.maxTPS}</span>
                 <span>
                   {' '}
-                  <small style={{ whiteSpace:'nowrap', color: 'rgb(0,0,0,0.7)' }}>
+                  <small className='txblock-subtext'>
                     (TxBlock <QueryPreservingLink to={`/txbk/${state.maxTPSTxBlockNum}`}>{state.maxTPSTxBlockNum}</QueryPreservingLink>)
                   </small>
                 </span>
@@ -164,7 +164,7 @@ const BCInfo: React.FC = () => {
                 <br />
                 <span>{state.maxTxnCount}
                   {' '}
-                  <small style={{ color: 'rgb(0,0,0,0.7)' }}>
+                  <small className='txblock-subtext'>
                     (TxBlock <QueryPreservingLink to={`/txbk/${state.maxTxnCountTxBlockNum}`}>{state.maxTxnCountTxBlockNum}</QueryPreservingLink>)
                   </small>
                 </span>

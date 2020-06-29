@@ -150,12 +150,12 @@ const TxBlockDetailsPage: React.FC = () => {
       : <>
         {!isLoading && isIsolatedServer && (
           <>
-            <div style={{ marginBottom: '1rem' }} className='txblock-header'>
+            <div className='txblock-header mb-3'>
               <h3>
-                <span>
+                <span className='mr-1'>
                   <FontAwesomeIcon color='grey' icon={faCubes} />
                 </span>
-                <span style={{ marginLeft: '0.75rem' }}>
+                <span className='ml-2'>
                   Tx Block
               </span>
                 {' '}
@@ -164,8 +164,7 @@ const TxBlockDetailsPage: React.FC = () => {
               </h3>
               <span>
                 <QueryPreservingLink
-                  style={{ marginRight: '1rem' }}
-                  className={parseInt(blockNum, 10) === 1 ? 'disabled-link' : ''}
+                  className={parseInt(blockNum, 10) === 1 ? 'disabled-link mr-3' : 'mr-3'}
                   to={`/txbk/${parseInt(blockNum, 10) - 1}`}>
                   <FontAwesomeIcon size='2x' icon={faCaretSquareLeft} />
                 </QueryPreservingLink>
@@ -182,10 +181,10 @@ const TxBlockDetailsPage: React.FC = () => {
           <>
             <div className='txblock-header'>
               <h3>
-                <span>
+                <span className='mr-1'>
                   <FontAwesomeIcon color='grey' icon={faCubes} />
                 </span>
-                <span style={{ marginLeft: '0.75rem' }}>
+                <span className='ml-2'>
                   Tx Block
               </span>
                 {' '}
@@ -194,8 +193,7 @@ const TxBlockDetailsPage: React.FC = () => {
               </h3>
               <span>
                 <QueryPreservingLink
-                  style={{ marginRight: '1rem' }}
-                  className={parseInt(blockNum, 10) === 0 ? 'disabled-link' : ''}
+                  className={parseInt(blockNum, 10) === 0 ? 'disabled-link mr-3' : 'mr-3'}
                   to={`/txbk/${parseInt(blockNum, 10) - 1}`}>
                   <FontAwesomeIcon size='2x' icon={faCaretSquareLeft} />
                 </QueryPreservingLink>
@@ -206,7 +204,7 @@ const TxBlockDetailsPage: React.FC = () => {
                 </QueryPreservingLink>
               </span>
             </div>
-            <div style={{ display: 'flex' }}>
+            <div className='d-flex'>
               <h6 className='txblock-hash'>{'0x' + txBlockObj.body.BlockHash}</h6>
               <div onClick={() => {
                 navigator.clipboard.writeText(txBlockObj.body.BlockHash)
@@ -275,10 +273,10 @@ const TxBlockDetailsPage: React.FC = () => {
               </Card.Body>
             </Card>
             {txBlockObj.body.MicroBlockInfos.length > 0 && (
-              <Card className='txblock-details-card'>
+              <Card className='txblock-details-card mono-sm'>
                 <Card.Body>
                   <Container>
-                    <h6>Micro Blocks</h6>
+                    <span>Micro Blocks</span>
                     {txBlockObj.body.MicroBlockInfos.map((x) => <div key={x.MicroBlockHash}>[{x.MicroBlockShardId}] {x.MicroBlockHash}</div>)}
                   </Container>
                 </Card.Body>

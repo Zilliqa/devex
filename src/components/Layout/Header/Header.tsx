@@ -81,7 +81,7 @@ const Header: React.FC = () => {
               className="d-inline-block align-top"
             />
             {' '}
-            <span style={{ color: 'white', fontFamily: 'Jura', fontSize: '20px' }}>DEVEX</span>
+            <span className='app-name'>DEVEX</span>
           </Navbar.Brand>
         </QueryPreservingLink>
         <QueryPreservingLink className='label-link' to={'/labels'}>My Labels</QueryPreservingLink>

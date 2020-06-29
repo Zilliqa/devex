@@ -96,26 +96,41 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
       <>
         <div className='address-header'>
           <h3>
-            <span>
+            <span className='mr-1'>
               <FontAwesomeIcon color='grey' icon={faFileContract} />
             </span>
-            <span style={{ marginLeft: '0.75rem' }}>
+            <span className='ml-2'>
               Contract
             </span>
-            <LabelStar type='Contract'/>
+            <LabelStar type='Contract' />
           </h3>
         </div>
-        <div style={{ display: 'flex' }}>
-          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current)}</h6>
+        <div className='d-flex'>
+          <h6 className='address-hash'>
+            {validation.isBech32(addrRef.current)
+              ? addrRef.current
+              : toBech32Address(addrRef.current)}
+          </h6>
           <div onClick={() => {
-            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current))
+            navigator.clipboard.writeText(
+              validation.isBech32(addrRef.current)
+                ? addrRef.current
+                : toBech32Address(addrRef.current))
           }} className='address-hash-copy-btn'>
             <FontAwesomeIcon icon={faCopy} />
           </div>
-        </div><div style={{ display: 'flex' }}>
-          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current}</h6>
+        </div>
+        <div className='d-flex'>
+          <h6 className='address-hash'>
+            {validation.isBech32(addrRef.current)
+              ? fromBech32Address(addrRef.current).toLowerCase()
+              : addrRef.current}
+          </h6>
           <div onClick={() => {
-            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current)
+            navigator.clipboard.writeText(
+              validation.isBech32(addrRef.current)
+                ? fromBech32Address(addrRef.current).toLowerCase()
+                : addrRef.current)
           }} className='address-hash-copy-btn'>
             <FontAwesomeIcon icon={faCopy} />
           </div>
@@ -134,15 +149,15 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
               {creationTxnHash && <>
                 <Row>
                   <Col>
-                    <div className='address-detail' style={{ justifyContent: 'start' }}>
-                      <span style={{ marginRight: 'auto' }}>Contract Creation:</span>
-                      <span style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <div className='address-detail'>
+                      <span className='mr-auto'>Contract Creation:</span>
+                      <span className='owner-span'>
                         <QueryPreservingLink to={`/address/${owner}`}>
                           {owner}
                         </QueryPreservingLink>
                       </span>
                       <span>{'at'}</span>
-                      <span style={{ paddingLeft: '0.5rem', maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <span className='owner-span pl-2'>
                         <QueryPreservingLink to={`/tx/${creationTxnHash}`}>
                           {creationTxnHash}
                         </QueryPreservingLink>

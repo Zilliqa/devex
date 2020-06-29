@@ -71,7 +71,7 @@ const LabelStar: React.FC<IProps> = ({ type }) => {
           </div>
           <Modal.Body>
             <Form onSubmit={handleSubmit}>
-              <div style={{ marginBottom: '1rem' }}>
+              <div className='mb-3'>
                 <Form.Control
                   autoFocus={true}
                   required

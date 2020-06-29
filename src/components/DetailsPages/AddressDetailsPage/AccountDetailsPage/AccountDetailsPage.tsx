@@ -88,23 +88,24 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
       <>
         <div className='address-header'>
           <h3>
-            <span>
+            <span className='mr-1'>
               <FontAwesomeIcon color='grey' icon={faWallet} />
             </span>
-            <span style={{ marginLeft: '0.75rem' }}>
+            <span className='ml-2'>
               Account
             </span>
-            <LabelStar type='Account'/>
+            <LabelStar type='Account' />
           </h3>
         </div>
-        <div style={{ display: 'flex' }}>
+        <div className='d-flex'>
           <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current)}</h6>
           <div onClick={() => {
             navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current))
           }} className='address-hash-copy-btn'>
             <FontAwesomeIcon icon={faCopy} />
           </div>
-        </div><div style={{ display: 'flex' }}>
+        </div>
+        <div className='d-flex'>
           <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current}</h6>
           <div onClick={() => {
             navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current)
@@ -136,11 +137,15 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
         </Card>
         {accContracts && accContracts.length > 0 && (
           <>
-            <h4 style={{ padding: '0.5rem 0' }}>Deployed Contracts</h4>
+            <h4 className='py-2'>Deployed Contracts</h4>
             <Card className='address-details-card'>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div className='d-flex justify-content-between'>
                 <span className='num-contracts'>
-                  Total:&nbsp;{<span style={{ fontWeight: 500 }}>{accContracts.length}</span>}&nbsp;contracts
+                  Total:
+                  {' '}
+                  {accContracts.length}
+                  {' '}
+                  {accContracts.length === 1 ? 'contract' : 'contracts'}
                 </span>
                 <Pagination className='contract-pagination'>
                   <Pagination.Prev onClick={() => setContractPageIndex((contractPageIndex) => contractPageIndex - 1)}

@@ -29,6 +29,17 @@
   border-bottom: 1px solid rgb(232, 234, 237);
 }
 
+.dsblock-signature {
+  line-height: 25px;
+  font-size: 14px;
+  max-width: calc(100% - 90px);
+}
+
+.powwinner-card {
+  font-family: monospace;
+  font-size: 14px;
+}
+
 /* Miner Info */
 
 .miner-card {

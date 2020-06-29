@@ -9,10 +9,10 @@ import './Footer.css'
 const Footer: React.FC = () => {
   return <div className='custom-footer'>
     <Container>
-      <Row style={{ justifyContent: 'space-between' }}>
+      <Row className='justify-content-between'>
         <Col sm md lg={2}>
           <Row>
-            <span style={{ paddingLeft: '0.3rem', marginBottom: '10px', color: 'rgba(255,255,255,0.4)' }}>Social</span>
+            <span className='social-header'>Social</span>
           </Row>
           <Row>
             <a target='_blank' rel='noopener noreferrer' href='https://www.twitter.com/zilliqa'>
@@ -38,7 +38,7 @@ const Footer: React.FC = () => {
           </Row>
         </Col>
         <Col>
-          <span style={{ paddingLeft: '0.2rem', color: 'rgba(255,255,255,0.4)' }}>Related Links</span>
+          <span className='related-links-header'>Related Links</span>
           <div>
             <a target='_blank' rel='noopener noreferrer' href='https://github.com/Zilliqa/dev-explorer'>Project Repo</a>
           </div>
@@ -48,12 +48,16 @@ const Footer: React.FC = () => {
           <div>
             <a target='_blank' rel='noopener noreferrer' href='https://github.com/Zilliqa/Zilliqa-JavaScript-Library'>Javascript SDK</a>
           </div>
+          <div>
+            <a target='_blank' rel='noopener noreferrer' href='https://viewblock.io/zilliqa'>ViewBlock</a>
+          </div>
         </Col>
-        <Col style={{ alignSelf: 'center' }}>
-          <Row style={{ justifyContent: 'flex-end' }}>
-            Powered by <a href='http://www.zilliqa.com'><span style={{ textDecoration: 'underline' }}>Zilliqa</span></a>
+        <Col className='align-self-center'>
+          <Row className='justify-content-end'>
+            Powered by <a href='http://www.zilliqa.com'>
+              <span><u>Zilliqa</u></span></a>
           </Row>
-          <Row style={{ justifyContent: 'flex-end' }}>
+          <Row className='justify-content-end'>
             <span><small>© 2020 Zilliqa</small></span>
           </Row>
         </Col>

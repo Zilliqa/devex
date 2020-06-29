@@ -45,7 +45,7 @@ const DSBlockDetailsPage: React.FC = () => {
         latestDSBlockNum = await dataService.getNumDSBlocks()
         try { // wrapped in another try catch because it is optional
           minerInfo = await dataService.getMinerInfo(blockNum)
-        } catch (e) {console.log(e)}
+        } catch (e) { console.log(e) }
         if (receivedData)
           setData(receivedData)
         if (latestDSBlockNum)
@@ -79,20 +79,20 @@ const DSBlockDetailsPage: React.FC = () => {
         <>
           <div className='dsblock-header'>
             <h3>
-              <span>
+              <span className='mr-1'>
                 <FontAwesomeIcon color='grey' icon={faCubes} />
               </span>
-              <span style={{ marginLeft: '0.75rem' }}>
+              <span className='ml-2'>
                 DS Block
               </span>
               {' '}
               <span className='dsblock-header-blocknum'>#{data.header.BlockNum}</span>
-              <LabelStar type='DS Block'/>
+              <LabelStar type='DS Block' />
             </h3>
             <span>
               <QueryPreservingLink
-                style={{ marginRight: '1rem' }}
-                className={parseInt(data.header.BlockNum) === 0 ? 'disabled-link' : ''}
+                className={parseInt(data.header.BlockNum) === 0
+                  ? 'disabled-link mr-3' : 'mr-3'}
                 to={`/dsbk/${parseInt(data.header.BlockNum) - 1}`}>
                 <FontAwesomeIcon size='2x' icon={faCaretSquareLeft} />
               </QueryPreservingLink>
@@ -154,7 +154,7 @@ const DSBlockDetailsPage: React.FC = () => {
                   <Col>
                     <div className='dsblock-detail'>
                       <span>Signature:</span>
-                      <span style={{ lineHeight: '25px', fontSize: '13.2px', maxWidth: 'calc(100% - 90px)' }}>{data.signature}</span>
+                      <span className='dsblock-signature'>{data.signature}</span>
                     </div>
                   </Col>
                 </Row>
@@ -164,7 +164,7 @@ const DSBlockDetailsPage: React.FC = () => {
           {data.header.PoWWinners.length > 0 && (
             <Card className='dsblock-details-card'>
               <Card.Body>
-                <Container style={{ fontFamily: 'monospace', fontSize: '14px' }}>
+                <Container className='mono-sm'>
                   <h6>PoW Winners</h6>
                   {data.header.PoWWinners.map((x, index) => <div key={index}>[{index}]
                     {'  '}
@@ -180,23 +180,15 @@ const DSBlockDetailsPage: React.FC = () => {
                   <Col>
                     <Card className='miner-card'>
                       <Card.Body>
-                        <Container style={{ fontSize: '15px', fontFamily: 'monospace' }}>
-                          <Row>
-                            <Col>
-                              <Row style={{ width: 'fit-content' }}>
-                                <h6>DS Committee</h6>
-                              </Row>
-                            </Col>
-                            <Col>
-                              <Row style={{ width: 'fit-content', marginLeft: 'auto' }}>
-                                <span>Total: <strong>{minerInfo.dscommittee.length}</strong></span>
-                              </Row>
-                            </Col>
+                        <Container className='mono-sm'>
+                          <Row className='justify-content-between'>
+                            <span>DS Committee</span>
+                            <span>Total: <strong>{minerInfo.dscommittee.length}</strong></span>
                           </Row>
-                          <Row style={{ justifyContent: 'center' }}>
+                          <Row className='justify-content-center'>
                             {minerInfo.dscommittee.length > 0
                               ? <MinerTable addresses={minerInfo.dscommittee} />
-                              : <span style={{ padding: '1rem 0' }} >No addresses to show</span>
+                              : <span className='my-3' >No addresses to show</span>
                             }
                           </Row>
                         </Container>
@@ -206,37 +198,36 @@ const DSBlockDetailsPage: React.FC = () => {
                   <Col>
                     <Card className='miner-card ml-auto'>
                       <Card.Body>
-                        <Container style={{ fontSize: '15px', fontFamily: 'monospace' }}>
-                          <Row>
+                        <Container className='mono-sm'>
+                          <Row className='justify-content-between'>
                             <Col>
-                              <Row style={{ width: 'fit-content' }}>
-                                <h6>Shard {currShardIdx + 1} of {minerInfo.shards.length}</h6>
-                              </Row>
+                              <span>Shard {currShardIdx + 1} of {minerInfo.shards.length}</span>
                             </Col>
-                            <Col style={{ textAlign: 'center', marginTop: '-0.50rem' }}>
-                              <span style={{ padding: '0 0.5rem' }}>
+                            <Col className='text-center'>
+                              <span>
                                 <FontAwesomeIcon size='2x'
                                   cursor='pointer'
                                   onClick={currShardIdx === 0 ? undefined : () => (setCurrShardIdx(currShardIdx - 1))}
                                   color={currShardIdx === 0 ? 'rgba(0, 0, 0, 0.25)' : 'rgba(0, 0, 0, 0.55)'} icon={faAngleLeft} />
-                              </span>
-                              <span style={{ padding: '0 0.5rem' }}>
                                 <FontAwesomeIcon size='2x'
                                   cursor='pointer'
+                                  className='ml-3'
                                   onClick={currShardIdx === minerInfo.shards.length - 1 ? undefined : () => (setCurrShardIdx(currShardIdx + 1))}
                                   color={currShardIdx === minerInfo.shards.length - 1 ? 'rgba(0, 0, 0, 0.25)' : 'rgba(0, 0, 0, 0.55)'} icon={faAngleRight} />
                               </span>
                             </Col>
-                            <Col>
-                              <Row style={{ width: 'fit-content', marginLeft: 'auto' }}>
-                                <span>Total: <strong>{minerInfo.shards[currShardIdx].nodes.length}</strong></span>
-                              </Row>
+                            <Col className='text-right'>
+                              <span>
+                                Total:
+                                {' '}
+                                <strong>{minerInfo.shards[currShardIdx].nodes.length}</strong>
+                              </span>
                             </Col>
                           </Row>
-                          <Row style={{ justifyContent: 'center' }}>
+                          <Row className='justify-content-center'>
                             {minerInfo.shards[currShardIdx].nodes.length > 0
                               ? <MinerTable addresses={minerInfo.shards[currShardIdx].nodes} />
-                              : <span style={{ padding: '1rem 0' }} >No addresses to show</span>
+                              : <span className='my-3' >No addresses to show</span>
                             }
                           </Row>
                         </Container>

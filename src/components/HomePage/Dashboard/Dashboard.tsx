@@ -35,7 +35,7 @@ const Dashboard: React.FC = () => {
               <ISInfo />
             </Row>
             <Row>
-              <Col style={{ padding: 0 }}>
+              <Col className='p-0'>
                 <ValTxnList />
               </Col>
             </Row>
@@ -47,20 +47,20 @@ const Dashboard: React.FC = () => {
               <BCInfo />
             </Row>
             <Row>
-              <Col style={{ padding: 0 }}>
+              <Col className='p-0'>
                 <DSBlockList />
               </Col>
-              <Col style={{ padding: '0 0 0 1rem' }}>
+              <Col className='p-0 ml-3'>
                 <TxBlockList />
               </Col>
             </Row>
-            <Row style={{ marginTop: '1rem' }}>
-              <Col style={{ padding: 0 }}>
+            <Row className='mt-3'>
+              <Col className='p-0'>
                 <ValTxnList />
               </Col>
             </Row>
-            <Row style={{ marginTop: '1rem' }}>
-              <Col style={{ padding: 0 }}>
+            <Row className='mt-3'>
+              <Col className='p-0'>
                 <PendTxnList />
               </Col>
             </Row>

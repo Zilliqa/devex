@@ -66,7 +66,7 @@ const LabelCard: React.FC<IProps> = ({ k, v }) => {
                   ? e.preventDefault()
                   : e.keyCode === 13 && (() => { inner.current?.blur() })()
               )}
-              style={{ outline: 'none' }}
+              className='label-name-editable'
               innerRef={inner}
               html={text.current}
               onBlur={handleBlur}
@@ -82,7 +82,7 @@ const LabelCard: React.FC<IProps> = ({ k, v }) => {
           <FontAwesomeIcon
             onClick={handleDelete}
             cursor='pointer'
-            style={{ marginLeft: '1rem' }}
+            className='ml-3'
             icon={faTrashAlt} />
         </div>
       </div>

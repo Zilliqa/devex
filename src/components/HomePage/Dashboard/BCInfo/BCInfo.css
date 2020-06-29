@@ -6,3 +6,8 @@
 .bcstats-header {
   color: gray;
 }
+
+.txblock-subtext {
+  white-space: nowrap;
+  color: rgba(0, 0, 0, 0.7);
+}

@@ -13,7 +13,7 @@ const Layout: React.FC<Props> = (props) => {
   const networkContext = useContext(NetworkContext)
   const { inTransition } = networkContext!
   return (
-    <div style={{ backgroundColor: 'rgba(0,0,0,.03)' }}>
+    <div className='app-bg'>
       <Header />
       <Container className="app-container">
         {inTransition

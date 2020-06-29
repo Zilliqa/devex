@@ -79,7 +79,7 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
     return (
       <>
         <BRow>
-          <BCol style={{ paddingLeft: '1.5rem', alignSelf: 'center' }}>
+          <BCol className='align-self-center pl-3'>
             {data.length === 0
               ? null
               : <span>Items Per Page: <strong>10</strong></span>}

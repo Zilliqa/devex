@@ -7,8 +7,6 @@ import { DsBlockObjWithHashListing } from 'src/typings/api'
 import { timestampToTimeago, pubKeyToZilAddr } from 'src/utils/Utils'
 import { DsBlockObj } from '@zilliqa-js/core/src/types'
 
-import './DSBlocksPage.css'
-
 // Pre-processing data to display
 const processMap = new Map()
 processMap.set('age-col', timestampToTimeago)
@@ -93,7 +91,7 @@ const DSBlocksPage: React.FC = () => {
   return (
     <>
       {<div>
-        <h2 className='dsblockpage-header'>DS Blocks</h2>
+        <h2>DS Blocks</h2>
         <ViewAllTable
           columns={columns}
           data={data ? data : []}

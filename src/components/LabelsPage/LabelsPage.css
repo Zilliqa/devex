@@ -18,3 +18,18 @@
   background-color: white;
   color: inherit;
 }
+
+.filter-div {
+  display: flex;
+  align-items: baseline;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.search-filter-form {
+  margin: 0px 1rem;
+  align-self: center;
+  height: 38px;
+  outline: 0px;
+  box-shadow: none !important;
+}

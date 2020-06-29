@@ -41,7 +41,7 @@ const TransitionsTab: React.FC<IProps> = ({ transitions }) => (
           </tr>
           {transition.msg.params.length > 0 && (
             <>
-              <tr style={{ height: '20px' }}><td><hr /></td></tr>
+              <tr><td><hr /></td></tr>
               <tr>
                 <td>Variable</td>
                 <td>Value</td>
@@ -51,7 +51,7 @@ const TransitionsTab: React.FC<IProps> = ({ transitions }) => (
                   <td>{param.vname}</td>
                   <td>
                     {typeof param.value === 'object'
-                      ? <pre style={{ backgroundColor: 'rgba(0, 0, 0, 0.03)' }}>
+                      ? <pre className='code-block'>
                         {JSON.stringify(param.value, null, '\t')}
                       </pre>
                       : Array.isArray(param.value)

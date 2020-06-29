@@ -1,5 +1,9 @@
+.app-bg {
+  background-color: rgba(0, 0, 0, .03);
+}
+
 .app-container {
   /* header:70px, footer:100px */
-  min-height: calc(100vh - 70px - 150px);
+  min-height: calc(100vh - 70px - 170px);
   padding: 30px 0;
 }

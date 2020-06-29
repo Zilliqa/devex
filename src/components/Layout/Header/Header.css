@@ -1,3 +1,9 @@
+.app-name {
+  color: white;
+  font-family: Jura;
+  font-size: 20px;
+}
+
 .custom-navbar {
   background-color: #343a40;
   color: lightgrey;

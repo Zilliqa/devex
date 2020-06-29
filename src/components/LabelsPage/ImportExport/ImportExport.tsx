@@ -34,8 +34,6 @@ const ImportExport: React.FC<IProps> = ({ labelMap, setLabelCb }) => {
     acceptedFiles.forEach((file: Blob) => {
       const reader = new FileReader()
 
-      reader.onabort = () => console.log('file reading was aborted')
-      reader.onerror = () => console.log('file reading has failed')
       reader.onload = () => {
         const parsedFile = JSON.parse(reader.result as string)
         setLabelCb(parsedFile)
@@ -49,25 +47,25 @@ const ImportExport: React.FC<IProps> = ({ labelMap, setLabelCb }) => {
   return (
     <>
       <div className='import-export'>
-        <span {...getRootProps()}>
+        <span className='mr-1' {...getRootProps()}>
           <input {...getInputProps()} />
           <OverlayTrigger placement='top'
             overlay={<Tooltip id={'import-tt'}>Import Labels</Tooltip>}>
-            <Button style={{ padding: '3px 8px' }} variant='outline-secondary'>
+            <Button variant='outline-secondary'>
               <FontAwesomeIcon
                 icon={faDownload}
                 size='sm' />
             </Button>
           </OverlayTrigger>
         </span>
-        <span>
+        <span className='ml-2'>
           <OverlayTrigger placement='top'
             overlay={<Tooltip id={'export-tt'}>Export Labels</Tooltip>}>
             <Button
               onClick={() => {
                 exportToJson(labelMap)
               }}
-              style={{ marginLeft: '12px', padding: '3px 8px' }} variant='outline-secondary'>
+              variant='outline-secondary'>
               <FontAwesomeIcon
                 icon={faUpload}
                 size='sm' />
