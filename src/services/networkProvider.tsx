@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { useLocation, useHistory } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 
 import { DataService } from './dataService'
 
@@ -8,18 +8,19 @@ type NetworkState = {
   isIsolatedServer: boolean | null,
   dataService: DataService | null,
   nodeUrl: string,
-  setNodeUrl: (nodeUrl: string) => void,
+  inTransition: boolean,
+  isLoadingUrls: boolean
 }
 
 export const useNetworkUrl = (): string => (
-  new URLSearchParams(useLocation().search).get('network') || 'https://api.zilliqa.com/')
+  new URLSearchParams(useLocation().search).get('network') || Object.keys(defaultNetworks)[0])
 
 export const useNetworkName = (): string => {
   const network = useNetworkUrl()
   return defaultNetworks[network] || network
 }
 
-export const defaultNetworks: Record<string, string> = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
+export let defaultNetworks: Record<string, string> = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
   ? {
     'https://api.zilliqa.com/': 'Mainnet',
     'https://dev-api.zilliqa.com/': 'Testnet',
@@ -39,44 +40,41 @@ export const NetworkContext = React.createContext<NetworkState | null>(null)
 export const NetworkProvider: React.FC = (props) => {
 
   const network = useNetworkUrl()
-  const history = useHistory()
-
-  const changeNetwork = useCallback((k: string) => {
-    return () => { // avoid redirecting on initial render
-      if (k === 'https://api.zilliqa.com/')
-        history.push('/')
-      else
-        history.push({
-          pathname: '/',
-          search: '?' + new URLSearchParams({ network: k }).toString()
-        })
-    }
-  }, [history])
 
   const [state, setState] = useState<NetworkState>({
     connStatus: false,
     isIsolatedServer: false,
     dataService: null,
     nodeUrl: network,
-    setNodeUrl: (newNodeUrl: string) => {
-      console.log(newNodeUrl)
-      setState((prevState: NetworkState) => {
-        changeNetwork(newNodeUrl)
-        return { ...prevState, nodeUrl: newNodeUrl }
-      })
-    }
+    inTransition: true,
+    isLoadingUrls: true
   })
 
+  // Load optional urls from public folder
   useEffect(() => {
-    state.setNodeUrl(network)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [network])
+    let localUrls: Record<string, string> = {}
+    const loadUrls = async () => {
+      console.log('loading urls')
+      try {
+        const response = await fetch(process.env.PUBLIC_URL + '/urls.json')
+        localUrls = await response.json()
+        defaultNetworks = localUrls
+      } catch (e) {
+        console.log('no local urls found')
+      } finally {
+        setState((prevState: NetworkState) => ({ ...prevState, isLoadingUrls: false }))
+      }
+    }
+    loadUrls()
+  }, [])
 
-  // If nodeurl changes, update dataservice
   useEffect(() => {
-    setState((prevState: NetworkState) => (
-      { ...prevState, dataService: new DataService(state.nodeUrl), isIsolatedServer: null }))
-  }, [state.nodeUrl])
+    if (state.isLoadingUrls) return
+    return setState((prevState: NetworkState) => ({
+      ...prevState, dataService: new DataService(network),
+      inTransition: true, isIsolatedServer: null, nodeUrl: network
+    }))
+  }, [network, state.isLoadingUrls])
 
   // If dataservice changes, update isIsolatedServer
   useEffect(() => {
@@ -85,12 +83,11 @@ export const NetworkProvider: React.FC = (props) => {
       try {
         if (!state.dataService) return
         response = await state.dataService.isIsolatedServer()
-        setState((prevState: NetworkState) => ({ ...prevState, isIsolatedServer: response }))
+        setState((prevState: NetworkState) => ({ ...prevState, isIsolatedServer: response, inTransition: false }))
       } catch (e) {
         console.log(e)
       }
     }
-
     checkNetwork()
   }, [state.dataService])
 

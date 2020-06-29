@@ -1,4 +1,5 @@
 /* Header */
+
 .txn-hash {
   color: grey;
   margin-right: 10px;
@@ -9,6 +10,7 @@
 }
 
 /* Card */
+
 .txn-details-card {
   width: 100%;
   margin: 1rem 0;
@@ -22,11 +24,8 @@
   border-bottom: 1px solid rgb(232, 234, 237);
 }
 
-.txn-detail-header {
-  font-weight: 500;
-}
-
 /* Tabs */
+
 .tabs-card {
   min-height: 300px;
   margin: 1rem 0;
@@ -38,21 +37,21 @@
 
 .tabs-card-header .nav {
   font-weight: 500;
-  margin: -0.25rem -0.625rem -0.825rem;;
+  margin: -0.25rem -0.625rem -0.825rem;
 }
 
 .tabs-card-header a {
   outline: none;
-  color: #495057; 
+  color: #495057;
 }
 
 .tabs-card-header a:hover {
-  color: rgb(0, 198, 195); 
+  color: rgb(0, 198, 195);
   border-bottom-color: transparent !important;
 }
 
 .tabs-card-header .nav-tabs .nav-link.active {
-  color: rgb(0, 198, 195); 
+  color: rgb(0, 198, 195);
   border-bottom-color: rgb(0, 198, 195) !important;
 }
 

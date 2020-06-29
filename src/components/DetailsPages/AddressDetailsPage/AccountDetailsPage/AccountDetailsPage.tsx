@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, useRef, useCallback } from 'rea
 import { Card, Container, Row, Col, Pagination, Spinner } from 'react-bootstrap'
 
 import { NetworkContext } from 'src/services/networkProvider'
-import { AccData, AccContracts, AccContract } from 'src/typings/api'
+import { AccData, AccContract } from 'src/typings/api'
 import { qaToZil } from 'src/utils/Utils'
 import { fromBech32Address, toBech32Address } from '@zilliqa-js/crypto'
 import { validation } from '@zilliqa-js/util'
@@ -12,8 +12,8 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faWallet } from '@fortawesome/free-solid-svg-icons'
 
 import AccContractCard from './AccContractCard'
+import LabelStar from '../../LabelStar/LabelStar'
 import '../AddressDetailsPage.css'
-import LabelStar from '../../LabelStart/LabelStar'
 
 interface IProps {
   addr: string,
@@ -27,7 +27,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
   const addrRef = useRef(addr)
   const [isLoading, setIsLoading] = useState(false)
   const [accData, setAccData] = useState<AccData | null>(null)
-  const [accContracts, setAccContracts] = useState<AccContracts | null>(null)
+  const [accContracts, setAccContracts] = useState<AccContract[] | null>(null)
   const [contractPageIndex, setContractPageIndex] = useState<number>(0)
 
   const generatePagination = useCallback((currentPage: number, pageCount: number, delta = 2) => {
@@ -63,7 +63,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
     if (!dataService) return
 
     let accData: AccData
-    let accContracts: AccContracts
+    let accContracts: AccContract[]
     const getData = async () => {
       try {
         setIsLoading(true)
@@ -80,9 +80,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
       }
     }
     getData()
-    // Run only once for each account
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [dataService])
 
   return <>
     {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
@@ -120,7 +118,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
               <Row>
                 <Col>
                   <div className='address-detail'>
-                    <span className='address-detail-header'>Balance:</span>
+                    <span>Balance:</span>
                     <span>{qaToZil(accData.balance)}</span>
                   </div>
                 </Col>
@@ -128,7 +126,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
               <Row>
                 <Col>
                   <div className='address-detail'>
-                    <span className='address-detail-header'>Nonce:</span>
+                    <span>Nonce:</span>
                     <span>{accData.nonce}</span>
                   </div>
                 </Col>

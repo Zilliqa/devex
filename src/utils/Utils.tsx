@@ -3,12 +3,11 @@ import { units, BN, validation } from '@zilliqa-js/util'
 import { getAddressFromPublicKey, toBech32Address } from '@zilliqa-js/crypto'
 
 export const pubKeyToZilAddr: ((k: string) => string) = (pubKey: string) => {
-  if (pubKey.substring(0, 2) === '0x')
-      pubKey = pubKey.substring(2)
-  if (!validation.isPubKey(pubKey))
+  const strippedPubKey = stripHexPrefix(pubKey)
+  if (!validation.isPubKey(strippedPubKey))
     return 'Invalid public key'
   else
-    return toBech32Address(getAddressFromPublicKey(pubKey))
+    return toBech32Address(getAddressFromPublicKey(strippedPubKey))
 }
 
 export const hexAddrToZilAddr: ((addr: string) => string) = (hexAddr: string) => {
@@ -38,11 +37,17 @@ export const timestampToTimeago: ((timestamp: string | number) => string) =
 
 // Convert from Qa to Zil
 export const qaToZil: ((amount: string | number) => string) = (amount: string | number) => {
-  // @ts-ignore
   const splitAmt = units.fromQa(new BN(amount), units.Units.Zil).split('.')
   if (splitAmt.length === 1) {
     return parseInt(splitAmt[0]).toLocaleString('en') + ' ZIL'
   } else {
     return (parseInt(splitAmt[0])).toLocaleString('en') + '.' + splitAmt[1] + ' ZIL'
   }
+}
+
+// Strips hex prefix if exists
+export const stripHexPrefix: ((inputHex: string) => string) = (inputHex: string) => {
+  if (inputHex.substring(0, 2) === '0x')
+    return inputHex.substring(2)
+  return inputHex
 }

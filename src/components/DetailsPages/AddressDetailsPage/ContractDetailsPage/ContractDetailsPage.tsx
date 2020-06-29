@@ -15,7 +15,7 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faFileContract } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import LabelStar from '../../LabelStart/LabelStar'
+import LabelStar from '../../LabelStar/LabelStar'
 import '../AddressDetailsPage.css'
 
 interface IProps {
@@ -25,7 +25,7 @@ interface IProps {
 const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
 
   const networkContext = useContext(NetworkContext)
-  const { dataService } = networkContext!
+  const { dataService, isIsolatedServer } = networkContext!
 
   const addrRef = useRef(addr)
   const [contractData, setContractData] = useState<ContractData | null>(null)
@@ -35,33 +35,35 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
 
   // Fetch data
   useEffect(() => {
-    if (!dataService) return
+    setIsLoading(true)
+    if (!dataService || isIsolatedServer === null) return
 
     let contractData: ContractData
     let creationTxnHash: string
     let owner: string
     const getData = async () => {
       try {
-        setIsLoading(true)
-        contractData = await dataService.getContractData(addrRef.current)
-        creationTxnHash = await dataService.getTxnIdFromContractData(contractData)
-        owner = await dataService.getTransactionOwner(creationTxnHash)
-      } catch (e) {
-        console.log(e)
-      } finally {
+        if (isIsolatedServer) {
+          contractData = await dataService.getContractData(addrRef.current)
+        } else {
+          contractData = await dataService.getContractData(addrRef.current)
+          creationTxnHash = await dataService.getTxnIdFromContractData(contractData)
+          owner = await dataService.getTransactionOwner(creationTxnHash)
+        }
         if (contractData)
           setContractData(contractData)
         if (creationTxnHash)
           setCreationTxnHash(creationTxnHash)
         if (owner)
           setOwner(owner)
+      } catch (e) {
+        console.log(e)
+      } finally {
         setIsLoading(false)
       }
     }
     getData()
-    // Run only once for each block
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [dataService, isIsolatedServer])
 
   const generateTabsObj = () => {
 
@@ -124,7 +126,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
               <Row>
                 <Col>
                   <div className='address-detail'>
-                    <span className='address-detail-header'>Balance:</span>
+                    <span>Balance:</span>
                     <span>{qaToZil(contractData.state['_balance'])}</span>
                   </div>
                 </Col>
@@ -133,7 +135,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
                 <Row>
                   <Col>
                     <div className='address-detail' style={{ justifyContent: 'start' }}>
-                      <span className='address-detail-header' style={{ marginRight: 'auto' }}>Contract Creation:</span>
+                      <span style={{ marginRight: 'auto' }}>Contract Creation:</span>
                       <span style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                         <QueryPreservingLink to={`/address/${owner}`}>
                           {owner}

@@ -29,7 +29,7 @@ const Header: React.FC = () => {
   const [currentNetwork, setCurrentNetwork] = useState(defaultNetworks[nodeUrl] || nodeUrl)
 
   const changeNetwork = useCallback((k: string) => {
-    if (k === 'https://api.zilliqa.com/')
+    if (k === Object.keys(defaultNetworks)[0])
       history.push('/')
     else
       history.push({
@@ -64,7 +64,7 @@ const Header: React.FC = () => {
   const deleteNode = (k: string) => {
     delete nodeUrlMap[k]
     setNodeUrlMap(nodeUrlMap)
-    changeNetwork('https://api.zilliqa.com/')
+    changeNetwork(Object.keys(defaultNetworks)[0])
     setShowDropdown(false)
   }
 
