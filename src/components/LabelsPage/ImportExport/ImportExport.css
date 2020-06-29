@@ -1,0 +1,8 @@
+.import-export {
+  white-space: nowrap;
+}
+
+.import-export .btn {
+  outline: 0;
+  box-shadow: none !important;
+}

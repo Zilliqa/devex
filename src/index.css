@@ -46,7 +46,7 @@ a:hover {
 .disabled-link {
   cursor: none;
   pointer-events: none;
-  opacity: 60%;
+  opacity: 0.6;
 }
 
 .center-spinner {

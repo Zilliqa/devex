@@ -9,7 +9,9 @@ import DefaultTab from '../InfoTabs/DefaultTab'
 import ContractCreationTab from '../InfoTabs/ContractCreationTab'
 
 export interface ReceiptTabs {
-  tabHeaders: string[], tabTitles: string[], tabContents: React.ReactNode[]
+  tabHeaders: string[],
+  tabTitles: string[],
+  tabContents: React.ReactNode[]
 }
 
 interface IProps {

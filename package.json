@@ -17,6 +17,7 @@
     "react-bootstrap": "^1.0.1",
     "react-contenteditable": "^3.3.5",
     "react-dom": "^16.13.1",
+    "react-dropzone": "^11.0.1",
     "react-fontawesome": "^1.7.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",

@@ -115,7 +115,7 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
                 </tr>
               ))}
             </thead>
-            <tbody style={isLoading ? { opacity: '50%' } : {}}{...getTableBodyProps()}>
+            <tbody style={isLoading ? { opacity: '0.5' } : {}}{...getTableBodyProps()}>
               {page.map((row: Row<DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult>) => {
                 prepareRow(row)
                 return (
