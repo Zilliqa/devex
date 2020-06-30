@@ -16,6 +16,8 @@ import { faFileContract } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import LabelStar from '../../LabelStar/LabelStar'
+import ViewBlockLink from '../../ViewBlockLink/ViewBlockLink'
+
 import '../AddressDetailsPage.css'
 
 interface IProps {
@@ -25,7 +27,7 @@ interface IProps {
 const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
 
   const networkContext = useContext(NetworkContext)
-  const { dataService, isIsolatedServer } = networkContext!
+  const { dataService, isIsolatedServer, nodeUrl } = networkContext!
 
   const addrRef = useRef(addr)
   const [contractData, setContractData] = useState<ContractData | null>(null)
@@ -104,6 +106,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
             </span>
             <LabelStar type='Contract' />
           </h3>
+          <ViewBlockLink network={nodeUrl} type='address' identifier={addrRef.current} />
         </div>
         <div className='d-flex'>
           <h6 className='address-hash'>

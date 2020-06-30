@@ -1,0 +1,8 @@
+.vblink-div {
+  background-color: white;
+  font-family: Muli;
+  border-radius: 5px;
+  display: flex;
+  cursor: pointer;
+  border: solid 1px rgb(200, 200, 200);
+}

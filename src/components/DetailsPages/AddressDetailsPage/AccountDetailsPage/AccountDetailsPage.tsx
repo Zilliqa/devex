@@ -13,6 +13,8 @@ import { faWallet } from '@fortawesome/free-solid-svg-icons'
 
 import AccContractCard from './AccContractCard'
 import LabelStar from '../../LabelStar/LabelStar'
+import ViewBlockLink from '../../ViewBlockLink/ViewBlockLink'
+
 import '../AddressDetailsPage.css'
 
 interface IProps {
@@ -22,7 +24,7 @@ interface IProps {
 const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
 
   const networkContext = useContext(NetworkContext)
-  const { dataService } = networkContext!
+  const { dataService, nodeUrl } = networkContext!
 
   const addrRef = useRef(addr)
   const [isLoading, setIsLoading] = useState(false)
@@ -96,6 +98,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
             </span>
             <LabelStar type='Account' />
           </h3>
+          <ViewBlockLink network={nodeUrl} type='address' identifier={addrRef.current} />
         </div>
         <div className='d-flex'>
           <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current)}</h6>

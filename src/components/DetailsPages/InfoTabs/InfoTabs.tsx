@@ -3,10 +3,10 @@ import { Card, Container, Tabs, Tab } from 'react-bootstrap'
 
 import { TransactionDetails } from 'src/typings/api'
 
-import TransitionsTab from '../InfoTabs/TransitionsTab'
-import EventsTab from '../InfoTabs/EventsTab'
-import DefaultTab from '../InfoTabs/DefaultTab'
-import ContractCreationTab from '../InfoTabs/ContractCreationTab'
+import TransitionsTab from './TransitionsTab'
+import EventsTab from './EventsTab'
+import DefaultTab from './DefaultTab'
+import ContractCreationTab from './ContractCreationTab'
 
 export interface ReceiptTabs {
   tabHeaders: string[],
