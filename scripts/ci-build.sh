@@ -24,7 +24,7 @@ docker create --name extractstg "tempimagestg:$commit"
 docker cp extractstg:/usr/share/nginx/html/. $(pwd)/devex-artifact/stg/
 docker rm extractstg
 
-docker build --build-arg REACT_APP_DEPLOY_ENV="prd" -t "tempimageprd:$commit" -t "$registryURL:$commit" .
+docker build --build-arg REACT_APP_DEPLOY_ENV="prd" -t "tempimageprd:$commit" -t "$registryURL:latest" -t "$registryURL:$commit" .
 docker create --name extractprd "tempimageprd:$commit"
 docker cp extractprd:/usr/share/nginx/html/. $(pwd)/devex-artifact/prd/
 docker rm extractprd
