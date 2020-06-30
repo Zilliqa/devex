@@ -12,6 +12,7 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import './BCInfo.css'
 
 interface BCInfoState {
+  startTxBlock: number | null,
   maxTPS: number | null,
   maxTPSTxBlockNum: number | null,
   maxTxnCount: number | null,
@@ -19,6 +20,7 @@ interface BCInfoState {
 }
 
 const defaultBCInfoState = {
+  startTxBlock: null,
   maxTPS: null,
   maxTPSTxBlockNum: null,
   maxTxnCount: null,
@@ -40,6 +42,8 @@ const BCInfo: React.FC = () => {
 
     setState((prevState: BCInfoState) => {
       const newState: BCInfoState = { ...prevState }
+      if (!prevState.startTxBlock)
+        newState.startTxBlock = parseInt(data.NumTxBlocks, 10) - 1
       if (!prevState.maxTPS || prevState.maxTPS <= data.TransactionRate) {
         newState.maxTPS = data.TransactionRate
         newState.maxTPSTxBlockNum = parseInt(data.NumTxBlocks, 10) - 1
@@ -114,17 +118,17 @@ const BCInfo: React.FC = () => {
               <Col>
                 <span className='bcstats-header'>DS Block Rate:</span>
                 <br />
-                <span>{data.DSBlockRate.toLocaleString('en')}</span>
+                <span>{data.DSBlockRate.toFixed(5)}</span>
               </Col>
               <Col>
                 <span className='bcstats-header'>Tx Block Rate:</span>
                 <br />
-                <span>{data.TxBlockRate}</span>
+                <span>{data.TxBlockRate.toFixed(5)}</span>
               </Col>
               <Col>
                 <span className='bcstats-header'>TPS:</span>
                 <br />
-                <span>{data.TransactionRate}</span>
+                <span>{data.TransactionRate.toFixed(5)}</span>
               </Col>
             </Row>
             <Row>
@@ -140,32 +144,32 @@ const BCInfo: React.FC = () => {
               </Col>
               <Col>
                 <OverlayTrigger placement='left'
-                  overlay={<Tooltip id={'tt'}>This statistic does not take historical data into account. Requires user to stay on the Home Page</Tooltip>}>
+                  overlay={<Tooltip id={'tt'}>This statistic is accurate from TxBlock {state.startTxBlock}. Requires user to stay on the Home Page</Tooltip>}>
                   <FontAwesomeIcon className='info-icon' icon={faInfoCircle} />
                 </OverlayTrigger>
                 {' '}
-                <span className='bcstats-header'>Max TPS (w/o historical data):</span>
+                <span className='bcstats-header'>Max Observed TPS (w/o historical data):</span>
                 <br />
-                <span>{state.maxTPS}</span>
+                <span>{state.maxTPS && state.maxTPS.toFixed(5)}</span>
                 <span>
                   {' '}
                   <small className='txblock-subtext'>
-                    (TxBlock <QueryPreservingLink to={`/txbk/${state.maxTPSTxBlockNum}`}>{state.maxTPSTxBlockNum}</QueryPreservingLink>)
+                    (on TxBlock <QueryPreservingLink to={`/txbk/${state.maxTPSTxBlockNum}`}>{state.maxTPSTxBlockNum}</QueryPreservingLink>)
                   </small>
                 </span>
               </Col>
               <Col>
                 <OverlayTrigger placement='left'
-                  overlay={<Tooltip id={'tt'}>This statistic does not take historical data into account. Requires user to stay on the Home Page</Tooltip>}>
+                  overlay={<Tooltip id={'tt'}>This statistic is accurate from TxBlock {state.startTxBlock}. Requires user to stay on the Home Page</Tooltip>}>
                   <FontAwesomeIcon className='info-icon' icon={faInfoCircle} />
                 </OverlayTrigger>
                 {' '}
-                <span className='bcstats-header'>Max Txns (w/o historical data):</span>
+                <span className='bcstats-header'>Max Observed Txns (w/o historical data):</span>
                 <br />
                 <span>{state.maxTxnCount}
                   {' '}
                   <small className='txblock-subtext'>
-                    (TxBlock <QueryPreservingLink to={`/txbk/${state.maxTxnCountTxBlockNum}`}>{state.maxTxnCountTxBlockNum}</QueryPreservingLink>)
+                    (on TxBlock <QueryPreservingLink to={`/txbk/${state.maxTxnCountTxBlockNum}`}>{state.maxTxnCountTxBlockNum}</QueryPreservingLink>)
                   </small>
                 </span>
               </Col>
