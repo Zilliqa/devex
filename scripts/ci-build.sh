@@ -10,6 +10,10 @@ commit=$(git rev-parse --short=7 $TRAVIS_COMMIT)
 
 accountID=$(aws sts get-caller-identity --output text --query 'Account')
 regionID=us-west-2
+application=devex
+registryURL=${accountID}.dkr.ecr.${regionID}.amazonaws.com/$application
+
+eval "$(aws ecr get-login --no-include-email --region $regionID)"
 
 rm -rf devex-artifact
 mkdir -p devex-artifact/stg/
@@ -20,10 +24,11 @@ docker create --name extractstg "tempimagestg:$commit"
 docker cp extractstg:/usr/share/nginx/html/. $(pwd)/devex-artifact/stg/
 docker rm extractstg
 
-docker build --build-arg REACT_APP_DEPLOY_ENV="prd" -t "tempimageprd:$commit" .
+docker build --build-arg REACT_APP_DEPLOY_ENV="prd" -t "tempimageprd:$commit" -t "$registryURL:$commit" .
 docker create --name extractprd "tempimageprd:$commit"
 docker cp extractprd:/usr/share/nginx/html/. $(pwd)/devex-artifact/prd/
 docker rm extractprd
+docker push "$registryURL"
 
 cd devex-artifact
 cd stg
