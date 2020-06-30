@@ -250,7 +250,7 @@ const TxBlockDetailsPage: React.FC = () => {
                   <Row>
                     <Col>
                       <div className='txblock-detail'>
-                        <span>Rewards:</span>
+                        <span>Total Fees:</span>
                         <span>{qaToZil(txBlockObj.header.Rewards)}</span>
                       </div>
                     </Col>
@@ -264,7 +264,7 @@ const TxBlockDetailsPage: React.FC = () => {
                   <Row>
                     <Col>
                       <div className='txblock-detail'>
-                        <span>Miner:</span>
+                        <span>DS Leader:</span>
                         <span><QueryPreservingLink to={`/address/${pubKeyToZilAddr(txBlockObj.header.MinerPubKey)}`}>{pubKeyToZilAddr(txBlockObj.header.MinerPubKey)}</QueryPreservingLink></span>
                       </div>
                     </Col>

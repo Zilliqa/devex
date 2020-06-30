@@ -47,10 +47,10 @@ const Dashboard: React.FC = () => {
               <BCInfo />
             </Row>
             <Row>
-              <Col className='p-0'>
+              <Col className='p-0' sm={5} md={5} lg={5}>
                 <DSBlockList />
               </Col>
-              <Col className='p-0 ml-3'>
+              <Col className='p-0 ml-4'>
                 <TxBlockList />
               </Col>
             </Row>

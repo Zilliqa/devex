@@ -1,63 +1,93 @@
 .display-table table {
+  white-space: nowrap;
+  font-size: 15px;
   width: 100%;
   table-layout: fixed !important;
   border-collapse: separate;
-  text-align: center;
+}
+
+.txblock-card .display-table tr td:first-child, .txblock-card .display-table tr th:first-child {
+  padding-left: 20px;
+}
+
+.txblock-card .display-table tr td:last-child, .txblock-card .display-table tr th:last-child {
+  padding-right: 20px;
+}
+
+.dsblock-card .display-table tr td:first-child, .dsblock-card .display-table tr th:first-child {
+  padding-left: 20px;
+}
+
+.dsblock-card .display-table tr td:last-child, .dsblock-card .display-table tr th:last-child {
+  padding-right: 20px;
 }
 
 .display-table th {
-  padding-bottom: 0.3rem;
+  padding: 0.5rem;
   color: dimgrey;
 }
 
 .display-table td {
-  padding: 0.3rem;
+  padding: 0.35rem 0.5rem;
 }
 
 .display-table [role=cell] {
-  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 /* Hardcoded Widths (May require tweaks) */
 
-.display-table #height-col {
-  width: 80px;
+.display-table #dsheight-col {
+  width: 60px;
+}
+
+.display-table #txheight-col {
+  width: 60px;
 }
 
 .display-table #difficulty-col {
-  width: 70px;
+  width: 80px;
+  text-align: center;
 }
 
 .display-table #ds-difficulty-col {
-  width: 80px;
+  width: 110px;
+  text-align: center;
 }
 
 .display-table #age-col {
-  width: 150px;
+  padding-right: 20px;
+  width: 110px;
+  text-align: end;
 }
 
 .display-table #numTxns-col {
   width: 70px;
+  text-align: center;
 }
 
-.display-table #reward-col {
+.display-table #total-fees-col {
   width: 80px;
+  text-align: end;
 }
 
 .display-table #from-col {
-  width: 72px;
+  width: 76px;
 }
 
 .display-table #to-col {
-  width: 72px;
+  width: 76px;
+}
+
+.display-table #fee-col {
+  width: 55px;
 }
 
 .display-table #amount-col {
   padding-right: 1rem;
   text-align: right;
-  width: 80px;
+  width: 55px;
 }
 
 .display-table #hash-col {

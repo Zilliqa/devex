@@ -78,7 +78,7 @@
   width: 100px;
 }
 
-.viewall-table #reward-col {
+.viewall-table #total-fees-col {
   width: 100px;
   padding-right: 1rem;
   text-align: right;
@@ -92,16 +92,20 @@
   width: 160px;
 }
 
+.viewall-table #fee-col {
+  width: 95px;
+}
+
 .viewall-table #hash-col {
-  width: 600px;
+  width: 580px;
 }
 
 .viewall-table #bkhash-col {
-  width: 300px;
+  width: 280px;
 }
 
 .viewall-table #amount-col {
   padding-right: 1rem;
   text-align: right;
-  width: 200px;
+  width: 120px;
 }

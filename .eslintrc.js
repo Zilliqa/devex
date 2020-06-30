@@ -19,6 +19,7 @@ module.exports = {
   ],
   rules: {
     "react/prop-types": 0,
+    "react/display-name": 0,
     "@typescript-eslint/no-non-null-assertion": 0,
   },
 };

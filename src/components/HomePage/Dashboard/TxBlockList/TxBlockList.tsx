@@ -4,7 +4,7 @@ import { OverlayTrigger, Tooltip, Card, Spinner } from 'react-bootstrap'
 import { QueryPreservingLink } from 'src'
 import { refreshRate } from 'src/constants'
 import { NetworkContext } from 'src/services/networkProvider'
-import { timestampToTimeago, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
+import { timestampToTimeago, qaToZil } from 'src/utils/Utils'
 import { TxBlockObj } from '@zilliqa-js/core/src/types'
 
 import DisplayTable from '../../DisplayTable/DisplayTable'
@@ -14,31 +14,11 @@ import './TxBlockList.css'
     Display first 5 Tx Block
       - Height
       - Number of Transactions
-      - Block Reward
+      - Block Fees
       - Miner Public Key
       - Age
       - Hash
 */
-
-// Pre-processing data to display
-const processMap = new Map()
-processMap.set('age-col', timestampToTimeago)
-// https://github.com/react-bootstrap/react-bootstrap/issues/5075
-processMap.set('reward-col', (amt: number) => (
-  <OverlayTrigger placement='top'
-    overlay={<Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
-    <span>{qaToZil(amt)}</span>
-  </OverlayTrigger>
-))
-processMap.set('miner-col', (addr: string) => (
-  <QueryPreservingLink to={`address/${pubKeyToZilAddr(addr)}`}>
-    {pubKeyToZilAddr(addr)}
-  </QueryPreservingLink>))
-processMap.set('height-col', (height: number) => (
-  <QueryPreservingLink to={`txbk/${height}`}>
-    {height}
-  </QueryPreservingLink>))
-processMap.set('hash-col', (hash: number) => ('0x' + hash))
 
 const TxBlockList: React.FC = () => {
 
@@ -51,29 +31,36 @@ const TxBlockList: React.FC = () => {
 
   const columns = useMemo(
     () => [{
-      id: 'height-col',
+      id: 'txheight-col',
       Header: 'Height',
-      accessor: 'header.BlockNum',
+      accessor: (txBlock: any) => (
+        <QueryPreservingLink to={`txbk/${txBlock.header.BlockNum}`}>
+          {txBlock.header.BlockNum}
+        </QueryPreservingLink>
+      )
     },
     {
       id: 'numTxns-col',
-      Header: 'Txns',
-      accessor: 'header.NumTxns',
+      Header: 'Transactions',
+      accessor:  (txBlock: any) => <div className='text-center'>{txBlock.header.NumTxns}</div>,
     },
     {
-      id: 'reward-col',
-      Header: 'Reward',
-      accessor: 'header.Rewards',
-    },
-    {
-      id: 'miner-col',
-      Header: 'Miner',
-      accessor: 'header.MinerPubKey',
+      id: 'total-fees-col',
+      Header: 'Total Fees',
+      accessor:  (txBlock: any) => (<div className='text-right'>
+        <OverlayTrigger placement='top'
+          overlay={<Tooltip id={'amt-tt'}> {qaToZil(txBlock.header.Rewards)} </Tooltip>}>
+          <span>{qaToZil(txBlock.header.Rewards, 5)}</span>
+        </OverlayTrigger>
+        </div>)
     },
     {
       id: 'age-col',
       Header: 'Age',
-      accessor: 'header.Timestamp',
+      // https://github.com/react-bootstrap/react-bootstrap/issues/5075
+      accessor: (txBlock: any) => <div className='text-right'>{
+        timestampToTimeago(txBlock.header.Timestamp)}
+      </div>,
     }], []
   )
 
@@ -114,7 +101,7 @@ const TxBlockList: React.FC = () => {
       </Card.Header>
       <Card.Body>
         {data
-          ? <DisplayTable columns={columns} data={data} processMap={processMap} />
+          ? <DisplayTable columns={columns} data={data} />
           : <Spinner animation="border" role="status" />
         }
       </Card.Body>

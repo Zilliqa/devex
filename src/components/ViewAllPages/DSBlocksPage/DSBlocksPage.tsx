@@ -1,4 +1,5 @@
 import React, { useState, useRef, useCallback, useMemo, useContext } from 'react'
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 import { QueryPreservingLink } from 'src'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
@@ -18,7 +19,10 @@ processMap.set('height-col', (height: number) => (
   <QueryPreservingLink to={`dsbk/${height}`}>
     {height}
   </QueryPreservingLink>))
-processMap.set('hash-col', (hash: number) => ('0x' + hash))
+processMap.set('bkhash-col', (bkhash: number) => (<OverlayTrigger placement='left'
+  overlay={<Tooltip id={'bkhash-tt'}>{'0x' + bkhash}</Tooltip>}>
+  <span>{'0x' + bkhash}</span>
+</OverlayTrigger>))
 
 const DSBlocksPage: React.FC = () => {
 
@@ -53,7 +57,7 @@ const DSBlocksPage: React.FC = () => {
     },
     {
       id: 'bkhash-col',
-      Header: 'Hash',
+      Header: 'Block Hash',
       accessor: 'Hash',
     }], []
   )

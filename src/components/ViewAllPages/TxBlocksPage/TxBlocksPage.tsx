@@ -11,13 +11,13 @@ import { TxBlockObj } from '@zilliqa-js/core/src/types'
 // Pre-processing data to display
 const processMap = new Map()
 processMap.set('age-col', timestampToTimeago)
-processMap.set('reward-col', (amt: number) => (
-  <OverlayTrigger placement='top'
+processMap.set('total-fees-col', (amt: number) => (
+  <OverlayTrigger placement='left'
     overlay={<Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
     <span>{qaToZil(amt)}</span>
   </OverlayTrigger>
 ))
-processMap.set('miner-col', (addr: string) => (
+processMap.set('ds-leader-col', (addr: string) => (
   <QueryPreservingLink to={`address/${pubKeyToZilAddr(addr)}`}>
     {pubKeyToZilAddr(addr)}
   </QueryPreservingLink>))
@@ -25,7 +25,10 @@ processMap.set('height-col', (height: number) => (
   <QueryPreservingLink to={`txbk/${height}`}>
     {height}
   </QueryPreservingLink>))
-processMap.set('hash-col', (hash: number) => ('0x' + hash))
+processMap.set('bkhash-col', (bkhash: number) => (<OverlayTrigger placement='left'
+  overlay={<Tooltip id={'bkhash-tt'}>{'0x' + bkhash}</Tooltip>}>
+  <span>{'0x' + bkhash}</span>
+</OverlayTrigger>))
 
 const TxBlocksPage: React.FC = () => {
 
@@ -44,8 +47,8 @@ const TxBlocksPage: React.FC = () => {
       accessor: 'header.NumTxns',
     },
     {
-      id: 'miner-col',
-      Header: 'Miner',
+      id: 'ds-leader-col',
+      Header: 'DS Leader',
       accessor: 'header.MinerPubKey',
     },
     {
@@ -55,11 +58,11 @@ const TxBlocksPage: React.FC = () => {
     },
     {
       id: 'bkhash-col',
-      Header: 'Hash',
+      Header: 'Block Hash',
       accessor: 'body.BlockHash',
     }, {
-      id: 'reward-col',
-      Header: 'Reward',
+      id: 'total-fees-col',
+      Header: 'Total Fees',
       accessor: 'header.Rewards',
     }], []
   )

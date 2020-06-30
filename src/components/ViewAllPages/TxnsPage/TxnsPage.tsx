@@ -18,7 +18,7 @@ const processMap = new Map()
 processMap.set('amount-col', (amt: number) => (
   <OverlayTrigger placement='top'
     overlay={<Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
-    <span>{qaToZil(amt)}</span>
+    <span>{qaToZil(amt, 5)}</span>
   </OverlayTrigger>
 ))
 processMap.set('from-col', (addr: string) => (<QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</QueryPreservingLink>))
@@ -30,9 +30,14 @@ processMap.set('to-col', (addr: string) => (
       Contract Creation
     </QueryPreservingLink>
     : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</QueryPreservingLink>))
+processMap.set('fee-col', (fee: number) => (
+  <OverlayTrigger placement='top'
+    overlay={<Tooltip id={'fee-tt'}>{qaToZil(fee)}</Tooltip>}>
+    <span>{qaToZil(fee, 5)}</span>
+  </OverlayTrigger>))
 processMap.set('hash-col', (hash: number) => (
   <QueryPreservingLink to={`tx/0x${hash}`}>
-    <span className='mono'>{'0x' + hash}</span>
+    <span className='mono-sm'>{'0x' + hash}</span>
   </QueryPreservingLink>))
 
 const TxnsPage: React.FC = () => {
@@ -58,11 +63,15 @@ const TxnsPage: React.FC = () => {
       id: 'hash-col',
       Header: 'Hash',
       accessor: 'hash',
-    },
-    {
+    }, {
+      id: 'fee-col',
+      Header: 'Fee',
+      accessor: (txnDetails: any) => (
+        Number(txnDetails.txn.txParams.gasPrice) * txnDetails.txn.txParams.receipt!.cumulative_gas)
+    }, {
       id: 'amount-col',
       Header: 'Amount',
-      accessor: 'amount',
+      accessor: 'txn.amount',
     }], []
   )
 
@@ -85,7 +94,7 @@ const TxnsPage: React.FC = () => {
         txnHashes = recentTxnHashes
         if (!txnHashes) {
           txnList = await dataService.getRecentTransactions()
-          if(!txnList) return
+          if (!txnList) return
           txnHashes = txnList.TxnHashes
           setPageCount(Math.ceil(txnList.number / 10))
           setRecentTxnHashes(txnHashes)

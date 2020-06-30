@@ -128,7 +128,7 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
                       }
                       return (
                         <td {...cell.getCellProps()}
-                          style={cell.column.Header === 'Amount' || cell.column.Header === 'Reward'
+                          style={cell.column.Header === 'Amount' || cell.column.Header === 'Total Fees'
                             ? { textAlign: 'right', paddingRight: '1rem' }
                             : {}}
                           key={cell.getCellProps().key}>

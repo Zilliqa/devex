@@ -18,6 +18,7 @@ import './ValTxnList.css'
     - Hash
     - From address
     - To address
+    - Fee
     - Amount
     - Age
 */
@@ -26,8 +27,8 @@ import './ValTxnList.css'
 const processMap = new Map()
 processMap.set('amount-col', (amt: number) => (
   <OverlayTrigger placement='top'
-    overlay={<Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
-    <span>{qaToZil(amt)}</span>
+    overlay={<Tooltip id={'amt-tt'}> {qaToZil(amt)} </Tooltip>}>
+    <span>{qaToZil(amt, 5)}</span>
   </OverlayTrigger>
 ))
 processMap.set('from-col', (addr: string) => (
@@ -44,10 +45,14 @@ processMap.set('to-col', (addr: string) => (
     : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>
       {hexAddrToZilAddr(addr)}
     </QueryPreservingLink>))
-
+processMap.set('fee-col', (fee: number) => (
+  <OverlayTrigger placement='top'
+    overlay={<Tooltip id={'fee-tt'}>{qaToZil(fee)}</Tooltip>}>
+    <span>{qaToZil(fee, 5)}</span>
+  </OverlayTrigger>))
 processMap.set('hash-col', (hash: number) => (
   <QueryPreservingLink to={`/tx/0x${hash}`}>
-    <span className='mono'>{'0x' + hash}</span>
+    <span className='mono-sm'>{'0x' + hash}</span>
   </QueryPreservingLink>))
 
 const ValTxnList: React.FC = () => {
@@ -64,24 +69,26 @@ const ValTxnList: React.FC = () => {
       id: 'from-col',
       Header: 'From',
       accessor: 'txn.senderAddress',
-    },
-    {
+    }, {
       id: 'to-col',
       Header: 'To',
       accessor: (txnDetails: any) => (
         txnDetails.contractAddr
           ? 'contract-' + txnDetails.contractAddr
           : txnDetails.txn.txParams.toAddr),
-    },
-
-    {
+    }, {
       id: 'hash-col',
       Header: 'Hash',
       accessor: 'hash',
     }, {
+      id: 'fee-col',
+      Header: 'Fee',
+      accessor: (txnDetails: any) => (
+        Number(txnDetails.txn.txParams.gasPrice) * txnDetails.txn.txParams.receipt!.cumulative_gas)
+    }, {
       id: 'amount-col',
       Header: 'Amount',
-      accessor: 'amount',
+      accessor: 'txn.amount',
     }], []
   )
 
