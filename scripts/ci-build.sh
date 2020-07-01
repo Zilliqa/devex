@@ -14,7 +14,7 @@ application=devex
 registryURL="zilliqa/$application"
 
 #eval "$(aws ecr get-login --no-include-email --region $regionID)"
-echo "$DOCKER_API_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin;
+echo "$DOCKER_API_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 rm -rf devex-artifact
 mkdir -p devex-artifact/stg/
