@@ -7,7 +7,7 @@ import DefaultTab from 'src/components/DetailsPages/InfoTabs/DefaultTab'
 import CodeTab from 'src/components/DetailsPages/InfoTabs/CodeTab'
 import { NetworkContext } from 'src/services/networkProvider'
 import { ContractData } from 'src/typings/api'
-import { qaToZil } from 'src/utils/Utils'
+import { qaToZil, addHexPrefix } from 'src/utils/Utils'
 import { fromBech32Address, toBech32Address } from '@zilliqa-js/crypto'
 import { validation } from '@zilliqa-js/util'
 
@@ -126,14 +126,14 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
         <div className='d-flex'>
           <h6 className='address-hash'>
             {validation.isBech32(addrRef.current)
-              ? fromBech32Address(addrRef.current).toLowerCase()
-              : addrRef.current}
+              ? addHexPrefix(fromBech32Address(addrRef.current).toLowerCase())
+              : addHexPrefix(addrRef.current)}
           </h6>
           <div onClick={() => {
             navigator.clipboard.writeText(
               validation.isBech32(addrRef.current)
-                ? fromBech32Address(addrRef.current).toLowerCase()
-                : addrRef.current)
+                ? addHexPrefix(fromBech32Address(addrRef.current).toLowerCase())
+                : addHexPrefix(addrRef.current))
           }} className='address-hash-copy-btn'>
             <FontAwesomeIcon icon={faCopy} />
           </div>

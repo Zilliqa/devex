@@ -68,3 +68,20 @@ export const stripHexPrefix: ((inputHex: string) => string) = (inputHex: string)
     return inputHex.substring(2)
   return inputHex
 }
+
+// Add hex prefix if not already
+export const addHexPrefix: ((inputHex: string) => string) = (inputHex: string) => {
+  if (inputHex.substring(0, 2) !== '0x')
+    return '0x' + inputHex
+  return inputHex
+}
+
+export const isValidAddr: ((inputStr: string) => boolean) = (inputStr: string) => {
+  const trimmedInput = inputStr.trim()
+  let prefixedInput = trimmedInput
+  if (trimmedInput.substring(0, 3) !== 'zil' && trimmedInput.substring(0, 2) !== '0x')
+    prefixedInput = '0x' + trimmedInput
+  if (validation.isAddress(prefixedInput) || validation.isBech32(prefixedInput))
+    return true
+  return false
+}

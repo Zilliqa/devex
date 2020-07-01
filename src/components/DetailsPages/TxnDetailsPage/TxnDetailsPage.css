@@ -61,20 +61,21 @@
 }
 
 .receipt-table {
+  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0 4px;
   width: 100%;
 }
 
+.receipt-table tr td:first-child, .receipt-table tr th:first-child {
+  width: 200px;
+}
+
 .receipt-table th {
-  width: 150px;
-  max-width: 150px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
   font-weight: 500;
 }
 
 .receipt-table td {
+  min-width: 200px;
   vertical-align: top;
 }

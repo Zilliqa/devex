@@ -2,11 +2,10 @@ import React, { useState } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 import { Form, InputGroup, Button, Dropdown, DropdownButton } from 'react-bootstrap'
 
-import { validation } from '@zilliqa-js/util'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import './Searchbar.css'
+import { isValidAddr } from 'src/utils/Utils'
 
 interface IProps {
   isHeaderSearchbar: boolean,
@@ -25,12 +24,10 @@ const Searchbar: React.FC<IProps> = ({ isHeaderSearchbar, isISSearchbar }) => {
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
-    let trimmedInput = input.trim()
+    const trimmedInput = input.trim()
     switch (searchType) {
       case 'Txn/Addr':
-        if (trimmedInput.substring(0, 3) !== 'zil' && trimmedInput.substring(0, 2) !== '0x')
-          trimmedInput = '0x' + trimmedInput
-        if (validation.isAddress(trimmedInput) || validation.isBech32(trimmedInput))
+        if (isValidAddr(trimmedInput))
           history.push({
             pathname: `/address/${trimmedInput}`,
             search: location.search
