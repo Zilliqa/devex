@@ -11,9 +11,10 @@ commit=$(git rev-parse --short=7 $TRAVIS_COMMIT)
 accountID=$(aws sts get-caller-identity --output text --query 'Account')
 regionID=us-west-2
 application=devex
-registryURL=${accountID}.dkr.ecr.${regionID}.amazonaws.com/$application
+registryURL="Zilliqa/$application"
 
-eval "$(aws ecr get-login --no-include-email --region $regionID)"
+#eval "$(aws ecr get-login --no-include-email --region $regionID)"
+docker login -u $DOCKER_USERNAME -p $DOCKER_API_TOKEN;
 
 rm -rf devex-artifact
 mkdir -p devex-artifact/stg/
