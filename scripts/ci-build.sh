@@ -11,10 +11,10 @@ commit=$(git rev-parse --short=7 $TRAVIS_COMMIT)
 accountID=$(aws sts get-caller-identity --output text --query 'Account')
 regionID=us-west-2
 application=devex
-registryURL="Zilliqa/$application"
+registryURL="zilliqa/$application"
 
 #eval "$(aws ecr get-login --no-include-email --region $regionID)"
-docker login -u $DOCKER_USERNAME -p $DOCKER_API_TOKEN;
+echo "$DOCKER_API_TOKEN" | docker login -u "$DOCKER_USERNAME" --password-stdin;
 
 rm -rf devex-artifact
 mkdir -p devex-artifact/stg/
