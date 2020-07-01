@@ -38,39 +38,50 @@
 
 /* Hardcoded Widths (May require tweaks) */
 
-.display-table #dsheight-col {
-  width: 60px;
-}
+/* DS-Block List */
 
-.display-table #txheight-col {
-  width: 60px;
+.display-table #dsheight-col {
+  width: 50px;
 }
 
 .display-table #difficulty-col {
-  width: 80px;
+  width: 55px;
   text-align: center;
 }
 
 .display-table #ds-difficulty-col {
-  width: 110px;
+  width: 75px;
   text-align: center;
 }
 
 .display-table #age-col {
-  padding-right: 20px;
-  width: 110px;
+  padding-right: 25px;
+  width: 90px;
   text-align: end;
 }
 
+/* Tx-Block List */
+
+.display-table #txheight-col {
+  width: 50px;
+}
+
 .display-table #numTxns-col {
-  width: 70px;
+  width: 60px;
   text-align: center;
 }
 
 .display-table #total-fees-col {
-  width: 80px;
+  width: 50px;
   text-align: end;
 }
+
+.display-table #ds-block-col {
+  width: 50px;
+  text-align: center;
+}
+
+/* Validated Transactions List */
 
 .display-table #from-col {
   width: 76px;
@@ -80,8 +91,13 @@
   width: 76px;
 }
 
+.display-table #hash-col {
+  width: 280px;
+}
+
 .display-table #fee-col {
-  width: 55px;
+  width: 40px;
+  text-align: center;
 }
 
 .display-table #amount-col {
@@ -90,22 +106,22 @@
   width: 55px;
 }
 
-.display-table #hash-col {
-  width: 290px;
+/* Pending Transactions List */
+
+.display-table #pend-hash-col {
+  width: 500px;
 }
 
 .display-table #confirmed-col {
   width: 80px;
+  text-align: center;
 }
 
 .display-table #code-col {
-  width: 80px;
+  text-align: center;
+  width: 60px;
 }
 
 .display-table #status-col {
   width: 300px;
-}
-
-.display-table #pend-hash-col {
-  width: 560px;
 }

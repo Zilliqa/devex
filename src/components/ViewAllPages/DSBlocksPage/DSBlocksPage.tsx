@@ -8,22 +8,6 @@ import { DsBlockObjWithHashListing } from 'src/typings/api'
 import { timestampToTimeago, pubKeyToZilAddr } from 'src/utils/Utils'
 import { DsBlockObj } from '@zilliqa-js/core/src/types'
 
-// Pre-processing data to display
-const processMap = new Map()
-processMap.set('age-col', timestampToTimeago)
-processMap.set('ds-leader-col', (addr: string) => (
-  <QueryPreservingLink to={`address/${pubKeyToZilAddr(addr)}`}>
-    {pubKeyToZilAddr(addr)}
-  </QueryPreservingLink>))
-processMap.set('height-col', (height: number) => (
-  <QueryPreservingLink to={`dsbk/${height}`}>
-    {height}
-  </QueryPreservingLink>))
-processMap.set('bkhash-col', (bkhash: number) => (<OverlayTrigger placement='left'
-  overlay={<Tooltip id={'bkhash-tt'}>{'0x' + bkhash}</Tooltip>}>
-  <span>{'0x' + bkhash}</span>
-</OverlayTrigger>))
-
 const DSBlocksPage: React.FC = () => {
 
   const networkContext = useContext(NetworkContext)
@@ -34,6 +18,11 @@ const DSBlocksPage: React.FC = () => {
       id: 'height-col',
       Header: 'Height',
       accessor: 'header.BlockNum',
+      Cell: ({ value }: { value: string }) => (
+        <QueryPreservingLink to={`txbk/${value}`}>
+          {value}
+        </QueryPreservingLink>
+      )
     },
     {
       id: 'difficulty-col',
@@ -49,16 +38,34 @@ const DSBlocksPage: React.FC = () => {
       id: 'ds-leader-col',
       Header: 'DS Leader',
       accessor: 'header.LeaderPubKey',
-    },
-    {
-      id: 'age-col',
-      Header: 'Age',
-      accessor: 'header.Timestamp',
+      Cell: ({ value }: { value: string }) => (
+        <div className='mono'>
+          <QueryPreservingLink to={`address/${pubKeyToZilAddr(value)}`}>
+            {pubKeyToZilAddr(value)}
+          </QueryPreservingLink>
+        </div>
+      )
     },
     {
       id: 'bkhash-col',
       Header: 'Block Hash',
       accessor: 'Hash',
+      Cell: ({ value }: { value: string }) => (
+        <OverlayTrigger placement='left'
+          overlay={<Tooltip id={'bkhash-tt'}>{'0x' + value}</Tooltip>}>
+          <div className='mono-sm bkhash-div'>{'0x' + value}</div>
+        </OverlayTrigger>
+      )
+    },
+    {
+      id: 'age-col',
+      Header: 'Age',
+      accessor: 'header.Timestamp',
+      Cell: ({ value }: { value: string }) => (
+        <div className='text-right'>{
+          timestampToTimeago(value)}
+        </div>
+      )
     }], []
   )
 
@@ -100,7 +107,6 @@ const DSBlocksPage: React.FC = () => {
           columns={columns}
           data={data ? data : []}
           isLoading={isLoading}
-          processMap={processMap}
           fetchData={fetchData}
           pageCount={pageCount}
         />

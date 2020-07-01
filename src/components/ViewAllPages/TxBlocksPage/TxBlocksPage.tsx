@@ -8,27 +8,7 @@ import { TxBlockObjListing } from 'src/typings/api'
 import { timestampToTimeago, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
 import { TxBlockObj } from '@zilliqa-js/core/src/types'
 
-// Pre-processing data to display
-const processMap = new Map()
-processMap.set('age-col', timestampToTimeago)
-processMap.set('total-fees-col', (amt: number) => (
-  <OverlayTrigger placement='left'
-    overlay={<Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
-    <span>{qaToZil(amt)}</span>
-  </OverlayTrigger>
-))
-processMap.set('ds-leader-col', (addr: string) => (
-  <QueryPreservingLink to={`address/${pubKeyToZilAddr(addr)}`}>
-    {pubKeyToZilAddr(addr)}
-  </QueryPreservingLink>))
-processMap.set('height-col', (height: number) => (
-  <QueryPreservingLink to={`txbk/${height}`}>
-    {height}
-  </QueryPreservingLink>))
-processMap.set('bkhash-col', (bkhash: number) => (<OverlayTrigger placement='left'
-  overlay={<Tooltip id={'bkhash-tt'}>{'0x' + bkhash}</Tooltip>}>
-  <span>{'0x' + bkhash}</span>
-</OverlayTrigger>))
+import './TxBlockPage.css'
 
 const TxBlocksPage: React.FC = () => {
 
@@ -40,30 +20,64 @@ const TxBlocksPage: React.FC = () => {
       id: 'height-col',
       Header: 'Height',
       accessor: 'header.BlockNum',
+      Cell: ({ value }: { value: string }) => (
+        <QueryPreservingLink to={`txbk/${value}`}>
+          {value}
+        </QueryPreservingLink>
+      )
     },
     {
       id: 'numTxns-col',
-      Header: 'Transactions',
+      Header: 'Txns',
       accessor: 'header.NumTxns',
+      Cell: ({ value }: { value: string }) => (
+        <div className='text-center'>
+          {value}
+        </div>
+      )
     },
     {
       id: 'ds-leader-col',
       Header: 'DS Leader',
       accessor: 'header.MinerPubKey',
-    },
-    {
-      id: 'age-col',
-      Header: 'Age',
-      accessor: 'header.Timestamp',
+      Cell: ({ value }: { value: string }) => (
+        <div className='mono'>
+          <QueryPreservingLink to={`address/${pubKeyToZilAddr(value)}`}>
+            {pubKeyToZilAddr(value)}
+          </QueryPreservingLink>
+        </div>
+      )
     },
     {
       id: 'bkhash-col',
       Header: 'Block Hash',
       accessor: 'body.BlockHash',
+      Cell: ({ value }: { value: string }) => (
+        <OverlayTrigger placement='left'
+          overlay={<Tooltip id={'bkhash-tt'}>{'0x' + value}</Tooltip>}>
+          <div className='mono-sm bkhash-div'>{'0x' + value}</div>
+        </OverlayTrigger>
+      )
     }, {
       id: 'total-fees-col',
       Header: 'Total Fees',
       accessor: 'header.Rewards',
+      Cell: ({ value }: { value: string }) => (
+        <OverlayTrigger placement='right'
+          overlay={<Tooltip id={'total-fees-tt'}> {qaToZil(value)} </Tooltip>}>
+          <div className='text-right'>{qaToZil(value, 5)}</div>
+        </OverlayTrigger>
+      )
+    },
+    {
+      id: 'age-col',
+      Header: 'Age',
+      accessor: 'header.Timestamp',
+      Cell: ({ value }: { value: string }) => (
+        <div className='text-right'>{
+          timestampToTimeago(value)}
+        </div>
+      )
     }], []
   )
 
@@ -106,7 +120,6 @@ const TxBlocksPage: React.FC = () => {
           columns={columns}
           data={data ? data : []}
           isLoading={isLoading}
-          processMap={processMap}
           fetchData={fetchData}
           pageCount={pageCount}
         />

@@ -13,6 +13,7 @@ interface IProps {
 const EventsTab: React.FC<IProps> = ({ events }) => {
 
   const highlightEventParams = useCallback((params: EventParam[]): React.ReactNode => {
+    if (params.length === 0) return null
     return params
       .map((param, index) => (
         <span key={index}>

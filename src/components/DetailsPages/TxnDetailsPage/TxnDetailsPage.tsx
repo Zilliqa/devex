@@ -27,7 +27,6 @@ const TxnDetailsPage: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
   const [data, setData] = useState<TransactionDetails | null>(null)
 
-
   // Fetch data
   useEffect(() => {
     if (!dataService) return
@@ -136,8 +135,8 @@ const TxnDetailsPage: React.FC = () => {
                 <Row>
                   <Col>
                     <div className='txn-detail'>
-                      <span>Cumulative Gas:</span>
-                      <span>{data.txn.txParams.receipt.cumulative_gas}</span>
+                      <span>Transaction Fee:</span>
+                      <span>{qaToZil(Number(data.txn.txParams.gasPrice) * data.txn.txParams.receipt!.cumulative_gas)}</span>
                     </div>
                   </Col>
                   <Col>

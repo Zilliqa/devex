@@ -33,26 +33,36 @@ const DSBlockList: React.FC = () => {
     () => [{
       id: 'dsheight-col',
       Header: 'Height',
-      accessor: (dsBlock: any) => (
-          <QueryPreservingLink to={`dsbk/${dsBlock.header.BlockNum}`}>
-            {dsBlock.header.BlockNum}
-          </QueryPreservingLink>
-      )
+      accessor: 'header.BlockNum',
+      Cell: ({value}: {value: string}) => (
+        <QueryPreservingLink to={`dsbk/${value}`}>
+          {value}
+        </QueryPreservingLink>
+      ),
     },
     {
       id: 'difficulty-col',
       Header: 'Difficulty',
-      accessor: (dsBlock: any) => <div className='text-center'>{dsBlock.header.Difficulty}</div>,
+      accessor: 'header.Difficulty',
+      Cell: ({value}: {value: string}) => (
+        <div className='text-center'>{value}</div>
+      ),
     },
     {
       id: 'ds-difficulty-col',
       Header: 'DS Difficulty',
-      accessor: (dsBlock: any) => <div className='text-center'>{dsBlock.header.DifficultyDS}</div>,
+      accessor: 'header.DifficultyDS',
+      Cell: ({value}: {value: string}) => (
+        <div className='text-center'>{value}</div>
+      ),
     },
     {
       id: 'age-col',
       Header: 'Age',
-      accessor: (dsBlock: any) => <div className='text-right'>{timestampToTimeago(dsBlock.header.Timestamp)}</div>,
+      accessor: 'header.Timestamp',
+      Cell: ({value}: {value: string}) => (
+        <div className='text-right'>{timestampToTimeago(value)}</div>
+      ),
     }], []
   )
 

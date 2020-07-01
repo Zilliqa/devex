@@ -7,14 +7,13 @@ import { DsBlockObj, TxBlockObj, PendingTxnResult } from '@zilliqa-js/core/src/t
 import './DisplayTable.css'
 
 interface IDisplayTableParams<T extends object> {
-  columns: Array<Column<T>>,
+  columns: Column<T>[],
   data: T[],
-  processMap?: Map<string, <T>(original: T) => T>
 }
 
 // React Table for DSBlocks, TxBlocks and TransactionDetails on Dashboard 
 const DisplayTable: React.FC<IDisplayTableParams<DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult>> =
-  ({ columns, data, processMap }) => {
+  ({ columns, data }) => {
     const { getTableProps, headerGroups, rows, prepareRow } = useTable<DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult>({
       columns,
       data,
@@ -40,16 +39,10 @@ const DisplayTable: React.FC<IDisplayTableParams<DsBlockObj | TxBlockObj | Trans
               return (
                 <tr {...row.getRowProps()} key={row.getRowProps().key}>
                   {row.cells.map((cell: Cell<DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult>) => {
-                    if (processMap) {
-                      const procFunc = processMap.get(cell.column.id)
-                      if (procFunc != null)
-                        cell.value = procFunc(cell.value)
-                    }
                     return (
                       <td {...cell.getCellProps()}
-                        style={cell.column.Header === 'Amount' ? { textAlign: 'right' } : {}}
                         key={cell.getCellProps().key}>
-                        {cell.value}
+                        {cell.render('Cell')}
                       </td>
                     )
                   })}

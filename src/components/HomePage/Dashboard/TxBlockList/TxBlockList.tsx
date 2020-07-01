@@ -33,34 +33,52 @@ const TxBlockList: React.FC = () => {
     () => [{
       id: 'txheight-col',
       Header: 'Height',
-      accessor: (txBlock: any) => (
-        <QueryPreservingLink to={`txbk/${txBlock.header.BlockNum}`}>
-          {txBlock.header.BlockNum}
+      accessor: 'header.BlockNum',
+      Cell: ({ value }: { value: string }) => (
+        <QueryPreservingLink to={`txbk/${value}`}>
+          {value}
         </QueryPreservingLink>
       )
     },
     {
       id: 'numTxns-col',
       Header: 'Transactions',
-      accessor:  (txBlock: any) => <div className='text-center'>{txBlock.header.NumTxns}</div>,
+      accessor: 'header.NumTxns',
+      Cell: ({ value }: { value: string }) => (
+        <div className='text-center'>{value}</div>
+      ),
     },
     {
       id: 'total-fees-col',
       Header: 'Total Fees',
-      accessor:  (txBlock: any) => (<div className='text-right'>
-        <OverlayTrigger placement='top'
-          overlay={<Tooltip id={'amt-tt'}> {qaToZil(txBlock.header.Rewards)} </Tooltip>}>
-          <span>{qaToZil(txBlock.header.Rewards, 5)}</span>
-        </OverlayTrigger>
+      accessor: 'header.Rewards',
+      Cell: ({ value }: { value: string }) => (
+        <div className='text-right'>
+          <OverlayTrigger placement='top'
+            overlay={<Tooltip id={'amt-tt'}> {qaToZil(value)} </Tooltip>}>
+            <span>{qaToZil(value, 5)}</span>
+          </OverlayTrigger>
         </div>)
+    },
+    {
+      id: 'ds-block-col',
+      Header: 'DS Block',
+      accessor: 'header.DSBlockNum',
+      Cell: ({ value }: { value: string }) => (
+        <QueryPreservingLink to={`dsbk/${value}`}>
+          <div className='text-center'>{value}</div>
+        </QueryPreservingLink>
+      )
     },
     {
       id: 'age-col',
       Header: 'Age',
-      // https://github.com/react-bootstrap/react-bootstrap/issues/5075
-      accessor: (txBlock: any) => <div className='text-right'>{
-        timestampToTimeago(txBlock.header.Timestamp)}
-      </div>,
+      accessor: 'header.Timestamp',
+      Cell: ({ value }: { value: string }) => (
+        <div className='text-right'>{
+          timestampToTimeago(value)}
+        </div>
+      ),
     }], []
   )
 

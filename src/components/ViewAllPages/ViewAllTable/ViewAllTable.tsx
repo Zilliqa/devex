@@ -13,12 +13,11 @@ interface IViewAllTableParams<T extends object> {
   isLoading: boolean,
   fetchData: ({ pageIndex }: { pageIndex: number }) => void,
   pageCount: number,
-  processMap?: Map<string, <T>(original: T) => T>
 }
 
 // React Table for DSBlocks, TxnBlocks and TransactionDetails on Dashboard 
 const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult>> =
-  ({ columns, data, isLoading, fetchData, pageCount: controlledPageCount, processMap }) => {
+  ({ columns, data, isLoading, fetchData, pageCount: controlledPageCount }) => {
 
     const { getTableProps,
       getTableBodyProps,
@@ -121,18 +120,10 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
                 return (
                   <tr {...row.getRowProps()} key={row.getRowProps().key}>
                     {row.cells.map((cell: Cell<DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult>) => {
-                      if (processMap) {
-                        const procFunc = processMap.get(cell.column.id)
-                        if (procFunc != null)
-                          cell.value = procFunc(cell.value)
-                      }
                       return (
                         <td {...cell.getCellProps()}
-                          style={cell.column.Header === 'Amount' || cell.column.Header === 'Total Fees'
-                            ? { textAlign: 'right', paddingRight: '1rem' }
-                            : {}}
                           key={cell.getCellProps().key}>
-                          {cell.value}
+                          {cell.render('Cell')}
                         </td>
                       )
                     })}
