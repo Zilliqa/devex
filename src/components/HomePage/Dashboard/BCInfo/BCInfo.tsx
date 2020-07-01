@@ -101,7 +101,7 @@ const BCInfo: React.FC = () => {
               <Col>
                 <span className='bcstats-header'>Peers:</span>
                 <br />
-                <span>{(data.NumPeers).toLocaleString('en')}</span>
+                <span>{data.NumPeers.toLocaleString('en')}</span>
               </Col>
               <Col>
                 <span className='bcstats-header'>Sharding Structure:</span>

@@ -9,7 +9,7 @@ import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
-import { faExclamationCircle, faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
+import { faExclamationCircle, faExchangeAlt, faFileContract } from '@fortawesome/free-solid-svg-icons'
 
 import InfoTabs, { generateTabsFromTxnDetails } from '../InfoTabs/InfoTabs'
 
@@ -69,7 +69,7 @@ const TxnDetailsPage: React.FC = () => {
             <span className='ml-2'>
               Transaction
           </span>
-            <LabelStar type='Transaction'/>
+            <LabelStar type='Transaction' />
           </h3>
           <div className='d-flex'>
             <h6 className='txn-hash'>{'0x' + data.hash}</h6>
@@ -97,9 +97,18 @@ const TxnDetailsPage: React.FC = () => {
                     <div className='txn-detail'>
                       <span>To:</span>
                       <span>
-                        <QueryPreservingLink to={`/address/${hexAddrToZilAddr(data.txn.txParams.toAddr)}`}>
-                          {hexAddrToZilAddr(data.txn.txParams.toAddr)}
-                        </QueryPreservingLink>
+                        {data.contractAddr
+                          ? data.txn.txParams.receipt.success
+                            ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(data.contractAddr)}`}>
+                              <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
+                              {' '}
+                              {hexAddrToZilAddr(data.contractAddr)}
+                            </QueryPreservingLink>
+                            : '-'
+                          : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(data.txn.txParams.toAddr)}`}>
+                            {hexAddrToZilAddr(data.txn.txParams.toAddr)}
+                          </QueryPreservingLink>
+                        }
                       </span>
                     </div>
                   </Col>
