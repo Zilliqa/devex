@@ -84,26 +84,26 @@
 /* Validated Transactions List */
 
 .display-table #from-col {
-  width: 76px;
+  width: 80px;
 }
 
 .display-table #to-col {
-  width: 76px;
+  width: 80px;
 }
 
 .display-table #hash-col {
-  width: 280px;
-}
-
-.display-table #fee-col {
-  width: 40px;
-  text-align: center;
+  padding-left: 25px;
+  width: 298px;
 }
 
 .display-table #amount-col {
-  padding-right: 1rem;
   text-align: right;
-  width: 55px;
+  width: 100px;
+}
+
+.display-table #fee-col {
+  width: 45px;
+  text-align: center;
 }
 
 /* Pending Transactions List */

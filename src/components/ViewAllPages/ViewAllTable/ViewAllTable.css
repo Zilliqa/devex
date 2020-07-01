@@ -105,14 +105,16 @@
 }
 
 .viewall-table #hash-col {
-  width: 580px;
+  width: 600px;
+  padding-left: 2rem;
 }
 
 .viewall-table #fee-col {
-  width: 95px;
+  width: 100px;
+  text-align: center;
 }
 
 .viewall-table #amount-col {
   text-align: right;
-  width: 120px;
+  width: 190px;
 }

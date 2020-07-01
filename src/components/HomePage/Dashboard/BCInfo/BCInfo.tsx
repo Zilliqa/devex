@@ -148,7 +148,7 @@ const BCInfo: React.FC = () => {
                   <FontAwesomeIcon className='info-icon' icon={faInfoCircle} />
                 </OverlayTrigger>
                 {' '}
-                <span className='bcstats-header'>Max Observed TPS (w/o historical data):</span>
+                <span className='bcstats-header'>Recent Max Observed TPS:</span>
                 <br />
                 <span>{state.maxTPS && state.maxTPS.toFixed(5)}</span>
                 <span>
@@ -164,7 +164,7 @@ const BCInfo: React.FC = () => {
                   <FontAwesomeIcon className='info-icon' icon={faInfoCircle} />
                 </OverlayTrigger>
                 {' '}
-                <span className='bcstats-header'>Max Observed Txns (w/o historical data):</span>
+                <span className='bcstats-header'>Recent Max Observed Txn Count:</span>
                 <br />
                 <span>{state.maxTxnCount}
                   {' '}

@@ -66,6 +66,10 @@ a:hover {
   font-size: 14px;
 }
 
+.sm {
+  font-size: 14px;
+}
+
 .subtext {
   color: rgb(93, 106, 133);
 }

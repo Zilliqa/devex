@@ -13,7 +13,7 @@ import { TxBlockObj } from '@zilliqa-js/core/src/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy, faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
-import { faFileContract, faCubes } from '@fortawesome/free-solid-svg-icons'
+import { faFileContract, faCubes, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 
 import LabelStar from '../LabelStar/LabelStar'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
@@ -106,11 +106,27 @@ const TxBlockDetailsPage: React.FC = () => {
     }, {
       id: 'hash-col',
       Header: 'Hash',
-      accessor: 'hash',
+      Cell: ({ row }: { row: Row<TransactionDetails> }) => {
+        console.log(row)
+        return <QueryPreservingLink to={`/tx/0x${row.original.hash}`}>
+          <div className='text-right mono-sm'>
+            {row.original.txn.txParams.receipt && !row.original.txn.txParams.receipt.success
+              && <FontAwesomeIcon className='mr-1' icon={faExclamationCircle} color='red' />
+            }
+            {'0x' + row.original.hash}
+          </div>
+        </QueryPreservingLink>
+      }
+    }, {
+      id: 'amount-col',
+      Header: 'Amount',
+      accessor: 'txn.amount',
       Cell: ({ value }: { value: string }) => (
-        <QueryPreservingLink to={`/tx/0x${value}`}>
-          <div className='mono-sm'>{'0x' + value}</div>
-        </QueryPreservingLink>)
+        <OverlayTrigger placement='right'
+          overlay={<Tooltip id={'amt-tt'}>{qaToZil(value)}</Tooltip>}>
+          <div className='text-right'>{qaToZil(value)}</div>
+        </OverlayTrigger>
+      )
     }, {
       id: 'fee-col',
       Header: 'Fee',
@@ -122,16 +138,6 @@ const TxBlockDetailsPage: React.FC = () => {
           <div className='text-center'>{qaToZil(fee)}</div>
         </OverlayTrigger>
       }
-    }, {
-      id: 'amount-col',
-      Header: 'Amount',
-      accessor: 'txn.amount',
-      Cell: ({ value }: { value: string }) => (
-        <OverlayTrigger placement='top'
-          overlay={<Tooltip id={'amt-tt'}>{qaToZil(value)}</Tooltip>}>
-          <div className='text-right'>{qaToZil(value, 5)}</div>
-        </OverlayTrigger>
-      )
     }], []
   )
   const fetchData = useCallback(({ pageIndex }) => {
