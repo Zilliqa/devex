@@ -13,17 +13,8 @@ import { faFileContract, faExclamationCircle } from '@fortawesome/free-solid-svg
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import DisplayTable from '../../DisplayTable/DisplayTable'
-import './ValTxnList.css'
 
-/*
-    Display first 10 Validated Txns
-    - Hash
-    - From address
-    - To address
-    - Fee
-    - Amount
-    - Age
-*/
+import './ValTxnList.css'
 
 const ValTxnList: React.FC = () => {
 
@@ -63,7 +54,7 @@ const ValTxnList: React.FC = () => {
       accessor: 'hash',
       Cell: ({ row }: { row: Row<TransactionDetails> }) => {
         return <QueryPreservingLink to={`/tx/0x${row.original.hash}`}>
-          <div className='text-right mono-sm'>
+          <div className='text-right mono'>
             {row.original.txn.txParams.receipt && !row.original.txn.txParams.receipt.success
               && <FontAwesomeIcon className='mr-1' icon={faExclamationCircle} color='red' />
             }
@@ -112,6 +103,7 @@ const ValTxnList: React.FC = () => {
       }
     }
     getData()
+
     const getDataTimer = setInterval(async () => {
       await getData()
     }, refreshRate)

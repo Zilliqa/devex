@@ -10,8 +10,6 @@ import { hexAddrToZilAddr, qaToZil } from 'src/utils/Utils'
 import { TxList } from '@zilliqa-js/core/src/types'
 import { Transaction } from '@zilliqa-js/account/src/transaction'
 
-import './TxnsPage.css'
-
 import { faFileContract, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -19,6 +17,12 @@ const TxnsPage: React.FC = () => {
 
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
+
+  const fetchIdRef = useRef(0)
+  const [isLoading, setIsLoading] = useState(false)
+  const [pageCount, setPageCount] = useState(0)
+  const [data, setData] = useState<TransactionDetails[] | null>(null)
+  const [recentTxnHashes, setRecentTxnHashes] = useState<string[] | null>(null)
 
   const columns = useMemo(
     () => [{
@@ -50,7 +54,7 @@ const TxnsPage: React.FC = () => {
       Cell: ({ row }: { row: Row<TransactionDetails> }) => {
         console.log(row)
         return <QueryPreservingLink to={`/tx/0x${row.original.hash}`}>
-          <div className='text-right mono-sm'>
+          <div className='text-right mono'>
             {row.original.txn.txParams.receipt && !row.original.txn.txParams.receipt.success
               && <FontAwesomeIcon className='mr-1' icon={faExclamationCircle} color='red' />
             }
@@ -81,12 +85,6 @@ const TxnsPage: React.FC = () => {
       }
     }], []
   )
-
-  const fetchIdRef = useRef(0)
-  const [isLoading, setIsLoading] = useState(false)
-  const [pageCount, setPageCount] = useState(0)
-  const [data, setData] = useState<TransactionDetails[] | null>(null)
-  const [recentTxnHashes, setRecentTxnHashes] = useState<string[] | null>(null)
 
   const fetchData = useCallback(({ pageIndex }) => {
     if (!dataService) return
@@ -129,7 +127,7 @@ const TxnsPage: React.FC = () => {
   return (
     <>
       {<div>
-        <h2 className='txnspage-header'>Recent Transactions</h2>
+        <h2>Recent Transactions</h2>
         <ViewAllTable
           columns={columns}
           data={data ? data : []}

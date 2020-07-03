@@ -1,0 +1,50 @@
+.label-modal {
+  margin-top: 100px;
+  color: var(--color-text);
+}
+
+.label-modal .modal-content {
+  background-color: var(--color-modal-bg);
+}
+
+.label-modal .modal-header {
+  align-self: center;
+  display: flex;
+  padding: 1.5rem 0.5rem 0.75rem;
+}
+
+.label-modal .modal-header h6 {
+  margin: 0;
+}
+
+.label-modal .modal-body {
+  padding: 2rem;
+}
+
+.label-modal .btn {
+  background-color: var(--color-zil-green) !important;
+  border: 0 !important;
+  color: rgb(240, 240, 240) !important;
+  height: 40px;
+}
+
+.label-modal .form-control {
+  height: 45px;
+  color: var(--color-text) !important;
+}
+
+.label-modal .btn:hover {
+  filter: brightness(1.05);
+}
+
+.modal-footer {
+  padding: 0;
+  margin-top: 1.5rem;
+  color: var(--color-subtext);
+  border: 0;
+  justify-content: start;
+}
+
+.modal-footer>* {
+  margin: 0;
+}

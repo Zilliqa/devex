@@ -19,10 +19,13 @@ import ISInfo from './ISInfo/ISInfo'
     +++++++++++++++++++++++++++++++++++++
     |  DS Blocks List | Tx Blocks List  |
     +++++++++++++++++++++++++++++++++++++
-    |      ValTxnList     | PendTxnList |
+    |            ValTxnList             |
+    +++++++++++++++++++++++++++++++++++++
+    |            PendTxnList            |
     +++++++++++++++++++++++++++++++++++++
 */
 const Dashboard: React.FC = () => {
+
   const networkContext = useContext(NetworkContext)
   const { isIsolatedServer } = networkContext!
 

@@ -17,7 +17,7 @@ const ViewBlockLink: React.FC<IProps> = ({ network, type, identifier }) => {
   let viewBlockUrl = `https://viewblock.io/zilliqa/${type}/${identifier}`
   if (network === 'https://dev-api.zilliqa.com/')
     viewBlockUrl += '?network=testnet'
-  return <a href={viewBlockUrl} className='vblink-div'>
+  return <a href={viewBlockUrl} className='vb-link-div'>
     <OverlayTrigger placement='top'
       overlay={<Tooltip id={'vb-tt'}>Open in ViewBlock</Tooltip>}>
       <span className='p-1'>

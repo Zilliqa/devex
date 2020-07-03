@@ -15,7 +15,7 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faFileContract } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import LabelStar from '../../LabelStar/LabelStar'
+import LabelStar from '../../LabelComponent/LabelStar'
 import ViewBlockLink from '../../ViewBlockLink/ViewBlockLink'
 
 import '../AddressDetailsPage.css'
@@ -93,13 +93,13 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
   }
 
   return <>
-    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" /></div> : null}
     {contractData && (
       <>
         <div className='address-header'>
           <h3>
             <span className='mr-1'>
-              <FontAwesomeIcon color='grey' icon={faFileContract} />
+              <FontAwesomeIcon className='fa-icon' icon={faFileContract} />
             </span>
             <span className='ml-2'>
               Contract
@@ -109,7 +109,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
           <ViewBlockLink network={nodeUrl} type='address' identifier={addrRef.current} />
         </div>
         <div className='d-flex'>
-          <h6 className='address-hash'>
+          <h6 className='address-hash subtext'>
             {validation.isBech32(addrRef.current)
               ? addrRef.current
               : toBech32Address(addrRef.current)}
@@ -119,12 +119,12 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
               validation.isBech32(addrRef.current)
                 ? addrRef.current
                 : toBech32Address(addrRef.current))
-          }} className='address-hash-copy-btn'>
+          }} className='address-hash-copy-btn subtext'>
             <FontAwesomeIcon icon={faCopy} />
           </div>
         </div>
         <div className='d-flex'>
-          <h6 className='address-hash'>
+          <h6 className='address-hash subtext'>
             {validation.isBech32(addrRef.current)
               ? addHexPrefix(fromBech32Address(addrRef.current).toLowerCase())
               : addHexPrefix(addrRef.current)}
@@ -134,7 +134,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
               validation.isBech32(addrRef.current)
                 ? addHexPrefix(fromBech32Address(addrRef.current).toLowerCase())
                 : addHexPrefix(addrRef.current))
-          }} className='address-hash-copy-btn'>
+          }} className='address-hash-copy-btn subtext'>
             <FontAwesomeIcon icon={faCopy} />
           </div>
         </div>

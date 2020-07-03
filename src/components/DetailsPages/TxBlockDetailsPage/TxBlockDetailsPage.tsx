@@ -15,7 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy, faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
 import { faFileContract, faCubes, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 
-import LabelStar from '../LabelStar/LabelStar'
+import LabelStar from '../LabelComponent/LabelStar'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
 import './TxBlockDetailsPage.css'
 
@@ -109,7 +109,7 @@ const TxBlockDetailsPage: React.FC = () => {
       Cell: ({ row }: { row: Row<TransactionDetails> }) => {
         console.log(row)
         return <QueryPreservingLink to={`/tx/0x${row.original.hash}`}>
-          <div className='text-right mono-sm'>
+          <div className='text-right mono'>
             {row.original.txn.txParams.receipt && !row.original.txn.txParams.receipt.success
               && <FontAwesomeIcon className='mr-1' icon={faExclamationCircle} color='red' />
             }
@@ -141,6 +141,7 @@ const TxBlockDetailsPage: React.FC = () => {
     }], []
   )
   const fetchData = useCallback(({ pageIndex }) => {
+
     if (!txBlockTxns || !dataService) return
 
     let receivedData: TransactionDetails[]
@@ -148,7 +149,6 @@ const TxBlockDetailsPage: React.FC = () => {
       try {
         setIsLoadingTrans(true)
         receivedData = await dataService.getTransactionsDetails(txBlockTxns.slice(pageIndex * 10, pageIndex * 10 + 10))
-
         if (receivedData)
           setTransactionData(receivedData)
       } catch (e) {
@@ -162,71 +162,50 @@ const TxBlockDetailsPage: React.FC = () => {
   }, [dataService, txBlockTxns])
 
   return <>
-    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" /></div> : null}
     {error
       ? <NotFoundPage />
       : <>
-        {!isLoading && isIsolatedServer && (
-          <>
-            <div className='txblock-header mb-3'>
-              <h3>
-                <span className='mr-1'>
-                  <FontAwesomeIcon color='grey' icon={faCubes} />
-                </span>
-                <span className='ml-2'>
-                  Tx Block
+        {latestTxBlockNum &&
+          <div className={isIsolatedServer ? 'txblock-header mb-3' : 'txblock-header'}>
+            <h3>
+              <span className='mr-1'>
+                <FontAwesomeIcon className='fa-icon' icon={faCubes} />
               </span>
-                {' '}
-                <span className='txblock-header-blocknum'>#{blockNum}</span>
-                <LabelStar type='Tx Block' />
-              </h3>
-              <span>
-                <QueryPreservingLink
-                  className={parseInt(blockNum, 10) === 1 ? 'disabled-link mr-3' : 'mr-3'}
-                  to={`/txbk/${parseInt(blockNum, 10) - 1}`}>
-                  <FontAwesomeIcon size='2x' icon={faCaretSquareLeft} />
-                </QueryPreservingLink>
-                <QueryPreservingLink
-                  className={latestTxBlockNum && parseInt(blockNum, 10) === latestTxBlockNum ? 'disabled-link' : ''}
-                  to={`/txbk/${parseInt(blockNum, 10) + 1}`}>
-                  <FontAwesomeIcon size='2x' icon={faCaretSquareRight} />
-                </QueryPreservingLink>
+              <span className='ml-2'>
+                Tx Block
               </span>
-            </div>
-          </>
-        )}
+              {' '}
+              <span className='subtext'>#{blockNum}</span>
+              <LabelStar type='Tx Block' />
+            </h3>
+            <span>
+              <QueryPreservingLink
+                className={
+                  isIsolatedServer
+                    ? parseInt(blockNum, 10) === 1 ? 'disabled mr-3' : 'mr-3'
+                    : parseInt(blockNum, 10) === 0 ? 'disabled mr-3' : 'mr-3'}
+                to={`/txbk/${parseInt(blockNum, 10) - 1}`}>
+                <FontAwesomeIcon size='2x' className='fa-icon' icon={faCaretSquareLeft} />
+              </QueryPreservingLink>
+              <QueryPreservingLink
+                className={
+                  isIsolatedServer
+                    ? parseInt(blockNum, 10) === latestTxBlockNum ? 'disabled' : ''
+                    : parseInt(blockNum, 10) === latestTxBlockNum - 1 ? 'disabled' : ''}
+                to={`/txbk/${parseInt(blockNum, 10) + 1}`}>
+                <FontAwesomeIcon size='2x' className='fa-icon' icon={faCaretSquareRight} />
+              </QueryPreservingLink>
+            </span>
+          </div>
+        }
         {txBlockObj && (
           <>
-            <div className='txblock-header'>
-              <h3>
-                <span className='mr-1'>
-                  <FontAwesomeIcon color='grey' icon={faCubes} />
-                </span>
-                <span className='ml-2'>
-                  Tx Block
-              </span>
-                {' '}
-                <span className='txblock-header-blocknum'>#{blockNum}</span>
-                <LabelStar type='Tx Block' />
-              </h3>
-              <span>
-                <QueryPreservingLink
-                  className={parseInt(blockNum, 10) === 0 ? 'disabled-link mr-3' : 'mr-3'}
-                  to={`/txbk/${parseInt(blockNum, 10) - 1}`}>
-                  <FontAwesomeIcon size='2x' icon={faCaretSquareLeft} />
-                </QueryPreservingLink>
-                <QueryPreservingLink
-                  className={latestTxBlockNum && parseInt(blockNum, 10) === latestTxBlockNum - 1 ? 'disabled-link' : ''}
-                  to={`/txbk/${parseInt(blockNum, 10) + 1}`}>
-                  <FontAwesomeIcon size='2x' icon={faCaretSquareRight} />
-                </QueryPreservingLink>
-              </span>
-            </div>
             <div className='d-flex'>
-              <h6 className='txblock-hash'>{'0x' + txBlockObj.body.BlockHash}</h6>
+              <h6 className='txblock-hash subtext'>{'0x' + txBlockObj.body.BlockHash}</h6>
               <div onClick={() => {
                 navigator.clipboard.writeText(txBlockObj.body.BlockHash)
-              }} className='txblock-hash-copy-btn'>
+              }} className='txblock-hash-copy-btn subtext'>
                 <FontAwesomeIcon icon={faCopy} />
               </div>
             </div>
@@ -291,11 +270,14 @@ const TxBlockDetailsPage: React.FC = () => {
               </Card.Body>
             </Card>
             {txBlockObj.body.MicroBlockInfos.length > 0 && (
-              <Card className='txblock-details-card mono-sm'>
+              <Card className='txblock-details-card mono'>
                 <Card.Body>
                   <Container>
                     <span>Micro Blocks</span>
-                    {txBlockObj.body.MicroBlockInfos.map((x) => <div key={x.MicroBlockHash}>[{x.MicroBlockShardId}] {x.MicroBlockHash}</div>)}
+                    {txBlockObj.body.MicroBlockInfos
+                      .map((x) => (
+                        <div key={x.MicroBlockHash}>[{x.MicroBlockShardId}] {x.MicroBlockHash}</div>
+                      ))}
                   </Container>
                 </Card.Body>
               </Card>

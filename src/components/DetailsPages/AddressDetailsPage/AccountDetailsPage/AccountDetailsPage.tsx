@@ -12,7 +12,7 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faWallet } from '@fortawesome/free-solid-svg-icons'
 
 import AccContractCard from './AccContractCard'
-import LabelStar from '../../LabelStar/LabelStar'
+import LabelStar from '../../LabelComponent/LabelStar'
 import ViewBlockLink from '../../ViewBlockLink/ViewBlockLink'
 
 import '../AddressDetailsPage.css'
@@ -85,13 +85,13 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
   }, [dataService])
 
   return <>
-    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" /></div> : null}
     {accData && (
       <>
         <div className='address-header'>
           <h3>
             <span className='mr-1'>
-              <FontAwesomeIcon color='grey' icon={faWallet} />
+              <FontAwesomeIcon className='fa-icon' icon={faWallet} />
             </span>
             <span className='ml-2'>
               Account
@@ -101,18 +101,30 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
           <ViewBlockLink network={nodeUrl} type='address' identifier={addrRef.current} />
         </div>
         <div className='d-flex'>
-          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current)}</h6>
-          <div onClick={() => {
-            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current))
-          }} className='address-hash-copy-btn'>
+          <h6 className='address-hash subtext'>
+            {validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current)}
+          </h6>
+          <div
+            onClick={() => {
+              navigator.clipboard.writeText(
+                validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current))
+            }}
+            className='address-hash-copy-btn subtext'>
             <FontAwesomeIcon icon={faCopy} />
           </div>
         </div>
         <div className='d-flex'>
-          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current}</h6>
-          <div onClick={() => {
-            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current)
-          }} className='address-hash-copy-btn'>
+          <h6 className='address-hash subtext'>
+            {validation.isBech32(addrRef.current)
+              ? fromBech32Address(addrRef.current).toLowerCase()
+              : addrRef.current}
+          </h6>
+          <div
+            onClick={() => {
+              navigator.clipboard.writeText(
+                validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current)
+            }}
+            className='address-hash-copy-btn subtext'>
             <FontAwesomeIcon icon={faCopy} />
           </div>
         </div>

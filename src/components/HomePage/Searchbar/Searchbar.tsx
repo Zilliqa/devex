@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
-import { useHistory, useLocation } from 'react-router-dom'
 import { Form, InputGroup, Button, Dropdown, DropdownButton } from 'react-bootstrap'
+import { useHistory, useLocation } from 'react-router-dom'
+
+import { isValidAddr } from 'src/utils/Utils'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
+
 import './Searchbar.css'
-import { isValidAddr } from 'src/utils/Utils'
 
 interface IProps {
   isHeaderSearchbar: boolean,
@@ -13,14 +15,15 @@ interface IProps {
 }
 
 const Searchbar: React.FC<IProps> = ({ isHeaderSearchbar, isISSearchbar }) => {
-  const [input, setInput] = useState("")
-  const [searchType, setSearchType] = useState('Txn/Addr')
+
   const history = useHistory()
   const location = useLocation()
+  const [input, setInput] = useState("")
+  const [searchType, setSearchType] = useState('Txn/Addr')
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => (
     setInput(e.target.value)
-  }
+  )
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault()
@@ -59,14 +62,14 @@ const Searchbar: React.FC<IProps> = ({ isHeaderSearchbar, isISSearchbar }) => {
       <InputGroup className="searchbar-ig" id={isHeaderSearchbar ? "header-searchbar-ig" : "searchbar-ig"}>
         {isISSearchbar
           ? <InputGroup.Prepend>
-            <DropdownButton variant="outline-secondary" id='searchbar-dropdown' title={searchType}>
+            <DropdownButton id='searchbar-dropdown' title={searchType}>
               <Dropdown.Item onClick={() => setSearchType('Txn/Addr')}>Txn/Addr</Dropdown.Item>
               <Dropdown.Item onClick={() => setSearchType('Tx Block')}>Tx Block</Dropdown.Item>
             </DropdownButton>
           </InputGroup.Prepend>
           :
           <InputGroup.Prepend>
-            <DropdownButton variant="outline-secondary" id='searchbar-dropdown' title={searchType}>
+            <DropdownButton id='searchbar-dropdown' title={searchType}>
               <Dropdown.Item onClick={() => setSearchType('Txn/Addr')}>Txn/Addr</Dropdown.Item>
               <Dropdown.Item onClick={() => setSearchType('Tx Block')}>Tx Block</Dropdown.Item>
               <Dropdown.Item onClick={() => setSearchType('DS Block')}>DS Block</Dropdown.Item>
@@ -82,7 +85,7 @@ const Searchbar: React.FC<IProps> = ({ isHeaderSearchbar, isISSearchbar }) => {
                 : 'Search by DS Block height'}
           onChange={handleChange} />
         <InputGroup.Append>
-          <Button type="submit" variant="outline-secondary">
+          <Button type="submit">
             {isHeaderSearchbar ? <FontAwesomeIcon icon={faSearch} /> : <div>Search</div>}
           </Button>
         </InputGroup.Append>

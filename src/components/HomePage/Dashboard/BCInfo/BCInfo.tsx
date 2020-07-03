@@ -2,9 +2,9 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Container, Row, Col, Card, Spinner, Tooltip, OverlayTrigger } from 'react-bootstrap'
 
 import { QueryPreservingLink } from 'src'
+import { refreshRate } from 'src/constants'
 import { NetworkContext } from 'src/services/networkProvider'
 import { BlockchainInfo } from '@zilliqa-js/core/src/types'
-import { refreshRate } from 'src/constants'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
@@ -89,56 +89,56 @@ const BCInfo: React.FC = () => {
           ? <Container>
             <Row className='mb-3'>
               <Col>
-                <span className='bcstats-header'>Current Tx Block:</span>
+                <span className='subtext'>Current Tx Block:</span>
                 <br />
                 <span>{parseInt(data.NumTxBlocks).toLocaleString('en')}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>Number of Transactions:</span>
+                <span className='subtext'>Number of Transactions:</span>
                 <br />
                 <span>{parseInt(data.NumTransactions).toLocaleString('en')}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>Peers:</span>
+                <span className='subtext'>Peers:</span>
                 <br />
                 <span>{data.NumPeers.toLocaleString('en')}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>Sharding Structure:</span>
+                <span className='subtext'>Sharding Structure:</span>
                 <br />
                 <span>[{data.ShardingStructure.NumPeers.toString()}]</span>
               </Col>
             </Row>
             <Row className='mb-3'>
               <Col>
-                <span className='bcstats-header'>Current DS Epoch:</span>
+                <span className='subtext'>Current DS Epoch:</span>
                 <br />
                 <span>{parseInt(data.CurrentDSEpoch).toLocaleString('en')}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>DS Block Rate:</span>
+                <span className='subtext'>DS Block Rate:</span>
                 <br />
                 <span>{data.DSBlockRate.toFixed(5)}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>Tx Block Rate:</span>
+                <span className='subtext'>Tx Block Rate:</span>
                 <br />
                 <span>{data.TxBlockRate.toFixed(5)}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>TPS:</span>
+                <span className='subtext'>TPS:</span>
                 <br />
                 <span>{data.TransactionRate.toFixed(5)}</span>
               </Col>
             </Row>
             <Row>
               <Col>
-                <span className='bcstats-header'>Number of Txns in DS Epoch:</span>
+                <span className='subtext'>Number of Txns in DS Epoch:</span>
                 <br />
                 <span>{parseInt(data.NumTxnsDSEpoch).toLocaleString('en')}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>Number of Txns in Txn Epoch:</span>
+                <span className='subtext'>Number of Txns in Txn Epoch:</span>
                 <br />
                 <span>{parseInt(data.NumTxnsTxEpoch).toLocaleString('en')}</span>
               </Col>
@@ -148,12 +148,12 @@ const BCInfo: React.FC = () => {
                   <FontAwesomeIcon className='info-icon' icon={faInfoCircle} />
                 </OverlayTrigger>
                 {' '}
-                <span className='bcstats-header'>Recent Max Observed TPS:</span>
+                <span className='subtext'>Recent Max Observed TPS:</span>
                 <br />
                 <span>{state.maxTPS && state.maxTPS.toFixed(5)}</span>
                 <span>
                   {' '}
-                  <small className='txblock-subtext'>
+                  <small className='text-nowrap subtext'>
                     (on TxBlock <QueryPreservingLink to={`/txbk/${state.maxTPSTxBlockNum}`}>{state.maxTPSTxBlockNum}</QueryPreservingLink>)
                   </small>
                 </span>
@@ -164,11 +164,11 @@ const BCInfo: React.FC = () => {
                   <FontAwesomeIcon className='info-icon' icon={faInfoCircle} />
                 </OverlayTrigger>
                 {' '}
-                <span className='bcstats-header'>Recent Max Observed Txn Count:</span>
+                <span className='subtext'>Recent Max Observed Txn Count:</span>
                 <br />
                 <span>{state.maxTxnCount}
                   {' '}
-                  <small className='txblock-subtext'>
+                  <small className='text-nowrap subtext'>
                     (on TxBlock <QueryPreservingLink to={`/txbk/${state.maxTxnCountTxBlockNum}`}>{state.maxTxnCountTxBlockNum}</QueryPreservingLink>)
                   </small>
                 </span>

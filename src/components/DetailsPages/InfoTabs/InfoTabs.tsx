@@ -9,6 +9,8 @@ import OverviewTab from './OverviewTab'
 import TransitionsTab from './TransitionsTab'
 import CodeTab from './CodeTab'
 
+import './InfoTabs.css'
+
 export interface ReceiptTabs {
   tabHeaders: string[],
   tabTitles: string[],
@@ -20,6 +22,7 @@ interface IProps {
 }
 
 export const generateTabsFromTxnDetails = (data: TransactionDetails): ReceiptTabs => {
+  
   const tabs: ReceiptTabs = {
     tabHeaders: [],
     tabTitles: [],
@@ -76,6 +79,7 @@ export const generateTabsFromTxnDetails = (data: TransactionDetails): ReceiptTab
 }
 
 const InfoTabs: React.FC<IProps> = ({ tabs }) => {
+  
   const { tabHeaders, tabTitles, tabContents } = tabs
   const [currTab, setCurrTab] = useState(tabHeaders[0])
 
@@ -83,7 +87,7 @@ const InfoTabs: React.FC<IProps> = ({ tabs }) => {
     {tabHeaders.length > 0
       ? <Card className='tabs-card'>
         <Card.Header className='tabs-card-header'>
-          <Tabs id="additional-info-tabs" activeKey={currTab} onSelect={(k: string) => setCurrTab(k)}>
+          <Tabs id="info-tabs" activeKey={currTab} onSelect={(k: string) => setCurrTab(k)}>
             {tabHeaders.map((tabHeader: string, index: number) => (
               <Tab key={index} eventKey={tabHeader} title={[tabTitles[index]]} />
             ))}

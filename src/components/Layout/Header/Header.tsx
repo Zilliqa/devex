@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useCallback } from 'react'
-import { useLocation, useHistory } from 'react-router-dom'
 import { Navbar, Nav, NavDropdown, Tooltip, OverlayTrigger, Form } from 'react-bootstrap'
+import { useLocation, useHistory } from 'react-router-dom'
 
 import { QueryPreservingLink } from 'src'
 import ZilLogo from 'src/assets/images/ZilLogo.png'
@@ -106,8 +106,8 @@ const Header: React.FC = () => {
             ))}
             <NavDropdown.Divider />
             {Object.entries(nodeUrlMap).map(([k, v]) => (
-              <div key={k} className='node-div'>
-                <NavDropdown.Item className='node-item' onClick={() => {
+              <div key={k} className='default-node-div'>
+                <NavDropdown.Item className='default-node-item' onClick={() => {
                   if (currentNetwork !== v) {
                     setShowSearchbar(false)
                     changeNetwork(k)
@@ -126,7 +126,7 @@ const Header: React.FC = () => {
                   type="text"
                   value={newNode}
                   onChange={(e) => { setNewNode(e.target.value) }}
-                  placeholder="DevNet Url" />
+                  placeholder="Node Url" />
               </Form>
               <NavDropdown.Item className='plus-icon-item' onClick={addNewNode}>
                 <FontAwesomeIcon size='lg' icon={faPlus} />

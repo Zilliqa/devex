@@ -29,7 +29,7 @@ const PendTxnList: React.FC = () => {
       Header: 'Hash',
       accessor: 'hash',
       Cell: ({ value }: { value: string }) => (
-        <div className='mono-sm'>{'0x' + value}</div>
+        <div className='mono'>{'0x' + value}</div>
       )
     },
     {
@@ -77,6 +77,7 @@ const PendTxnList: React.FC = () => {
           console.log(e)
       }
     }
+    
     getData()
     const getDataTimer = setInterval(async () => {
       await getData()

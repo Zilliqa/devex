@@ -5,10 +5,13 @@
   padding: 120px 20px;
   border-width: 2px;
   border-radius: 2px;
-  border-color: #dddddd;
+  border-color: var(--color-border);
   border-style: dashed;
-  background-color: #fbfbfb;
-  color: #adadad;
+  background-color: var(--color-dropzone-bg);
+  color: var(--color-subtext);
   outline: none;
-  transition: border .24s ease-in-out;
+}
+
+.dropzone-prompt {
+  user-select: none;
 }

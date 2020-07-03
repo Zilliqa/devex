@@ -1,0 +1,57 @@
+:root {
+  --color-palette-1: #022c43;
+  --color-palette-2: #053f5e;
+  --color-palette-3: #115173;
+  --color-palette-4: #ffd700;
+  --color-dark-text: rgb(217, 225, 226);
+}
+
+.light-theme {
+  /* Common */
+  --color-app-bg: rgba(0, 0, 0, .05);
+  --color-text: black;
+  --color-subtext: rgb(93, 106, 133);
+  --color-zil-green: #019c99;
+  --color-spinner: #6c757d;
+  --color-border: #cfcfcf;
+  --color-icon: darkslategray;
+  --color-highlight: hsla(0, 0%, 80%, .1);
+  --color-btn: white;
+  --color-btn-hover: white;
+  /* Card */
+  --color-card-bg: white;
+  --color-card-header: rgb(214, 228, 222);
+  /* Searchbar */
+  --color-searchbar: white;
+  /* Table */
+  --color-table-bg: white;
+  /* Modal */
+  --color-modal-bg: white;
+  /* Dropzone */
+  --color-dropzone-bg: #fbfbfb;
+}
+
+.dark-theme {
+  /* Common */
+  --color-app-bg: var(--color-palette-1);
+  --color-text: var(--color-dark-text);
+  --color-subtext: rgb(153, 166, 173);
+  --color-zil-green: #30bebc;
+  --color-spinner: var(--color-dark-text);
+  --color-border: #035992;
+  --color-icon: var(--color-dark-text);
+  --color-highlight: hsla(0, 0%, 10%, .1);
+  --color-btn: var(--color-palette-2);
+  --color-btn-hover: #035992;
+  /* Card */
+  --color-card-bg: var(--color-palette-2);
+  --color-card-header: var(--color-palette-3);
+  /* Searchbar */
+  --color-searchbar: var(--color-palette-2);
+  /* Table */
+  --color-table-bg: var(--color-palette-2);
+  /* Modal */
+  --color-modal-bg: #073f5e;
+  /* Dropzone */
+  --color-dropzone-bg: var(--color-palette-2);
+}

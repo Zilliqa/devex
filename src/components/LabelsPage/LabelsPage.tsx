@@ -11,6 +11,7 @@ import LabelCard from './LabelCard/LabelCard'
 import './LabelsPage.css'
 
 const LabelsPage: React.FC = () => {
+
   const userPrefContext = useContext(UserPrefContext)
   const { labelMap, nodeUrlMap, setLabelMap } = userPrefContext!
 
@@ -34,7 +35,7 @@ const LabelsPage: React.FC = () => {
             <span>
               Network:
             </span>
-            <Dropdown className="label-filter">
+            <Dropdown className="ml-3">
               <Dropdown.Toggle id="label-network-toggle">{defaultNetworks[networkFilter] || networkFilter}</Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={() => setNetworkFilter('All')}>All</Dropdown.Item>
@@ -46,7 +47,7 @@ const LabelsPage: React.FC = () => {
             <span className='ml-3'>
               Label Type:
             </span>
-            <Dropdown className="label-filter">
+            <Dropdown className="ml-3">
               <Dropdown.Toggle id="label-type-toggle">{typefilter}</Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={() => setTypefilter('All')}>All</Dropdown.Item>

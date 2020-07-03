@@ -8,17 +8,8 @@ import { timestampToTimeago, qaToZil } from 'src/utils/Utils'
 import { TxBlockObj } from '@zilliqa-js/core/src/types'
 
 import DisplayTable from '../../DisplayTable/DisplayTable'
-import './TxBlockList.css'
 
-/*
-    Display first 5 Tx Block
-      - Height
-      - Number of Transactions
-      - Block Fees
-      - Miner Public Key
-      - Age
-      - Hash
-*/
+import './TxBlockList.css'
 
 const TxBlockList: React.FC = () => {
 
@@ -82,7 +73,6 @@ const TxBlockList: React.FC = () => {
     }], []
   )
 
-
   // Fetch Data
   useEffect(() => {
     let isCancelled = false
@@ -100,6 +90,7 @@ const TxBlockList: React.FC = () => {
       }
     }
     getData()
+    
     const getDataTimer = setInterval(async () => {
       await getData()
     }, refreshRate)

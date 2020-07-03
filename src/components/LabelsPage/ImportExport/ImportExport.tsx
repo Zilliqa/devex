@@ -51,7 +51,7 @@ const ImportExport: React.FC<IProps> = ({ labelMap, setLabelCb }) => {
           <input {...getInputProps()} />
           <OverlayTrigger placement='top'
             overlay={<Tooltip id={'import-tt'}>Import Labels</Tooltip>}>
-            <Button variant='outline-secondary'>
+            <Button>
               <FontAwesomeIcon
                 icon={faDownload}
                 size='sm' />
@@ -64,8 +64,7 @@ const ImportExport: React.FC<IProps> = ({ labelMap, setLabelCb }) => {
             <Button
               onClick={() => {
                 exportToJson(labelMap)
-              }}
-              variant='outline-secondary'>
+              }}>
               <FontAwesomeIcon
                 icon={faUpload}
                 size='sm' />

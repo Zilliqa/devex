@@ -2,15 +2,20 @@
   white-space: nowrap;
   padding: 5px;
   border-radius: 10px;
-  border: 1px solid #ced4da;
-  background-color: white;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-table-bg);
+  color: var(--color-text);
   min-height: 500px;
   position: relative;
 }
 
+.viewall-table table * {
+  border-color: var(--color-border) !important;
+}
+
 .viewall-table table {
   width: 100%;
-  table-layout: fixed !important;
+  table-layout: fixed;
 }
 
 .viewall-table thead th {
@@ -18,33 +23,6 @@
   border-top: 0;
   font-weight: 500;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
-}
-
-.viewall-table .spinner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-}
-
-.viewall-pagination {
-  justify-content: flex-end;
-}
-
-.viewall-pagination .page-item:focus {
-  outline: none;
-}
-
-.viewall-pagination .page-item.active .page-link {
-  background-color: #019c99;
-  border-color: #019c99;
-}
-
-.viewall-pagination .page-link {
-  color: #019c99;
-}
-
-.viewall-pagination .page-link:focus {
-  box-shadow: none;
 }
 
 .viewall-table td {
@@ -73,7 +51,7 @@
 }
 
 .viewall-table #ds-leader-col {
-  width: 410px;
+  width: 380px;
 }
 
 .viewall-table #age-col {
@@ -90,8 +68,8 @@
 
 .viewall-table #total-fees-col {
   width: 120px;
-  padding-right: 1rem;
   text-align: center;
+  padding-right: 1rem;
 }
 
 /* Transactions Page */
@@ -115,6 +93,6 @@
 }
 
 .viewall-table #amount-col {
-  text-align: right;
   width: 190px;
+  text-align: right;
 }

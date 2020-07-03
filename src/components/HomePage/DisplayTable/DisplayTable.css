@@ -24,7 +24,7 @@
 
 .display-table th {
   padding: 0.5rem;
-  color: dimgrey;
+  color: var(--color-subtext);
 }
 
 .display-table td {

@@ -6,7 +6,7 @@
 .label-card-div {
   justify-content: space-between;
   padding: 20px;
-  border-bottom: solid 1px rgba(0, 0, 0, 0.125);
+  border-bottom: solid 1px var(--color-border);
   display: flex;
 }
 

@@ -13,6 +13,11 @@ const DSBlocksPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
+  const fetchIdRef = useRef(0)
+  const [isLoading, setIsLoading] = useState(false)
+  const [pageCount, setPageCount] = useState(0)
+  const [data, setData] = useState<DsBlockObj[] | null>(null)
+
   const columns = useMemo(
     () => [{
       id: 'height-col',
@@ -53,7 +58,7 @@ const DSBlocksPage: React.FC = () => {
       Cell: ({ value }: { value: string }) => (
         <OverlayTrigger placement='left'
           overlay={<Tooltip id={'bkhash-tt'}>{'0x' + value}</Tooltip>}>
-          <div className='mono-sm bkhash-div'>{'0x' + value}</div>
+          <div className='mono bkhash-div'>{'0x' + value}</div>
         </OverlayTrigger>
       )
     },
@@ -68,11 +73,6 @@ const DSBlocksPage: React.FC = () => {
       )
     }], []
   )
-
-  const fetchIdRef = useRef(0)
-  const [isLoading, setIsLoading] = useState(false)
-  const [pageCount, setPageCount] = useState(0)
-  const [data, setData] = useState<DsBlockObj[] | null>(null)
 
   const fetchData = useCallback(({ pageIndex }) => {
     if (!dataService) return

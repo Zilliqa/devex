@@ -1,7 +1,7 @@
 import React, { useState, useRef, useContext, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import { Card } from 'react-bootstrap'
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable'
+import { Link } from 'react-router-dom'
 
 import { defaultNetworks } from 'src/services/networkProvider'
 import { UserPrefContext, LabelInfo } from 'src/services/userPrefProvider'
@@ -26,6 +26,7 @@ interface IProps {
 }
 
 const LabelCard: React.FC<IProps> = ({ k, v }) => {
+
   const userPrefContext = useContext(UserPrefContext)
   const { labelMap, setLabelMap } = userPrefContext!
 

@@ -8,17 +8,8 @@ import { timestampToTimeago } from 'src/utils/Utils'
 import { DsBlockObj } from '@zilliqa-js/core/src/types'
 
 import DisplayTable from '../../DisplayTable/DisplayTable'
-import './DSBlockList.css'
 
-/*
-    Display first 5 DS Block
-      - Height
-      - Difficulty
-      - DS Difficulty
-      - DS Leader
-      - Age
-      - Hash
-*/
+import './DSBlockList.css'
 
 const DSBlockList: React.FC = () => {
 
@@ -34,7 +25,7 @@ const DSBlockList: React.FC = () => {
       id: 'dsheight-col',
       Header: 'Height',
       accessor: 'header.BlockNum',
-      Cell: ({value}: {value: string}) => (
+      Cell: ({ value }: { value: string }) => (
         <QueryPreservingLink to={`dsbk/${value}`}>
           {value}
         </QueryPreservingLink>
@@ -44,7 +35,7 @@ const DSBlockList: React.FC = () => {
       id: 'difficulty-col',
       Header: 'Difficulty',
       accessor: 'header.Difficulty',
-      Cell: ({value}: {value: string}) => (
+      Cell: ({ value }: { value: string }) => (
         <div className='text-center'>{value}</div>
       ),
     },
@@ -52,7 +43,7 @@ const DSBlockList: React.FC = () => {
       id: 'ds-difficulty-col',
       Header: 'DS Difficulty',
       accessor: 'header.DifficultyDS',
-      Cell: ({value}: {value: string}) => (
+      Cell: ({ value }: { value: string }) => (
         <div className='text-center'>{value}</div>
       ),
     },
@@ -60,7 +51,7 @@ const DSBlockList: React.FC = () => {
       id: 'age-col',
       Header: 'Age',
       accessor: 'header.Timestamp',
-      Cell: ({value}: {value: string}) => (
+      Cell: ({ value }: { value: string }) => (
         <div className='text-right'>{timestampToTimeago(value)}</div>
       ),
     }], []

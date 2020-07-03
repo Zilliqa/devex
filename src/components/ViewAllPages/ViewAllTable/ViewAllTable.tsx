@@ -15,7 +15,6 @@ interface IViewAllTableParams<T extends object> {
   pageCount: number,
 }
 
-// React Table for DSBlocks, TxnBlocks and TransactionDetails on Dashboard 
 const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult>> =
   ({ columns, data, isLoading, fetchData, pageCount: controlledPageCount }) => {
 
@@ -81,10 +80,10 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
           <BCol className='align-self-center pl-3'>
             {data.length === 0
               ? null
-              : <span>Items Per Page: <strong>10</strong></span>}
+              : <span className='subtext'>Items Per Page: <strong>10</strong></span>}
           </BCol>
           <BCol>
-            <Pagination className='viewall-pagination'>
+            <Pagination className='justify-content-end'>
               <Pagination.Prev onClick={() => previousPage()} disabled={!canPreviousPage} />
               {generatePagination(pageIndex + 1, pageCount).map((page) => {
                 if (page === -1)
@@ -101,7 +100,7 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
           </BCol>
         </BRow>
         <div className='viewall-table table'>
-          {isLoading ? <div className='spinner'><Spinner animation="border" variant="secondary" /></div> : null}
+          {isLoading ? <div className='center-spinner mt-4'><Spinner animation="border" /></div> : null}
           <table {...getTableProps()}>
             <thead>
               {headerGroups.map((headerGroup: HeaderGroup<DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult>) => (

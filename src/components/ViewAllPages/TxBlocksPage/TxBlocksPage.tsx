@@ -15,6 +15,11 @@ const TxBlocksPage: React.FC = () => {
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
+  const fetchIdRef = useRef(0)
+  const [isLoading, setIsLoading] = useState(false)
+  const [pageCount, setPageCount] = useState(0)
+  const [data, setData] = useState<TxBlockObj[] | null>(null)
+
   const columns = useMemo(
     () => [{
       id: 'height-col',
@@ -55,7 +60,7 @@ const TxBlocksPage: React.FC = () => {
       Cell: ({ value }: { value: string }) => (
         <OverlayTrigger placement='left'
           overlay={<Tooltip id={'bkhash-tt'}>{'0x' + value}</Tooltip>}>
-          <div className='mono-sm bkhash-div'>{'0x' + value}</div>
+          <div className='mono bkhash-div'>{'0x' + value}</div>
         </OverlayTrigger>
       )
     }, {
@@ -80,11 +85,6 @@ const TxBlocksPage: React.FC = () => {
       )
     }], []
   )
-
-  const fetchIdRef = useRef(0)
-  const [isLoading, setIsLoading] = useState(false)
-  const [pageCount, setPageCount] = useState(0)
-  const [data, setData] = useState<TxBlockObj[] | null>(null)
 
   const fetchData = useCallback(({ pageIndex }) => {
     if (!dataService) return

@@ -32,7 +32,7 @@ const Dropzone: React.FC<IProps> = ({ setLabelCb }) => {
     <Container>
       <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
-        <span>Drag and drop or click to load file</span>
+        <span className='dropzone-prompt'>Drag and drop or click to load file</span>
       </div>
     </Container>
   )

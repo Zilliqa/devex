@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect, useCallback, useMemo, SyntheticEvent } from 'react'
-import { Modal, Button, Form } from 'react-bootstrap'
+import React, { useState, useContext, useEffect, useCallback, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 
 import { useNetworkUrl } from 'src/services/networkProvider'
@@ -9,22 +8,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar as faStarOutline } from '@fortawesome/free-regular-svg-icons'
 import { faStar as faStarFilled } from '@fortawesome/free-solid-svg-icons'
 
+import LabelModal from './LabelModal'
+
 import './LabelStar.css'
 
 interface IProps {
-  type : string
+  type: string
 }
 
 const LabelStar: React.FC<IProps> = ({ type }) => {
+
   const location = useLocation()
   const network = useNetworkUrl()
   const userPrefContext = useContext(UserPrefContext)
   const { labelMap, setLabelMap } = userPrefContext!
-  const currPath = useMemo(() => (location.pathname + location.search), [location])
 
+  const currPath = useMemo(() => (location.pathname + location.search), [location])
   const [isLit, setIsLit] = useState(Object.keys(labelMap).includes(currPath))
   const [show, setShow] = useState(false)
-  const [labelInput, setLabelInput] = useState('')
 
   const handleCloseModal = () => setShow(false)
   const handleShowModal = () => setShow(true)
@@ -33,24 +34,22 @@ const LabelStar: React.FC<IProps> = ({ type }) => {
     setIsLit(Object.keys(labelMap).includes(currPath))
   }, [labelMap, currPath])
 
-  const removeLabel = useCallback(() => {
-    const temp = { ...labelMap }
-    delete temp[currPath]
-    setLabelMap(temp)
-  }, [labelMap, setLabelMap, currPath])
-
-  const handleSubmit = (e: SyntheticEvent) => {
-    e.preventDefault()
+  const addLabel = (labelName: string) => {
     const newLabelInfo: LabelInfo = {
-      name: labelInput,
+      name: labelName,
       type: type,
       network: network,
       timeAdded: Date.now()
     }
     setLabelMap({ ...labelMap, [currPath]: newLabelInfo })
     handleCloseModal()
-    setLabelInput('')
   }
+
+  const removeLabel = useCallback(() => {
+    const temp = { ...labelMap }
+    delete temp[currPath]
+    setLabelMap(temp)
+  }, [labelMap, setLabelMap, currPath])
 
   return (
     <>
@@ -63,37 +62,7 @@ const LabelStar: React.FC<IProps> = ({ type }) => {
         <FontAwesomeIcon onClick={isLit ? removeLabel : handleShowModal} color='grey'
           className={isLit ? 'star-filled-icon' : 'star-outline-icon'}
           icon={isLit ? faStarFilled : faStarOutline} size='xs' />
-        <Modal className='label-modal' show={show} onHide={handleCloseModal}>
-          <div className='label-modal-header'>
-            <h6>
-              Add Label
-            </h6>
-          </div>
-          <Modal.Body>
-            <Form onSubmit={handleSubmit}>
-              <div className='mb-3'>
-                <Form.Control
-                  autoFocus={true}
-                  required
-                  type='text'
-                  value={labelInput}
-                  maxLength={20}
-                  onChange={(e) => { setLabelInput(e.target.value) }}
-                  placeholder='Label Name' />
-              </div>
-              <div>
-                <Button block type='submit'>
-                  Save
-              </Button>
-              </div>
-            </Form>
-            <div className='label-modal-footer'>
-              <span>Labels can be accessed from the Labels Page</span>
-              <br />
-              <span>Label data is saved in the local storage of your browser</span>
-            </div>
-          </Modal.Body>
-        </Modal>
+        <LabelModal show={show} handleCloseModal={handleCloseModal} addLabel={addLabel} />
       </span>
     </>
   )

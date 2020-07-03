@@ -1,12 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Row, Col, Container } from 'react-bootstrap'
+import Switch from 'rc-switch'
+
+import { ThemeContext } from 'src/themes/themeProvider'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTwitter, faFacebookF, faRedditAlien, faMediumM, faYoutube, faTelegramPlane } from '@fortawesome/free-brands-svg-icons'
+import { faMoon, faSun } from '@fortawesome/free-solid-svg-icons'
 
 import './Footer.css'
 
 const Footer: React.FC = () => {
+
+  const themeContext = useContext(ThemeContext)
+  const { toggle } = themeContext!
+
   return <div className='custom-footer'>
     <Container>
       <Row className='justify-content-between'>
@@ -59,6 +67,24 @@ const Footer: React.FC = () => {
           </Row>
           <Row className='justify-content-end'>
             <span><small>© 2020 Zilliqa</small></span>
+          </Row>
+          <Row className='justify-content-end pt-1'>
+            <Switch
+              className='theme-switch'
+              loadingIcon={null}
+              onChange={(checked: boolean) => {
+                toggle()
+              }}
+              disabled={false}
+              checkedChildren={
+                <div className='theme-icon-div-moon'>
+                  <FontAwesomeIcon className='theme-icon' icon={faMoon} size='xs' color='white' />
+                </div>}
+              unCheckedChildren={
+                <div className='theme-icon-div-sun'>
+                  <FontAwesomeIcon className='theme-icon' icon={faSun} size='xs' color='white' />
+                </div>}
+            />
           </Row>
         </Col>
       </Row>
