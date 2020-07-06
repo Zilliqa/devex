@@ -14,13 +14,13 @@ interface IProps {
 const CodeTab: React.FC<IProps> = ({ code }) => {
   
   const themeContext = useContext(ThemeContext)
-  const { dark } = themeContext!
+  const { theme } = themeContext!
 
   return (
     <>
       <AceEditor
         mode="ocaml"
-        theme={dark ? "idle_fingers" : "textmate"}
+        theme={theme === 'dark' ? "idle_fingers" : "textmate"}
         width="100%"
         fontSize='14px'
         name="ace_editor"

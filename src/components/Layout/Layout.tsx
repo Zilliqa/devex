@@ -17,10 +17,10 @@ const Layout: React.FC<Props> = (props) => {
   const networkContext = useContext(NetworkContext)
   const themeContext = useContext(ThemeContext)
   const { inTransition } = networkContext!
-  const { dark } = themeContext!
+  const { theme } = themeContext!
 
   return (
-    <div id='app' className={dark ? 'dark-theme' : 'light-theme'}>
+    <div id='app' className={theme === 'dark' ? 'dark-theme' : 'light-theme'}>
       <Header />
       <Container className="app-container">
         {inTransition

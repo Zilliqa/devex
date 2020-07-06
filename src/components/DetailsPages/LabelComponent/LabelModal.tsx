@@ -15,7 +15,7 @@ interface IProps {
 const LabelModal: React.FC<IProps> = ({ show, handleCloseModal, addLabel }) => {
 
   const themeContext = useContext(ThemeContext)
-  const { dark } = themeContext!
+  const { theme } = themeContext!
   const [labelInput, setLabelInput] = useState('')
 
   const handleSubmit = (e: React.SyntheticEvent) => {
@@ -24,7 +24,7 @@ const LabelModal: React.FC<IProps> = ({ show, handleCloseModal, addLabel }) => {
     addLabel(labelInput)
   }
 
-  return <Modal className={dark ? 'label-modal dark-theme' : 'label-modal light-theme'} show={show} onHide={handleCloseModal}>
+  return <Modal className={theme === 'dark' ? 'label-modal dark-theme' : 'label-modal light-theme'} show={show} onHide={handleCloseModal}>
     <div className='modal-header'>
       <h6>
         Add Label
