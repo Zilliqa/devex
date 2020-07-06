@@ -1,0 +1,4 @@
+.bkhash-div {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

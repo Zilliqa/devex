@@ -1,5 +1,5 @@
 .not-found-card {
-  height: calc(100vh - 230px);
+  height: calc(100vh - 300px);
 }
 
 .not-found-card .card-body {
@@ -7,4 +7,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.return-home-btn {
+  color: var(--color-zil-green) !important;
+  border-color: var(--color-zil-green) !important;
+}
+
+.return-home-btn:hover {
+  color: white !important;
+  background-color: var(--color-zil-green) !important;
 }

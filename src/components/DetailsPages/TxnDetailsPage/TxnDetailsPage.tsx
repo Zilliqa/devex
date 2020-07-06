@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { useParams } from 'react-router-dom'
 import { Card, Row, Col, Container, Spinner } from 'react-bootstrap'
+import { useParams } from 'react-router-dom'
 
 import { QueryPreservingLink } from 'src'
 import { NetworkContext } from 'src/services/networkProvider'
@@ -9,12 +9,12 @@ import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCopy } from '@fortawesome/free-regular-svg-icons'
-import { faExclamationCircle, faExchangeAlt } from '@fortawesome/free-solid-svg-icons'
+import { faExclamationCircle, faExchangeAlt, faFileContract } from '@fortawesome/free-solid-svg-icons'
 
 import InfoTabs, { generateTabsFromTxnDetails } from '../InfoTabs/InfoTabs'
-
-import LabelStar from '../LabelStar/LabelStar'
+import LabelStar from '../LabelComponent/LabelStar'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
+
 import './TxnDetailsPage.css'
 
 const TxnDetailsPage: React.FC = () => {
@@ -26,7 +26,6 @@ const TxnDetailsPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
   const [data, setData] = useState<TransactionDetails | null>(null)
-
 
   // Fetch data
   useEffect(() => {
@@ -56,27 +55,29 @@ const TxnDetailsPage: React.FC = () => {
   }, [dataService, txnHash])
 
   return <>
-    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" /></div> : null}
     {error
       ? <NotFoundPage />
       : data && data.txn.txParams.receipt && (
         <>
-          <h3>
-            <span>
-              {(data.txn.txParams.receipt.success === undefined || data.txn.txParams.receipt.success)
-                ? <FontAwesomeIcon color='green' icon={faExchangeAlt} />
-                : <FontAwesomeIcon color='red' icon={faExclamationCircle} />}
-            </span>
-            <span style={{ marginLeft: '0.75rem' }}>
-              Transaction
-          </span>
-            <LabelStar />
-          </h3>
-          <div style={{ display: 'flex' }}>
-            <h6 className='txn-hash'>{'0x' + data.hash}</h6>
+          <div>
+            <h3>
+              <span className='mr-1'>
+                {(data.txn.txParams.receipt.success === undefined || data.txn.txParams.receipt.success)
+                  ? <FontAwesomeIcon color='green' icon={faExchangeAlt} />
+                  : <FontAwesomeIcon color='red' icon={faExclamationCircle} />}
+              </span>
+              <span className='ml-2'>
+                Transaction
+              </span>
+              <LabelStar type='Transaction' />
+            </h3>
+          </div>
+          <div className='d-flex'>
+            <h6 className='txn-hash subtext'>{'0x' + data.hash}</h6>
             <div onClick={() => {
               navigator.clipboard.writeText('0x' + data.hash)
-            }} className='txn-hash-copy-btn'>
+            }} className='txn-hash-copy-btn subtext'>
               <FontAwesomeIcon icon={faCopy} />
             </div>
           </div>
@@ -98,9 +99,18 @@ const TxnDetailsPage: React.FC = () => {
                     <div className='txn-detail'>
                       <span>To:</span>
                       <span>
-                        <QueryPreservingLink to={`/address/${hexAddrToZilAddr(data.txn.txParams.toAddr)}`}>
-                          {hexAddrToZilAddr(data.txn.txParams.toAddr)}
-                        </QueryPreservingLink>
+                        {data.contractAddr
+                          ? data.txn.txParams.receipt.success
+                            ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(data.contractAddr)}`}>
+                              <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
+                              {' '}
+                              {hexAddrToZilAddr(data.contractAddr)}
+                            </QueryPreservingLink>
+                            : '-'
+                          : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(data.txn.txParams.toAddr)}`}>
+                            {hexAddrToZilAddr(data.txn.txParams.toAddr)}
+                          </QueryPreservingLink>
+                        }
                       </span>
                     </div>
                   </Col>
@@ -136,8 +146,8 @@ const TxnDetailsPage: React.FC = () => {
                 <Row>
                   <Col>
                     <div className='txn-detail'>
-                      <span>Cumulative Gas:</span>
-                      <span>{data.txn.txParams.receipt.cumulative_gas}</span>
+                      <span>Transaction Fee:</span>
+                      <span>{qaToZil(Number(data.txn.txParams.gasPrice) * data.txn.txParams.receipt!.cumulative_gas)}</span>
                     </div>
                   </Col>
                   <Col>

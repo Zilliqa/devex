@@ -36,18 +36,52 @@ export const timestampToTimeago: ((timestamp: string | number) => string) =
   }
 
 // Convert from Qa to Zil
-export const qaToZil: ((amount: string | number) => string) = (amount: string | number) => {
-  const splitAmt = units.fromQa(new BN(amount), units.Units.Zil).split('.')
-  if (splitAmt.length === 1) {
-    return parseInt(splitAmt[0]).toLocaleString('en') + ' ZIL'
-  } else {
-    return (parseInt(splitAmt[0])).toLocaleString('en') + '.' + splitAmt[1] + ' ZIL'
+export const qaToZil: ((amount: string | number, numOfDigits?: number) => string)
+  = (amount: string | number, numOfDigits?: number) => {
+    let parsedAmt = ''
+    const splitAmt = units.fromQa(new BN(amount), units.Units.Zil).split('.')
+    if (splitAmt.length === 1) {
+      parsedAmt = parseInt(splitAmt[0]).toLocaleString('en')
+    } else {
+      parsedAmt = (parseInt(splitAmt[0])).toLocaleString('en') + '.' + splitAmt[1]
+    }
+    if (!numOfDigits)
+      return parsedAmt + ' ZIL'
+    let truncatedAmt = ''
+    let counter = numOfDigits
+    let i
+    for (i = 0; i < parsedAmt.length; i++) {
+      if ((counter) === 0)
+        break
+      truncatedAmt += parsedAmt[i]
+      if (parsedAmt[i] !== '.' && parsedAmt[i] !== ',')
+        counter--
+    }
+    if (i < parsedAmt.length)
+      truncatedAmt += '...'
+    return truncatedAmt + ' ZIL'
   }
-}
 
 // Strips hex prefix if exists
 export const stripHexPrefix: ((inputHex: string) => string) = (inputHex: string) => {
   if (inputHex.substring(0, 2) === '0x')
     return inputHex.substring(2)
   return inputHex
+}
+
+// Add hex prefix if not already
+export const addHexPrefix: ((inputHex: string) => string) = (inputHex: string) => {
+  if (inputHex.substring(0, 2) !== '0x')
+    return '0x' + inputHex
+  return inputHex
+}
+
+export const isValidAddr: ((inputStr: string) => boolean) = (inputStr: string) => {
+  const trimmedInput = inputStr.trim()
+  let prefixedInput = trimmedInput
+  if (trimmedInput.substring(0, 3) !== 'zil' && trimmedInput.substring(0, 2) !== '0x')
+    prefixedInput = '0x' + trimmedInput
+  if (validation.isAddress(prefixedInput) || validation.isBech32(prefixedInput))
+    return true
+  return false
 }

@@ -1,39 +1,11 @@
-/*
-Not Used:
-CreateTransaction
-IncreaseBlocknum
-SetMinimumGasPrice
-GetNetworkID
-
-Home:
-GetBlocknum
-GetMinimumGasPrice
-
-Contract Pages:
-GetSmartContractSubState
-GetSmartContractCode
-GetSmartContractInit
-
-Account Pages:
-GetBalance
-GetSmartContracts
-
-Tx Block Pages:
-GetTransactionForTxBlock
-
-Transaction Pages:
-GetTransaction
-GetRecentTransactions
-*/
-
 import React, { useState, useEffect, useContext } from 'react'
 import { Spinner, Card, Container, Row, Col } from 'react-bootstrap'
 
+import { QueryPreservingLink } from 'src'
 import { NetworkContext } from 'src/services/networkProvider'
+import { IISInfo } from 'src/typings/api'
 
 import './ISInfo.css'
-import { QueryPreservingLink } from 'src'
-import { IISInfo } from 'src/typings/api'
 
 const ISInfo: React.FC = () => {
 
@@ -60,7 +32,7 @@ const ISInfo: React.FC = () => {
   }, [dataService])
 
   return <>
-    <Container style={{ padding: 0 }}>
+    <Container className='p-0'>
       <Row>
         <Col>
           <Card className='isinfo-card'>
@@ -90,7 +62,6 @@ const ISInfo: React.FC = () => {
         </Col>
       </Row>
     </Container>
-
   </>
 }
 

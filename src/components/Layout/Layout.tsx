@@ -1,23 +1,30 @@
 import React, { useContext } from 'react'
 import { Container, Spinner } from 'react-bootstrap'
 
+import { ThemeContext } from 'src/themes/themeProvider'
 import { NetworkContext } from 'src/services/networkProvider'
 
 import Header from './Header/Header'
 import Footer from './Footer/Footer'
+
+import 'src/themes/theme.css'
 import './Layout.css'
 
 type Props = { children: React.ReactNode }
 
 const Layout: React.FC<Props> = (props) => {
+
   const networkContext = useContext(NetworkContext)
+  const themeContext = useContext(ThemeContext)
   const { inTransition } = networkContext!
+  const { theme } = themeContext!
+
   return (
-    <div style={{ backgroundColor: 'rgba(0,0,0,.03)' }}>
+    <div id='app' className={theme === 'dark' ? 'dark-theme' : 'light-theme'}>
       <Header />
       <Container className="app-container">
         {inTransition
-          ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div>
+          ? <div className='center-spinner'><Spinner animation="border" /></div>
           : props.children}
       </Container>
       <Footer />

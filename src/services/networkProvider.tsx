@@ -15,6 +15,10 @@ type NetworkState = {
 export const useNetworkUrl = (): string => (
   new URLSearchParams(useLocation().search).get('network') || Object.keys(defaultNetworks)[0])
 
+export const useSearchParams = (): string => (
+  useLocation().pathname
+)
+
 export const useNetworkName = (): string => {
   const network = useNetworkUrl()
   return defaultNetworks[network] || network

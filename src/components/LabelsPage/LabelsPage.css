@@ -1,20 +1,14 @@
-.label-filter {
-  margin-left: 1rem;
+.filter-div {
+  display: flex;
+  align-items: baseline;
+  white-space: nowrap;
+  width: 100%;
 }
 
-.label-filter .btn {
-  outline: 0;
+.search-filter-form {
+  margin: 0px 1rem;
+  align-self: center;
+  height: 38px;
+  outline: 0px;
   box-shadow: none !important;
-  color: rgba(0, 0, 0, .5) !important;
-  background-color: white !important;
-  border-color: grey !important;
-}
-
-.label-filter .btn:hover {
-  color: rgba(0, 0, 0, .7) !important;
-}
-
-.label-filter .dropdown-item:active {
-  background-color: white;
-  color: inherit;
 }

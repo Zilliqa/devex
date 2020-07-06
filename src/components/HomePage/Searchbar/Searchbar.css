@@ -1,10 +1,8 @@
 #searchbar-dropdown {
   height: 50px;
-  border: 1px solid #ced4da;
-  border-color: #ced4da;
-  background-color: white;
-  border-right: none;
-  color: #6c757d !important;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-searchbar);
+  color: var(--color-subtext);
   box-shadow: none !important;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -14,12 +12,6 @@
   min-width: fit-content;
 }
 
-.searchbar-ig .dropdown-item:active {
-  text-decoration: none;
-  color: black;
-  background: none;
-}
-
 .searchbar-ig {
   margin-bottom: 0.5rem;
 }
@@ -27,31 +19,11 @@
 .searchbar-ig input {
   height: 50px !important;
   margin-left: 1px;
-  border-right: 0;
-  background-clip: unset;
+  border-left: 0 !important;
+  border-right: 0 !important;
 }
 
-.searchbar-ig .form-control:focus {
-  z-index: 0 !important;
-  outline: 0;
-  box-shadow: none;
-}
-
-.searchbar-ig .btn {
-  background-color: white;
-  border-color: #ced4da;
-}
-
-.searchbar-ig .btn:hover {
-  background-color: #6c757d;
-  border-color: #6c757d;
-}
-
-.searchbar-ig .btn:focus, .searchbar-ig .btn:active, .searchbar-ig .btn:focus:active {
-  outline: 0;
-  box-shadow: none !important;
-}
-
+/* Header Searchbar */
 #header-searchbar-ig #searchbar-dropdown {
   height: 45px;
 }

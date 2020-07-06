@@ -19,15 +19,16 @@ import { NetworkProvider } from './services/networkProvider'
 import { UserPrefProvider } from './services/userPrefProvider'
 
 import './index.css'
+import { ThemeProvider } from './themes/themeProvider'
 
 const ScrollToTop = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation()
-  const prevLocation = useRef<string>();
+  const prevLocation = useRef<string>()
 
   useEffect(() => {
     if (prevLocation.current !== location.pathname) {
       window.scrollTo(0, 0)
-      prevLocation.current = location.pathname;
+      prevLocation.current = location.pathname
     }
   }, [location])
 
@@ -48,32 +49,34 @@ export const QueryPreservingLink = ({ to, style, className, onClick, children }
 
 ReactDOM.render(
   <>
-    <Router>
-      <NetworkProvider>
-        <UserPrefProvider>
-          <Layout>
-            <React.StrictMode>
-              <ScrollToTop>
-                <Route exact path="/" component={HomePage} />
-                <Route exact path="/dsbk" component={DSBlocksPage} />
-                <Route path={`/dsbk/:blockNum`}><DSBlockDetailsPage /></Route>
-                <Route exact path="/txbk" component={TxBlocksPage} />
-                <Route path={`/txbk/:blockNum`}><TxBlockDetailsPage /></Route>
-                <Route exact path="/tx" component={TxnsPage} />
-                <Route path={`/tx/:txnHash`}><TxnDetailsPage /></Route>
-                <Route path="/address/:addr" component={AddressDetailsPage} />
-                <Route path="/labels" component={LabelsPage} />
-              </ScrollToTop>
-            </React.StrictMode>
-          </Layout>
-        </UserPrefProvider>
-      </NetworkProvider>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <NetworkProvider>
+          <UserPrefProvider>
+            <Layout>
+              <React.StrictMode>
+                <ScrollToTop>
+                  <Route exact path="/" component={HomePage} />
+                  <Route exact path="/dsbk" component={DSBlocksPage} />
+                  <Route path={`/dsbk/:blockNum`}><DSBlockDetailsPage /></Route>
+                  <Route exact path="/txbk" component={TxBlocksPage} />
+                  <Route path={`/txbk/:blockNum`}><TxBlockDetailsPage /></Route>
+                  <Route exact path="/tx" component={TxnsPage} />
+                  <Route path={`/tx/:txnHash`}><TxnDetailsPage /></Route>
+                  <Route path="/address/:addr" component={AddressDetailsPage} />
+                  <Route path="/labels" component={LabelsPage} />
+                </ScrollToTop>
+              </React.StrictMode>
+            </Layout>
+          </UserPrefProvider>
+        </NetworkProvider>
+      </Router>
+    </ThemeProvider>
   </>,
   document.getElementById('root')
-);
+)
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.unregister()

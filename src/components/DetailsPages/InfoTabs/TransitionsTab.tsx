@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { QueryPreservingLink } from 'src'
-import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
+import { qaToZil, hexAddrToZilAddr, isValidAddr } from 'src/utils/Utils'
 import { TransitionEntry } from '@zilliqa-js/core/src/types'
 
 interface IProps {
@@ -41,7 +41,7 @@ const TransitionsTab: React.FC<IProps> = ({ transitions }) => (
           </tr>
           {transition.msg.params.length > 0 && (
             <>
-              <tr style={{ height: '20px' }}><td><hr /></td></tr>
+              <tr><td><hr /></td></tr>
               <tr>
                 <td>Variable</td>
                 <td>Value</td>
@@ -51,12 +51,17 @@ const TransitionsTab: React.FC<IProps> = ({ transitions }) => (
                   <td>{param.vname}</td>
                   <td>
                     {typeof param.value === 'object'
-                      ? <pre style={{ backgroundColor: 'rgba(0, 0, 0, 0.03)' }}>
+                      ? <pre className='code-block'>
                         {JSON.stringify(param.value, null, '\t')}
                       </pre>
                       : Array.isArray(param.value)
                         ? param.value.toString()
-                        : param.value}
+                        : isValidAddr(param.value)
+                          ? <QueryPreservingLink to={`/address/${param.value}`}>
+                            {param.value}
+                          </QueryPreservingLink>
+                          : param.value
+                    }
                   </td>
                 </tr>
               ))}

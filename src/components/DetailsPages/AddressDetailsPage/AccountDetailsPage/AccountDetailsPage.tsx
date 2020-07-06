@@ -12,7 +12,9 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faWallet } from '@fortawesome/free-solid-svg-icons'
 
 import AccContractCard from './AccContractCard'
-import LabelStar from '../../LabelStar/LabelStar'
+import LabelStar from '../../LabelComponent/LabelStar'
+import ViewBlockLink from '../../ViewBlockLink/ViewBlockLink'
+
 import '../AddressDetailsPage.css'
 
 interface IProps {
@@ -22,7 +24,7 @@ interface IProps {
 const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
 
   const networkContext = useContext(NetworkContext)
-  const { dataService } = networkContext!
+  const { dataService, nodeUrl } = networkContext!
 
   const addrRef = useRef(addr)
   const [isLoading, setIsLoading] = useState(false)
@@ -83,32 +85,46 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
   }, [dataService])
 
   return <>
-    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" /></div> : null}
     {accData && (
       <>
         <div className='address-header'>
           <h3>
-            <span>
-              <FontAwesomeIcon color='grey' icon={faWallet} />
+            <span className='mr-1'>
+              <FontAwesomeIcon className='fa-icon' icon={faWallet} />
             </span>
-            <span style={{ marginLeft: '0.75rem' }}>
+            <span className='ml-2'>
               Account
             </span>
-            <LabelStar />
+            <LabelStar type='Account' />
           </h3>
+          <ViewBlockLink network={nodeUrl} type='address' identifier={addrRef.current} />
         </div>
-        <div style={{ display: 'flex' }}>
-          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current)}</h6>
-          <div onClick={() => {
-            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current))
-          }} className='address-hash-copy-btn'>
+        <div className='d-flex'>
+          <h6 className='address-hash subtext'>
+            {validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current)}
+          </h6>
+          <div
+            onClick={() => {
+              navigator.clipboard.writeText(
+                validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current))
+            }}
+            className='address-hash-copy-btn subtext'>
             <FontAwesomeIcon icon={faCopy} />
           </div>
-        </div><div style={{ display: 'flex' }}>
-          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current}</h6>
-          <div onClick={() => {
-            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current)
-          }} className='address-hash-copy-btn'>
+        </div>
+        <div className='d-flex'>
+          <h6 className='address-hash subtext'>
+            {validation.isBech32(addrRef.current)
+              ? fromBech32Address(addrRef.current).toLowerCase()
+              : addrRef.current}
+          </h6>
+          <div
+            onClick={() => {
+              navigator.clipboard.writeText(
+                validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current)
+            }}
+            className='address-hash-copy-btn subtext'>
             <FontAwesomeIcon icon={faCopy} />
           </div>
         </div>
@@ -136,11 +152,15 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
         </Card>
         {accContracts && accContracts.length > 0 && (
           <>
-            <h4 style={{ padding: '0.5rem 0' }}>Deployed Contracts</h4>
+            <h4 className='py-2'>Deployed Contracts</h4>
             <Card className='address-details-card'>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div className='d-flex justify-content-between'>
                 <span className='num-contracts'>
-                  Total:&nbsp;{<span style={{ fontWeight: 500 }}>{accContracts.length}</span>}&nbsp;contracts
+                  Total:
+                  {' '}
+                  {accContracts.length}
+                  {' '}
+                  {accContracts.length === 1 ? 'contract' : 'contracts'}
                 </span>
                 <Pagination className='contract-pagination'>
                   <Pagination.Prev onClick={() => setContractPageIndex((contractPageIndex) => contractPageIndex - 1)}

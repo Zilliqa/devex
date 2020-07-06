@@ -81,7 +81,7 @@ const MinerTable: React.FC<IMinerTableParams> = ({ addresses }) => {
 
   return (
     <>
-      <div style={{ padding: '1rem 0' }}>
+      <div className='py-3'>
         <table {...getTableProps()}>
           <tbody {...getTableBodyProps()}>
             {page.map((row: Row<IMinerObj>) => {

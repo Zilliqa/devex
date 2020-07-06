@@ -2,9 +2,10 @@ import React, { useContext, useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Spinner } from 'react-bootstrap'
 
+import { NetworkContext } from 'src/services/networkProvider'
+
 import AccountDetailsPage from './AccountDetailsPage/AccountDetailsPage'
 import ContractDetailsPage from './ContractDetailsPage/ContractDetailsPage'
-import { NetworkContext } from 'src/services/networkProvider'
 import NotFoundPage from '../NotFoundPage/NotFoundPage'
 
 const AddressDetailsPage: React.FC = () => {
@@ -42,7 +43,7 @@ const AddressDetailsPage: React.FC = () => {
   }, [addr, dataService])
 
   return <>
-    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" /></div> : null}
     {error
       ? <NotFoundPage />
       : <>
