@@ -19,7 +19,7 @@ import Searchbar from './Searchbar/Searchbar'
     ++++++++++++++++++++++++++++
 */
 const HomePage: React.FC = () => {
-  
+
   const networkContext = useContext(NetworkContext)
   const { isIsolatedServer } = networkContext!
 

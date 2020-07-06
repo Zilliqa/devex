@@ -13,7 +13,7 @@ import { faExclamationCircle, faExchangeAlt, faFileContract } from '@fortawesome
 
 import InfoTabs, { generateTabsFromTxnDetails } from '../InfoTabs/InfoTabs'
 import LabelStar from '../LabelComponent/LabelStar'
-import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import NotFoundPage from '../../ErrorPages/NotFoundPage'
 
 import './TxnDetailsPage.css'
 

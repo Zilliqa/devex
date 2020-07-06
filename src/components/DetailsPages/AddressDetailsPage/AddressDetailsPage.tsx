@@ -6,7 +6,7 @@ import { NetworkContext } from 'src/services/networkProvider'
 
 import AccountDetailsPage from './AccountDetailsPage/AccountDetailsPage'
 import ContractDetailsPage from './ContractDetailsPage/ContractDetailsPage'
-import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import NotFoundPage from '../../ErrorPages/NotFoundPage'
 
 const AddressDetailsPage: React.FC = () => {
 

@@ -1,0 +1,9 @@
+.app-container {
+  display: flex;
+  color: var(--color-text);
+  background-color: var(--color-app-bg);
+  position: relative;
+  /* header:70px, footer:100px */
+  min-height: calc(100vh - 70px - 170px);
+  padding: 30px 0;
+}
