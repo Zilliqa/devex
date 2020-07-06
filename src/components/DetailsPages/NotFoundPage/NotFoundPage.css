@@ -8,3 +8,13 @@
   justify-content: center;
   align-items: center;
 }
+
+.return-home-btn {
+  color: var(--color-zil-green) !important;
+  border-color: var(--color-zil-green) !important;
+}
+
+.return-home-btn:hover {
+  color: white !important;
+  background-color: var(--color-zil-green) !important;
+}

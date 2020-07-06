@@ -20,7 +20,7 @@
   --color-btn-hover: white;
   /* Card */
   --color-card-bg: white;
-  --color-card-header: rgb(214, 228, 222);
+  --color-card-header: white;
   /* Searchbar */
   --color-searchbar: white;
   /* Table */
@@ -36,7 +36,7 @@
   --color-app-bg: var(--color-palette-1);
   --color-text: var(--color-dark-text);
   --color-subtext: rgb(153, 166, 173);
-  --color-zil-green: #30bebc;
+  --color-zil-green: #26a3a1;
   --color-spinner: var(--color-dark-text);
   --color-border: #035992;
   --color-icon: var(--color-dark-text);

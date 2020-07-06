@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Row, Col, Container } from 'react-bootstrap'
+import { Row, Col, Container, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import Switch from 'rc-switch'
 
 import { ThemeContext } from 'src/themes/themeProvider'
@@ -13,7 +13,7 @@ import './Footer.css'
 const Footer: React.FC = () => {
 
   const themeContext = useContext(ThemeContext)
-  const { toggle } = themeContext!
+  const { theme, toggle } = themeContext!
 
   return <div className='custom-footer'>
     <Container>
@@ -69,22 +69,26 @@ const Footer: React.FC = () => {
             <span><small>© 2020 Zilliqa</small></span>
           </Row>
           <Row className='justify-content-end pt-1'>
-            <Switch
-              className='theme-switch'
-              loadingIcon={null}
-              onChange={(checked: boolean) => {
-                toggle()
-              }}
-              disabled={false}
-              checkedChildren={
-                <div className='theme-icon-div-moon'>
-                  <FontAwesomeIcon className='theme-icon' icon={faMoon} size='xs' color='white' />
-                </div>}
-              unCheckedChildren={
-                <div className='theme-icon-div-sun'>
-                  <FontAwesomeIcon className='theme-icon' icon={faSun} size='xs' color='white' />
-                </div>}
-            />
+            <OverlayTrigger placement='top'
+              overlay={<Tooltip id={'theme-tt'}>Toggle Light/Dark</Tooltip>}>
+              <Switch
+                className='theme-switch'
+                loadingIcon={null}
+                onChange={() => {
+                  toggle()
+                }}
+                disabled={false}
+                defaultChecked={theme === 'light'}
+                checkedChildren={
+                  <div className='theme-icon-div'>
+                    <FontAwesomeIcon className='theme-icon' icon={faMoon} size='xs' color='white' />
+                  </div>}
+                unCheckedChildren={
+                  <div className='theme-icon-div'>
+                    <FontAwesomeIcon className='theme-icon' icon={faSun} size='xs' color='white' />
+                  </div>}
+              />
+            </OverlayTrigger>
           </Row>
         </Col>
       </Row>

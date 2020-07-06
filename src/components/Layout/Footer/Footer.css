@@ -39,15 +39,7 @@
   border: solid 1px rgba(255, 255, 255, 0.7);
 }
 
-.theme-icon-div-moon {
-  margin-top: -0.35px;
-}
-
-.theme-icon-div-moon:hover .theme-icon {
-  color: black
-}
-
-.theme-icon-div-sun {
+.theme-icon-div {
   margin-top: -0.35px;
 }
 
