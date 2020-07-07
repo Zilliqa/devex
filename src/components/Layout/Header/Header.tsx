@@ -126,7 +126,7 @@ const Header: React.FC = () => {
                   type="text"
                   value={newNode}
                   onChange={(e) => { setNewNode(e.target.value) }}
-                  placeholder="Node Url" />
+                  placeholder="Local Network" />
               </Form>
               <NavDropdown.Item className='plus-icon-item' onClick={addNewNode}>
                 <FontAwesomeIcon size='lg' icon={faPlus} />

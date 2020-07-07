@@ -124,7 +124,7 @@ a:hover {
 }
 
 .dropdown-toggle:hover {
-  color: var(--color-subtext-dark) !important;
+  color: var(--color-text) !important;
 }
 
 .dropdown-menu {

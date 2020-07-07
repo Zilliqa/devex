@@ -4,12 +4,12 @@ import { useLocation } from 'react-router-dom'
 import { DataService } from './dataService'
 
 type NetworkState = {
-  connStatus: boolean,
   isIsolatedServer: boolean | null,
   dataService: DataService | null,
   nodeUrl: string,
+  isValidUrl: boolean | null,
   inTransition: boolean,
-  isLoadingUrls: boolean
+  isLoadingUrls: boolean,
 }
 
 export const useNetworkUrl = (): string => (
@@ -46,8 +46,8 @@ export const NetworkProvider: React.FC = (props) => {
   const network = useNetworkUrl()
 
   const [state, setState] = useState<NetworkState>({
-    connStatus: false,
-    isIsolatedServer: false,
+    isValidUrl: null,
+    isIsolatedServer: null,
     dataService: null,
     nodeUrl: network,
     inTransition: true,
@@ -87,9 +87,12 @@ export const NetworkProvider: React.FC = (props) => {
       try {
         if (!state.dataService) return
         response = await state.dataService.isIsolatedServer()
-        setState((prevState: NetworkState) => ({ ...prevState, isIsolatedServer: response, inTransition: false }))
+        setState((prevState: NetworkState) => ({ ...prevState, isIsolatedServer: response, isValidUrl: true }))
       } catch (e) {
         console.log(e)
+        setState((prevState: NetworkState) => ({ ...prevState, isValidUrl: false }))
+      } finally {
+        setState((prevState: NetworkState) => ({ ...prevState, inTransition: false }))
       }
     }
     checkNetwork()

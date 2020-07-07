@@ -1,35 +1,43 @@
-import React, { useContext } from 'react'
-import { Container, Spinner } from 'react-bootstrap'
+import React, { useRef, useEffect, useContext } from 'react'
+import { useLocation } from 'react-router-dom'
 
 import { ThemeContext } from 'src/themes/themeProvider'
-import { NetworkContext } from 'src/services/networkProvider'
 
 import Header from './Header/Header'
+import App from './App/App'
 import Footer from './Footer/Footer'
 
 import 'src/themes/theme.css'
 import './Layout.css'
 
-type Props = { children: React.ReactNode }
+const ScrollToTop = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation()
+  const prevLocation = useRef<string>()
 
-const Layout: React.FC<Props> = (props) => {
+  useEffect(() => {
+    if (prevLocation.current !== location.pathname) {
+      window.scrollTo(0, 0)
+      prevLocation.current = location.pathname
+    }
+  }, [location])
 
-  const networkContext = useContext(NetworkContext)
+  return <>{children}</>
+}
+
+const Layout: React.FC = () => {
+
   const themeContext = useContext(ThemeContext)
-  const { inTransition } = networkContext!
   const { theme } = themeContext!
 
-  return (
-    <div id='app' className={theme === 'dark' ? 'dark-theme' : 'light-theme'}>
-      <Header />
-      <Container className="app-container">
-        {inTransition
-          ? <div className='center-spinner'><Spinner animation="border" /></div>
-          : props.children}
-      </Container>
-      <Footer />
+  return <>
+    <div className={theme === 'dark' ? 'dark-theme' : 'light-theme'}>
+      <ScrollToTop>
+        <Header />
+        <App />
+        <Footer />
+      </ScrollToTop>
     </div>
-  )
+  </>
 }
 
 export default Layout
