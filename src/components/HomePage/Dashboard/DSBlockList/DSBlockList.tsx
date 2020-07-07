@@ -4,34 +4,12 @@ import { Card, Spinner } from 'react-bootstrap'
 import { QueryPreservingLink } from 'src'
 import { refreshRate } from 'src/constants'
 import { NetworkContext } from 'src/services/networkProvider'
-import { timestampToTimeago, pubKeyToZilAddr } from 'src/utils/Utils'
+import { timestampToTimeago } from 'src/utils/Utils'
 import { DsBlockObj } from '@zilliqa-js/core/src/types'
 
 import DisplayTable from '../../DisplayTable/DisplayTable'
+
 import './DSBlockList.css'
-
-/*
-    Display first 5 DS Block
-      - Height
-      - Difficulty
-      - DS Difficulty
-      - DS Leader
-      - Age
-      - Hash
-*/
-
-// Pre-processing data to display
-const processMap = new Map()
-processMap.set('age-col', timestampToTimeago)
-processMap.set('ds-leader-col', (addr: string) =>(
-  <QueryPreservingLink to={`address/${pubKeyToZilAddr(addr)}`}>
-    {pubKeyToZilAddr(addr)}
-  </QueryPreservingLink>))
-processMap.set('height-col', (height: number) => (
-  <QueryPreservingLink to={`dsbk/${height}`}>
-    {height}
-  </QueryPreservingLink>))
-processMap.set('hash-col', (hash: number) => ('0x' + hash))
 
 const DSBlockList: React.FC = () => {
 
@@ -44,29 +22,38 @@ const DSBlockList: React.FC = () => {
 
   const columns = useMemo(
     () => [{
-      id: 'height-col',
+      id: 'dsheight-col',
       Header: 'Height',
       accessor: 'header.BlockNum',
+      Cell: ({ value }: { value: string }) => (
+        <QueryPreservingLink to={`dsbk/${value}`}>
+          {value}
+        </QueryPreservingLink>
+      ),
     },
     {
       id: 'difficulty-col',
-      Header: 'Diff',
+      Header: 'Difficulty',
       accessor: 'header.Difficulty',
+      Cell: ({ value }: { value: string }) => (
+        <div className='text-center'>{value}</div>
+      ),
     },
     {
       id: 'ds-difficulty-col',
-      Header: 'DS Diff',
+      Header: 'DS Difficulty',
       accessor: 'header.DifficultyDS',
-    },
-    {
-      id: 'ds-leader-col',
-      Header: 'DS Leader',
-      accessor: 'header.LeaderPubKey',
+      Cell: ({ value }: { value: string }) => (
+        <div className='text-center'>{value}</div>
+      ),
     },
     {
       id: 'age-col',
       Header: 'Age',
       accessor: 'header.Timestamp',
+      Cell: ({ value }: { value: string }) => (
+        <div className='text-right'>{timestampToTimeago(value)}</div>
+      ),
     }], []
   )
 
@@ -107,7 +94,7 @@ const DSBlockList: React.FC = () => {
       </Card.Header>
       <Card.Body>
         {data
-          ? <DisplayTable columns={columns} data={data} processMap={processMap} />
+          ? <DisplayTable columns={columns} data={data} />
           : <Spinner animation="border" role="status" />
         }
       </Card.Body>

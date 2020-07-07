@@ -14,17 +14,6 @@ import './PendTxnList.css'
     - Status
 */
 
-// Pre-processing data to display
-const processMap = new Map()
-processMap.set('pend-hash-col', (hash: number) => ('0x' + hash))
-processMap.set('confirmed-col', (confirmed: boolean) => confirmed.toString())
-processMap.set('status-col', (status: string) => (
-  <OverlayTrigger placement='top'
-    overlay={<Tooltip id={'tt'}> {status} </Tooltip>}>
-    <div>{status}</div>
-  </OverlayTrigger>
-))
-
 const PendTxnList: React.FC = () => {
 
   const networkContext = useContext(NetworkContext)
@@ -39,21 +28,36 @@ const PendTxnList: React.FC = () => {
       id: 'pend-hash-col',
       Header: 'Hash',
       accessor: 'hash',
+      Cell: ({ value }: { value: string }) => (
+        <div className='mono'>{'0x' + value}</div>
+      )
     },
     {
       id: 'confirmed-col',
       Header: 'Confirmed',
       accessor: 'confirmed',
+      Cell: ({ value }: { value: boolean }) => (
+        <div className='text-center'>{value.toString()}</div>
+      )
     },
     {
       id: 'code-col',
       Header: 'Code',
       accessor: 'code',
+      Cell: ({ value }: { value: number }) => (
+        <div className='text-center'>{value}</div>
+      )
     },
     {
       id: 'status-col',
       Header: 'Status',
       accessor: 'info',
+      Cell: ({ value }: { value: string }) => (
+        <OverlayTrigger placement='top'
+          overlay={<Tooltip id={'tt'}> {value} </Tooltip>}>
+          <div>{value}</div>
+        </OverlayTrigger>
+      )
     }], []
   )
 
@@ -73,6 +77,7 @@ const PendTxnList: React.FC = () => {
           console.log(e)
       }
     }
+    
     getData()
     const getDataTimer = setInterval(async () => {
       await getData()
@@ -94,7 +99,7 @@ const PendTxnList: React.FC = () => {
         {data
           ? data.length > 0
             ? <div className='pendtxlist-table'>
-              <DisplayTable columns={columns} data={data} processMap={processMap} />
+              <DisplayTable columns={columns} data={data} />
             </div>
             : 'No Pending Transactions'
           : <Spinner animation="border" role="status" />

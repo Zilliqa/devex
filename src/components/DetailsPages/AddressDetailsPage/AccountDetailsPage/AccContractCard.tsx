@@ -22,7 +22,8 @@ const AccContractCard: React.FC<IProps> = ({ contract, index }) => {
       <div>
         <span>
           {`${index + 1}) `}
-          {<QueryPreservingLink onClick={(e: React.MouseEvent<HTMLAnchorElement>) => { e.stopPropagation() }} to={`/address/${hexAddrToZilAddr(contract.address)}`}>
+          {<QueryPreservingLink onClick={(e: React.MouseEvent<HTMLAnchorElement>) => { e.stopPropagation() }} 
+            to={`/address/${hexAddrToZilAddr(contract.address)}`}>
             {hexAddrToZilAddr(contract.address)}
           </QueryPreservingLink>}
         </span>
@@ -33,7 +34,7 @@ const AccContractCard: React.FC<IProps> = ({ contract, index }) => {
     </Card.Body>
     <Collapse in={showContractState}>
       <div>
-        <pre>
+        <pre className='code-block'>
           {JSON.stringify(contract.state, null, 2)}
         </pre>
       </div>

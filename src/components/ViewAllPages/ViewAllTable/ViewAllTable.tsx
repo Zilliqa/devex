@@ -8,17 +8,15 @@ import { DsBlockObj, TxBlockObj, PendingTxnResult } from '@zilliqa-js/core/src/t
 import './ViewAllTable.css'
 
 interface IViewAllTableParams<T extends object> {
-  columns: Array<Column<T>>;
-  data: T[];
-  isLoading: boolean;
-  fetchData: (...args: any[]) => void;
-  pageCount: number;
-  processMap?: Map<string, <T>(original: T) => T>
+  columns: Array<Column<T>>,
+  data: T[],
+  isLoading: boolean,
+  fetchData: ({ pageIndex }: { pageIndex: number }) => void,
+  pageCount: number,
 }
 
-// React Table for DSBlocks, TxnBlocks and TransactionDetails on Dashboard 
 const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult>> =
-  ({ columns, data, isLoading, fetchData, pageCount: controlledPageCount, processMap }) => {
+  ({ columns, data, isLoading, fetchData, pageCount: controlledPageCount }) => {
 
     const { getTableProps,
       getTableBodyProps,
@@ -79,13 +77,13 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
     return (
       <>
         <BRow>
-          <BCol style={{ paddingLeft: '1.5rem', alignSelf: 'center' }}>
+          <BCol className='align-self-center pl-3'>
             {data.length === 0
               ? null
-              : <span>Items Per Page: <strong>10</strong></span>}
+              : <span className='subtext'>Items Per Page: <strong>10</strong></span>}
           </BCol>
           <BCol>
-            <Pagination className='viewall-pagination'>
+            <Pagination className='justify-content-end'>
               <Pagination.Prev onClick={() => previousPage()} disabled={!canPreviousPage} />
               {generatePagination(pageIndex + 1, pageCount).map((page) => {
                 if (page === -1)
@@ -102,7 +100,7 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
           </BCol>
         </BRow>
         <div className='viewall-table table'>
-          {isLoading ? <div className='spinner'><Spinner animation="border" variant="secondary" /></div> : null}
+          {isLoading ? <div className='center-spinner mt-4'><Spinner animation="border" /></div> : null}
           <table {...getTableProps()}>
             <thead>
               {headerGroups.map((headerGroup: HeaderGroup<DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult>) => (
@@ -115,24 +113,16 @@ const ViewAllTable: React.FC<IViewAllTableParams<DsBlockObj | TxBlockObj | Trans
                 </tr>
               ))}
             </thead>
-            <tbody style={isLoading ? { opacity: '50%' } : {}}{...getTableBodyProps()}>
+            <tbody style={isLoading ? { opacity: '0.5' } : {}}{...getTableBodyProps()}>
               {page.map((row: Row<DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult>) => {
                 prepareRow(row)
                 return (
                   <tr {...row.getRowProps()} key={row.getRowProps().key}>
                     {row.cells.map((cell: Cell<DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult>) => {
-                      if (processMap) {
-                        const procFunc = processMap.get(cell.column.id)
-                        if (procFunc != null)
-                          cell.value = procFunc(cell.value)
-                      }
                       return (
                         <td {...cell.getCellProps()}
-                          style={cell.column.Header === 'Amount' || cell.column.Header === 'Reward'
-                            ? { textAlign: 'right', paddingRight: '1rem' }
-                            : {}}
                           key={cell.getCellProps().key}>
-                          {cell.value}
+                          {cell.render('Cell')}
                         </td>
                       )
                     })}

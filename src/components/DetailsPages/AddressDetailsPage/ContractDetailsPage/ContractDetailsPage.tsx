@@ -7,7 +7,7 @@ import DefaultTab from 'src/components/DetailsPages/InfoTabs/DefaultTab'
 import CodeTab from 'src/components/DetailsPages/InfoTabs/CodeTab'
 import { NetworkContext } from 'src/services/networkProvider'
 import { ContractData } from 'src/typings/api'
-import { qaToZil } from 'src/utils/Utils'
+import { qaToZil, addHexPrefix } from 'src/utils/Utils'
 import { fromBech32Address, toBech32Address } from '@zilliqa-js/crypto'
 import { validation } from '@zilliqa-js/util'
 
@@ -15,7 +15,9 @@ import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faFileContract } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import LabelStar from '../../LabelStar/LabelStar'
+import LabelStar from '../../LabelComponent/LabelStar'
+import ViewBlockLink from '../../ViewBlockLink/ViewBlockLink'
+
 import '../AddressDetailsPage.css'
 
 interface IProps {
@@ -25,7 +27,7 @@ interface IProps {
 const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
 
   const networkContext = useContext(NetworkContext)
-  const { dataService, isIsolatedServer } = networkContext!
+  const { dataService, isIsolatedServer, nodeUrl } = networkContext!
 
   const addrRef = useRef(addr)
   const [contractData, setContractData] = useState<ContractData | null>(null)
@@ -91,32 +93,48 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
   }
 
   return <>
-    {isLoading ? <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div> : null}
+    {isLoading ? <div className='center-spinner'><Spinner animation="border" /></div> : null}
     {contractData && (
       <>
         <div className='address-header'>
           <h3>
-            <span>
-              <FontAwesomeIcon color='grey' icon={faFileContract} />
+            <span className='mr-1'>
+              <FontAwesomeIcon className='fa-icon' icon={faFileContract} />
             </span>
-            <span style={{ marginLeft: '0.75rem' }}>
+            <span className='ml-2'>
               Contract
             </span>
-            <LabelStar />
+            <LabelStar type='Contract' />
           </h3>
+          <ViewBlockLink network={nodeUrl} type='address' identifier={addrRef.current} />
         </div>
-        <div style={{ display: 'flex' }}>
-          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current)}</h6>
+        <div className='d-flex'>
+          <h6 className='address-hash subtext'>
+            {validation.isBech32(addrRef.current)
+              ? addrRef.current
+              : toBech32Address(addrRef.current)}
+          </h6>
           <div onClick={() => {
-            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? addrRef.current : toBech32Address(addrRef.current))
-          }} className='address-hash-copy-btn'>
+            navigator.clipboard.writeText(
+              validation.isBech32(addrRef.current)
+                ? addrRef.current
+                : toBech32Address(addrRef.current))
+          }} className='address-hash-copy-btn subtext'>
             <FontAwesomeIcon icon={faCopy} />
           </div>
-        </div><div style={{ display: 'flex' }}>
-          <h6 className='address-hash'>{validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current}</h6>
+        </div>
+        <div className='d-flex'>
+          <h6 className='address-hash subtext'>
+            {validation.isBech32(addrRef.current)
+              ? addHexPrefix(fromBech32Address(addrRef.current).toLowerCase())
+              : addHexPrefix(addrRef.current)}
+          </h6>
           <div onClick={() => {
-            navigator.clipboard.writeText(validation.isBech32(addrRef.current) ? fromBech32Address(addrRef.current).toLowerCase() : addrRef.current)
-          }} className='address-hash-copy-btn'>
+            navigator.clipboard.writeText(
+              validation.isBech32(addrRef.current)
+                ? addHexPrefix(fromBech32Address(addrRef.current).toLowerCase())
+                : addHexPrefix(addrRef.current))
+          }} className='address-hash-copy-btn subtext'>
             <FontAwesomeIcon icon={faCopy} />
           </div>
         </div>
@@ -134,15 +152,15 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
               {creationTxnHash && <>
                 <Row>
                   <Col>
-                    <div className='address-detail' style={{ justifyContent: 'start' }}>
-                      <span style={{ marginRight: 'auto' }}>Contract Creation:</span>
-                      <span style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                    <div className='address-detail'>
+                      <span className='mr-auto'>Contract Creation:</span>
+                      <span className='owner-span'>
                         <QueryPreservingLink to={`/address/${owner}`}>
                           {owner}
                         </QueryPreservingLink>
                       </span>
                       <span>{'at'}</span>
-                      <span style={{ paddingLeft: '0.5rem', maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      <span className='owner-span pl-2'>
                         <QueryPreservingLink to={`/tx/${creationTxnHash}`}>
                           {creationTxnHash}
                         </QueryPreservingLink>

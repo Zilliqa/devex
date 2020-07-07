@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useMemo, useContext } from 'react'
 import { Tooltip, OverlayTrigger } from 'react-bootstrap'
+import { Row } from 'react-table'
 
 import { QueryPreservingLink } from 'src/index'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
@@ -7,70 +8,83 @@ import { NetworkContext } from 'src/services/networkProvider'
 import { TransactionDetails } from 'src/typings/api'
 import { hexAddrToZilAddr, qaToZil } from 'src/utils/Utils'
 import { TxList } from '@zilliqa-js/core/src/types'
+import { Transaction } from '@zilliqa-js/account/src/transaction'
 
-import './TxnsPage.css'
-
-import { faFileContract } from '@fortawesome/free-solid-svg-icons'
+import { faFileContract, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-
-// Pre-processing data to display
-const processMap = new Map()
-processMap.set('amount-col', (amt: number) => (
-  <OverlayTrigger placement='top'
-    overlay={<Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
-    <span>{qaToZil(amt)}</span>
-  </OverlayTrigger>
-))
-processMap.set('from-col', (addr: string) => (<QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</QueryPreservingLink>))
-processMap.set('to-col', (addr: string) => (
-  addr.includes('contract-')
-    ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
-      <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
-      {' '}
-      Contract Creation
-    </QueryPreservingLink>
-    : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>{hexAddrToZilAddr(addr)}</QueryPreservingLink>))
-processMap.set('hash-col', (hash: number) => (
-  <QueryPreservingLink to={`tx/0x${hash}`}>
-    <span className='mono'>{'0x' + hash}</span>
-  </QueryPreservingLink>))
 
 const TxnsPage: React.FC = () => {
 
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
-  const columns = useMemo(
-    () => [{
-      id: 'from-col',
-      Header: 'From',
-      accessor: 'txn.senderAddress',
-    },
-    {
-      id: 'to-col',
-      Header: 'To',
-      accessor: (txnDetails: any) => (
-        txnDetails.contractAddr
-          ? 'contract-' + txnDetails.contractAddr
-          : txnDetails.txn.toAddr),
-    },
-    {
-      id: 'hash-col',
-      Header: 'Hash',
-      accessor: 'hash',
-    },
-    {
-      id: 'amount-col',
-      Header: 'Amount',
-      accessor: 'amount',
-    }], []
-  )
-
   const fetchIdRef = useRef(0)
   const [isLoading, setIsLoading] = useState(false)
   const [pageCount, setPageCount] = useState(0)
   const [data, setData] = useState<TransactionDetails[] | null>(null)
   const [recentTxnHashes, setRecentTxnHashes] = useState<string[] | null>(null)
+
+  const columns = useMemo(
+    () => [{
+      id: 'from-col',
+      Header: 'From',
+      accessor: 'txn.senderAddress',
+      Cell: ({ value }: { value: string }) => (
+        <QueryPreservingLink to={`/address/${hexAddrToZilAddr(value)}`}>
+          {hexAddrToZilAddr(value)}
+        </QueryPreservingLink>)
+    }, {
+      id: 'to-col',
+      Header: 'To',
+      Cell: ({ row }: { row: Row<TransactionDetails> }) => {
+        return (row.original.contractAddr
+          ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(row.original.contractAddr)}`}>
+            <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
+            {' '}
+            Contract Creation
+          </QueryPreservingLink>
+          : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(row.original.txn.txParams.toAddr)}`}>
+            {hexAddrToZilAddr(row.original.txn.txParams.toAddr)}
+          </QueryPreservingLink>)
+      }
+    }, {
+      id: 'hash-col',
+      Header: 'Hash',
+      accessor: 'hash',
+      Cell: ({ row }: { row: Row<TransactionDetails> }) => {
+        console.log(row)
+        return <QueryPreservingLink to={`/tx/0x${row.original.hash}`}>
+          <div className='text-right mono'>
+            {row.original.txn.txParams.receipt && !row.original.txn.txParams.receipt.success
+              && <FontAwesomeIcon className='mr-1' icon={faExclamationCircle} color='red' />
+            }
+            {'0x' + row.original.hash}
+          </div>
+        </QueryPreservingLink>
+      }
+    }, {
+      id: 'amount-col',
+      Header: 'Amount',
+      accessor: 'txn.amount',
+      Cell: ({ value }: { value: string }) => (
+        <OverlayTrigger placement='right'
+          overlay={<Tooltip id={'amt-tt'}>{qaToZil(value)}</Tooltip>}>
+          <div className='text-right sm'>{qaToZil(value)}</div>
+        </OverlayTrigger>
+      )
+    }, {
+      id: 'fee-col',
+      Header: 'Fee',
+      accessor: 'txn',
+      Cell: ({ value }: { value: Transaction }) => {
+        const fee = Number(value.txParams.gasPrice) * value.txParams.receipt!.cumulative_gas
+        return <OverlayTrigger placement='top'
+          overlay={<Tooltip id={'fee-tt'}>{qaToZil(fee)}</Tooltip>}>
+          <div className='text-center sm' >{qaToZil(fee)}</div>
+        </OverlayTrigger>
+      }
+    }], []
+  )
 
   const fetchData = useCallback(({ pageIndex }) => {
     if (!dataService) return
@@ -85,7 +99,7 @@ const TxnsPage: React.FC = () => {
         txnHashes = recentTxnHashes
         if (!txnHashes) {
           txnList = await dataService.getRecentTransactions()
-          if(!txnList) return
+          if (!txnList) return
           txnHashes = txnList.TxnHashes
           setPageCount(Math.ceil(txnList.number / 10))
           setRecentTxnHashes(txnHashes)
@@ -113,12 +127,11 @@ const TxnsPage: React.FC = () => {
   return (
     <>
       {<div>
-        <h2 className='txnspage-header'>Recent Transactions</h2>
+        <h2>Recent Transactions</h2>
         <ViewAllTable
           columns={columns}
           data={data ? data : []}
           isLoading={isLoading}
-          processMap={processMap}
           fetchData={fetchData}
           pageCount={pageCount}
         />

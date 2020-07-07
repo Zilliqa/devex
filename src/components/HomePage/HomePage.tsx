@@ -19,20 +19,21 @@ import Searchbar from './Searchbar/Searchbar'
     ++++++++++++++++++++++++++++
 */
 const HomePage: React.FC = () => {
+  
   const networkContext = useContext(NetworkContext)
   const { isIsolatedServer } = networkContext!
 
   return (
     <>
-      {isIsolatedServer !== null // check if isolated server to display different home page
+      {isIsolatedServer !== null // wait for isolated server check to complete
         ? <div>
           <Searchbar isISSearchbar={isIsolatedServer} isHeaderSearchbar={false} />
           <Dashboard />
         </div>
-        : <div className='center-spinner'><Spinner animation="border" variant="secondary" /></div>
+        : <div className='center-spinner'><Spinner animation="border" /></div>
       }
     </>
-  );
+  )
 }
 
-export default HomePage;
+export default HomePage

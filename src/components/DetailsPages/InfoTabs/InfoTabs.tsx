@@ -3,13 +3,18 @@ import { Card, Container, Tabs, Tab } from 'react-bootstrap'
 
 import { TransactionDetails } from 'src/typings/api'
 
-import TransitionsTab from '../InfoTabs/TransitionsTab'
-import EventsTab from '../InfoTabs/EventsTab'
-import DefaultTab from '../InfoTabs/DefaultTab'
-import ContractCreationTab from '../InfoTabs/ContractCreationTab'
+import DefaultTab from './DefaultTab'
+import EventsTab from './EventsTab'
+import OverviewTab from './OverviewTab'
+import TransitionsTab from './TransitionsTab'
+import CodeTab from './CodeTab'
+
+import './InfoTabs.css'
 
 export interface ReceiptTabs {
-  tabHeaders: string[], tabTitles: string[], tabContents: React.ReactNode[]
+  tabHeaders: string[],
+  tabTitles: string[],
+  tabContents: React.ReactNode[]
 }
 
 interface IProps {
@@ -17,6 +22,7 @@ interface IProps {
 }
 
 export const generateTabsFromTxnDetails = (data: TransactionDetails): ReceiptTabs => {
+  
   const tabs: ReceiptTabs = {
     tabHeaders: [],
     tabTitles: [],
@@ -27,10 +33,23 @@ export const generateTabsFromTxnDetails = (data: TransactionDetails): ReceiptTab
 
   const receipt = data.txn.txParams.receipt
 
-  if (receipt.success === undefined || (receipt.success && data.contractAddr)) {
-    tabs.tabHeaders.push('contractAddr')
-    tabs.tabTitles.push(`Contract Creation`)
-    tabs.tabContents.push(<ContractCreationTab contractAddr={data.contractAddr!} />)
+  if (receipt.success === undefined || (data.contractAddr)) {
+    if (data.txn.txParams.code) {
+      tabs.tabHeaders.push('code')
+      tabs.tabTitles.push(`Code`)
+      tabs.tabContents.push(<CodeTab code={data.txn.txParams.code!} />)
+    }
+    if (data.txn.txParams.data) {
+      tabs.tabHeaders.push('params')
+      tabs.tabTitles.push(`Params`)
+      tabs.tabContents.push(<OverviewTab data={data.txn.txParams.data!} />)
+    }
+  } else {
+    if (data.txn.txParams.data) {
+      tabs.tabHeaders.push('overview')
+      tabs.tabTitles.push(`Overview`)
+      tabs.tabContents.push(<OverviewTab data={data.txn.txParams.data} />)
+    }
   }
 
   if (receipt.event_logs) {
@@ -60,6 +79,7 @@ export const generateTabsFromTxnDetails = (data: TransactionDetails): ReceiptTab
 }
 
 const InfoTabs: React.FC<IProps> = ({ tabs }) => {
+  
   const { tabHeaders, tabTitles, tabContents } = tabs
   const [currTab, setCurrTab] = useState(tabHeaders[0])
 
@@ -67,7 +87,7 @@ const InfoTabs: React.FC<IProps> = ({ tabs }) => {
     {tabHeaders.length > 0
       ? <Card className='tabs-card'>
         <Card.Header className='tabs-card-header'>
-          <Tabs id="additional-info-tabs" activeKey={currTab} onSelect={(k: string) => setCurrTab(k)}>
+          <Tabs id="info-tabs" activeKey={currTab} onSelect={(k: string) => setCurrTab(k)}>
             {tabHeaders.map((tabHeader: string, index: number) => (
               <Tab key={index} eventKey={tabHeader} title={[tabTitles[index]]} />
             ))}

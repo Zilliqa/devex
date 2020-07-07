@@ -8,68 +8,83 @@ import { TxBlockObjListing } from 'src/typings/api'
 import { timestampToTimeago, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
 import { TxBlockObj } from '@zilliqa-js/core/src/types'
 
-import './TxBlocksPage.css'
-
-// Pre-processing data to display
-const processMap = new Map()
-processMap.set('age-col', timestampToTimeago)
-processMap.set('reward-col', (amt: number) => (
-  <OverlayTrigger placement='top'
-    overlay={<Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
-    <span>{qaToZil(amt)}</span>
-  </OverlayTrigger>
-))
-processMap.set('miner-col', (addr: string) => (
-  <QueryPreservingLink to={`address/${pubKeyToZilAddr(addr)}`}>
-    {pubKeyToZilAddr(addr)}
-  </QueryPreservingLink>))
-processMap.set('height-col', (height: number) => (
-  <QueryPreservingLink to={`txbk/${height}`}>
-    {height}
-  </QueryPreservingLink>))
-processMap.set('hash-col', (hash: number) => ('0x' + hash))
+import './TxBlockPage.css'
 
 const TxBlocksPage: React.FC = () => {
 
   const networkContext = useContext(NetworkContext)
   const { dataService } = networkContext!
 
+  const fetchIdRef = useRef(0)
+  const [isLoading, setIsLoading] = useState(false)
+  const [pageCount, setPageCount] = useState(0)
+  const [data, setData] = useState<TxBlockObj[] | null>(null)
+
   const columns = useMemo(
     () => [{
       id: 'height-col',
       Header: 'Height',
       accessor: 'header.BlockNum',
+      Cell: ({ value }: { value: string }) => (
+        <QueryPreservingLink to={`txbk/${value}`}>
+          {value}
+        </QueryPreservingLink>
+      )
     },
     {
       id: 'numTxns-col',
-      Header: 'Transactions',
+      Header: 'Txns',
       accessor: 'header.NumTxns',
+      Cell: ({ value }: { value: string }) => (
+        <div className='text-center'>
+          {value}
+        </div>
+      )
     },
     {
-      id: 'miner-col',
-      Header: 'Miner',
+      id: 'ds-leader-col',
+      Header: 'DS Leader',
       accessor: 'header.MinerPubKey',
+      Cell: ({ value }: { value: string }) => (
+        <div className='mono'>
+          <QueryPreservingLink to={`address/${pubKeyToZilAddr(value)}`}>
+            {pubKeyToZilAddr(value)}
+          </QueryPreservingLink>
+        </div>
+      )
+    },
+    {
+      id: 'bkhash-col',
+      Header: 'Block Hash',
+      accessor: 'body.BlockHash',
+      Cell: ({ value }: { value: string }) => (
+        <OverlayTrigger placement='left'
+          overlay={<Tooltip id={'bkhash-tt'}>{'0x' + value}</Tooltip>}>
+          <div className='mono bkhash-div'>{'0x' + value}</div>
+        </OverlayTrigger>
+      )
+    }, {
+      id: 'total-fees-col',
+      Header: 'Total Fees',
+      accessor: 'header.Rewards',
+      Cell: ({ value }: { value: string }) => (
+        <OverlayTrigger placement='right'
+          overlay={<Tooltip id={'total-fees-tt'}> {qaToZil(value)} </Tooltip>}>
+          <div className='text-right'>{qaToZil(value, 5)}</div>
+        </OverlayTrigger>
+      )
     },
     {
       id: 'age-col',
       Header: 'Age',
       accessor: 'header.Timestamp',
-    },
-    {
-      id: 'bkhash-col',
-      Header: 'Hash',
-      accessor: 'body.BlockHash',
-    }, {
-      id: 'reward-col',
-      Header: 'Reward',
-      accessor: 'header.Rewards',
+      Cell: ({ value }: { value: string }) => (
+        <div className='text-right'>{
+          timestampToTimeago(value)}
+        </div>
+      )
     }], []
   )
-
-  const fetchIdRef = useRef(0)
-  const [isLoading, setIsLoading] = useState(false)
-  const [pageCount, setPageCount] = useState(0)
-  const [data, setData] = useState<TxBlockObj[] | null>(null)
 
   const fetchData = useCallback(({ pageIndex }) => {
     if (!dataService) return
@@ -100,12 +115,11 @@ const TxBlocksPage: React.FC = () => {
   return (
     <>
       {<div>
-        <h2 className='txblockpage-header'>Transaction Blocks</h2>
+        <h2>Transaction Blocks</h2>
         <ViewAllTable
           columns={columns}
           data={data ? data : []}
           isLoading={isLoading}
-          processMap={processMap}
           fetchData={fetchData}
           pageCount={pageCount}
         />

@@ -19,10 +19,13 @@ import ISInfo from './ISInfo/ISInfo'
     +++++++++++++++++++++++++++++++++++++
     |  DS Blocks List | Tx Blocks List  |
     +++++++++++++++++++++++++++++++++++++
-    |      ValTxnList     | PendTxnList |
+    |            ValTxnList             |
+    +++++++++++++++++++++++++++++++++++++
+    |            PendTxnList            |
     +++++++++++++++++++++++++++++++++++++
 */
 const Dashboard: React.FC = () => {
+
   const networkContext = useContext(NetworkContext)
   const { isIsolatedServer } = networkContext!
 
@@ -35,7 +38,7 @@ const Dashboard: React.FC = () => {
               <ISInfo />
             </Row>
             <Row>
-              <Col style={{ padding: 0 }}>
+              <Col className='p-0'>
                 <ValTxnList />
               </Col>
             </Row>
@@ -47,20 +50,20 @@ const Dashboard: React.FC = () => {
               <BCInfo />
             </Row>
             <Row>
-              <Col style={{ padding: 0 }}>
+              <Col className='p-0' sm={5} md={5} lg={5}>
                 <DSBlockList />
               </Col>
-              <Col style={{ padding: '0 0 0 1rem' }}>
+              <Col className='p-0 ml-4'>
                 <TxBlockList />
               </Col>
             </Row>
-            <Row style={{ marginTop: '1rem' }}>
-              <Col style={{ padding: 0 }}>
+            <Row className='mt-3'>
+              <Col className='p-0'>
                 <ValTxnList />
               </Col>
             </Row>
-            <Row style={{ marginTop: '1rem' }}>
-              <Col style={{ padding: 0 }}>
+            <Row className='mt-3'>
+              <Col className='p-0'>
                 <PendTxnList />
               </Col>
             </Row>

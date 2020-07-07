@@ -1,15 +1,19 @@
 .custom-navbar {
-  background-color: #343a40;
-  color: lightgrey;
+  background-color: #092532;
+  color: hsla(var(--color-subtext), .85);
   padding: .5rem 10% !important;
   position: sticky;
   height: 70px;
 }
 
-.custom-navbar .dropdown-item:active {
-  text-decoration: none;
-  color: black;
-  background: none;
+.custom-navbar-brand {
+  cursor: pointer;
+}
+
+.app-name {
+  color: white;
+  font-family: Jura;
+  font-size: 20px;
 }
 
 .label-link {
@@ -43,13 +47,17 @@
   color: darkgrey;
 }
 
-.node-div {
+.custom-navbar .dropdown-menu {
+  min-width: 200px;
+}
+
+.default-node-div {
   height: 32px;
   display: flex;
   justify-content: space-between;
 }
 
-.node-item {
+.default-node-item {
   padding: 0.25rem 0rem 0.25rem 1.5rem;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -73,34 +81,4 @@
   width: 2rem;
   margin: 0 0.5rem;
   padding: 0.5rem;
-}
-
-.custom-navbar .dropdown-menu {
-  min-width: 200px;
-}
-
-.custom-navbar-brand {
-  cursor: pointer;
-}
-
-.labelbar-div {
-  background-color: rgba(52, 58, 64, 0.1);
-  padding: 0 10%;
-}
-
-.labelbar {
-  white-space: nowrap;
-  align-items: center;
-  font-size: 14px;
-  width: 100%;
-  height: 45px;
-  display: flex;
-}
-
-.labelbar>* {
-  padding: 0 1rem;
-}
-
-.labelbar>*:not(:first-child) {
-  border-left: solid rgba(0, 0, 0, 0.1) 1px;
 }

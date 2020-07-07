@@ -1,0 +1,31 @@
+.star-outline-icon {
+  cursor: pointer;
+  color: rgb(93, 106, 133);
+  -moz-transition: all 0.1 ease-in;
+  -o-transition: all 0.1 ease-in;
+  -webkit-transition: all 0.1 ease-in;
+  transition: all 0.1 ease-in;
+}
+
+.star-filled-icon {
+  color: mediumturquoise;
+  cursor: pointer;
+}
+
+.star-span {
+  vertical-align: text-top;
+  margin-left: 1rem;
+}
+
+.label-name {
+  margin-left: 0.25rem;
+  font-size: 18px;
+}
+
+.star-span :hover {
+  color: mediumturquoise;
+  -moz-transition: all 0.1 ease-in;
+  -o-transition: all 0.1 ease-in;
+  -webkit-transition: all 0.1 ease-in;
+  transition: all 0.1 ease-in;
+}

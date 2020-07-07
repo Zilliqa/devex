@@ -1,0 +1,6 @@
+.vb-link-div {
+  background-color: white;
+  border-radius: 5px;
+  display: flex;
+  cursor: pointer;
+}

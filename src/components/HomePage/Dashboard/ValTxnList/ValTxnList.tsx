@@ -1,54 +1,20 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react'
 import { OverlayTrigger, Tooltip, Card, Spinner } from 'react-bootstrap'
+import { Row } from 'react-table'
 
 import { QueryPreservingLink } from 'src'
 import { refreshRate } from 'src/constants'
 import { NetworkContext } from 'src/services/networkProvider'
 import { TransactionDetails } from 'src/typings/api'
 import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
+import { Transaction } from '@zilliqa-js/account/src/transaction'
 
-import { faFileContract } from '@fortawesome/free-solid-svg-icons'
+import { faFileContract, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import DisplayTable from '../../DisplayTable/DisplayTable'
+
 import './ValTxnList.css'
-
-/*
-    Display first 10 Validated Txns
-    - Hash
-    - From address
-    - To address
-    - Amount
-    - Age
-*/
-
-// Pre-processing data to display
-const processMap = new Map()
-processMap.set('amount-col', (amt: number) => (
-  <OverlayTrigger placement='top'
-    overlay={<Tooltip id={'tt'}> {qaToZil(amt)} </Tooltip>}>
-    <span>{qaToZil(amt)}</span>
-  </OverlayTrigger>
-))
-processMap.set('from-col', (addr: string) => (
-  <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>
-    {hexAddrToZilAddr(addr)}
-  </QueryPreservingLink>))
-processMap.set('to-col', (addr: string) => (
-  addr.includes('contract-')
-    ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr.substring(9))}`}>
-      <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
-      {' '}
-      Contract Creation
-    </QueryPreservingLink>
-    : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(addr)}`}>
-      {hexAddrToZilAddr(addr)}
-    </QueryPreservingLink>))
-
-processMap.set('hash-col', (hash: number) => (
-  <QueryPreservingLink to={`/tx/0x${hash}`}>
-    <span className='mono'>{'0x' + hash}</span>
-  </QueryPreservingLink>))
 
 const ValTxnList: React.FC = () => {
 
@@ -64,24 +30,59 @@ const ValTxnList: React.FC = () => {
       id: 'from-col',
       Header: 'From',
       accessor: 'txn.senderAddress',
-    },
-    {
+      Cell: ({ value }: { value: string }) => (
+        <QueryPreservingLink to={`/address/${hexAddrToZilAddr(value)}`}>
+          {hexAddrToZilAddr(value)}
+        </QueryPreservingLink>)
+    }, {
       id: 'to-col',
       Header: 'To',
-      accessor: (txnDetails: any) => (
-        txnDetails.contractAddr
-          ? 'contract-' + txnDetails.contractAddr
-          : txnDetails.txn.txParams.toAddr),
-    },
-
-    {
+      Cell: ({ row }: { row: Row<TransactionDetails> }) => {
+        return (row.original.contractAddr
+          ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(row.original.contractAddr)}`}>
+            <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
+            {' '}
+            Contract Creation
+          </QueryPreservingLink>
+          : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(row.original.txn.txParams.toAddr)}`}>
+            {hexAddrToZilAddr(row.original.txn.txParams.toAddr)}
+          </QueryPreservingLink>)
+      }
+    }, {
       id: 'hash-col',
       Header: 'Hash',
       accessor: 'hash',
+      Cell: ({ row }: { row: Row<TransactionDetails> }) => {
+        return <QueryPreservingLink to={`/tx/0x${row.original.hash}`}>
+          <div className='text-right mono'>
+            {row.original.txn.txParams.receipt && !row.original.txn.txParams.receipt.success
+              && <FontAwesomeIcon className='mr-1' icon={faExclamationCircle} color='red' />
+            }
+            {'0x' + row.original.hash}
+          </div>
+        </QueryPreservingLink>
+      }
     }, {
       id: 'amount-col',
       Header: 'Amount',
-      accessor: 'amount',
+      accessor: 'txn.amount',
+      Cell: ({ value }: { value: string }) => (
+        <OverlayTrigger placement='right'
+          overlay={<Tooltip id={'amt-tt'}>{qaToZil(value)}</Tooltip>}>
+          <div className='text-right sm'>{qaToZil(value)}</div>
+        </OverlayTrigger>
+      )
+    }, {
+      id: 'fee-col',
+      Header: 'Fee',
+      accessor: 'txn',
+      Cell: ({ value }: { value: Transaction }) => {
+        const fee = Number(value.txParams.gasPrice) * value.txParams.receipt!.cumulative_gas
+        return <OverlayTrigger placement='top'
+          overlay={<Tooltip id={'fee-tt'}>{qaToZil(fee)}</Tooltip>}>
+          <div className='text-center sm'>{qaToZil(fee)}</div>
+        </OverlayTrigger>
+      }
     }], []
   )
 
@@ -102,6 +103,7 @@ const ValTxnList: React.FC = () => {
       }
     }
     getData()
+
     const getDataTimer = setInterval(async () => {
       await getData()
     }, refreshRate)
@@ -121,7 +123,7 @@ const ValTxnList: React.FC = () => {
       </Card.Header>
       <Card.Body>
         {data
-          ? <DisplayTable columns={columns} data={data} processMap={processMap} />
+          ? <DisplayTable columns={columns} data={data} />
           : <Spinner animation="border" role="status" />
         }
       </Card.Body>

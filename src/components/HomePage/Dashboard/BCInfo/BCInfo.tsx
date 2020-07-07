@@ -2,9 +2,9 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Container, Row, Col, Card, Spinner, Tooltip, OverlayTrigger } from 'react-bootstrap'
 
 import { QueryPreservingLink } from 'src'
+import { refreshRate } from 'src/constants'
 import { NetworkContext } from 'src/services/networkProvider'
 import { BlockchainInfo } from '@zilliqa-js/core/src/types'
-import { refreshRate } from 'src/constants'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
@@ -12,6 +12,7 @@ import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import './BCInfo.css'
 
 interface BCInfoState {
+  startTxBlock: number | null,
   maxTPS: number | null,
   maxTPSTxBlockNum: number | null,
   maxTxnCount: number | null,
@@ -19,6 +20,7 @@ interface BCInfoState {
 }
 
 const defaultBCInfoState = {
+  startTxBlock: null,
   maxTPS: null,
   maxTPSTxBlockNum: null,
   maxTxnCount: null,
@@ -40,6 +42,8 @@ const BCInfo: React.FC = () => {
 
     setState((prevState: BCInfoState) => {
       const newState: BCInfoState = { ...prevState }
+      if (!prevState.startTxBlock)
+        newState.startTxBlock = parseInt(data.NumTxBlocks, 10) - 1
       if (!prevState.maxTPS || prevState.maxTPS <= data.TransactionRate) {
         newState.maxTPS = data.TransactionRate
         newState.maxTPSTxBlockNum = parseInt(data.NumTxBlocks, 10) - 1
@@ -83,89 +87,89 @@ const BCInfo: React.FC = () => {
       <Card.Body>
         {data
           ? <Container>
-            <Row style={{ marginBottom: '1rem' }}>
+            <Row className='mb-3'>
               <Col>
-                <span className='bcstats-header'>Current Tx Block:</span>
+                <span className='subtext'>Current Tx Block:</span>
                 <br />
                 <span>{parseInt(data.NumTxBlocks).toLocaleString('en')}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>Number of Transactions:</span>
+                <span className='subtext'>Number of Transactions:</span>
                 <br />
                 <span>{parseInt(data.NumTransactions).toLocaleString('en')}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>Peers:</span>
+                <span className='subtext'>Peers:</span>
                 <br />
-                <span>{(data.NumPeers).toLocaleString('en')}</span>
+                <span>{data.NumPeers.toLocaleString('en')}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>Sharding Structure:</span>
+                <span className='subtext'>Sharding Structure:</span>
                 <br />
                 <span>[{data.ShardingStructure.NumPeers.toString()}]</span>
               </Col>
             </Row>
-            <Row style={{ marginBottom: '1rem' }}>
+            <Row className='mb-3'>
               <Col>
-                <span className='bcstats-header'>Current DS Epoch:</span>
+                <span className='subtext'>Current DS Epoch:</span>
                 <br />
                 <span>{parseInt(data.CurrentDSEpoch).toLocaleString('en')}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>DS Block Rate:</span>
+                <span className='subtext'>DS Block Rate:</span>
                 <br />
-                <span>{data.DSBlockRate.toLocaleString('en')}</span>
+                <span>{data.DSBlockRate.toFixed(5)}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>Tx Block Rate:</span>
+                <span className='subtext'>Tx Block Rate:</span>
                 <br />
-                <span>{data.TxBlockRate}</span>
+                <span>{data.TxBlockRate.toFixed(5)}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>TPS:</span>
+                <span className='subtext'>TPS:</span>
                 <br />
-                <span>{data.TransactionRate}</span>
+                <span>{data.TransactionRate.toFixed(5)}</span>
               </Col>
             </Row>
             <Row>
               <Col>
-                <span className='bcstats-header'>Number of Txns in DS Epoch:</span>
+                <span className='subtext'>Number of Txns in DS Epoch:</span>
                 <br />
                 <span>{parseInt(data.NumTxnsDSEpoch).toLocaleString('en')}</span>
               </Col>
               <Col>
-                <span className='bcstats-header'>Number of Txns in Txn Epoch:</span>
+                <span className='subtext'>Number of Txns in Txn Epoch:</span>
                 <br />
                 <span>{parseInt(data.NumTxnsTxEpoch).toLocaleString('en')}</span>
               </Col>
               <Col>
                 <OverlayTrigger placement='left'
-                  overlay={<Tooltip id={'tt'}>This statistic does not take historical data into account. Requires user to stay on the Home Page</Tooltip>}>
+                  overlay={<Tooltip id={'tt'}>This statistic is accurate from TxBlock {state.startTxBlock}. Requires user to stay on the Home Page</Tooltip>}>
                   <FontAwesomeIcon className='info-icon' icon={faInfoCircle} />
                 </OverlayTrigger>
                 {' '}
-                <span className='bcstats-header'>Max TPS (w/o historical data):</span>
+                <span className='subtext'>Recent Max Observed TPS:</span>
                 <br />
-                <span>{state.maxTPS}</span>
+                <span>{state.maxTPS && state.maxTPS.toFixed(5)}</span>
                 <span>
                   {' '}
-                  <small style={{ whiteSpace:'nowrap', color: 'rgb(0,0,0,0.7)' }}>
-                    (TxBlock <QueryPreservingLink to={`/txbk/${state.maxTPSTxBlockNum}`}>{state.maxTPSTxBlockNum}</QueryPreservingLink>)
+                  <small className='text-nowrap subtext'>
+                    (on TxBlock <QueryPreservingLink to={`/txbk/${state.maxTPSTxBlockNum}`}>{state.maxTPSTxBlockNum}</QueryPreservingLink>)
                   </small>
                 </span>
               </Col>
               <Col>
                 <OverlayTrigger placement='left'
-                  overlay={<Tooltip id={'tt'}>This statistic does not take historical data into account. Requires user to stay on the Home Page</Tooltip>}>
+                  overlay={<Tooltip id={'tt'}>This statistic is accurate from TxBlock {state.startTxBlock}. Requires user to stay on the Home Page</Tooltip>}>
                   <FontAwesomeIcon className='info-icon' icon={faInfoCircle} />
                 </OverlayTrigger>
                 {' '}
-                <span className='bcstats-header'>Max Txns (w/o historical data):</span>
+                <span className='subtext'>Recent Max Observed Txn Count:</span>
                 <br />
                 <span>{state.maxTxnCount}
                   {' '}
-                  <small style={{ color: 'rgb(0,0,0,0.7)' }}>
-                    (TxBlock <QueryPreservingLink to={`/txbk/${state.maxTxnCountTxBlockNum}`}>{state.maxTxnCountTxBlockNum}</QueryPreservingLink>)
+                  <small className='text-nowrap subtext'>
+                    (on TxBlock <QueryPreservingLink to={`/txbk/${state.maxTxnCountTxBlockNum}`}>{state.maxTxnCountTxBlockNum}</QueryPreservingLink>)
                   </small>
                 </span>
               </Col>
