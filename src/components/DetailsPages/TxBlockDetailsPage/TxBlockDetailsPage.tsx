@@ -16,7 +16,7 @@ import { faCopy, faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free
 import { faFileContract, faCubes, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 
 import LabelStar from '../LabelComponent/LabelStar'
-import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import NotFoundPage from '../../ErrorPages/NotFoundPage'
 import './TxBlockDetailsPage.css'
 
 const TxBlockDetailsPage: React.FC = () => {

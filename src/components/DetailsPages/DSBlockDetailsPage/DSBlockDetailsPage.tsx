@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
 import { faCubes, faAngleUp, faAngleLeft, faAngleRight, faAngleDown } from '@fortawesome/free-solid-svg-icons'
 
-import NotFoundPage from '../NotFoundPage/NotFoundPage'
+import NotFoundPage from '../../ErrorPages/NotFoundPage'
 import MinerTable from './MinerTable/MinerTable'
 import LabelStar from '../LabelComponent/LabelStar'
 

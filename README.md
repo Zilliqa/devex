@@ -1,52 +1,49 @@
-# dev-explorer
+# Devex - Zilliqa Dev Explorer
 
-This is a developer focused light weight explorer to connect to the Zilliqa's mainnet and testnet.
+This is a developer-focused lightweight explorer to connect to the Zilliqa's networks and local testnets.
 
-In addition, the explorer also works with local testnet, devnet and isolated server.
+As an explorer, Devex is unable to interact with the blockchain other than pulling and displaying data.
+If you wish to interact with the blockchain (i.e. create contracts, create transactions and so on..), do check out our feature-filled Scilla IDE (https://ide.zilliqa.com/#/)
 
+Features
+---
+* Built on top of Zilliqa's Javascript Library
+* Provides developers with an intuitive GUI to explore any Zilliqa network
+* Detailed and organised display for the following data:
+    * Accounts
+    * Contracts
+    * Transactions
+    * DS Blocks
+    * Transaction Blocks
+* Allows developers to add local testnet URLs to the list of default networks to switch between
+* Supports exploring of Zilliqa Isolated Servers. More info on Isolated Servers here (https://github.com/Zilliqa/Zilliqa/blob/master/ISOLATED_SERVER_setup.md)
+* Labelling System that allows developers to save often-visited entities, and share it using the import/export feature
+* Dark Mode
+
+Setting Up
 ---
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 ## Available Scripts
+* `yarn install` to install dependencies
+* `yarn start` to run the app on `localhost:3000`
+* `yarn build` to build the app for production
 
-In the project directory, you can run:
+Preloading Networks
+---
 
-### `yarn start`
+The explorer allows developers to define default networks to be shipped with the explorer
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+This is done by adding a JSON file named `urls.json` into public folder `%PROJ_DIR%/public` before building the application
+or injecting it into the build post-build into the build's root directory `%BUILD_DIR%/`
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Format: Key-value pair where the network url is the key and the network name is the value
 
-### `yarn test`
+An example is given below
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+  {
+    "https://api.zilliqa.com/": "Mainnet",
+    "https://dev-api.zilliqa.com/": "Testnet",
+    "https://zilliqa-isolated-server.zilliqa.com/": "Isolated Server",
+  }
+```

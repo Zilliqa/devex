@@ -1,0 +1,29 @@
+.error-card {
+  min-height: 450px;
+}
+
+.error-card .card-body {
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Override default btn */
+
+#error-btn, #error-btn * {
+  color: var(--color-zil-green) !important;
+  border-color: var(--color-zil-green) !important;
+}
+
+#error-btn:active, #error-btn:focus {
+  border-color: var(--color-zil-green) !important;
+}
+
+#error-btn:hover {
+  background-color: var(--color-zil-green) !important;
+}
+
+#error-btn:hover * {
+  color: white !important;
+}
