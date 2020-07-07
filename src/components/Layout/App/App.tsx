@@ -25,7 +25,7 @@ const App: React.FC = () => {
   return (
     <div className='app-container'>
       <Container>
-        {inTransition
+        {inTransition || isValidUrl === null
           ? <div className='center-spinner'><Spinner animation="border" /></div>
           : <>
             <Switch>
