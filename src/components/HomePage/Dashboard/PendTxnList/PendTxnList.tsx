@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react'
-import { Card, Spinner, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Card, Spinner } from 'react-bootstrap'
 
 import { refreshRate } from 'src/constants'
 import { NetworkContext } from 'src/services/network/networkProvider'
 import { PendingTxnResultWithHash } from 'src/typings/api'
+import { errorCodeMapping } from 'src/utils/Utils'
 
 import DisplayTable from '../../DisplayTable/DisplayTable'
-import './PendTxnList.css'
 
+import './PendTxnList.css'
 
 const PendTxnList: React.FC = () => {
 
@@ -28,14 +29,6 @@ const PendTxnList: React.FC = () => {
       )
     },
     {
-      id: 'confirmed-col',
-      Header: 'Confirmed',
-      accessor: 'confirmed',
-      Cell: ({ value }: { value: boolean }) => (
-        <div className='text-center'>{value.toString()}</div>
-      )
-    },
-    {
       id: 'code-col',
       Header: 'Code',
       accessor: 'code',
@@ -46,12 +39,17 @@ const PendTxnList: React.FC = () => {
     {
       id: 'status-col',
       Header: 'Status',
-      accessor: 'info',
-      Cell: ({ value }: { value: string }) => (
-        <OverlayTrigger placement='top'
-          overlay={<Tooltip id={'tt'}> {value} </Tooltip>}>
-          <div>{value}</div>
-        </OverlayTrigger>
+      accessor: 'code',
+      Cell: ({ value }: { value: number }) => (
+        <div className='text-center'>{errorCodeMapping[value].status}</div>
+      )
+    },
+    {
+      id: 'description-col',
+      Header: 'Description',
+      accessor: 'code',
+      Cell: ({ value }: { value: number }) => (
+        <div style={{ whiteSpace: 'pre-wrap' }}>{errorCodeMapping[value].description}</div>
       )
     }], []
   )
@@ -72,7 +70,7 @@ const PendTxnList: React.FC = () => {
           console.log(e)
       }
     }
-    
+
     getData()
     const getDataTimer = setInterval(async () => {
       await getData()
@@ -94,7 +92,7 @@ const PendTxnList: React.FC = () => {
         {data
           ? data.length > 0
             ? <div className='pendtxlist-table'>
-              <DisplayTable columns={columns} data={data} />
+              <DisplayTable columns={columns} data={data.sort((a, b) => a.code - b.code)} />
             </div>
             : 'No Pending Transactions'
           : <Spinner animation="border" role="status" />

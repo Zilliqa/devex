@@ -109,19 +109,19 @@
 /* Pending Transactions List */
 
 .display-table #pend-hash-col {
-  width: 500px;
-}
-
-.display-table #confirmed-col {
-  width: 80px;
-  text-align: center;
+  width: 410px;
 }
 
 .display-table #code-col {
   text-align: center;
-  width: 60px;
+  width: 45px;
 }
 
 .display-table #status-col {
+  width: 60px;
+  text-align: center;
+}
+
+.display-table #description-col {
   width: 300px;
 }
