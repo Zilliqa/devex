@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Spinner } from 'react-bootstrap'
 
-import { NetworkContext } from 'src/services/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 
 import Dashboard from './Dashboard/Dashboard'
 import Searchbar from './Searchbar/Searchbar'

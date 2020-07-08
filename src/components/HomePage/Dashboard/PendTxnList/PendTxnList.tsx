@@ -2,17 +2,12 @@ import React, { useState, useEffect, useMemo, useContext } from 'react'
 import { Card, Spinner, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 import { refreshRate } from 'src/constants'
-import { NetworkContext } from 'src/services/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 import { PendingTxnResultWithHash } from 'src/typings/api'
 
 import DisplayTable from '../../DisplayTable/DisplayTable'
 import './PendTxnList.css'
 
-/*
-    Display first 5 Pending Txns
-    - Hash
-    - Status
-*/
 
 const PendTxnList: React.FC = () => {
 

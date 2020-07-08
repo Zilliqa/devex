@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react'
 import { Container, Col, Row, Dropdown, Form } from 'react-bootstrap'
 
-import { defaultNetworks } from 'src/services/networkProvider'
-import { UserPrefContext } from 'src/services/userPrefProvider'
+import { defaultNetworks } from 'src/services/network/networkProvider'
+import { UserPrefContext } from 'src/services/userPref/userPrefProvider'
 
 import Dropzone from './Dropzone/Dropzone'
 import ImportExport from './ImportExport/ImportExport'

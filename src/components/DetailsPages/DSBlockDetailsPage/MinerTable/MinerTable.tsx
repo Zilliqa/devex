@@ -2,7 +2,7 @@ import React, { useMemo, useCallback } from 'react'
 import { Pagination } from 'react-bootstrap'
 import { useTable, Column, Row, Cell, usePagination } from 'react-table'
 
-import { QueryPreservingLink } from 'src'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import { pubKeyToZilAddr } from 'src/utils/Utils'
 
 interface IMinerTableParams {

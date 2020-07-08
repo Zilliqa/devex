@@ -13,7 +13,7 @@ import TxnDetailsPage from 'src/components/DetailsPages/TxnDetailsPage/TxnDetail
 import NetworkErrPage from 'src/components/ErrorPages/NetworkErrPage'
 import LabelsPage from 'src/components/LabelsPage/LabelsPage'
 import NotFoundPage from 'src/components/ErrorPages/NotFoundPage'
-import { NetworkContext } from 'src/services/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 
 import './App.css'
 

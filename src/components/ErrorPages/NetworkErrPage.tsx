@@ -1,7 +1,7 @@
 import React from 'react'
 import { Card, Button } from 'react-bootstrap'
 
-import { useNetworkUrl } from 'src/services/networkProvider'
+import { useNetworkUrl } from 'src/services/network/networkProvider'
 
 import './ErrorPages.css'
 

@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { Card, Row, Col, Container, Spinner, Collapse } from 'react-bootstrap'
 
-import { QueryPreservingLink } from 'src'
-import { NetworkContext } from 'src/services/networkProvider'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 import { qaToZil, timestampToTimeago, timestampToDisplay, pubKeyToZilAddr } from 'src/utils/Utils'
 import { DsBlockObj, MinerInfo } from '@zilliqa-js/core/src/types'
 

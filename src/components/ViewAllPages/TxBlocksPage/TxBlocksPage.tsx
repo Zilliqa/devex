@@ -1,9 +1,9 @@
 import React, { useState, useRef, useCallback, useMemo, useContext } from 'react'
 import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 
-import { QueryPreservingLink } from 'src'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
-import { NetworkContext } from 'src/services/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 import { TxBlockObjListing } from 'src/typings/api'
 import { timestampToTimeago, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
 import { TxBlockObj } from '@zilliqa-js/core/src/types'

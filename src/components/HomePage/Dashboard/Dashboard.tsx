@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 
-import { NetworkContext } from 'src/services/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 
 import BCInfo from './BCInfo/BCInfo'
 import DSBlockList from './DSBlockList/DSBlockList'

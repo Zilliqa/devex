@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { Spinner } from 'react-bootstrap'
 
-import { NetworkContext } from 'src/services/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 
 import AccountDetailsPage from './AccountDetailsPage/AccountDetailsPage'
 import ContractDetailsPage from './ContractDetailsPage/ContractDetailsPage'

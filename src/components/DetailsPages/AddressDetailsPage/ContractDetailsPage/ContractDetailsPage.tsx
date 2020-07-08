@@ -1,11 +1,11 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import { Card, Container, Row, Col, Spinner } from 'react-bootstrap'
 
-import { QueryPreservingLink } from 'src'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import InfoTabs from 'src/components/DetailsPages/InfoTabs/InfoTabs'
 import DefaultTab from 'src/components/DetailsPages/InfoTabs/DefaultTab'
 import CodeTab from 'src/components/DetailsPages/InfoTabs/CodeTab'
-import { NetworkContext } from 'src/services/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 import { ContractData } from 'src/typings/api'
 import { qaToZil, addHexPrefix } from 'src/utils/Utils'
 import { fromBech32Address, toBech32Address } from '@zilliqa-js/crypto'

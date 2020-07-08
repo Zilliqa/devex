@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { QueryPreservingLink } from 'src'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import { qaToZil, hexAddrToZilAddr, isValidAddr } from 'src/utils/Utils'
 import { TransitionEntry } from '@zilliqa-js/core/src/types'
 

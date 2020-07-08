@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react'
 import { Card, Spinner } from 'react-bootstrap'
 
-import { QueryPreservingLink } from 'src'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import { refreshRate } from 'src/constants'
-import { NetworkContext } from 'src/services/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 import { timestampToTimeago } from 'src/utils/Utils'
 import { DsBlockObj } from '@zilliqa-js/core/src/types'
 

@@ -14,7 +14,7 @@ type UserPrefState = {
   setLabelMap: (newLabelMap: Record<string, LabelInfo>) => void,
 }
 
-export const UserPrefContext = React.createContext<UserPrefState | null>(null)
+export const UserPrefContext = React.createContext<UserPrefState | undefined>(undefined)
 
 export const UserPrefProvider: React.FC = (props) => {
 

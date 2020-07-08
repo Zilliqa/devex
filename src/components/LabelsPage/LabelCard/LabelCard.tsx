@@ -3,8 +3,8 @@ import { Card } from 'react-bootstrap'
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable'
 import { Link } from 'react-router-dom'
 
-import { defaultNetworks } from 'src/services/networkProvider'
-import { UserPrefContext, LabelInfo } from 'src/services/userPrefProvider'
+import { defaultNetworks } from 'src/services/network/networkProvider'
+import { UserPrefContext, LabelInfo } from 'src/services/userPref/userPrefProvider'
 import { timestampToTimeago } from 'src/utils/Utils'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
