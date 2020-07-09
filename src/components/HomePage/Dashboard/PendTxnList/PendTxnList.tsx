@@ -4,7 +4,6 @@ import { Card, Spinner } from 'react-bootstrap'
 import { refreshRate } from 'src/constants'
 import { NetworkContext } from 'src/services/network/networkProvider'
 import { PendingTxnResultWithHash } from 'src/typings/api'
-import { errorCodeMapping } from 'src/utils/Utils'
 
 import DisplayTable from '../DisplayTable/DisplayTable'
 
@@ -39,17 +38,17 @@ const PendTxnList: React.FC = () => {
     {
       id: 'status-col',
       Header: 'Status',
-      accessor: 'code',
-      Cell: ({ value }: { value: number }) => (
-        <div className='text-center'>{errorCodeMapping[value].status}</div>
+      accessor: 'confirmed',
+      Cell: ({ value }: { value: boolean }) => (
+        <div className='text-center'>{value ? 'Confirmed' : 'Pending'}</div>
       )
     },
     {
       id: 'description-col',
       Header: 'Description',
-      accessor: 'code',
-      Cell: ({ value }: { value: number }) => (
-        <div style={{ whiteSpace: 'pre-wrap' }}>{errorCodeMapping[value].description}</div>
+      accessor: 'info',
+      Cell: ({ value }: { value: string }) => (
+        <div style={{ whiteSpace: 'pre-wrap' }}>{value}</div>
       )
     }], []
   )

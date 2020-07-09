@@ -1,6 +1,6 @@
 import React from 'react'
 import { createMemoryHistory } from 'history'
-import { MemoryRouter, Router } from 'react-router-dom'
+import { Router } from 'react-router-dom'
 import { shallow, mount } from 'enzyme'
 import Layout from 'src/components/Layout/Layout'
 import App from 'src/components/Layout/App/App'

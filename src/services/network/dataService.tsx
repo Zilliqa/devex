@@ -177,7 +177,6 @@ export class DataService {
       throw new Error(response.error.message)
     if (parseInt(response.result.header.BlockNum) !== blockNum)
       throw new Error('Invalid Tx Block Number')
-    // @ts-ignore  
     return response.result as TxBlockObj
   }
 
@@ -193,7 +192,6 @@ export class DataService {
       const response = await this.zilliqa.blockchain.getTxBlock(blockShort.BlockNum)
       if (response.error !== undefined)
         throw new Error(response.error.message)
-      // @ts-ignore  
       return response.result as TxBlockObj
     }))
     return output as TxBlockObj[]
@@ -211,7 +209,6 @@ export class DataService {
       const response = await this.zilliqa.blockchain.getTxBlock(blockShort.BlockNum)
       if (response.error !== undefined)
         throw new Error(response.error.message)
-      // @ts-ignore
       return response.result as TxBlockObj
     })) as TxBlockObj[]
     return {
@@ -251,7 +248,6 @@ export class DataService {
     const txn = await this.zilliqa.blockchain.getTransaction(txnHash)
     if (txn.txParams && txn.txParams.toAddr === '0x0000000000000000000000000000000000000000') {
       const contractAddr = await this.getContractAddrFromTransaction(txnHash)
-      // event emitter
       // @ts-ignore
       return { txn: txn, hash: txnHash, contractAddr: contractAddr } as TransactionDetails
     }
@@ -285,17 +281,13 @@ export class DataService {
 
   async getLatest5PendingTransactions(): Promise<PendingTxnResultWithHash[]> {
     console.log("getting 5 pending tx")
-    const response = await this.zilliqa.blockchain.getPendingTxns()
-    if (response.error !== undefined)
-      throw new Error(response.error.message)
-    const txnHashes = response.result.Txns.map((x) => x.TxnHash)
+    const pendingTxns = await this.zilliqa.blockchain.getPendingTxns()
+    const txnHashes = pendingTxns.Txns.map((x) => x.TxnHash)
     const output = await Promise.all(
       txnHashes.map(async (txnHash: string) => {
-        const response = await this.zilliqa.blockchain.getPendingTxn(txnHash)
-        if (response.error !== undefined)
-          throw new Error(response.error.message)
+        const pendingTxn = await this.zilliqa.blockchain.getPendingTxn(txnHash)
         return {
-          ...response.result,
+          ...pendingTxn,
           hash: txnHash,
         } as PendingTxnResultWithHash
       }))

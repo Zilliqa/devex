@@ -38,16 +38,16 @@ export const useNetworkName = (): string => {
 
 export let defaultNetworks: Record<string, string> = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
   ? {
-    'https://api.zilliqa.com/': 'Mainnet',
-    'https://dev-api.zilliqa.com/': 'Testnet',
-    'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server',
+    'https://api.zilliqa.com': 'Mainnet',
+    'https://dev-api.zilliqa.com': 'Testnet',
+    'https://zilliqa-isolated-server.zilliqa.com': 'Isolated Server',
     'http://52.187.126.172:4201': 'Mainnet Staked Seed Node'
   }
   : {
-    'https://api.zilliqa.com/': 'Mainnet',
-    'https://dev-api.zilliqa.com/': 'Testnet',
-    'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server',
-    'https://stg-zilliqa-isolated-server.zilliqa.com/': 'Staging Isolated Server',
+    'https://api.zilliqa.com': 'Mainnet',
+    'https://dev-api.zilliqa.com': 'Testnet',
+    'https://zilliqa-isolated-server.zilliqa.com': 'Isolated Server',
+    'https://stg-zilliqa-isolated-server.zilliqa.com': 'Staging Isolated Server',
     'http://52.187.126.172:4201': 'Mainnet Staked Seed Node'
   }
 
