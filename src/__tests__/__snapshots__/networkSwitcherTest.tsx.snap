@@ -13,7 +13,7 @@ exports[`<NetworkSwitcher /> renders with a given list of default networks and s
         placement="right"
       >
          
-        https://api.zilliqa.com/
+        https://api.zilliqa.com
          
       </ForwardRef>
     }
@@ -72,7 +72,7 @@ exports[`<NetworkSwitcher /> renders with a given list of default networks and s
         }
       }
       disabled={false}
-      key="https://api.zilliqa.com/"
+      key="https://api.zilliqa.com"
       onClick={[Function]}
     >
       Mainnet
@@ -86,7 +86,7 @@ exports[`<NetworkSwitcher /> renders with a given list of default networks and s
         }
       }
       disabled={false}
-      key="https://dev-api.zilliqa.com/"
+      key="https://dev-api.zilliqa.com"
       onClick={[Function]}
     >
       Testnet
@@ -100,7 +100,7 @@ exports[`<NetworkSwitcher /> renders with a given list of default networks and s
         }
       }
       disabled={false}
-      key="https://zilliqa-isolated-server.zilliqa.com/"
+      key="https://zilliqa-isolated-server.zilliqa.com"
       onClick={[Function]}
     >
       Isolated Server

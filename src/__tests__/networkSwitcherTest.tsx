@@ -27,7 +27,7 @@ jest.mock("src/services/network/networkProvider", () => {
       'http://52.187.126.172:4201': 'Mainnet Staked Seed Node'
     },
     useNetworkName: () => ('Mainnet'),
-    useNetworkUrl: () => ('https://api.zilliqa.com/'),
+    useNetworkUrl: () => ('https://api.zilliqa.com'),
   }
 })
 
@@ -45,9 +45,9 @@ describe('<NetworkSwitcher />', () => {
     const wrapper = shallow(<NetworkSwitcher />)
     expect(wrapper).toMatchSnapshot()
 
-    wrapper.findWhere(node => node.key() === 'https://dev-api.zilliqa.com/').simulate('click')
+    wrapper.findWhere(node => node.key() === 'https://dev-api.zilliqa.com').simulate('click')
 
-    expect(mockHistoryPush).toHaveBeenCalledWith({ "pathname": "/", "search": "?network=https%3A%2F%2Fdev-api.zilliqa.com%2F" })
+    expect(mockHistoryPush).toHaveBeenCalledWith({ "pathname": "/", "search": "?network=https%3A%2F%2Fdev-api.zilliqa.com" })
   })
 
   it('adds new network url correctly', () => {
@@ -57,7 +57,6 @@ describe('<NetworkSwitcher />', () => {
       preventDefault: jest.fn(),
       target: { name: "networkUrl", value: "spam" }
     })
-    console.log(wrapper.debug())
     expect(mockSetNodeUrlMap).toHaveBeenCalledTimes(1)
   })
 })
