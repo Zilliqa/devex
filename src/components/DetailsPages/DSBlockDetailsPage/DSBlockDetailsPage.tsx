@@ -144,7 +144,7 @@ const DSBlockDetailsPage: React.FC = () => {
                     <div className='dsblock-detail'>
                       <span>DS Leader:</span>
                       <span>
-                        <QueryPreservingLink to={`address/${pubKeyToZilAddr(data.header.LeaderPubKey)}`}>
+                        <QueryPreservingLink to={`/address/${pubKeyToZilAddr(data.header.LeaderPubKey)}`}>
                           {pubKeyToZilAddr(data.header.LeaderPubKey)}
                         </QueryPreservingLink>
                       </span>

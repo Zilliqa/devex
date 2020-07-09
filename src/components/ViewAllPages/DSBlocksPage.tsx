@@ -1,5 +1,4 @@
 import React, { useState, useRef, useCallback, useMemo, useContext } from 'react'
-import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
@@ -24,7 +23,7 @@ const DSBlocksPage: React.FC = () => {
       Header: 'Height',
       accessor: 'header.BlockNum',
       Cell: ({ value }: { value: string }) => (
-        <QueryPreservingLink to={`txbk/${value}`}>
+        <QueryPreservingLink to={`/dsbk/${value}`}>
           {value}
         </QueryPreservingLink>
       )
@@ -45,7 +44,7 @@ const DSBlocksPage: React.FC = () => {
       accessor: 'header.LeaderPubKey',
       Cell: ({ value }: { value: string }) => (
         <div className='mono'>
-          <QueryPreservingLink to={`address/${pubKeyToZilAddr(value)}`}>
+          <QueryPreservingLink to={`/address/${pubKeyToZilAddr(value)}`}>
             {pubKeyToZilAddr(value)}
           </QueryPreservingLink>
         </div>
@@ -56,10 +55,7 @@ const DSBlocksPage: React.FC = () => {
       Header: 'Block Hash',
       accessor: 'Hash',
       Cell: ({ value }: { value: string }) => (
-        <OverlayTrigger placement='left'
-          overlay={<Tooltip id={'bkhash-tt'}>{'0x' + value}</Tooltip>}>
-          <div className='mono bkhash-div'>{'0x' + value}</div>
-        </OverlayTrigger>
+        <div className='mono'>{'0x' + value}</div>
       )
     },
     {

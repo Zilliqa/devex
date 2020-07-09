@@ -54,7 +54,7 @@ const MinerTable: React.FC<IMinerTableParams> = ({ addresses }) => {
         (<>
           [{props.row.index}]
           {' '}
-          <QueryPreservingLink to={pubKeyToZilAddr(props.value)}>{pubKeyToZilAddr(props.value)}</QueryPreservingLink>
+          <QueryPreservingLink to={`/address/${pubKeyToZilAddr(props.value)}`}>{pubKeyToZilAddr(props.value)}</QueryPreservingLink>
         </>)
     }], []
   ) as Array<Column<IMinerObj>>

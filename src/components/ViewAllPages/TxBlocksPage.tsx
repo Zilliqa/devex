@@ -24,7 +24,7 @@ const TxBlocksPage: React.FC = () => {
       Header: 'Height',
       accessor: 'header.BlockNum',
       Cell: ({ value }: { value: string }) => (
-        <QueryPreservingLink to={`txbk/${value}`}>
+        <QueryPreservingLink to={`/txbk/${value}`}>
           {value}
         </QueryPreservingLink>
       )
@@ -45,7 +45,7 @@ const TxBlocksPage: React.FC = () => {
       accessor: 'header.MinerPubKey',
       Cell: ({ value }: { value: string }) => (
         <div className='mono'>
-          <QueryPreservingLink to={`address/${pubKeyToZilAddr(value)}`}>
+          <QueryPreservingLink to={`/address/${pubKeyToZilAddr(value)}`}>
             {pubKeyToZilAddr(value)}
           </QueryPreservingLink>
         </div>

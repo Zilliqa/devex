@@ -26,7 +26,7 @@ const TxBlockList: React.FC = () => {
       Header: 'Height',
       accessor: 'header.BlockNum',
       Cell: ({ value }: { value: string }) => (
-        <QueryPreservingLink to={`txbk/${value}`}>
+        <QueryPreservingLink to={`/txbk/${value}`}>
           {value}
         </QueryPreservingLink>
       )
@@ -56,7 +56,7 @@ const TxBlockList: React.FC = () => {
       Header: 'DS Block',
       accessor: 'header.DSBlockNum',
       Cell: ({ value }: { value: string }) => (
-        <QueryPreservingLink to={`dsbk/${value}`}>
+        <QueryPreservingLink to={`/dsbk/${value}`}>
           <div className='text-center'>{value}</div>
         </QueryPreservingLink>
       )
@@ -105,7 +105,7 @@ const TxBlockList: React.FC = () => {
       <Card.Header>
         <div className='dsblock-card-header'>
           <span>Transaction Blocks</span>
-          <QueryPreservingLink to={'txbk'}>View All</QueryPreservingLink>
+          <QueryPreservingLink to={'/txbk'}>View All</QueryPreservingLink>
         </div>
       </Card.Header>
       <Card.Body>

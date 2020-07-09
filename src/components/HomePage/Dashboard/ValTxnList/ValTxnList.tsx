@@ -118,7 +118,7 @@ const ValTxnList: React.FC = () => {
       <Card.Header>
         <div className='valtxlist-card-header'>
           <span>Transactions</span>
-          <QueryPreservingLink to={'tx'}>View Recent Transactions</QueryPreservingLink>
+          <QueryPreservingLink to={'/tx'}>View Recent Transactions</QueryPreservingLink>
         </div>
       </Card.Header>
       <Card.Body>

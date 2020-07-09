@@ -26,7 +26,7 @@ const DSBlockList: React.FC = () => {
       Header: 'Height',
       accessor: 'header.BlockNum',
       Cell: ({ value }: { value: string }) => (
-        <QueryPreservingLink to={`dsbk/${value}`}>
+        <QueryPreservingLink to={`/dsbk/${value}`}>
           {value}
         </QueryPreservingLink>
       ),
@@ -89,7 +89,7 @@ const DSBlockList: React.FC = () => {
       <Card.Header>
         <div className='dsblock-card-header'>
           <span>DS Blocks</span>
-          <QueryPreservingLink to={'dsbk'}>View All</QueryPreservingLink>
+          <QueryPreservingLink to={'/dsbk'}>View All</QueryPreservingLink>
         </div>
       </Card.Header>
       <Card.Body>
