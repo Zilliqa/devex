@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { Spinner } from 'react-bootstrap'
 
 import { NetworkContext } from 'src/services/network/networkProvider'
+import { isValidAddr } from 'src/utils/Utils'
 
 import AccountDetailsPage from './AccountDetailsPage/AccountDetailsPage'
 import ContractDetailsPage from './ContractDetailsPage/ContractDetailsPage'
@@ -30,7 +31,10 @@ const AddressDetailsPage: React.FC = () => {
         setIsContract(isContractRes)
       } catch (e) {
         console.log(e)
-        setError(e)
+        if (isValidAddr(addr))
+          setIsContract(false)
+        else
+          setError(e)
       } finally {
         setIsLoading(false)
       }

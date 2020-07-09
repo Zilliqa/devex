@@ -44,10 +44,10 @@
   
 */
 
-// Mainnet: https://api.zilliqa.com/
-// Testnet: https://dev-api.zilliqa.com/
-// Isolated Server: https://zilliqa-isolated-server.zilliqa.com/
-// Staging Isolated Server: https://stg-zilliqa-isolated-server.zilliqa.com/
+// Mainnet: https://api.zilliqa.com
+// Testnet: https://dev-api.zilliqa.com
+// Isolated Server: https://zilliqa-isolated-server.zilliqa.com
+// Staging Isolated Server: https://stg-zilliqa-isolated-server.zilliqa.com
 // Seeds: https://stat.zilliqa.com/api/seeds
 
 import { Zilliqa } from '@zilliqa-js/zilliqa'
@@ -70,11 +70,10 @@ export class DataService {
       this.zilliqa = new Zilliqa(nodeUrl)
     }
     else {
-      this.nodeUrl = 'https://api.zilliqa.com/'
-      this.zilliqa = new Zilliqa('https://api.zilliqa.com/')
+      this.nodeUrl = 'https://api.zilliqa.com'
+      this.zilliqa = new Zilliqa('https:/api.zilliqa.com')
     }
   }
-
   //================================================================================
   // Blockchain-related
   //================================================================================

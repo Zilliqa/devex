@@ -77,6 +77,10 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
           setAccContracts(accContracts)
       } catch (e) {
         console.log(e)
+        setAccData({
+          balance: '0',
+          nonce: '-'
+        })
       } finally {
         setIsLoading(false)
       }
