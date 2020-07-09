@@ -7,7 +7,7 @@ import { NetworkContext } from 'src/services/network/networkProvider'
 import { timestampToTimeago } from 'src/utils/Utils'
 import { DsBlockObj } from '@zilliqa-js/core/src/types'
 
-import DisplayTable from '../../DisplayTable/DisplayTable'
+import DisplayTable from '../DisplayTable/DisplayTable'
 
 import './DSBlockList.css'
 

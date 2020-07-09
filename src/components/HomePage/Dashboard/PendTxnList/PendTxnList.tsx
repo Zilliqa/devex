@@ -6,7 +6,7 @@ import { NetworkContext } from 'src/services/network/networkProvider'
 import { PendingTxnResultWithHash } from 'src/typings/api'
 import { errorCodeMapping } from 'src/utils/Utils'
 
-import DisplayTable from '../../DisplayTable/DisplayTable'
+import DisplayTable from '../DisplayTable/DisplayTable'
 
 import './PendTxnList.css'
 

@@ -8,8 +8,6 @@ import { TxBlockObjListing } from 'src/typings/api'
 import { timestampToTimeago, qaToZil, pubKeyToZilAddr } from 'src/utils/Utils'
 import { TxBlockObj } from '@zilliqa-js/core/src/types'
 
-import './TxBlockPage.css'
-
 const TxBlocksPage: React.FC = () => {
 
   const networkContext = useContext(NetworkContext)
@@ -58,10 +56,7 @@ const TxBlocksPage: React.FC = () => {
       Header: 'Block Hash',
       accessor: 'body.BlockHash',
       Cell: ({ value }: { value: string }) => (
-        <OverlayTrigger placement='left'
-          overlay={<Tooltip id={'bkhash-tt'}>{'0x' + value}</Tooltip>}>
-          <div className='mono bkhash-div'>{'0x' + value}</div>
-        </OverlayTrigger>
+        <div style={{ textOverflow: 'ellipsis', overflow: 'hidden' }} className='mono'>{'0x' + value}</div>
       )
     }, {
       id: 'total-fees-col',

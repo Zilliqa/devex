@@ -7,7 +7,7 @@ import { NetworkContext } from 'src/services/network/networkProvider'
 import { timestampToTimeago, qaToZil } from 'src/utils/Utils'
 import { TxBlockObj } from '@zilliqa-js/core/src/types'
 
-import DisplayTable from '../../DisplayTable/DisplayTable'
+import DisplayTable from '../DisplayTable/DisplayTable'
 
 import './TxBlockList.css'
 

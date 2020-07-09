@@ -12,7 +12,7 @@ import { Transaction } from '@zilliqa-js/account/src/transaction'
 import { faFileContract, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import DisplayTable from '../../DisplayTable/DisplayTable'
+import DisplayTable from '../DisplayTable/DisplayTable'
 
 import './ValTxnList.css'
 
