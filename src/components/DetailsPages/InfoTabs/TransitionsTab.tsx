@@ -23,8 +23,6 @@ const TransitionsTab: React.FC<IProps> = ({ transitions }) => (
           </tr>
           <tr>
             <th>Accepts $ZIL</th>
-            {/* To be removed after SDK typing is updated
-            // @ts-ignore */}
             <td>{transition.accepted === undefined ? '-' : `${transition.accepted}`}</td>
           </tr>
           <tr>

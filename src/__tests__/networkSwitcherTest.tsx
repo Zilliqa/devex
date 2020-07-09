@@ -2,7 +2,7 @@ import * as React from 'react'
 import { shallow } from 'enzyme'
 
 import NetworkSwitcher from 'src/components/Layout/Header/NetworkSwitcher'
-import { Form, FormControl } from 'react-bootstrap'
+import { Form } from 'react-bootstrap'
 
 const mockHistoryPush = jest.fn()
 
@@ -21,9 +21,9 @@ jest.mock("src/services/network/networkProvider", () => {
   return {
     ...orig,
     defaultNetworks: {
-      'https://api.zilliqa.com/': 'Mainnet',
-      'https://dev-api.zilliqa.com/': 'Testnet',
-      'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server',
+      'https://api.zilliqa.com': 'Mainnet',
+      'https://dev-api.zilliqa.com': 'Testnet',
+      'https://zilliqa-isolated-server.zilliqa.com': 'Isolated Server',
       'http://52.187.126.172:4201': 'Mainnet Staked Seed Node'
     },
     useNetworkName: () => ('Mainnet'),
@@ -54,7 +54,7 @@ describe('<NetworkSwitcher />', () => {
     const wrapper = shallow(<NetworkSwitcher />)
     const inputUrlForm = wrapper.find(Form)
     inputUrlForm.simulate('submit', {
-      preventDefault: () => { },
+      preventDefault: jest.fn(),
       target: { name: "networkUrl", value: "spam" }
     })
     console.log(wrapper.debug())
