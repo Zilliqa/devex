@@ -7,7 +7,6 @@ import App from 'src/components/Layout/App/App'
 import { NetworkContext } from 'src/services/network/networkProvider'
 import { Spinner } from 'react-bootstrap'
 
-
 describe('react router test', () => {
   const history = createMemoryHistory()
 
