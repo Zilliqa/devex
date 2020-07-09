@@ -155,22 +155,22 @@ exports[`Isolated Server <Dashboard /> matches snapshot 1`] = `
                                   Transactions
                                 </span>
                                 <QueryPreservingLink
-                                  to="tx"
+                                  to="/tx"
                                 >
                                   <Link
                                     to={
                                       Object {
-                                        "pathname": "tx",
+                                        "pathname": "/tx",
                                         "search": "",
                                       }
                                     }
                                   >
                                     <LinkAnchor
-                                      href="tx"
+                                      href="/tx"
                                       navigate={[Function]}
                                     >
                                       <a
-                                        href="tx"
+                                        href="/tx"
                                         onClick={[Function]}
                                       >
                                         View Recent Transactions
@@ -312,22 +312,22 @@ exports[`Non-Isolated Server <Dashboard /> matches snapshot 1`] = `
                                   DS Blocks
                                 </span>
                                 <QueryPreservingLink
-                                  to="dsbk"
+                                  to="/dsbk"
                                 >
                                   <Link
                                     to={
                                       Object {
-                                        "pathname": "dsbk",
+                                        "pathname": "/dsbk",
                                         "search": "",
                                       }
                                     }
                                   >
                                     <LinkAnchor
-                                      href="dsbk"
+                                      href="/dsbk"
                                       navigate={[Function]}
                                     >
                                       <a
-                                        href="dsbk"
+                                        href="/dsbk"
                                         onClick={[Function]}
                                       >
                                         View All
@@ -383,22 +383,22 @@ exports[`Non-Isolated Server <Dashboard /> matches snapshot 1`] = `
                                   Transaction Blocks
                                 </span>
                                 <QueryPreservingLink
-                                  to="txbk"
+                                  to="/txbk"
                                 >
                                   <Link
                                     to={
                                       Object {
-                                        "pathname": "txbk",
+                                        "pathname": "/txbk",
                                         "search": "",
                                       }
                                     }
                                   >
                                     <LinkAnchor
-                                      href="txbk"
+                                      href="/txbk"
                                       navigate={[Function]}
                                     >
                                       <a
-                                        href="txbk"
+                                        href="/txbk"
                                         onClick={[Function]}
                                       >
                                         View All
@@ -463,22 +463,22 @@ exports[`Non-Isolated Server <Dashboard /> matches snapshot 1`] = `
                                   Transactions
                                 </span>
                                 <QueryPreservingLink
-                                  to="tx"
+                                  to="/tx"
                                 >
                                   <Link
                                     to={
                                       Object {
-                                        "pathname": "tx",
+                                        "pathname": "/tx",
                                         "search": "",
                                       }
                                     }
                                   >
                                     <LinkAnchor
-                                      href="tx"
+                                      href="/tx"
                                       navigate={[Function]}
                                     >
                                       <a
-                                        href="tx"
+                                        href="/tx"
                                         onClick={[Function]}
                                       >
                                         View Recent Transactions
