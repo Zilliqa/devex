@@ -138,7 +138,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
                   <Col>
                     <div className='address-detail'>
                       <span className='mr-auto'>Contract Creation:</span>
-                      <span className='owner-span'>
+                      <span className='owner-span pr-1'>
                         <QueryPreservingLink to={`/address/${owner}`}>
                           {owner}
                         </QueryPreservingLink>
