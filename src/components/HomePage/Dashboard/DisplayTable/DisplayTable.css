@@ -92,13 +92,13 @@
 }
 
 .display-table #hash-col {
-  padding-left: 30px;
+  padding-left: 35px;
   width: 320px;
 }
 
 .display-table #amount-col {
   text-align: right;
-  width: 100px;
+  width: 95px;
 }
 
 .display-table #fee-col {
