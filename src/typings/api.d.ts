@@ -31,8 +31,8 @@ export interface ContractData {
 }
 
 export interface AccData {
-  balance: number,
-  nonce: number,
+  balance: string,
+  nonce: string,
 }
 
 export interface AccContract {

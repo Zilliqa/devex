@@ -12,10 +12,10 @@ interface IProps {
 }
 
 const ViewBlockLink: React.FC<IProps> = ({ network, type, identifier }) => {
-  if (network !== 'https://api.zilliqa.com/' && network !== 'https://dev-api.zilliqa.com/')
+  if (network !== 'https://api.zilliqa.com' && network !== 'https://dev-api.zilliqa.com')
     return null
   let viewBlockUrl = `https://viewblock.io/zilliqa/${type}/${identifier}`
-  if (network === 'https://dev-api.zilliqa.com/')
+  if (network === 'https://dev-api.zilliqa.com')
     viewBlockUrl += '?network=testnet'
   return <a href={viewBlockUrl} className='vb-link-div'>
     <OverlayTrigger placement='top'

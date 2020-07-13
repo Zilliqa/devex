@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { QueryPreservingLink } from 'src'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import { qaToZil, hexAddrToZilAddr, isValidAddr } from 'src/utils/Utils'
 import { TransitionEntry } from '@zilliqa-js/core/src/types'
 
@@ -23,8 +23,6 @@ const TransitionsTab: React.FC<IProps> = ({ transitions }) => (
           </tr>
           <tr>
             <th>Accepts $ZIL</th>
-            {/* To be removed after SDK typing is updated
-            // @ts-ignore */}
             <td>{transition.accepted === undefined ? '-' : `${transition.accepted}`}</td>
           </tr>
           <tr>

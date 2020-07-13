@@ -2,9 +2,9 @@ import React, { useState, useRef, useCallback, useMemo, useContext } from 'react
 import { Tooltip, OverlayTrigger } from 'react-bootstrap'
 import { Row } from 'react-table'
 
-import { QueryPreservingLink } from 'src/index'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
-import { NetworkContext } from 'src/services/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 import { TransactionDetails } from 'src/typings/api'
 import { hexAddrToZilAddr, qaToZil } from 'src/utils/Utils'
 import { TxList } from '@zilliqa-js/core/src/types'

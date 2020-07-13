@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Spinner, Card, Container, Row, Col } from 'react-bootstrap'
 
-import { QueryPreservingLink } from 'src'
-import { NetworkContext } from 'src/services/networkProvider'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 import { IISInfo } from 'src/typings/api'
 
 import './ISInfo.css'

@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { Card, Row, Col, Container, Spinner, Collapse } from 'react-bootstrap'
 
-import { QueryPreservingLink } from 'src'
-import { NetworkContext } from 'src/services/networkProvider'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 import { qaToZil, timestampToTimeago, timestampToDisplay, pubKeyToZilAddr } from 'src/utils/Utils'
 import { DsBlockObj, MinerInfo } from '@zilliqa-js/core/src/types'
 
@@ -144,7 +144,7 @@ const DSBlockDetailsPage: React.FC = () => {
                     <div className='dsblock-detail'>
                       <span>DS Leader:</span>
                       <span>
-                        <QueryPreservingLink to={`address/${pubKeyToZilAddr(data.header.LeaderPubKey)}`}>
+                        <QueryPreservingLink to={`/address/${pubKeyToZilAddr(data.header.LeaderPubKey)}`}>
                           {pubKeyToZilAddr(data.header.LeaderPubKey)}
                         </QueryPreservingLink>
                       </span>

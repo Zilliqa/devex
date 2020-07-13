@@ -3,9 +3,9 @@ import { Container, Spinner } from 'react-bootstrap'
 import { Route, Switch } from 'react-router-dom'
 
 import HomePage from 'src/components/HomePage/HomePage'
-import DSBlocksPage from 'src/components/ViewAllPages/DSBlocksPage/DSBlocksPage'
-import TxBlocksPage from 'src/components/ViewAllPages/TxBlocksPage/TxBlocksPage'
-import TxnsPage from 'src/components/ViewAllPages/TxnsPage/TxnsPage'
+import DSBlocksPage from 'src/components/ViewAllPages/DSBlocksPage'
+import TxBlocksPage from 'src/components/ViewAllPages/TxBlocksPage'
+import TxnsPage from 'src/components/ViewAllPages/TxnsPage'
 import AddressDetailsPage from 'src/components/DetailsPages/AddressDetailsPage/AddressDetailsPage'
 import DSBlockDetailsPage from 'src/components/DetailsPages/DSBlockDetailsPage/DSBlockDetailsPage'
 import TxBlockDetailsPage from 'src/components/DetailsPages/TxBlockDetailsPage/TxBlockDetailsPage'
@@ -13,7 +13,7 @@ import TxnDetailsPage from 'src/components/DetailsPages/TxnDetailsPage/TxnDetail
 import NetworkErrPage from 'src/components/ErrorPages/NetworkErrPage'
 import LabelsPage from 'src/components/LabelsPage/LabelsPage'
 import NotFoundPage from 'src/components/ErrorPages/NotFoundPage'
-import { NetworkContext } from 'src/services/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 
 import './App.css'
 
@@ -25,7 +25,7 @@ const App: React.FC = () => {
   return (
     <div className='app-container'>
       <Container>
-        {inTransition
+        {inTransition || isValidUrl === null
           ? <div className='center-spinner'><Spinner animation="border" /></div>
           : <>
             <Switch>

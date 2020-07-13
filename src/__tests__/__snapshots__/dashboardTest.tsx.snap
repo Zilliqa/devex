@@ -1,0 +1,576 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Isolated Server <Dashboard /> matches snapshot 1`] = `
+<BrowserRouter>
+  <Router
+    history={
+      Object {
+        "action": "POP",
+        "block": [Function],
+        "createHref": [Function],
+        "go": [Function],
+        "goBack": [Function],
+        "goForward": [Function],
+        "length": 1,
+        "listen": [Function],
+        "location": Object {
+          "hash": "",
+          "pathname": "/",
+          "search": "",
+          "state": undefined,
+        },
+        "push": [Function],
+        "replace": [Function],
+      }
+    }
+  >
+    <Dashboard>
+      <div>
+        <Container
+          className="dashboard-container"
+          fluid={false}
+        >
+          <div
+            className="dashboard-container container"
+          >
+            <Row
+              noGutters={false}
+            >
+              <div
+                className="row"
+              >
+                <ISInfo>
+                  <Container
+                    className="p-0"
+                    fluid={false}
+                  >
+                    <div
+                      className="p-0 container"
+                    >
+                      <Row
+                        noGutters={false}
+                      >
+                        <div
+                          className="row"
+                        >
+                          <Col>
+                            <div
+                              className="col"
+                            >
+                              <Card
+                                body={false}
+                                className="isinfo-card"
+                              >
+                                <div
+                                  className="isinfo-card card"
+                                >
+                                  <CardBody>
+                                    <div
+                                      className="card-body"
+                                    >
+                                      <div>
+                                        <Spinner
+                                          animation="border"
+                                          role="status"
+                                        >
+                                          <div
+                                            className="spinner-border"
+                                            role="status"
+                                          />
+                                        </Spinner>
+                                      </div>
+                                    </div>
+                                  </CardBody>
+                                </div>
+                              </Card>
+                            </div>
+                          </Col>
+                          <Col>
+                            <div
+                              className="col"
+                            >
+                              <Card
+                                body={false}
+                                className="isinfo-card"
+                              >
+                                <div
+                                  className="isinfo-card card"
+                                >
+                                  <CardBody>
+                                    <div
+                                      className="card-body"
+                                    >
+                                      <div>
+                                        <Spinner
+                                          animation="border"
+                                          role="status"
+                                        >
+                                          <div
+                                            className="spinner-border"
+                                            role="status"
+                                          />
+                                        </Spinner>
+                                      </div>
+                                    </div>
+                                  </CardBody>
+                                </div>
+                              </Card>
+                            </div>
+                          </Col>
+                        </div>
+                      </Row>
+                    </div>
+                  </Container>
+                </ISInfo>
+              </div>
+            </Row>
+            <Row
+              noGutters={false}
+            >
+              <div
+                className="row"
+              >
+                <Col
+                  className="p-0"
+                >
+                  <div
+                    className="p-0 col"
+                  >
+                    <ValTxnList>
+                      <Card
+                        body={false}
+                        className="valtxlist-card"
+                      >
+                        <div
+                          className="valtxlist-card card"
+                        >
+                          <CardHeader>
+                            <div
+                              className="card-header"
+                            >
+                              <div
+                                className="valtxlist-card-header"
+                              >
+                                <span>
+                                  Transactions
+                                </span>
+                                <QueryPreservingLink
+                                  to="/tx"
+                                >
+                                  <Link
+                                    to={
+                                      Object {
+                                        "pathname": "/tx",
+                                        "search": "",
+                                      }
+                                    }
+                                  >
+                                    <LinkAnchor
+                                      href="/tx"
+                                      navigate={[Function]}
+                                    >
+                                      <a
+                                        href="/tx"
+                                        onClick={[Function]}
+                                      >
+                                        View Recent Transactions
+                                      </a>
+                                    </LinkAnchor>
+                                  </Link>
+                                </QueryPreservingLink>
+                              </div>
+                            </div>
+                          </CardHeader>
+                          <CardBody>
+                            <div
+                              className="card-body"
+                            >
+                              <Spinner
+                                animation="border"
+                                role="status"
+                              >
+                                <div
+                                  className="spinner-border"
+                                  role="status"
+                                />
+                              </Spinner>
+                            </div>
+                          </CardBody>
+                        </div>
+                      </Card>
+                    </ValTxnList>
+                  </div>
+                </Col>
+              </div>
+            </Row>
+          </div>
+        </Container>
+      </div>
+    </Dashboard>
+  </Router>
+</BrowserRouter>
+`;
+
+exports[`Non-Isolated Server <Dashboard /> matches snapshot 1`] = `
+<BrowserRouter>
+  <Router
+    history={
+      Object {
+        "action": "POP",
+        "block": [Function],
+        "createHref": [Function],
+        "go": [Function],
+        "goBack": [Function],
+        "goForward": [Function],
+        "length": 1,
+        "listen": [Function],
+        "location": Object {
+          "hash": "",
+          "pathname": "/",
+          "search": "",
+          "state": undefined,
+        },
+        "push": [Function],
+        "replace": [Function],
+      }
+    }
+  >
+    <Dashboard>
+      <div>
+        <Container
+          className="dashboard-container"
+          fluid={false}
+        >
+          <div
+            className="dashboard-container container"
+          >
+            <Row
+              noGutters={false}
+            >
+              <div
+                className="row"
+              >
+                <BCInfo>
+                  <Card
+                    body={false}
+                    className="bcstats-card"
+                  >
+                    <div
+                      className="bcstats-card card"
+                    >
+                      <CardBody>
+                        <div
+                          className="card-body"
+                        >
+                          <Spinner
+                            animation="border"
+                            role="status"
+                          >
+                            <div
+                              className="spinner-border"
+                              role="status"
+                            />
+                          </Spinner>
+                        </div>
+                      </CardBody>
+                    </div>
+                  </Card>
+                </BCInfo>
+              </div>
+            </Row>
+            <Row
+              noGutters={false}
+            >
+              <div
+                className="row"
+              >
+                <Col
+                  className="p-0"
+                  lg={5}
+                  md={5}
+                  sm={5}
+                >
+                  <div
+                    className="p-0 col-lg-5 col-md-5 col-sm-5"
+                  >
+                    <DSBlockList>
+                      <Card
+                        body={false}
+                        className="dsblock-card"
+                      >
+                        <div
+                          className="dsblock-card card"
+                        >
+                          <CardHeader>
+                            <div
+                              className="card-header"
+                            >
+                              <div
+                                className="dsblock-card-header"
+                              >
+                                <span>
+                                  DS Blocks
+                                </span>
+                                <QueryPreservingLink
+                                  to="/dsbk"
+                                >
+                                  <Link
+                                    to={
+                                      Object {
+                                        "pathname": "/dsbk",
+                                        "search": "",
+                                      }
+                                    }
+                                  >
+                                    <LinkAnchor
+                                      href="/dsbk"
+                                      navigate={[Function]}
+                                    >
+                                      <a
+                                        href="/dsbk"
+                                        onClick={[Function]}
+                                      >
+                                        View All
+                                      </a>
+                                    </LinkAnchor>
+                                  </Link>
+                                </QueryPreservingLink>
+                              </div>
+                            </div>
+                          </CardHeader>
+                          <CardBody>
+                            <div
+                              className="card-body"
+                            >
+                              <Spinner
+                                animation="border"
+                                role="status"
+                              >
+                                <div
+                                  className="spinner-border"
+                                  role="status"
+                                />
+                              </Spinner>
+                            </div>
+                          </CardBody>
+                        </div>
+                      </Card>
+                    </DSBlockList>
+                  </div>
+                </Col>
+                <Col
+                  className="p-0 ml-4"
+                >
+                  <div
+                    className="p-0 ml-4 col"
+                  >
+                    <TxBlockList>
+                      <Card
+                        body={false}
+                        className="txblock-card"
+                      >
+                        <div
+                          className="txblock-card card"
+                        >
+                          <CardHeader>
+                            <div
+                              className="card-header"
+                            >
+                              <div
+                                className="dsblock-card-header"
+                              >
+                                <span>
+                                  Transaction Blocks
+                                </span>
+                                <QueryPreservingLink
+                                  to="/txbk"
+                                >
+                                  <Link
+                                    to={
+                                      Object {
+                                        "pathname": "/txbk",
+                                        "search": "",
+                                      }
+                                    }
+                                  >
+                                    <LinkAnchor
+                                      href="/txbk"
+                                      navigate={[Function]}
+                                    >
+                                      <a
+                                        href="/txbk"
+                                        onClick={[Function]}
+                                      >
+                                        View All
+                                      </a>
+                                    </LinkAnchor>
+                                  </Link>
+                                </QueryPreservingLink>
+                              </div>
+                            </div>
+                          </CardHeader>
+                          <CardBody>
+                            <div
+                              className="card-body"
+                            >
+                              <Spinner
+                                animation="border"
+                                role="status"
+                              >
+                                <div
+                                  className="spinner-border"
+                                  role="status"
+                                />
+                              </Spinner>
+                            </div>
+                          </CardBody>
+                        </div>
+                      </Card>
+                    </TxBlockList>
+                  </div>
+                </Col>
+              </div>
+            </Row>
+            <Row
+              className="mt-3"
+              noGutters={false}
+            >
+              <div
+                className="mt-3 row"
+              >
+                <Col
+                  className="p-0"
+                >
+                  <div
+                    className="p-0 col"
+                  >
+                    <ValTxnList>
+                      <Card
+                        body={false}
+                        className="valtxlist-card"
+                      >
+                        <div
+                          className="valtxlist-card card"
+                        >
+                          <CardHeader>
+                            <div
+                              className="card-header"
+                            >
+                              <div
+                                className="valtxlist-card-header"
+                              >
+                                <span>
+                                  Transactions
+                                </span>
+                                <QueryPreservingLink
+                                  to="/tx"
+                                >
+                                  <Link
+                                    to={
+                                      Object {
+                                        "pathname": "/tx",
+                                        "search": "",
+                                      }
+                                    }
+                                  >
+                                    <LinkAnchor
+                                      href="/tx"
+                                      navigate={[Function]}
+                                    >
+                                      <a
+                                        href="/tx"
+                                        onClick={[Function]}
+                                      >
+                                        View Recent Transactions
+                                      </a>
+                                    </LinkAnchor>
+                                  </Link>
+                                </QueryPreservingLink>
+                              </div>
+                            </div>
+                          </CardHeader>
+                          <CardBody>
+                            <div
+                              className="card-body"
+                            >
+                              <Spinner
+                                animation="border"
+                                role="status"
+                              >
+                                <div
+                                  className="spinner-border"
+                                  role="status"
+                                />
+                              </Spinner>
+                            </div>
+                          </CardBody>
+                        </div>
+                      </Card>
+                    </ValTxnList>
+                  </div>
+                </Col>
+              </div>
+            </Row>
+            <Row
+              className="mt-3"
+              noGutters={false}
+            >
+              <div
+                className="mt-3 row"
+              >
+                <Col
+                  className="p-0"
+                >
+                  <div
+                    className="p-0 col"
+                  >
+                    <PendTxnList>
+                      <Card
+                        body={false}
+                        className="pendtxlist-card"
+                      >
+                        <div
+                          className="pendtxlist-card card"
+                        >
+                          <CardHeader>
+                            <div
+                              className="card-header"
+                            >
+                              <div
+                                className="pendtxlist-card-header"
+                              >
+                                <span>
+                                  Pending Transactions
+                                </span>
+                              </div>
+                            </div>
+                          </CardHeader>
+                          <CardBody>
+                            <div
+                              className="card-body"
+                            >
+                              <Spinner
+                                animation="border"
+                                role="status"
+                              >
+                                <div
+                                  className="spinner-border"
+                                  role="status"
+                                />
+                              </Spinner>
+                            </div>
+                          </CardBody>
+                        </div>
+                      </Card>
+                    </PendTxnList>
+                  </div>
+                </Col>
+              </div>
+            </Row>
+          </div>
+        </Container>
+      </div>
+    </Dashboard>
+  </Router>
+</BrowserRouter>
+`;

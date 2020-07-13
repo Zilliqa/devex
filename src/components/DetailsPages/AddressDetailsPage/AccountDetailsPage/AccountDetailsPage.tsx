@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect, useRef, useCallback } from 'react'
 import { Card, Container, Row, Col, Pagination, Spinner } from 'react-bootstrap'
 
-import { NetworkContext } from 'src/services/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 import { AccData, AccContract } from 'src/typings/api'
 import { qaToZil } from 'src/utils/Utils'
 import { fromBech32Address, toBech32Address } from '@zilliqa-js/crypto'
@@ -77,6 +77,10 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
           setAccContracts(accContracts)
       } catch (e) {
         console.log(e)
+        setAccData({
+          balance: '0',
+          nonce: '-'
+        })
       } finally {
         setIsLoading(false)
       }

@@ -2,9 +2,9 @@ import React, { useState, useEffect, useMemo, useContext } from 'react'
 import { OverlayTrigger, Tooltip, Card, Spinner } from 'react-bootstrap'
 import { Row } from 'react-table'
 
-import { QueryPreservingLink } from 'src'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import { refreshRate } from 'src/constants'
-import { NetworkContext } from 'src/services/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 import { TransactionDetails } from 'src/typings/api'
 import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
 import { Transaction } from '@zilliqa-js/account/src/transaction'
@@ -12,7 +12,7 @@ import { Transaction } from '@zilliqa-js/account/src/transaction'
 import { faFileContract, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import DisplayTable from '../../DisplayTable/DisplayTable'
+import DisplayTable from '../DisplayTable/DisplayTable'
 
 import './ValTxnList.css'
 
@@ -118,7 +118,7 @@ const ValTxnList: React.FC = () => {
       <Card.Header>
         <div className='valtxlist-card-header'>
           <span>Transactions</span>
-          <QueryPreservingLink to={'tx'}>View Recent Transactions</QueryPreservingLink>
+          <QueryPreservingLink to={'/tx'}>View Recent Transactions</QueryPreservingLink>
         </div>
       </Card.Header>
       <Card.Body>

@@ -68,7 +68,7 @@
 
 .viewall-table #total-fees-col {
   width: 120px;
-  text-align: center;
+  text-align: right;
   padding-right: 1rem;
 }
 
@@ -93,6 +93,6 @@
 }
 
 .viewall-table #amount-col {
-  width: 190px;
+  width: 160px;
   text-align: right;
 }

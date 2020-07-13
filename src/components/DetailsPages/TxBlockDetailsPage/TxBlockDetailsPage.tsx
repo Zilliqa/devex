@@ -3,9 +3,9 @@ import { OverlayTrigger, Tooltip, Card, Row as BRow, Col as BCol, Container, Spi
 import { useParams } from 'react-router-dom'
 import { Row } from 'react-table'
 
-import { QueryPreservingLink } from 'src'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
-import { NetworkContext } from 'src/services/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 import { TransactionDetails } from 'src/typings/api'
 import { qaToZil, timestampToTimeago, hexAddrToZilAddr, timestampToDisplay, pubKeyToZilAddr } from 'src/utils/Utils'
 import { Transaction } from '@zilliqa-js/account/src/transaction'

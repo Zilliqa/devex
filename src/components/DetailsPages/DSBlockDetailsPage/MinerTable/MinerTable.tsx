@@ -2,7 +2,7 @@ import React, { useMemo, useCallback } from 'react'
 import { Pagination } from 'react-bootstrap'
 import { useTable, Column, Row, Cell, usePagination } from 'react-table'
 
-import { QueryPreservingLink } from 'src'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import { pubKeyToZilAddr } from 'src/utils/Utils'
 
 interface IMinerTableParams {
@@ -54,7 +54,7 @@ const MinerTable: React.FC<IMinerTableParams> = ({ addresses }) => {
         (<>
           [{props.row.index}]
           {' '}
-          <QueryPreservingLink to={pubKeyToZilAddr(props.value)}>{pubKeyToZilAddr(props.value)}</QueryPreservingLink>
+          <QueryPreservingLink to={`/address/${pubKeyToZilAddr(props.value)}`}>{pubKeyToZilAddr(props.value)}</QueryPreservingLink>
         </>)
     }], []
   ) as Array<Column<IMinerObj>>

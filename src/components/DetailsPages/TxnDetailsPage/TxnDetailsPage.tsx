@@ -2,8 +2,8 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Card, Row, Col, Container, Spinner } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 
-import { QueryPreservingLink } from 'src'
-import { NetworkContext } from 'src/services/networkProvider'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 import { TransactionDetails } from 'src/typings/api'
 import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
 

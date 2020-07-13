@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, Link } from 'react-router-dom'
 
 import { DataService } from './dataService'
 
@@ -10,6 +10,18 @@ type NetworkState = {
   isValidUrl: boolean | null,
   inTransition: boolean,
   isLoadingUrls: boolean,
+}
+
+export const QueryPreservingLink = ({ to, style, className, onClick, children }
+  : {
+    to: string, style?: React.CSSProperties, className?: string,
+    onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void, children: React.ReactNode
+  }): JSX.Element => {
+  const location = useLocation()
+  return <Link style={style} className={className} onClick={onClick} to={{
+    pathname: to,
+    search: location.search
+  }}>{children}</Link>
 }
 
 export const useNetworkUrl = (): string => (
@@ -26,16 +38,16 @@ export const useNetworkName = (): string => {
 
 export let defaultNetworks: Record<string, string> = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
   ? {
-    'https://api.zilliqa.com/': 'Mainnet',
-    'https://dev-api.zilliqa.com/': 'Testnet',
-    'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server',
+    'https://api.zilliqa.com': 'Mainnet',
+    'https://dev-api.zilliqa.com': 'Testnet',
+    'https://zilliqa-isolated-server.zilliqa.com': 'Isolated Server',
     'http://52.187.126.172:4201': 'Mainnet Staked Seed Node'
   }
   : {
-    'https://api.zilliqa.com/': 'Mainnet',
-    'https://dev-api.zilliqa.com/': 'Testnet',
-    'https://zilliqa-isolated-server.zilliqa.com/': 'Isolated Server',
-    'https://stg-zilliqa-isolated-server.zilliqa.com/': 'Staging Isolated Server',
+    'https://api.zilliqa.com': 'Mainnet',
+    'https://dev-api.zilliqa.com': 'Testnet',
+    'https://zilliqa-isolated-server.zilliqa.com': 'Isolated Server',
+    'https://stg-zilliqa-isolated-server.zilliqa.com': 'Staging Isolated Server',
     'http://52.187.126.172:4201': 'Mainnet Staked Seed Node'
   }
 
