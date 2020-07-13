@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Card, Collapse } from 'react-bootstrap'
 
-import { QueryPreservingLink } from 'src'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import { AccContract } from 'src/typings/api'
 import { hexAddrToZilAddr } from 'src/utils/Utils'
 

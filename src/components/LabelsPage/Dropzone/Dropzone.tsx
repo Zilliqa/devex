@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { Container } from 'react-bootstrap'
 import { useDropzone } from 'react-dropzone'
 
-import { LabelInfo } from 'src/services/userPrefProvider'
+import { LabelInfo } from 'src/services/userPref/userPrefProvider'
 
 import './Dropzone.css'
 

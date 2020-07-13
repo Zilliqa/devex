@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect, useCallback, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { useNetworkUrl } from 'src/services/networkProvider'
-import { UserPrefContext, LabelInfo } from 'src/services/userPrefProvider'
+import { useNetworkUrl } from 'src/services/network/networkProvider'
+import { UserPrefContext, LabelInfo } from 'src/services/userPref/userPrefProvider'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar as faStarOutline } from '@fortawesome/free-regular-svg-icons'

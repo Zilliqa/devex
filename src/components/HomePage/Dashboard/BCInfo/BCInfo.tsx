@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Container, Row, Col, Card, Spinner, Tooltip, OverlayTrigger } from 'react-bootstrap'
 
-import { QueryPreservingLink } from 'src'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import { refreshRate } from 'src/constants'
-import { NetworkContext } from 'src/services/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 import { BlockchainInfo } from '@zilliqa-js/core/src/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

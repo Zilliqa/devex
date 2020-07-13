@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HomePage /> without knowing isIsolatedServer matches snapshot 1`] = `
+<Fragment>
+  <div
+    className="center-spinner"
+  >
+    <Spinner
+      animation="border"
+    />
+  </div>
+</Fragment>
+`;
+
+exports[`Isolated Server's <HomePage /> matches snapshot 1`] = `
+<Fragment>
+  <div>
+    <Searchbar
+      isHeaderSearchbar={false}
+      isISSearchbar={true}
+    />
+    <Dashboard />
+  </div>
+</Fragment>
+`;
+
+exports[`Non-Isolated Server <HomePage /> matches snapshot 1`] = `
+<Fragment>
+  <div>
+    <Searchbar
+      isHeaderSearchbar={false}
+      isISSearchbar={false}
+    />
+    <Dashboard />
+  </div>
+</Fragment>
+`;

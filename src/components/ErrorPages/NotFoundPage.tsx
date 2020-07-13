@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Button } from 'react-bootstrap'
 import { useLocation, Link } from 'react-router-dom'
 
-import { useNetworkUrl, useSearchParams } from 'src/services/networkProvider'
+import { useNetworkUrl, useSearchParams } from 'src/services/network/networkProvider'
 
 import './ErrorPages.css'
 

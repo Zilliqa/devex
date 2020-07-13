@@ -2,7 +2,7 @@ import React, { useCallback } from 'react'
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { useDropzone } from 'react-dropzone'
 
-import { LabelInfo } from 'src/services/userPrefProvider'
+import { LabelInfo } from 'src/services/userPref/userPrefProvider'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUpload, faDownload } from '@fortawesome/free-solid-svg-icons'

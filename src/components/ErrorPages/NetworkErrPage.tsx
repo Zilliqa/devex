@@ -1,11 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Card, Button } from 'react-bootstrap'
 
-import { useNetworkUrl } from 'src/services/networkProvider'
+import { NetworkContext } from 'src/services/network/networkProvider'
 
 import './ErrorPages.css'
 
 const NetworkErrPage: React.FC = () => {
+  
+  const networkContext = useContext(NetworkContext)
+  const { nodeUrl } = networkContext!
+
   return <>
     <Card className='error-card'>
       <Card.Body>
@@ -13,7 +17,7 @@ const NetworkErrPage: React.FC = () => {
           Sorry! Could not connect to network. Try again later!
         </h4>
         <h5>
-          <strong>{useNetworkUrl()}</strong>
+          <strong>{nodeUrl}</strong>
         </h5>
         <Button id='error-btn' onClick={() => window.location.reload()} className='mt-4'>
           <span>

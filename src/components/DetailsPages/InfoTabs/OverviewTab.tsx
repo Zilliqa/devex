@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { QueryPreservingLink } from 'src'
+import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import { isValidAddr } from 'src/utils/Utils'
 import { EventParam } from '@zilliqa-js/core/src/types'
 
