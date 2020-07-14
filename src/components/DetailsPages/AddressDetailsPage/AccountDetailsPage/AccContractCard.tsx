@@ -20,7 +20,7 @@ const AccContractCard: React.FC<IProps> = ({ contract, index }) => {
   return <Card className='acc-contract-card'>
     <Card.Body onClick={() => { setShowContractState((prevState) => !prevState) }} key={index}>
       <div>
-        <span>
+        <span className='mono'>
           {`${index + 1}) `}
           {<QueryPreservingLink onClick={(e: React.MouseEvent<HTMLAnchorElement>) => { e.stopPropagation() }} 
             to={`/address/${hexAddrToZilAddr(contract.address)}`}>

@@ -33,13 +33,14 @@ const DSBlockDetailsPage: React.FC = () => {
 
   // Fetch data
   useEffect(() => {
+    setIsLoading(true)
     if (!dataService) return
+    
     let latestDSBlockNum: number
     let receivedData: DsBlockObj
     let minerInfo: MinerInfo
     const getData = async () => {
       try {
-        setIsLoading(true)
         if (isNaN(blockNum))
           throw new Error('Not a valid block number')
         receivedData = await dataService.getDSBlockDetails(blockNum)

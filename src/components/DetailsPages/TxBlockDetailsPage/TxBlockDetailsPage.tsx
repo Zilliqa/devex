@@ -44,9 +44,9 @@ const TxBlockDetailsPage: React.FC = () => {
     let txBlockObj: TxBlockObj
     let txBlockTxns: string[]
     const getData = async () => {
-      if (isNaN(blockNum))
-        throw new Error('Not a valid block number')
       try {
+        if (isNaN(blockNum))
+          throw new Error('Not a valid block number')
         if (isIsolatedServer) {
           txBlockTxns = await dataService.getISTransactionsForTxBlock(parseInt(blockNum))
           latestTxBlockNum = await dataService.getISBlockNum()
