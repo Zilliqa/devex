@@ -1,0 +1,28 @@
+.init-params-table {
+  width: 100%;
+  border: solid 1px var(--color-border);
+  border-radius: 10px;
+  border-collapse: separate;
+  background-color: var(--color-highlight);
+}
+
+.init-params-table td {
+  font-size: 14px;
+}
+
+.init-params-table th {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.init-params-table td, .init-params-table th {
+  padding: 0.4rem;
+}
+
+.init-params-table tr {
+  border-bottom: solid 1px var(--color-border);
+}
+
+.init-params-table tr:last-child td {
+  border-bottom: 0;
+}

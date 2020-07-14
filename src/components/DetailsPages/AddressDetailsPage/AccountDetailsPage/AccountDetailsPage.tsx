@@ -4,16 +4,14 @@ import { Card, Container, Row, Col, Pagination, Spinner } from 'react-bootstrap'
 import { NetworkContext } from 'src/services/network/networkProvider'
 import { AccData, AccContract } from 'src/typings/api'
 import { qaToZil } from 'src/utils/Utils'
-import { fromBech32Address, toBech32Address } from '@zilliqa-js/crypto'
-import { validation } from '@zilliqa-js/util'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWallet } from '@fortawesome/free-solid-svg-icons'
 
 import AccContractCard from './AccContractCard'
-import Copyable from '../../Copyable/Copyable'
-import LabelStar from '../../LabelComponent/LabelStar'
-import ViewBlockLink from '../../ViewBlockLink/ViewBlockLink'
+import AddressDisp from '../../Misc/Disp/AddressDisp/AddressDisp'
+import LabelStar from '../../Misc/LabelComponent/LabelStar'
+import ViewBlockLink from '../../Misc/ViewBlockLink/ViewBlockLink'
 
 import '../AddressDetailsPage.css'
 
@@ -93,7 +91,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
     {accData && (
       <>
         <div className='address-header'>
-          <h3>
+          <h3 className='mb-1'>
             <span className='mr-1'>
               <FontAwesomeIcon className='fa-icon' icon={faWallet} />
             </span>
@@ -104,20 +102,9 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
           </h3>
           <ViewBlockLink network={nodeUrl} type='address' identifier={addrRef.current} />
         </div>
-        {/* Bech32 */}
-        <Copyable
-          textToBeCopied={
-            validation.isBech32(addrRef.current)
-              ? addrRef.current
-              : toBech32Address(addrRef.current)}
-        />
-        {/* Hex */}
-        <Copyable
-          textToBeCopied={
-            validation.isBech32(addrRef.current)
-              ? fromBech32Address(addrRef.current).toLowerCase()
-              : addrRef.current}
-        />
+        <div className='subtext'>
+          <AddressDisp isLinked={false} addr={addrRef.current} />
+        </div>
         <Card className='address-details-card'>
           <Card.Body>
             <Container>

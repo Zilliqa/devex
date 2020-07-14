@@ -11,10 +11,7 @@
   align-self: center;
   display: flex;
   padding: 1.5rem 0.5rem 0.75rem;
-}
-
-.label-modal .modal-header h6 {
-  margin: 0;
+  border-color: var(--color-subtext);
 }
 
 .label-modal .modal-body {

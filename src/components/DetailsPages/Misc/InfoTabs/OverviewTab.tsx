@@ -1,8 +1,9 @@
 import React, { useCallback } from 'react'
 
-import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import { isValidAddr } from 'src/utils/Utils'
 import { EventParam } from '@zilliqa-js/core/src/types'
+
+import AddressDisp from '../Disp/AddressDisp/AddressDisp'
 
 import './EventsTab.css'
 
@@ -66,9 +67,7 @@ const OverviewTab: React.FC<IProps> = ({ data }) => {
                       : Array.isArray(param.value)
                         ? param.value.toString()
                         : isValidAddr(param.value)
-                          ? <QueryPreservingLink to={`/address/${param.value}`}>
-                            {param.value}
-                          </QueryPreservingLink>
+                          ? <AddressDisp isLinked={true} addr={param.value} />
                           : param.value}
                   </td>
                 </tr>

@@ -76,6 +76,7 @@ export const addHexPrefix: ((inputHex: string) => string) = (inputHex: string) =
   return inputHex
 }
 
+// Check whether is valid addr (regardless of bech32 or hex format)
 export const isValidAddr: ((inputStr: string) => boolean) = (inputStr: string) => {
   const trimmedInput = inputStr.trim()
   let prefixedInput = trimmedInput

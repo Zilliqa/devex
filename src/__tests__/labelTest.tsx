@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
-import LabelStar from 'src/components/DetailsPages/LabelComponent/LabelStar'
+import LabelStar from 'src/components/DetailsPages/Misc/LabelComponent/LabelStar'
 import toJson from 'enzyme-to-json'
 
 jest.mock("react-router-dom", () => {

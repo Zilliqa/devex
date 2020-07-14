@@ -16,7 +16,7 @@ const NotFoundPage: React.FC = () => {
         <h4 className='mb-3'>
           Sorry! Could not find requested page. Try again later!
         </h4>
-        <h6>
+        <h6 className='mb-2'>
           Network: <strong>{useNetworkUrl()}</strong>
         </h6>
         <h6>
