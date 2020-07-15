@@ -4,6 +4,11 @@ exports[`<NetworkSwitcher /> renders with a given list of default networks and s
 <Nav
   fill={false}
   justify={false}
+  style={
+    Object {
+      "minWidth": "120px",
+    }
+  }
 >
   <OverlayTrigger
     defaultShow={false}

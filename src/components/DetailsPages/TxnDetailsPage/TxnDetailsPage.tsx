@@ -8,9 +8,9 @@ import { TransactionDetails } from 'src/typings/api'
 import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faExclamationCircle, faExchangeAlt, faFileContract } from '@fortawesome/free-solid-svg-icons'
 
+import Copyable from '../Copyable/Copyable'
 import InfoTabs, { generateTabsFromTxnDetails } from '../InfoTabs/InfoTabs'
 import LabelStar from '../LabelComponent/LabelStar'
 import NotFoundPage from '../../ErrorPages/NotFoundPage'
@@ -73,14 +73,7 @@ const TxnDetailsPage: React.FC = () => {
               <LabelStar type='Transaction' />
             </h3>
           </div>
-          <div className='d-flex'>
-            <h6 className='txn-hash subtext'>{'0x' + data.hash}</h6>
-            <div onClick={() => {
-              navigator.clipboard.writeText('0x' + data.hash)
-            }} className='txn-hash-copy-btn subtext'>
-              <FontAwesomeIcon icon={faCopy} />
-            </div>
-          </div>
+          <Copyable textToBeCopied={'0x' + data.hash} />
           <Card className='txn-details-card'>
             <Card.Body>
               <Container>

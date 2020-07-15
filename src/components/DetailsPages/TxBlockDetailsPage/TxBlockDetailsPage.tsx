@@ -12,11 +12,13 @@ import { Transaction } from '@zilliqa-js/account/src/transaction'
 import { TxBlockObj } from '@zilliqa-js/core/src/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCopy, faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
+import { faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
 import { faFileContract, faCubes, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 
+import Copyable from '../Copyable/Copyable'
 import LabelStar from '../LabelComponent/LabelStar'
 import NotFoundPage from '../../ErrorPages/NotFoundPage'
+
 import './TxBlockDetailsPage.css'
 
 const TxBlockDetailsPage: React.FC = () => {
@@ -201,14 +203,7 @@ const TxBlockDetailsPage: React.FC = () => {
         }
         {txBlockObj && (
           <>
-            <div className='d-flex'>
-              <h6 className='txblock-hash subtext'>{'0x' + txBlockObj.body.BlockHash}</h6>
-              <div onClick={() => {
-                navigator.clipboard.writeText(txBlockObj.body.BlockHash)
-              }} className='txblock-hash-copy-btn subtext'>
-                <FontAwesomeIcon icon={faCopy} />
-              </div>
-            </div>
+            <Copyable textToBeCopied={'0x' + txBlockObj.body.BlockHash} />
             <Card className='txblock-details-card'>
               <Card.Body>
                 <Container>

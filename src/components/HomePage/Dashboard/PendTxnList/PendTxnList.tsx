@@ -36,14 +36,6 @@ const PendTxnList: React.FC = () => {
       )
     },
     {
-      id: 'status-col',
-      Header: 'Status',
-      accessor: 'confirmed',
-      Cell: ({ value }: { value: boolean }) => (
-        <div className='text-center'>{value ? 'Confirmed' : 'Pending'}</div>
-      )
-    },
-    {
       id: 'description-col',
       Header: 'Description',
       accessor: 'info',

@@ -55,7 +55,7 @@ const NetworkSwitcher: React.FC = () => {
   }
 
   return (
-    <Nav>
+    <Nav style={{ minWidth: '120px' }}>
       <OverlayTrigger placement='left'
         overlay={<Tooltip id={'network-tt'}> {networkUrl} </Tooltip>}>
         <FontAwesomeIcon className='info-icon' icon={faInfoCircle} />
