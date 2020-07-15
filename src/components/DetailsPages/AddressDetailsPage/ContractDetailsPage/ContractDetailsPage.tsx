@@ -11,10 +11,10 @@ import { qaToZil, addHexPrefix } from 'src/utils/Utils'
 import { fromBech32Address, toBech32Address } from '@zilliqa-js/crypto'
 import { validation } from '@zilliqa-js/util'
 
-import { faCopy } from '@fortawesome/free-regular-svg-icons'
 import { faFileContract } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+import Copyable from '../../Copyable/Copyable'
 import LabelStar from '../../LabelComponent/LabelStar'
 import ViewBlockLink from '../../ViewBlockLink/ViewBlockLink'
 
@@ -108,36 +108,20 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
           </h3>
           <ViewBlockLink network={nodeUrl} type='address' identifier={addrRef.current} />
         </div>
-        <div className='d-flex'>
-          <h6 className='address-hash subtext'>
-            {validation.isBech32(addrRef.current)
+        {/* Bech32 */}
+        <Copyable
+          textToBeCopied={
+            validation.isBech32(addrRef.current)
               ? addrRef.current
               : toBech32Address(addrRef.current)}
-          </h6>
-          <div onClick={() => {
-            navigator.clipboard.writeText(
-              validation.isBech32(addrRef.current)
-                ? addrRef.current
-                : toBech32Address(addrRef.current))
-          }} className='address-hash-copy-btn subtext'>
-            <FontAwesomeIcon icon={faCopy} />
-          </div>
-        </div>
-        <div className='d-flex'>
-          <h6 className='address-hash subtext'>
-            {validation.isBech32(addrRef.current)
+        />
+        {/* Hex */}
+        <Copyable
+          textToBeCopied={
+            validation.isBech32(addrRef.current)
               ? addHexPrefix(fromBech32Address(addrRef.current).toLowerCase())
               : addHexPrefix(addrRef.current)}
-          </h6>
-          <div onClick={() => {
-            navigator.clipboard.writeText(
-              validation.isBech32(addrRef.current)
-                ? addHexPrefix(fromBech32Address(addrRef.current).toLowerCase())
-                : addHexPrefix(addrRef.current))
-          }} className='address-hash-copy-btn subtext'>
-            <FontAwesomeIcon icon={faCopy} />
-          </div>
-        </div>
+        />
         <Card className='address-details-card'>
           <Card.Body>
             <Container>
@@ -154,7 +138,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
                   <Col>
                     <div className='address-detail'>
                       <span className='mr-auto'>Contract Creation:</span>
-                      <span className='owner-span'>
+                      <span className='owner-span pr-1'>
                         <QueryPreservingLink to={`/address/${owner}`}>
                           {owner}
                         </QueryPreservingLink>

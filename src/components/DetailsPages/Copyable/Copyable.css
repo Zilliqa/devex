@@ -1,0 +1,29 @@
+.copy-text {
+  margin-right: 10px;
+  margin-bottom: 0;
+}
+
+.copy-btn {
+  cursor: pointer;
+  margin-top: -3px;
+}
+
+.copy-toast-success {
+  background-color: #00923a;
+  color: white;
+  padding: 0.2rem;
+}
+
+.copy-toast-icon {
+  vertical-align: middle !important;
+}
+
+.copy-toast-failure {
+  background-color: red;
+  color: white;
+  padding: 0.2rem;
+}
+
+.copy-toast-text {
+  font-size: 1rem;
+}

@@ -55,7 +55,7 @@ const DSBlocksPage: React.FC = () => {
       Header: 'Block Hash',
       accessor: 'Hash',
       Cell: ({ value }: { value: string }) => (
-        <div className='mono'>{'0x' + value}</div>
+        <div style={{ textOverflow: 'ellipsis', overflow: 'hidden' }} className='mono'>{'0x' + value}</div>
       )
     },
     {
