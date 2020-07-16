@@ -3,7 +3,6 @@ import { Card } from 'react-bootstrap'
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable'
 import { Link } from 'react-router-dom'
 
-import { defaultNetworks } from 'src/services/network/networkProvider'
 import { UserPrefContext, LabelInfo } from 'src/services/userPref/userPrefProvider'
 import { timestampToTimeago } from 'src/utils/Utils'
 
@@ -90,7 +89,7 @@ const LabelCard: React.FC<IProps> = ({ k, v }) => {
       <Card.Body>
         Type: {v.type}
         <br />
-        Network: {defaultNetworks[v.network] || v.network}
+        Network: {v.networkName}
         <br />
         Added: {timestampToTimeago(v.timeAdded * 1000)}
       </Card.Body>

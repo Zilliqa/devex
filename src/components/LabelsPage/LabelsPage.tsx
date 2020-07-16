@@ -17,7 +17,7 @@ const LabelsPage: React.FC = () => {
 
   const [searchFilter, setSearchFilter] = useState('')
   const [typefilter, setTypefilter] = useState('All')
-  const [networkFilter, setNetworkFilter] = useState('All')
+  const [networkNameFilter, setNetworkNameFilter] = useState('All')
 
   return (
     <>
@@ -36,12 +36,17 @@ const LabelsPage: React.FC = () => {
               Network:
             </span>
             <Dropdown className="ml-3">
-              <Dropdown.Toggle id="label-network-toggle">{defaultNetworks[networkFilter] || networkFilter}</Dropdown.Toggle>
+              <Dropdown.Toggle id="label-network-toggle">
+                {nodeUrlMap.get(networkNameFilter) || defaultNetworks.get(networkNameFilter) || networkNameFilter}
+              </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => setNetworkFilter('All')}>All</Dropdown.Item>
-                {Object.entries({ ...defaultNetworks, ...nodeUrlMap }).map(([k, v], index) =>
-                  <Dropdown.Item onClick={() => setNetworkFilter(k)} key={index}>{v}</Dropdown.Item>
-                )}
+                <Dropdown.Item onClick={() => setNetworkNameFilter('All')}>All</Dropdown.Item>
+                {
+                  [...new Set(Object.values(labelMap).map(label => label.networkName))]
+                    .map((labelName, index) => (
+                      <Dropdown.Item onClick={() => setNetworkNameFilter(labelName)} key={index}>{labelName}</Dropdown.Item>
+                    ))
+                }
               </Dropdown.Menu>
             </Dropdown>
             <span className='ml-3'>
@@ -73,7 +78,7 @@ const LabelsPage: React.FC = () => {
             ? <Dropzone setLabelCb={setLabelMap} />
             : Object.entries(labelMap)
               .filter(([, v]) => (typefilter === 'All' || v.type === typefilter))
-              .filter(([, v]) => (networkFilter === 'All' || v.network === networkFilter))
+              .filter(([, v]) => (networkNameFilter === 'All' || v.networkName === networkNameFilter))
               .filter(([, v]) => (v.name.includes(searchFilter)))
               .map(([k, v]) => (
                 <Col className='my-3' key={k} md={6} lg={4} >

@@ -1,36 +1,36 @@
-.label-modal {
+.custom-modal {
   margin-top: 100px;
   color: var(--color-text);
 }
 
-.label-modal .modal-content {
+.custom-modal .modal-content {
   background-color: var(--color-modal-bg);
 }
 
-.label-modal .modal-header {
+.custom-modal .modal-header {
   align-self: center;
   display: flex;
   padding: 1.5rem 0.5rem 0.75rem;
   border-color: var(--color-subtext);
 }
 
-.label-modal .modal-body {
+.custom-modal .modal-body {
   padding: 2rem;
 }
 
-.label-modal .btn {
+.custom-modal .btn {
   background-color: var(--color-zil-green) !important;
   border: 0 !important;
   color: rgb(240, 240, 240) !important;
   height: 40px;
 }
 
-.label-modal .form-control {
+.custom-modal .form-control {
   height: 45px;
   color: var(--color-text) !important;
 }
 
-.label-modal .btn:hover {
+.custom-modal .btn:hover {
   filter: brightness(1.05);
 }
 

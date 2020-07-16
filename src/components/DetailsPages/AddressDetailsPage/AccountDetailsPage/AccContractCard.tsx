@@ -2,14 +2,14 @@ import React, { useState } from 'react'
 import { Card, Collapse } from 'react-bootstrap'
 
 import { QueryPreservingLink } from 'src/services/network/networkProvider'
-import { AccContract } from 'src/typings/api'
 import { hexAddrToZilAddr } from 'src/utils/Utils'
+import { ContractObj } from '@zilliqa-js/contract/src/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons'
 
 interface IProps {
-  contract: AccContract,
+  contract: ContractObj,
   index: number
 }
 
@@ -22,7 +22,7 @@ const AccContractCard: React.FC<IProps> = ({ contract, index }) => {
       <div>
         <span className='mono'>
           {`${index + 1}) `}
-          {<QueryPreservingLink onClick={(e: React.MouseEvent<HTMLAnchorElement>) => { e.stopPropagation() }} 
+          {<QueryPreservingLink onClick={(e: React.MouseEvent<HTMLAnchorElement>) => { e.stopPropagation() }}
             to={`/address/${hexAddrToZilAddr(contract.address)}`}>
             {hexAddrToZilAddr(contract.address)}
           </QueryPreservingLink>}

@@ -2,8 +2,9 @@ import React, { useContext, useState, useEffect, useRef, useCallback } from 'rea
 import { Card, Container, Row, Col, Pagination, Spinner } from 'react-bootstrap'
 
 import { NetworkContext } from 'src/services/network/networkProvider'
-import { AccData, AccContract } from 'src/typings/api'
+import { AccData } from 'src/typings/api'
 import { qaToZil } from 'src/utils/Utils'
+import { ContractObj } from '@zilliqa-js/contract/src/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWallet } from '@fortawesome/free-solid-svg-icons'
@@ -27,7 +28,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
   const addrRef = useRef(addr)
   const [isLoading, setIsLoading] = useState(false)
   const [accData, setAccData] = useState<AccData | null>(null)
-  const [accContracts, setAccContracts] = useState<AccContract[] | null>(null)
+  const [accContracts, setAccContracts] = useState<ContractObj[] | null>(null)
   const [contractPageIndex, setContractPageIndex] = useState<number>(0)
 
   const generatePagination = useCallback((currentPage: number, pageCount: number, delta = 2) => {
@@ -63,7 +64,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
     if (!dataService) return
 
     let accData: AccData
-    let accContracts: AccContract[]
+    let accContracts: ContractObj[]
     const getData = async () => {
       try {
         setIsLoading(true)
@@ -159,7 +160,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
               <Card.Body>
                 {accContracts
                   .slice(10 * contractPageIndex, 10 * contractPageIndex + 10)
-                  .map((contract: AccContract, index: number) => {
+                  .map((contract: ContractObj, index: number) => {
                     return <AccContractCard key={10 * contractPageIndex + index}
                       contract={contract} index={10 * contractPageIndex + index} />
                   })}

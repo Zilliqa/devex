@@ -12,34 +12,14 @@
   min-width: 200px;
 }
 
-.default-node-div {
+.node-div {
   height: 32px;
   display: flex;
   justify-content: space-between;
 }
 
-.default-node-item {
-  padding: 0.25rem 0rem 0.25rem 1.5rem;
+.node-item {
+  padding: 0.25rem 1.5rem 0.25rem 1.5rem;
   text-overflow: ellipsis;
   overflow: hidden;
-  max-width: 175px;
-}
-
-.minus-icon-item {
-  align-self: center;
-  width: 2rem;
-  margin: 0 0.5rem;
-  padding: 0.5rem
-}
-
-.add-node-div {
-  display: flex;
-  margin-top: 1rem;
-  padding-left: 1rem;
-}
-
-.plus-icon-item {
-  width: 2rem;
-  margin: 0 0.5rem;
-  padding: 0.5rem;
 }
