@@ -28,7 +28,7 @@ const LabelsPage: React.FC = () => {
           </h4>
         </Row>
         <Row className='m-0 pb-3'>
-          <span className='subtext'>Label data is stored in your browser&apos;s local storage. To browse labels in different networks, switch to that network using network selector.</span>
+          <span className='subtext'>Label data is stored in your browser&apos;s local storage.</span>
         </Row>
         <Row className='justify-content-between flex-nowrap m-0'>
           <div className='filter-div'>

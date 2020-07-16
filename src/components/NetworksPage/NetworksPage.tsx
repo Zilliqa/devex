@@ -1,7 +1,5 @@
 import React, { useContext, useState } from 'react'
 import { Container, Row, Button } from 'react-bootstrap'
-import { DndProvider } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import { defaultNetworks } from 'src/services/network/networkProvider'
 import { UserPrefContext } from 'src/services/userPref/userPrefProvider'
@@ -41,16 +39,19 @@ const NetworksPage: React.FC = () => {
           </h4>
         </Row>
         <Row className='m-0 pb-3'>
-          <span className='subtext'>Network data is stored in your browser&apos;s local storage.</span>
+          <span className='subtext'>
+            Network data is stored in your browser&apos;s local storage.
+            Default network is highlighted in green.
+            <br />
+            Use the network selector in the top-right to toggle between different networks.
+            </span>
         </Row>
         <Row className='m-0 pb-3'>
           <Button className='mr-3' onClick={handleShowModal}>Add Network</Button>
           <Button onClick={() => setNodeUrlMap(defaultNetworks)}>Reset to default</Button>
         </Row>
         <Row className='m-0'>
-          <DndProvider backend={HTML5Backend}>
-            <NetworksList />
-          </DndProvider>
+          <NetworksList />
         </Row>
       </Container>
     </>

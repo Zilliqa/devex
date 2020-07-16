@@ -1,9 +1,6 @@
 .network-card {
-  border: 1px dashed var(--color-border);
-  padding: 0.5rem 1rem;
-  margin-bottom: .5rem;
-  background-color: var(--color-card-bg);
-  cursor: pointer;
+  border: 2px dashed var(--color-border);
+  padding: 1rem;
 }
 
 .network-card-div {
