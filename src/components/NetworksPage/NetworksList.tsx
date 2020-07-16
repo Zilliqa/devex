@@ -1,41 +1,9 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 
 import { UserPrefContext } from 'src/services/userPref/userPrefProvider'
 
-import NetworkCard from './NetworkCard'
+import NetworksDnd, { NetworkItem } from './NetworksDnd'
 import './NetworksList.css'
-
-interface NetworkItem {
-  id: number,
-  url: string,
-  name: string
-}
-
-const reorder = (list: NetworkItem[], startIndex: number, endIndex: number): NetworkItem[] => {
-  const result = Array.from(list)
-  const [removed] = result.splice(startIndex, 1)
-  result.splice(endIndex, 0, removed)
-
-  return result
-}
-
-const grid = 16
-
-const getItemStyle = (isDragging: boolean, draggableStyle: any) => ({
-  userSelect: "none",
-  margin: `0 0 ${grid}px 0`,
-  background: isDragging ? "var(--color-highlight)" : "var(--color-card-bg)",
-  ...draggableStyle
-})
-
-const getListStyle = (isDraggingOver: boolean) => ({
-  background: isDraggingOver ? "var(--color-card-bg)" : "var(--color-card-bg)",
-  padding: grid,
-  width: '100%',
-  border: 'solid 1px var(--color-border)',
-  borderRadius: '5px'
-})
 
 const serialiseNetworks = (networkItems: NetworkItem[]): Map<string, string> => {
   return new Map(networkItems.map((x) => [x.url, x.name]))
@@ -71,59 +39,12 @@ const NetworksList: React.FC = () => {
     setCards(unserialiseNetworks(nodeUrlMap))
   }, [nodeUrlMap])
 
-  const onDragEnd = (result: any) => {
-
-    if (!result.destination) {
-      return
-    }
-
-    const reorderedCards = reorder(
-      cards,
-      result.source.index,
-      result.destination.index
-    )
-
-    setCards(reorderedCards)
-  }
-
   return (
     <>
-      <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable">
-          {(provided, snapshot) => (
-            <div
-              className='dnd'
-              {...provided.droppableProps}
-              ref={provided.innerRef}
-              style={getListStyle(snapshot.isDraggingOver)}
-            >
-              {cards.map((card, index) => (
-                <Draggable key={card.id} draggableId={card.id.toString()} index={index}>
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}
-                    >
-                      <NetworkCard
-                        key={card.url}
-                        url={card.url}
-                        name={card.name}
-                        deleteNode={deleteNode}
-                      />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
+      <NetworksDnd
+        cards={cards}
+        setCards={setCards}
+        deleteNode={deleteNode} />
     </>
   )
 }
