@@ -10,7 +10,7 @@ type NetworkState = {
   nodeUrl: string,
   isValidUrl: boolean | null,
   inTransition: boolean,
-  isLoadingUrls: boolean,
+  isLoadingNetworks: boolean,
 }
 
 export const QueryPreservingLink = ({ to, style, className, onClick, children }
@@ -61,6 +61,9 @@ export const NetworkContext = React.createContext<NetworkState | null>(null)
 
 export const NetworkProvider: React.FC = (props) => {
 
+  const userPrefContext = useContext(UserPrefContext)
+  const { nodeUrlMap, setNodeUrlMap } = userPrefContext!
+
   const network = useNetworkUrl()
 
   const [state, setState] = useState<NetworkState>({
@@ -69,34 +72,38 @@ export const NetworkProvider: React.FC = (props) => {
     dataService: null,
     nodeUrl: network,
     inTransition: true,
-    isLoadingUrls: true
+    isLoadingNetworks: true
   })
 
-  // Load optional urls from public folder
+  // Load optional networks from public folder
   useEffect(() => {
-    let localUrls: Map<string, string> = new Map()
-    const loadUrls = async () => {
-      console.log('loading urls')
+    let localNetworks
+    const loadNetworks = async () => {
+      console.log('loading networks')
       try {
-        const response = await fetch(process.env.PUBLIC_URL + '/urls.json')
-        localUrls = await response.json()
-        defaultNetworks = localUrls
+        const response = await fetch(process.env.PUBLIC_URL + '/networks.json')
+        localNetworks = await response.json()
+        defaultNetworks = new Map(localNetworks.networks.map((x: { [url: string]: string }) => Object.entries(x)[0]))
+        if (nodeUrlMap.size === 0)
+          setNodeUrlMap(defaultNetworks)
       } catch (e) {
-        console.log('no local urls found')
+        console.log('no local networks found')
       } finally {
-        setState((prevState: NetworkState) => ({ ...prevState, isLoadingUrls: false }))
+        setState((prevState: NetworkState) => ({ ...prevState, isLoadingNetworks: false }))
       }
     }
-    loadUrls()
+    loadNetworks()
+    // Only called once
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
-    if (state.isLoadingUrls) return
+    if (state.isLoadingNetworks) return
     return setState((prevState: NetworkState) => ({
       ...prevState, dataService: new DataService(network),
       inTransition: true, isIsolatedServer: null, nodeUrl: network
     }))
-  }, [network, state.isLoadingUrls])
+  }, [network, state.isLoadingNetworks])
 
   // If dataservice changes, update isIsolatedServer
   useEffect(() => {

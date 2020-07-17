@@ -1,7 +1,5 @@
 import React, { useState } from 'react'
 
-import { defaultNetworks } from '../network/networkProvider'
-
 export interface LabelInfo {
   name: string,
   type: string,
@@ -24,7 +22,7 @@ export const UserPrefProvider: React.FC = (props) => {
   const [state, setState] = useState<UserPrefState>({
     nodeUrlMap: localStorage.getItem('nodeUrlMap')
       ? new Map(JSON.parse(localStorage.getItem('nodeUrlMap')!))
-      : defaultNetworks,
+      : new Map(),
     setNodeUrlMap: (newNodeUrlMap) => {
       localStorage.setItem('nodeUrlMap', JSON.stringify(Array.from(newNodeUrlMap.entries())))
       setState((prevState) => ({ ...prevState, nodeUrlMap: newNodeUrlMap }))

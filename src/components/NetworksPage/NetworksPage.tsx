@@ -4,6 +4,7 @@ import { Container, Row, Button } from 'react-bootstrap'
 import { defaultNetworks } from 'src/services/network/networkProvider'
 import { UserPrefContext } from 'src/services/userPref/userPrefProvider'
 
+import ImportExport from './ImportExport/ImportExport'
 import NetworksList from './NetworksList'
 import NetworkModal from './NetworkModal'
 
@@ -17,15 +18,9 @@ const NetworksPage: React.FC = () => {
   const handleShowModal = () => setShow(true)
 
   const addNetwork = (networkUrl: string, networkName: string) => {
-    if (!Object.keys({ ...nodeUrlMap }).includes(networkUrl)) {
-      nodeUrlMap.set(networkUrl, networkName)
-      const temp = new Map(nodeUrlMap)
-      temp.set(networkUrl, networkName)
-      setNodeUrlMap(temp)
-    }
-    else {
-      // show network has already been added notif
-    }
+    const temp = new Map(nodeUrlMap)
+    temp.set(networkUrl, networkName)
+    setNodeUrlMap(temp)
     handleCloseModal()
   }
 
@@ -48,9 +43,11 @@ const NetworksPage: React.FC = () => {
         </Row>
         <Row className='m-0 pb-3'>
           <Button className='mr-3' onClick={handleShowModal}>Add Network</Button>
-          <Button onClick={() => setNodeUrlMap(defaultNetworks)}>Reset to default</Button>
+          <Button className='mr-3' onClick={() => setNodeUrlMap(new Map())}>Clear Networks</Button>
+          <Button className='mr-auto' onClick={() => { console.log(defaultNetworks); setNodeUrlMap(defaultNetworks) }}>Reset to default</Button>
+          <ImportExport nodeUrlMap={nodeUrlMap} setNodeUrlMapCb={setNodeUrlMap} />
         </Row>
-        <Row className='m-0'>
+        <Row>
           <NetworksList />
         </Row>
       </Container>

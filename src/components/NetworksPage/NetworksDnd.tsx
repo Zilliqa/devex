@@ -1,7 +1,8 @@
 import React from 'react'
+import { Container } from 'react-bootstrap'
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd"
 
-import NetworkCard from './NetworkCard'
+import NetworkCard from './NetworkCard/NetworkCard'
 import './NetworksList.css'
 
 export interface NetworkItem {
@@ -56,7 +57,7 @@ const NetworksDnd: React.FC<IProps> = ({ cards, setCards, deleteNode, editNode }
     setCards(reorderedCards)
   }
 
-  return <>
+  return <Container>
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable">
         {(provided, snapshot) => (
@@ -94,7 +95,7 @@ const NetworksDnd: React.FC<IProps> = ({ cards, setCards, deleteNode, editNode }
         )}
       </Droppable>
     </DragDropContext>
-  </>
+  </Container>
 }
 
 export default NetworksDnd

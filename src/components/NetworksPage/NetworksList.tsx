@@ -4,6 +4,7 @@ import { UserPrefContext } from 'src/services/userPref/userPrefProvider'
 
 import NetworksDnd, { NetworkItem } from './NetworksDnd'
 import './NetworksList.css'
+import Dropzone from './Dropzone/Dropzone'
 
 const serialiseNetworks = (networkItems: NetworkItem[]): Map<string, string> => {
   return new Map(networkItems.map((x) => [x.url, x.name]))
@@ -47,11 +48,14 @@ const NetworksList: React.FC = () => {
 
   return (
     <>
-      <NetworksDnd
-        cards={cards}
-        setCards={setCards}
-        deleteNode={deleteNode}
-        editNode={editNode} />
+      {cards.length === 0
+        ? <Dropzone setNodeUrlMapCb={setNodeUrlMap} />
+        : <NetworksDnd
+          cards={cards}
+          setCards={setCards}
+          deleteNode={deleteNode}
+          editNode={editNode} />
+      }
     </>
   )
 }
