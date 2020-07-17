@@ -42,9 +42,25 @@ const LabelCard: React.FC<IProps> = ({ k, v }) => {
     setLabelMap(temp)
   }
 
+  const moveCaretToEnd = (el: HTMLElement) => {
+    const target = document.createTextNode('')
+    el.appendChild(target)
+    if (target !== null && target.nodeValue !== null) {
+      const sel = window.getSelection()
+      if (sel === null) return
+      const range = document.createRange()
+      range.setStart(target, target.nodeValue.length)
+      range.collapse(true)
+      sel.removeAllRanges()
+      sel.addRange(range)
+      if (el instanceof HTMLElement) el.focus()
+    }
+  }
+
   useEffect(() => {
     if (!inner.current) return
     inner.current.focus()
+    moveCaretToEnd(inner.current)
   }, [isEditing, inner])
 
   return <>

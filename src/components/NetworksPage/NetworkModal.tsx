@@ -58,10 +58,7 @@ const NetworkModal: React.FC<IProps> = ({ show, handleCloseModal, cb }) => {
           </Button>
         </div>
       </Form>
-      <div className='modal-footer'>
-        <span>Network data is saved in the local storage of your browser</span>
-      </div>
-    </Modal.Body>
+      </Modal.Body>
   </Modal>
 }
 

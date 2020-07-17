@@ -9,7 +9,7 @@ import { LabelMap, NetworkMap } from 'src/services/userPref/userPrefProvider'
 
 import './ImportExport.css'
 
-const exportToJson = (fileName: string, toJson: any, map: any) => {
+const exportToJson = (fileName: string, toJson: any, map: NetworkMap | LabelMap) => {
   console.log('exporting json')
   const jsonStr = JSON.stringify(toJson ? toJson(map) : map)
   const blob = new Blob([jsonStr], { type: 'application/json' })
