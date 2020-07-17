@@ -5,12 +5,13 @@ import { useDropzone } from 'react-dropzone'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUpload, faDownload } from '@fortawesome/free-solid-svg-icons'
 
+import { LabelMap, NetworkMap } from 'src/services/userPref/userPrefProvider'
+
 import './ImportExport.css'
 
-const exportToJson = (networkData: Map<string, string>) => {
+const exportToJson = (fileName: string, toJson: any, map: any) => {
   console.log('exporting json')
-  const fileName = "networks"
-  const jsonStr = JSON.stringify({ networks: Array.from(networkData).map(([k, v]) => ({ [k]: v })) })
+  const jsonStr = JSON.stringify(toJson ? toJson(map) : map)
   const blob = new Blob([jsonStr], { type: 'application/json' })
   const href = URL.createObjectURL(blob)
   const link = document.createElement('a')
@@ -22,11 +23,14 @@ const exportToJson = (networkData: Map<string, string>) => {
 }
 
 interface IProps {
-  networkMap: Map<string, string>,
-  setNodeUrlMapCb: (networkMap: Map<string, string>) => void
+  fileName: string,
+  map: NetworkMap | LabelMap,
+  setMapCb: ((map: NetworkMap) => void) | ((map: LabelMap) => void),
+  fromJson?: any,
+  toJson?: any
 }
 
-const ImportExport: React.FC<IProps> = ({ networkMap, setNodeUrlMapCb }) => {
+const ImportExport: React.FC<IProps> = ({ fileName, map, setMapCb, toJson, fromJson }) => {
 
   const onDrop = useCallback((acceptedFiles: Blob[]) => {
     acceptedFiles.forEach((file: Blob) => {
@@ -34,12 +38,11 @@ const ImportExport: React.FC<IProps> = ({ networkMap, setNodeUrlMapCb }) => {
 
       reader.onload = () => {
         const parsedFile = JSON.parse(reader.result as string)
-        console.log(parsedFile)
-        setNodeUrlMapCb(new Map(parsedFile.networks.map((x: { [url: string]: string }) => Object.entries(x)[0])))
+        setMapCb(fromJson ? fromJson(parsedFile) : parsedFile)
       }
       reader.readAsText(file)
     })
-  }, [setNodeUrlMapCb])
+  }, [setMapCb, fromJson])
 
   const { getRootProps, getInputProps } = useDropzone({ noDrag: true, onDrop })
 
@@ -62,7 +65,7 @@ const ImportExport: React.FC<IProps> = ({ networkMap, setNodeUrlMapCb }) => {
             overlay={<Tooltip id={'export-tt'}>Export Network</Tooltip>}>
             <Button
               onClick={() => {
-                exportToJson(networkMap)
+                exportToJson(fileName, toJson, map)
               }}>
               <FontAwesomeIcon
                 icon={faUpload}

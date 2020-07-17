@@ -1,16 +1,16 @@
 import React, { useState, useContext, useEffect, useRef } from 'react'
 
-import { UserPrefContext } from 'src/services/userPref/userPrefProvider'
+import { UserPrefContext, NetworkMap } from 'src/services/userPref/userPrefProvider'
 
+import Dropzone from '../Misc/Dropzone/Dropzone'
 import NetworksDnd, { NetworkItem } from './NetworksDnd'
 import './NetworksList.css'
-import Dropzone from './Dropzone/Dropzone'
 
-const serialiseNetworks = (networkItems: NetworkItem[]): Map<string, string> => {
+const serialiseNetworks = (networkItems: NetworkItem[]): NetworkMap => {
   return new Map(networkItems.map((x) => [x.url, x.name]))
 }
 
-const unserialiseNetworks = (networkMap: Map<string, string>): NetworkItem[] => {
+const unserialiseNetworks = (networkMap: NetworkMap): NetworkItem[] => {
   return Array.from(networkMap).map((x, index) => ({ id: index, url: x[0], name: x[1] }))
 }
 
@@ -49,7 +49,9 @@ const NetworksList: React.FC = () => {
   return (
     <>
       {cards.length === 0
-        ? <Dropzone setNodeUrlMapCb={setNetworkMap} />
+        ? <Dropzone
+          fromJson={(json: any) => new Map(json.networks.map((x: { [url: string]: string }) => Object.entries(x)[0]))}
+          dropCb={setNetworkMap} />
         : <NetworksDnd
           cards={cards}
           setCards={setCards}

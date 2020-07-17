@@ -4,9 +4,9 @@ import { Container, Col, Row, Dropdown, Form } from 'react-bootstrap'
 import { defaultNetworks } from 'src/services/network/networkProvider'
 import { UserPrefContext } from 'src/services/userPref/userPrefProvider'
 
-import Dropzone from './Dropzone/Dropzone'
-import ImportExport from './ImportExport/ImportExport'
 import LabelCard from './LabelCard/LabelCard'
+import Dropzone from '../Misc/Dropzone/Dropzone'
+import ImportExport from '../Misc/ImportExport/ImportExport'
 
 import './LabelsPage.css'
 
@@ -71,11 +71,17 @@ const LabelsPage: React.FC = () => {
               placeholder='Search for label'
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setSearchFilter(e.target.value) }} />
           </div>
-          <ImportExport labelMap={labelMap} setLabelCb={setLabelMap} />
+          <ImportExport
+            fileName='labels'
+            map={labelMap}
+            setMapCb={setLabelMap}
+            />
         </Row>
         <Row className='mt-3'>
           {Object.entries(labelMap).length === 0
-            ? <Dropzone setLabelCb={setLabelMap} />
+            ? <Dropzone
+              fromJson={(x: any) => x}
+              dropCb={setLabelMap} />
             : Object.entries(labelMap)
               .filter(([, v]) => (typefilter === 'All' || v.type === typefilter))
               .filter(([, v]) => (networkNameFilter === 'All' || v.networkName === networkNameFilter))

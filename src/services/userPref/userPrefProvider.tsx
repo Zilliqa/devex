@@ -8,11 +8,15 @@ export interface LabelInfo {
   timeAdded: number,
 }
 
+export type LabelMap = Record<string, LabelInfo>
+
+export type NetworkMap = Map<string, string>
+
 type UserPrefState = {
-  networkMap: Map<string, string>,
-  setNetworkMap: (newNodeUrlMap: Map<string, string>) => void,
-  labelMap: Record<string, LabelInfo>,
-  setLabelMap: (newLabelMap: Record<string, LabelInfo>) => void,
+  networkMap: NetworkMap,
+  setNetworkMap: (newNetworkMap: NetworkMap) => void,
+  labelMap: LabelMap,
+  setLabelMap: (newLabelMap: LabelMap) => void,
 }
 
 export const UserPrefContext = React.createContext<UserPrefState | undefined>(undefined)
@@ -23,9 +27,9 @@ export const UserPrefProvider: React.FC = (props) => {
     networkMap: localStorage.getItem('networkMap')
       ? new Map(JSON.parse(localStorage.getItem('networkMap')!))
       : new Map(),
-    setNetworkMap: (newNodeUrlMap) => {
-      localStorage.setItem('networkMap', JSON.stringify(Array.from(newNodeUrlMap.entries())))
-      setState((prevState) => ({ ...prevState, networkMap: newNodeUrlMap }))
+    setNetworkMap: (newNetworkMap) => {
+      localStorage.setItem('networkMap', JSON.stringify(Array.from(newNetworkMap.entries())))
+      setState((prevState) => ({ ...prevState, networkMap: newNetworkMap }))
     },
     labelMap: localStorage.getItem('labelMap')
       ? JSON.parse(localStorage.getItem('labelMap')!)

@@ -33,7 +33,7 @@ jest.mock("src/services/network/networkProvider", () => {
 })
 
 describe('<NetworkSwitcher />', () => {
-  const mockSetNodeUrlMap = jest.fn()
+  const mockSetNetworkMap = jest.fn()
 
   beforeEach(() => {
     jest.spyOn(React, 'useContext').mockImplementation(() => ({
@@ -42,7 +42,7 @@ describe('<NetworkSwitcher />', () => {
         ['https://dev-api.zilliqa.com', 'Testnet'],
         ['https://zilliqa-isolated-server.zilliqa.com', 'Isolated Server'],
         ['http://52.187.126.172:4201', 'Mainnet Staked Seed Node']]),
-      setNetworkMap: mockSetNodeUrlMap
+      setNetworkMap: mockSetNetworkMap
     }))
   })
 
@@ -55,7 +55,7 @@ describe('<NetworkSwitcher />', () => {
   it('renders with no networks and matches snapshot', () => {
     jest.spyOn(React, 'useContext').mockImplementation(() => ({
       networkMap: new Map(),
-      setNetworkMap: mockSetNodeUrlMap
+      setNetworkMap: mockSetNetworkMap
     }))
     const wrapper = shallow(<NetworkSwitcher />)
     expect(toJson(wrapper)).toMatchSnapshot()

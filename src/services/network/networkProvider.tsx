@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useLocation, Link } from 'react-router-dom'
 
 import { DataService } from './dataService'
-import { UserPrefContext } from '../userPref/userPrefProvider'
+import { UserPrefContext, NetworkMap } from '../userPref/userPrefProvider'
 
 type NetworkState = {
   isIsolatedServer: boolean | null,
@@ -42,7 +42,7 @@ export const useNetworkName = (): string => {
   return networkMap.get(networkUrl) || defaultNetworks.get(networkUrl) || networkUrl
 }
 
-export let defaultNetworks: Map<string, string> = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
+export let defaultNetworks: NetworkMap = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
   ? new Map([
     ['https://api.zilliqa.com', 'Mainnet'],
     ['https://dev-api.zilliqa.com', 'Testnet'],

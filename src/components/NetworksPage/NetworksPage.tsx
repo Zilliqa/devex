@@ -2,9 +2,9 @@ import React, { useContext, useState } from 'react'
 import { Container, Row, Button } from 'react-bootstrap'
 
 import { defaultNetworks } from 'src/services/network/networkProvider'
-import { UserPrefContext } from 'src/services/userPref/userPrefProvider'
+import { UserPrefContext, NetworkMap } from 'src/services/userPref/userPrefProvider'
 
-import ImportExport from './ImportExport/ImportExport'
+import ImportExport from '../Misc/ImportExport/ImportExport'
 import NetworksList from './NetworksList'
 import NetworkModal from './NetworkModal'
 
@@ -45,7 +45,12 @@ const NetworksPage: React.FC = () => {
           <Button className='mr-3' onClick={handleShowModal}>Add Network</Button>
           <Button className='mr-3' onClick={() => setNetworkMap(new Map())}>Clear Networks</Button>
           <Button className='mr-auto' onClick={() => setNetworkMap(defaultNetworks)}>Reset to default</Button>
-          <ImportExport networkMap={networkMap} setNodeUrlMapCb={setNetworkMap} />
+          <ImportExport
+            fileName='networks'
+            map={networkMap}
+            setMapCb={setNetworkMap}
+            fromJson={(json: any) => new Map(json.networks.map((x: { [url: string]: string }) => Object.entries(x)[0]))}
+            toJson={(map: NetworkMap) => ({ networks: Array.from(map).map(([k, v]) => ({ [k]: v })) })} />
         </Row>
         <Row>
           <NetworksList />

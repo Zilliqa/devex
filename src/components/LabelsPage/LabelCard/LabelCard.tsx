@@ -3,7 +3,7 @@ import { Card } from 'react-bootstrap'
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable'
 import { Link } from 'react-router-dom'
 
-import { UserPrefContext, LabelInfo } from 'src/services/userPref/userPrefProvider'
+import { UserPrefContext, LabelInfo, LabelMap } from 'src/services/userPref/userPrefProvider'
 import { timestampToTimeago, printableChars } from 'src/utils/Utils'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -26,7 +26,7 @@ const LabelCard: React.FC<IProps> = ({ k, v }) => {
   const inner = React.createRef<HTMLElement>()
 
   const handleDelete = () => {
-    const temp: Record<string, LabelInfo> = { ...labelMap }
+    const temp: LabelMap = { ...labelMap }
     delete temp[k]
     setLabelMap(temp)
   }
@@ -37,7 +37,7 @@ const LabelCard: React.FC<IProps> = ({ k, v }) => {
 
   const handleBlur = () => {
     setEditing(false)
-    const temp: Record<string, LabelInfo> = { ...labelMap }
+    const temp: LabelMap = { ...labelMap }
     temp[k].name = text.current
     setLabelMap(temp)
   }

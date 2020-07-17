@@ -5,10 +5,11 @@ import { useDropzone } from 'react-dropzone'
 import './Dropzone.css'
 
 interface IProps {
-  setNodeUrlMapCb: (networkMap: Map<string, string>) => void
+  dropCb: any,
+  fromJson: any
 }
 
-const Dropzone: React.FC<IProps> = ({ setNodeUrlMapCb }) => {
+const Dropzone: React.FC<IProps> = ({ dropCb, fromJson }) => {
 
   const onDrop = useCallback((acceptedFiles: Blob[]) => {
     acceptedFiles.forEach((file: Blob) => {
@@ -16,12 +17,11 @@ const Dropzone: React.FC<IProps> = ({ setNodeUrlMapCb }) => {
 
       reader.onload = () => {
         const parsedFile = JSON.parse(reader.result as string)
-        console.log(parsedFile)
-        setNodeUrlMapCb(new Map(parsedFile.networks.map((x: { [url: string]: string }) => Object.entries(x)[0])))
+        dropCb(fromJson(parsedFile))
       }
       reader.readAsText(file)
     })
-  }, [setNodeUrlMapCb])
+  }, [dropCb, fromJson])
 
   const { getRootProps, getInputProps } = useDropzone({ accept: 'application/json', onDrop })
 
