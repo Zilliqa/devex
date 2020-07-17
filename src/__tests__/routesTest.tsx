@@ -26,9 +26,9 @@ describe('react router test', () => {
           isValidUrl: null,
           isIsolatedServer: true,
           dataService: null,
-          nodeUrl: '',
+          networkUrl: '',
           inTransition: true,
-          isLoadingUrls: true
+          isLoadingNetworks: true
         }}>
         <App />
         </NetworkContext.Provider>

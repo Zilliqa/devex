@@ -68,79 +68,10 @@ exports[`<NetworkSwitcher /> renders with a given list of default networks and s
     show={false}
     title="Mainnet"
   >
-    <DropdownItem
-      as={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "displayName": "SafeAnchor",
-          "render": [Function],
-        }
-      }
-      disabled={false}
-      key="https://api.zilliqa.com"
-      onClick={[Function]}
-    >
-      Mainnet
-    </DropdownItem>
-    <DropdownItem
-      as={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "displayName": "SafeAnchor",
-          "render": [Function],
-        }
-      }
-      disabled={false}
-      key="https://dev-api.zilliqa.com"
-      onClick={[Function]}
-    >
-      Testnet
-    </DropdownItem>
-    <DropdownItem
-      as={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "displayName": "SafeAnchor",
-          "render": [Function],
-        }
-      }
-      disabled={false}
-      key="https://zilliqa-isolated-server.zilliqa.com"
-      onClick={[Function]}
-    >
-      Isolated Server
-    </DropdownItem>
-    <DropdownItem
-      as={
-        Object {
-          "$$typeof": Symbol(react.forward_ref),
-          "displayName": "SafeAnchor",
-          "render": [Function],
-        }
-      }
-      disabled={false}
-      key="http://52.187.126.172:4201"
-      onClick={[Function]}
-    >
-      Mainnet Staked Seed Node
-    </DropdownItem>
-    <DropdownDivider
-      role="separator"
-    />
     <div
-      className="add-node-div"
+      className="node-div"
+      key="https://api.zilliqa.com"
     >
-      <Form
-        inline={false}
-        onSubmit={[Function]}
-      >
-        <FormControl
-          onChange={[Function]}
-          placeholder="Add Network"
-          type="text"
-          value=""
-        />
-      </Form>
       <DropdownItem
         as={
           Object {
@@ -149,42 +80,146 @@ exports[`<NetworkSwitcher /> renders with a given list of default networks and s
             "render": [Function],
           }
         }
-        className="plus-icon-item"
+        className="node-item"
         disabled={false}
         onClick={[Function]}
       >
-        <FontAwesomeIcon
-          border={false}
-          className=""
-          fixedWidth={false}
-          flip={null}
-          icon={
-            Object {
-              "icon": Array [
-                448,
-                512,
-                Array [],
-                "f067",
-                "M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z",
-              ],
-              "iconName": "plus",
-              "prefix": "fas",
-            }
-          }
-          inverse={false}
-          listItem={false}
-          mask={null}
-          pull={null}
-          pulse={false}
-          rotation={null}
-          size="lg"
-          spin={false}
-          swapOpacity={false}
-          symbol={false}
-          title=""
-          transform={null}
-        />
+        Mainnet
       </DropdownItem>
+    </div>
+    <div
+      className="node-div"
+      key="https://dev-api.zilliqa.com"
+    >
+      <DropdownItem
+        as={
+          Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "displayName": "SafeAnchor",
+            "render": [Function],
+          }
+        }
+        className="node-item"
+        disabled={false}
+        onClick={[Function]}
+      >
+        Testnet
+      </DropdownItem>
+    </div>
+    <div
+      className="node-div"
+      key="https://zilliqa-isolated-server.zilliqa.com"
+    >
+      <DropdownItem
+        as={
+          Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "displayName": "SafeAnchor",
+            "render": [Function],
+          }
+        }
+        className="node-item"
+        disabled={false}
+        onClick={[Function]}
+      >
+        Isolated Server
+      </DropdownItem>
+    </div>
+    <div
+      className="node-div"
+      key="http://52.187.126.172:4201"
+    >
+      <DropdownItem
+        as={
+          Object {
+            "$$typeof": Symbol(react.forward_ref),
+            "displayName": "SafeAnchor",
+            "render": [Function],
+          }
+        }
+        className="node-item"
+        disabled={false}
+        onClick={[Function]}
+      >
+        Mainnet Staked Seed Node
+      </DropdownItem>
+    </div>
+  </NavDropdown>
+</Nav>
+`;
+
+exports[`<NetworkSwitcher /> renders with no networks and matches snapshot 1`] = `
+<Nav
+  fill={false}
+  justify={false}
+  style={
+    Object {
+      "minWidth": "120px",
+    }
+  }
+>
+  <OverlayTrigger
+    defaultShow={false}
+    overlay={
+      <ForwardRef
+        id="network-tt"
+        placement="right"
+      >
+         
+        https://api.zilliqa.com
+         
+      </ForwardRef>
+    }
+    placement="left"
+    trigger={
+      Array [
+        "hover",
+        "focus",
+      ]
+    }
+  >
+    <FontAwesomeIcon
+      border={false}
+      className="info-icon"
+      fixedWidth={false}
+      flip={null}
+      icon={
+        Object {
+          "icon": Array [
+            512,
+            512,
+            Array [],
+            "f05a",
+            "M256 8C119.043 8 8 119.083 8 256c0 136.997 111.043 248 248 248s248-111.003 248-248C504 119.083 392.957 8 256 8zm0 110c23.196 0 42 18.804 42 42s-18.804 42-42 42-42-18.804-42-42 18.804-42 42-42zm56 254c0 6.627-5.373 12-12 12h-88c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h12v-64h-12c-6.627 0-12-5.373-12-12v-24c0-6.627 5.373-12 12-12h64c6.627 0 12 5.373 12 12v100h12c6.627 0 12 5.373 12 12v24z",
+          ],
+          "iconName": "info-circle",
+          "prefix": "fas",
+        }
+      }
+      inverse={false}
+      listItem={false}
+      mask={null}
+      pull={null}
+      pulse={false}
+      rotation={null}
+      size={null}
+      spin={false}
+      swapOpacity={false}
+      symbol={false}
+      title=""
+      transform={null}
+    />
+  </OverlayTrigger>
+  <NavDropdown
+    id="header-network-dropdown"
+    onToggle={[Function]}
+    show={false}
+    title="Mainnet"
+  >
+    <div
+      className="text-center"
+    >
+      No networks
     </div>
   </NavDropdown>
 </Nav>
