@@ -17,7 +17,7 @@ const NetworkSwitcher: React.FC = () => {
   const networkUrl = useNetworkUrl()
 
   const userPrefContext = useContext(UserPrefContext)
-  const { nodeUrlMap } = userPrefContext!
+  const { networkMap } = userPrefContext!
 
   const [showDropdown, setShowDropdown] = useState(false)
   const [currentNetwork, setCurrentNetwork] = useState(networkName)
@@ -41,11 +41,11 @@ const NetworkSwitcher: React.FC = () => {
       </OverlayTrigger>
       <NavDropdown onToggle={(e: boolean) => { setShowDropdown(e) }}
         show={showDropdown} title={currentNetwork} id="header-network-dropdown">
-        {nodeUrlMap.size === 0
+        {networkMap.size === 0
           ? <div className='text-center'>
             No networks
           </div>
-          : Array.from(nodeUrlMap, ([k, v]) => (
+          : Array.from(networkMap, ([k, v]) => (
             <div key={k} className='node-div'>
               <NavDropdown.Item className='node-item' onClick={() => {
                 if (currentNetwork !== v) {

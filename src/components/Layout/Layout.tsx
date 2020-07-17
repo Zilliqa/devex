@@ -18,12 +18,12 @@ const RedirectToDefaultNetwork = ({ children }: { children: React.ReactNode }) =
   const networkUrl = useNetworkUrl()
 
   const userPrefContext = useContext(UserPrefContext)
-  const { nodeUrlMap } = userPrefContext!
+  const { networkMap } = userPrefContext!
 
   if (networkUrl === '') {
     return <Redirect to={{
       pathname: searchParams,
-      search: '?' + new URLSearchParams({ network: nodeUrlMap.keys().next().value || 'https://api.zilliqa.com' }).toString(),
+      search: '?' + new URLSearchParams({ network: networkMap.keys().next().value || 'https://api.zilliqa.com' }).toString(),
     }}
     />
   } else {

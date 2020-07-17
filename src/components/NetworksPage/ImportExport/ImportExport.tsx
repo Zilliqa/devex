@@ -22,11 +22,11 @@ const exportToJson = (networkData: Map<string, string>) => {
 }
 
 interface IProps {
-  nodeUrlMap: Map<string, string>,
-  setNodeUrlMapCb: (nodeUrlMap: Map<string, string>) => void
+  networkMap: Map<string, string>,
+  setNodeUrlMapCb: (networkMap: Map<string, string>) => void
 }
 
-const ImportExport: React.FC<IProps> = ({ nodeUrlMap, setNodeUrlMapCb }) => {
+const ImportExport: React.FC<IProps> = ({ networkMap, setNodeUrlMapCb }) => {
 
   const onDrop = useCallback((acceptedFiles: Blob[]) => {
     acceptedFiles.forEach((file: Blob) => {
@@ -62,7 +62,7 @@ const ImportExport: React.FC<IProps> = ({ nodeUrlMap, setNodeUrlMapCb }) => {
             overlay={<Tooltip id={'export-tt'}>Export Network</Tooltip>}>
             <Button
               onClick={() => {
-                exportToJson(nodeUrlMap)
+                exportToJson(networkMap)
               }}>
               <FontAwesomeIcon
                 icon={faUpload}

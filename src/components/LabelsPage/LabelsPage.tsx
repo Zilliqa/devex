@@ -13,7 +13,7 @@ import './LabelsPage.css'
 const LabelsPage: React.FC = () => {
 
   const userPrefContext = useContext(UserPrefContext)
-  const { labelMap, nodeUrlMap, setLabelMap } = userPrefContext!
+  const { labelMap, networkMap, setLabelMap } = userPrefContext!
 
   const [searchFilter, setSearchFilter] = useState('')
   const [typefilter, setTypefilter] = useState('All')
@@ -37,7 +37,7 @@ const LabelsPage: React.FC = () => {
             </span>
             <Dropdown className="ml-3">
               <Dropdown.Toggle id="label-network-toggle">
-                {nodeUrlMap.get(networkNameFilter) || defaultNetworks.get(networkNameFilter) || networkNameFilter}
+                {networkMap.get(networkNameFilter) || defaultNetworks.get(networkNameFilter) || networkNameFilter}
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item onClick={() => setNetworkNameFilter('All')}>All</Dropdown.Item>

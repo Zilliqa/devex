@@ -11,16 +11,16 @@ import NetworkModal from './NetworkModal'
 const NetworksPage: React.FC = () => {
 
   const userPrefContext = useContext(UserPrefContext)
-  const { nodeUrlMap, setNodeUrlMap } = userPrefContext!
+  const { networkMap, setNetworkMap } = userPrefContext!
   const [show, setShow] = useState(false)
 
   const handleCloseModal = () => setShow(false)
   const handleShowModal = () => setShow(true)
 
   const addNetwork = (networkUrl: string, networkName: string) => {
-    const temp = new Map(nodeUrlMap)
+    const temp = new Map(networkMap)
     temp.set(networkUrl, networkName)
-    setNodeUrlMap(temp)
+    setNetworkMap(temp)
     handleCloseModal()
   }
 
@@ -43,9 +43,9 @@ const NetworksPage: React.FC = () => {
         </Row>
         <Row className='m-0 pb-3'>
           <Button className='mr-3' onClick={handleShowModal}>Add Network</Button>
-          <Button className='mr-3' onClick={() => setNodeUrlMap(new Map())}>Clear Networks</Button>
-          <Button className='mr-auto' onClick={() => { console.log(defaultNetworks); setNodeUrlMap(defaultNetworks) }}>Reset to default</Button>
-          <ImportExport nodeUrlMap={nodeUrlMap} setNodeUrlMapCb={setNodeUrlMap} />
+          <Button className='mr-3' onClick={() => setNetworkMap(new Map())}>Clear Networks</Button>
+          <Button className='mr-auto' onClick={() => setNetworkMap(defaultNetworks)}>Reset to default</Button>
+          <ImportExport networkMap={networkMap} setNodeUrlMapCb={setNetworkMap} />
         </Row>
         <Row>
           <NetworksList />

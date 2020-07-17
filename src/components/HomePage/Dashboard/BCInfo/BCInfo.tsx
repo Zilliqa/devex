@@ -30,12 +30,12 @@ const defaultBCInfoState = {
 const BCInfo: React.FC = () => {
 
   const networkContext = useContext(NetworkContext)
-  const { dataService, nodeUrl } = networkContext!
+  const { dataService, networkUrl } = networkContext!
 
   const [data, setData] = useState<BlockchainInfo | null>(null)
   const [state, setState] = useState<BCInfoState>(defaultBCInfoState)
 
-  useEffect(() => { setData(null); setState(defaultBCInfoState) }, [nodeUrl]) // Unset data on url change
+  useEffect(() => { setData(null); setState(defaultBCInfoState) }, [networkUrl]) // Unset data on url change
 
   useEffect(() => {
     if (!data) return

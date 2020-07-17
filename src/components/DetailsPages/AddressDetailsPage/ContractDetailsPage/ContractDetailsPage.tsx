@@ -26,7 +26,7 @@ interface IProps {
 const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
 
   const networkContext = useContext(NetworkContext)
-  const { dataService, isIsolatedServer, nodeUrl } = networkContext!
+  const { dataService, isIsolatedServer, networkUrl } = networkContext!
 
   const addrRef = useRef(addr)
   const [contractData, setContractData] = useState<ContractData | null>(null)
@@ -105,7 +105,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
             </span>
             <LabelStar type='Contract' />
           </h3>
-          <ViewBlockLink network={nodeUrl} type='address' identifier={addrRef.current} />
+          <ViewBlockLink network={networkUrl} type='address' identifier={addrRef.current} />
         </div>
         <div className='subtext'>
           <AddressDisp isLinked={false} addr={addrRef.current} />

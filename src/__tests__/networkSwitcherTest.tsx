@@ -36,8 +36,8 @@ describe('<NetworkSwitcher />', () => {
 
   beforeEach(() => {
     jest.spyOn(React, 'useContext').mockImplementation(() => ({
-      nodeUrlMap: {},
-      setNodeUrlMap: mockSetNodeUrlMap
+      networkMap: {},
+      setNetworkMap: mockSetNodeUrlMap
     }))
   })
 

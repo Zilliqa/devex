@@ -5,7 +5,7 @@ import { useDropzone } from 'react-dropzone'
 import './Dropzone.css'
 
 interface IProps {
-  setNodeUrlMapCb: (nodeUrlMap: Map<string, string>) => void
+  setNodeUrlMapCb: (networkMap: Map<string, string>) => void
 }
 
 const Dropzone: React.FC<IProps> = ({ setNodeUrlMapCb }) => {

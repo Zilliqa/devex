@@ -7,7 +7,7 @@ import { UserPrefContext } from '../userPref/userPrefProvider'
 type NetworkState = {
   isIsolatedServer: boolean | null,
   dataService: DataService | null,
-  nodeUrl: string,
+  networkUrl: string,
   isValidUrl: boolean | null,
   inTransition: boolean,
   isLoadingNetworks: boolean,
@@ -37,9 +37,9 @@ export const useNetworkName = (): string => {
 
   const networkUrl = useNetworkUrl()
   const userPrefContext = useContext(UserPrefContext)
-  const { nodeUrlMap } = userPrefContext!
+  const { networkMap } = userPrefContext!
 
-  return nodeUrlMap.get(networkUrl) || defaultNetworks.get(networkUrl) || networkUrl
+  return networkMap.get(networkUrl) || defaultNetworks.get(networkUrl) || networkUrl
 }
 
 export let defaultNetworks: Map<string, string> = (process.env['REACT_APP_DEPLOY_ENV'] === 'prd')
@@ -62,7 +62,7 @@ export const NetworkContext = React.createContext<NetworkState | null>(null)
 export const NetworkProvider: React.FC = (props) => {
 
   const userPrefContext = useContext(UserPrefContext)
-  const { nodeUrlMap, setNodeUrlMap } = userPrefContext!
+  const { networkMap, setNetworkMap } = userPrefContext!
 
   const network = useNetworkUrl()
 
@@ -70,7 +70,7 @@ export const NetworkProvider: React.FC = (props) => {
     isValidUrl: null,
     isIsolatedServer: null,
     dataService: null,
-    nodeUrl: network,
+    networkUrl: network,
     inTransition: true,
     isLoadingNetworks: true
   })
@@ -84,8 +84,8 @@ export const NetworkProvider: React.FC = (props) => {
         const response = await fetch(process.env.PUBLIC_URL + '/networks.json')
         localNetworks = await response.json()
         defaultNetworks = new Map(localNetworks.networks.map((x: { [url: string]: string }) => Object.entries(x)[0]))
-        if (nodeUrlMap.size === 0)
-          setNodeUrlMap(defaultNetworks)
+        if (networkMap.size === 0)
+          setNetworkMap(defaultNetworks)
       } catch (e) {
         console.log('no local networks found')
       } finally {
@@ -101,7 +101,7 @@ export const NetworkProvider: React.FC = (props) => {
     if (state.isLoadingNetworks) return
     return setState((prevState: NetworkState) => ({
       ...prevState, dataService: new DataService(network),
-      inTransition: true, isIsolatedServer: null, nodeUrl: network
+      inTransition: true, isIsolatedServer: null, networkUrl: network
     }))
   }, [network, state.isLoadingNetworks])
 

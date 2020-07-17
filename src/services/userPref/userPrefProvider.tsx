@@ -9,8 +9,8 @@ export interface LabelInfo {
 }
 
 type UserPrefState = {
-  nodeUrlMap: Map<string, string>,
-  setNodeUrlMap: (newNodeUrlMap: Map<string, string>) => void,
+  networkMap: Map<string, string>,
+  setNetworkMap: (newNodeUrlMap: Map<string, string>) => void,
   labelMap: Record<string, LabelInfo>,
   setLabelMap: (newLabelMap: Record<string, LabelInfo>) => void,
 }
@@ -20,12 +20,12 @@ export const UserPrefContext = React.createContext<UserPrefState | undefined>(un
 export const UserPrefProvider: React.FC = (props) => {
 
   const [state, setState] = useState<UserPrefState>({
-    nodeUrlMap: localStorage.getItem('nodeUrlMap')
-      ? new Map(JSON.parse(localStorage.getItem('nodeUrlMap')!))
+    networkMap: localStorage.getItem('networkMap')
+      ? new Map(JSON.parse(localStorage.getItem('networkMap')!))
       : new Map(),
-    setNodeUrlMap: (newNodeUrlMap) => {
-      localStorage.setItem('nodeUrlMap', JSON.stringify(Array.from(newNodeUrlMap.entries())))
-      setState((prevState) => ({ ...prevState, nodeUrlMap: newNodeUrlMap }))
+    setNetworkMap: (newNodeUrlMap) => {
+      localStorage.setItem('networkMap', JSON.stringify(Array.from(newNodeUrlMap.entries())))
+      setState((prevState) => ({ ...prevState, networkMap: newNodeUrlMap }))
     },
     labelMap: localStorage.getItem('labelMap')
       ? JSON.parse(localStorage.getItem('labelMap')!)

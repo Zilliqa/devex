@@ -17,25 +17,25 @@ const unserialiseNetworks = (networkMap: Map<string, string>): NetworkItem[] => 
 const NetworksList: React.FC = () => {
 
   const userPrefContext = useContext(UserPrefContext)
-  const { nodeUrlMap, setNodeUrlMap } = userPrefContext!
-  const [cards, setCards] = useState<NetworkItem[]>(unserialiseNetworks(nodeUrlMap))
+  const { networkMap, setNetworkMap } = userPrefContext!
+  const [cards, setCards] = useState<NetworkItem[]>(unserialiseNetworks(networkMap))
   const cardsRef = useRef(cards)
 
   const deleteNode = (k: string) => {
-    const temp = new Map(nodeUrlMap)
+    const temp = new Map(networkMap)
     temp.delete(k)
-    setNodeUrlMap(temp)
+    setNetworkMap(temp)
   }
 
   const editNode = (url: string, newName: string) => {
-    const temp = new Map(nodeUrlMap)
+    const temp = new Map(networkMap)
     temp.set(url, newName)
-    setNodeUrlMap(temp)
+    setNetworkMap(temp)
   }
 
   useEffect(() => {
     if (JSON.stringify(cards) !== JSON.stringify(cardsRef.current)) {
-      setNodeUrlMap(serialiseNetworks(cards))
+      setNetworkMap(serialiseNetworks(cards))
       cardsRef.current = cards
     }
     // Ignored to avoid multiple calls
@@ -43,13 +43,13 @@ const NetworksList: React.FC = () => {
   }, [cards])
 
   useEffect(() => {
-    setCards(unserialiseNetworks(nodeUrlMap))
-  }, [nodeUrlMap])
+    setCards(unserialiseNetworks(networkMap))
+  }, [networkMap])
 
   return (
     <>
       {cards.length === 0
-        ? <Dropzone setNodeUrlMapCb={setNodeUrlMap} />
+        ? <Dropzone setNodeUrlMapCb={setNetworkMap} />
         : <NetworksDnd
           cards={cards}
           setCards={setCards}
