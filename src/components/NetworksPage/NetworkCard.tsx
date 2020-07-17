@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useRef, useState, useEffect } from 'react'
+import ContentEditable, { ContentEditableEvent } from 'react-contenteditable'
+import { Link } from 'react-router-dom'
 
+import { printableChars } from 'src/utils/Utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 
@@ -9,15 +12,50 @@ interface IProps {
   url: string,
   name: string,
   deleteNode: (k: string) => void,
+  editNode: (url: string, newName: string) => void
 }
 
-const NetworkCard: React.FC<IProps> = ({ url, name, deleteNode }) => {
+const NetworkCard: React.FC<IProps> = ({ url, name, deleteNode, editNode }) => {
+
+  const text = useRef(name)
+  const inner = React.createRef<HTMLElement>()
+  const [isEditing, setIsEditing] = useState(false)
+
+  const handleChange = (e: ContentEditableEvent) => {
+    text.current = e.target.value
+  }
+
+  const handleBlur = () => {
+    setIsEditing(false)
+    editNode(url, text.current)
+  }
+
+  useEffect(() => {
+    if (!inner.current) return
+    inner.current.focus()
+  }, [isEditing, inner])
 
   return (
     <div className='network-card'>
       <div className='network-card-div'>
         <div>
-          {name}
+          {isEditing
+            ? <ContentEditable
+              onKeyDown={(e) => (
+                (text.current.length >= 20 && printableChars(e.keyCode))
+                  ? e.preventDefault()
+                  : e.keyCode === 13 && (() => { inner.current?.blur() })()
+              )}
+              className='label-name-editable'
+              innerRef={inner}
+              html={text.current}
+              onBlur={handleBlur}
+              onChange={handleChange} />
+            : <Link to={{
+              pathname: '/',
+              search: '?' + new URLSearchParams({ network: url }).toString()
+            }}> {name}</Link>
+          }
           {' '}
           <small className='subtext'>
             ({url})
@@ -25,7 +63,7 @@ const NetworkCard: React.FC<IProps> = ({ url, name, deleteNode }) => {
         </div>
         <div>
           <FontAwesomeIcon
-            onClick={() => { console.log('editing network') }}
+            onClick={() => { setIsEditing(true) }}
             cursor='pointer'
             className='ml-3'
             icon={faEdit} />

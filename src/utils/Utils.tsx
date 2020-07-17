@@ -86,3 +86,12 @@ export const isValidAddr: ((inputStr: string) => boolean) = (inputStr: string) =
     return true
   return false
 }
+
+
+export const printableChars: (keyCode: number) => boolean = (keyCode: number) => (
+  (keyCode > 47 && keyCode < 58) ||
+  keyCode === 32 ||
+  (keyCode > 64 && keyCode < 91) ||
+  (keyCode > 95 && keyCode < 112) ||
+  (keyCode > 185 && keyCode < 193) ||
+  (keyCode > 218 && keyCode < 223))

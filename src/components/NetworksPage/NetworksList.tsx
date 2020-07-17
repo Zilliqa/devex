@@ -26,6 +26,12 @@ const NetworksList: React.FC = () => {
     setNodeUrlMap(temp)
   }
 
+  const editNode = (url: string, newName: string) => {
+    const temp = new Map(nodeUrlMap)
+    temp.set(url, newName)
+    setNodeUrlMap(temp)
+  }
+
   useEffect(() => {
     if (JSON.stringify(cards) !== JSON.stringify(cardsRef.current)) {
       setNodeUrlMap(serialiseNetworks(cards))
@@ -44,7 +50,8 @@ const NetworksList: React.FC = () => {
       <NetworksDnd
         cards={cards}
         setCards={setCards}
-        deleteNode={deleteNode} />
+        deleteNode={deleteNode}
+        editNode={editNode} />
     </>
   )
 }

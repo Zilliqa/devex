@@ -36,12 +36,13 @@ const getListStyle = (isDraggingOver: boolean) => ({
 })
 
 interface IProps {
-  deleteNode: (k: string) => void,
   cards: NetworkItem[],
-  setCards: (cards: NetworkItem[]) => void
+  setCards: (cards: NetworkItem[]) => void,
+  deleteNode: (k: string) => void,
+  editNode: (url: string, newName: string) => void
 }
 
-const NetworksDnd: React.FC<IProps> = ({ cards, setCards, deleteNode }) => {
+const NetworksDnd: React.FC<IProps> = ({ cards, setCards, deleteNode, editNode }) => {
 
   const onDragEnd = (result: any) => {
     if (!result.destination) {
@@ -82,6 +83,7 @@ const NetworksDnd: React.FC<IProps> = ({ cards, setCards, deleteNode }) => {
                       url={card.url}
                       name={card.name}
                       deleteNode={deleteNode}
+                      editNode={editNode}
                     />
                   </div>
                 )}

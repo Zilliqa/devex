@@ -4,20 +4,12 @@ import ContentEditable, { ContentEditableEvent } from 'react-contenteditable'
 import { Link } from 'react-router-dom'
 
 import { UserPrefContext, LabelInfo } from 'src/services/userPref/userPrefProvider'
-import { timestampToTimeago } from 'src/utils/Utils'
+import { timestampToTimeago, printableChars } from 'src/utils/Utils'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 
 import './LabelCard.css'
-
-const printable = (keyCode: number) => (
-  (keyCode > 47 && keyCode < 58) ||
-  keyCode === 32 ||
-  (keyCode > 64 && keyCode < 91) ||
-  (keyCode > 95 && keyCode < 112) ||
-  (keyCode > 185 && keyCode < 193) ||
-  (keyCode > 218 && keyCode < 223))
 
 interface IProps {
   k: string,
@@ -62,7 +54,7 @@ const LabelCard: React.FC<IProps> = ({ k, v }) => {
           {isEditing
             ? <ContentEditable
               onKeyDown={(e) => (
-                (text.current.length >= 20 && printable(e.keyCode))
+                (text.current.length >= 20 && printableChars(e.keyCode))
                   ? e.preventDefault()
                   : e.keyCode === 13 && (() => { inner.current?.blur() })()
               )}
