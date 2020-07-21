@@ -88,6 +88,7 @@ export const NetworkProvider: React.FC = (props) => {
           setNetworkMap(defaultNetworks)
       } catch (e) {
         console.log('no local networks found')
+        setNetworkMap(defaultNetworks)
       } finally {
         setState((prevState: NetworkState) => ({ ...prevState, isLoadingNetworks: false }))
       }
