@@ -46,15 +46,13 @@ export let defaultNetworks: NetworkMap = (process.env['REACT_APP_DEPLOY_ENV'] ==
   ? new Map([
     ['https://api.zilliqa.com', 'Mainnet'],
     ['https://dev-api.zilliqa.com', 'Testnet'],
-    ['https://zilliqa-isolated-server.zilliqa.com', 'Isolated Server'],
-    ['http://52.187.126.172:4201', 'Mainnet Staked Seed Node']
+    ['https://zilliqa-isolated-server.zilliqa.com', 'Isolated Server']
   ])
   : new Map([
     ['https://api.zilliqa.com', 'Mainnet'],
     ['https://dev-api.zilliqa.com', 'Testnet'],
     ['https://zilliqa-isolated-server.zilliqa.com', 'Isolated Server'],
-    ['https://stg-zilliqa-isolated-server.zilliqa.com', 'Staging Isolated Server'],
-    ['http://52.187.126.172:4201', 'Mainnet Staked Seed Node']
+    ['https://stg-zilliqa-isolated-server.zilliqa.com', 'Staging Isolated Server']
   ])
 
 export const NetworkContext = React.createContext<NetworkState | null>(null)

@@ -39,9 +39,7 @@ describe('<NetworkSwitcher />', () => {
     jest.spyOn(React, 'useContext').mockImplementation(() => ({
       networkMap: new Map([
         ['https://api.zilliqa.com', 'Mainnet'],
-        ['https://dev-api.zilliqa.com', 'Testnet'],
-        ['https://zilliqa-isolated-server.zilliqa.com', 'Isolated Server'],
-        ['http://52.187.126.172:4201', 'Mainnet Staked Seed Node']]),
+        ['https://dev-api.zilliqa.com', 'Testnet']]),
       setNetworkMap: mockSetNetworkMap
     }))
   })
