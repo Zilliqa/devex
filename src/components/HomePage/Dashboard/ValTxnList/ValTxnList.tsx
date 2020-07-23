@@ -19,9 +19,9 @@ import './ValTxnList.css'
 const ValTxnList: React.FC = () => {
 
   const networkContext = useContext(NetworkContext)
-  const { dataService, nodeUrl } = networkContext!
+  const { dataService, networkUrl } = networkContext!
 
-  useEffect(() => { setData(null) }, [nodeUrl])
+  useEffect(() => { setData(null) }, [networkUrl])
 
   const [data, setData] = useState<TransactionDetails[] | null>(null)
 
@@ -111,7 +111,7 @@ const ValTxnList: React.FC = () => {
       isCancelled = true
       clearInterval(getDataTimer)
     }
-  }, [nodeUrl, dataService])
+  }, [networkUrl, dataService])
 
   return <>
     <Card className='valtxlist-card'>

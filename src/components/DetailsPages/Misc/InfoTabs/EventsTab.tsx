@@ -1,8 +1,9 @@
 import React, { useCallback } from 'react'
 
-import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import { hexAddrToZilAddr, isValidAddr } from 'src/utils/Utils'
 import { EventLogEntry, EventParam } from '@zilliqa-js/core/src/types'
+
+import AddressDisp from '../Disp/AddressDisp/AddressDisp'
 
 import './EventsTab.css'
 
@@ -44,7 +45,9 @@ const EventsTab: React.FC<IProps> = ({ events }) => {
             </tr>
             <tr>
               <th>Address</th>
-              <td>{<QueryPreservingLink to={`/address/${hexAddrToZilAddr(event.address)}`}>{hexAddrToZilAddr(event.address)}</QueryPreservingLink>}</td>
+              <td>
+                <AddressDisp isLinked={true} addr={hexAddrToZilAddr(event.address)} />
+              </td>
             </tr>
             {event.params.length > 0 && (
               <>
@@ -64,9 +67,7 @@ const EventsTab: React.FC<IProps> = ({ events }) => {
                         : Array.isArray(param.value)
                           ? param.value.toString()
                           : isValidAddr(param.value)
-                            ? <QueryPreservingLink to={`/address/${param.value}`}>
-                              {param.value}
-                            </QueryPreservingLink>
+                            ? <AddressDisp isLinked={true} addr={param.value} />
                             : param.value}
                     </td>
                   </tr>

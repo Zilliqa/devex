@@ -34,6 +34,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+h3, h6 {
+  margin: 0;
+}
+
 .fa-icon {
   color: var(--color-icon);
 }

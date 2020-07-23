@@ -4,20 +4,20 @@ import { Container, Col, Row, Dropdown, Form } from 'react-bootstrap'
 import { defaultNetworks } from 'src/services/network/networkProvider'
 import { UserPrefContext } from 'src/services/userPref/userPrefProvider'
 
-import Dropzone from './Dropzone/Dropzone'
-import ImportExport from './ImportExport/ImportExport'
 import LabelCard from './LabelCard/LabelCard'
+import Dropzone from '../Misc/Dropzone/Dropzone'
+import ImportExport from '../Misc/ImportExport/ImportExport'
 
 import './LabelsPage.css'
 
 const LabelsPage: React.FC = () => {
 
   const userPrefContext = useContext(UserPrefContext)
-  const { labelMap, nodeUrlMap, setLabelMap } = userPrefContext!
+  const { labelMap, networkMap, setLabelMap } = userPrefContext!
 
   const [searchFilter, setSearchFilter] = useState('')
   const [typefilter, setTypefilter] = useState('All')
-  const [networkFilter, setNetworkFilter] = useState('All')
+  const [networkNameFilter, setNetworkNameFilter] = useState('All')
 
   return (
     <>
@@ -28,7 +28,7 @@ const LabelsPage: React.FC = () => {
           </h4>
         </Row>
         <Row className='m-0 pb-3'>
-          <span className='subtext'>Label data is stored in your browser&apos;s local storage. To browse labels in different networks, switch to that network using network selector.</span>
+          <span className='subtext'>Label data is stored in your browser&apos;s local storage.</span>
         </Row>
         <Row className='justify-content-between flex-nowrap m-0'>
           <div className='filter-div'>
@@ -36,12 +36,17 @@ const LabelsPage: React.FC = () => {
               Network:
             </span>
             <Dropdown className="ml-3">
-              <Dropdown.Toggle id="label-network-toggle">{defaultNetworks[networkFilter] || networkFilter}</Dropdown.Toggle>
+              <Dropdown.Toggle id="label-network-toggle">
+                {networkMap.get(networkNameFilter) || defaultNetworks.get(networkNameFilter) || networkNameFilter}
+              </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item onClick={() => setNetworkFilter('All')}>All</Dropdown.Item>
-                {Object.entries({ ...defaultNetworks, ...nodeUrlMap }).map(([k, v], index) =>
-                  <Dropdown.Item onClick={() => setNetworkFilter(k)} key={index}>{v}</Dropdown.Item>
-                )}
+                <Dropdown.Item onClick={() => setNetworkNameFilter('All')}>All</Dropdown.Item>
+                {
+                  [...new Set(Object.values(labelMap).map(label => label.networkName))]
+                    .map((labelName, index) => (
+                      <Dropdown.Item onClick={() => setNetworkNameFilter(labelName)} key={index}>{labelName}</Dropdown.Item>
+                    ))
+                }
               </Dropdown.Menu>
             </Dropdown>
             <span className='ml-3'>
@@ -66,14 +71,20 @@ const LabelsPage: React.FC = () => {
               placeholder='Search for label'
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setSearchFilter(e.target.value) }} />
           </div>
-          <ImportExport labelMap={labelMap} setLabelCb={setLabelMap} />
+          <ImportExport
+            fileName='labels'
+            map={labelMap}
+            setMapCb={setLabelMap}
+            />
         </Row>
         <Row className='mt-3'>
           {Object.entries(labelMap).length === 0
-            ? <Dropzone setLabelCb={setLabelMap} />
+            ? <Dropzone
+              fromJson={(x: any) => x}
+              dropCb={setLabelMap} />
             : Object.entries(labelMap)
               .filter(([, v]) => (typefilter === 'All' || v.type === typefilter))
-              .filter(([, v]) => (networkFilter === 'All' || v.network === networkFilter))
+              .filter(([, v]) => (networkNameFilter === 'All' || v.networkName === networkNameFilter))
               .filter(([, v]) => (v.name.includes(searchFilter)))
               .map(([k, v]) => (
                 <Col className='my-3' key={k} md={6} lg={4} >

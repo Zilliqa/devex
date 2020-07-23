@@ -1,0 +1,15 @@
+.disp-btn {
+  font-size: 13px;
+  cursor: pointer;
+  padding-top: 2px;
+  text-align: center;
+  width: 25px;
+  height: 25px;
+  border: solid 1px var(--color-border);
+  border-radius: 5px;
+}
+
+.disp-btn:hover {
+  color: var(--color-text);
+  background-color: var(--color-btn-hover);
+}

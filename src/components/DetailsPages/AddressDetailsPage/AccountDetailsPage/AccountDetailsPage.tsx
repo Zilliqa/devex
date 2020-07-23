@@ -2,18 +2,17 @@ import React, { useContext, useState, useEffect, useRef, useCallback } from 'rea
 import { Card, Container, Row, Col, Pagination, Spinner } from 'react-bootstrap'
 
 import { NetworkContext } from 'src/services/network/networkProvider'
-import { AccData, AccContract } from 'src/typings/api'
+import { AccData } from 'src/typings/api'
 import { qaToZil } from 'src/utils/Utils'
-import { fromBech32Address, toBech32Address } from '@zilliqa-js/crypto'
-import { validation } from '@zilliqa-js/util'
+import { ContractObj } from '@zilliqa-js/contract/src/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWallet } from '@fortawesome/free-solid-svg-icons'
 
 import AccContractCard from './AccContractCard'
-import Copyable from '../../Copyable/Copyable'
-import LabelStar from '../../LabelComponent/LabelStar'
-import ViewBlockLink from '../../ViewBlockLink/ViewBlockLink'
+import AddressDisp from '../../Misc/Disp/AddressDisp/AddressDisp'
+import LabelStar from '../../Misc/LabelComponent/LabelStar'
+import ViewBlockLink from '../../Misc/ViewBlockLink/ViewBlockLink'
 
 import '../AddressDetailsPage.css'
 
@@ -24,12 +23,12 @@ interface IProps {
 const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
 
   const networkContext = useContext(NetworkContext)
-  const { dataService, nodeUrl } = networkContext!
+  const { dataService, networkUrl } = networkContext!
 
   const addrRef = useRef(addr)
   const [isLoading, setIsLoading] = useState(false)
   const [accData, setAccData] = useState<AccData | null>(null)
-  const [accContracts, setAccContracts] = useState<AccContract[] | null>(null)
+  const [accContracts, setAccContracts] = useState<ContractObj[] | null>(null)
   const [contractPageIndex, setContractPageIndex] = useState<number>(0)
 
   const generatePagination = useCallback((currentPage: number, pageCount: number, delta = 2) => {
@@ -65,7 +64,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
     if (!dataService) return
 
     let accData: AccData
-    let accContracts: AccContract[]
+    let accContracts: ContractObj[]
     const getData = async () => {
       try {
         setIsLoading(true)
@@ -93,7 +92,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
     {accData && (
       <>
         <div className='address-header'>
-          <h3>
+          <h3 className='mb-1'>
             <span className='mr-1'>
               <FontAwesomeIcon className='fa-icon' icon={faWallet} />
             </span>
@@ -102,22 +101,11 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
             </span>
             <LabelStar type='Account' />
           </h3>
-          <ViewBlockLink network={nodeUrl} type='address' identifier={addrRef.current} />
+          <ViewBlockLink network={networkUrl} type='address' identifier={addrRef.current} />
         </div>
-        {/* Bech32 */}
-        <Copyable
-          textToBeCopied={
-            validation.isBech32(addrRef.current)
-              ? addrRef.current
-              : toBech32Address(addrRef.current)}
-        />
-        {/* Hex */}
-        <Copyable
-          textToBeCopied={
-            validation.isBech32(addrRef.current)
-              ? fromBech32Address(addrRef.current).toLowerCase()
-              : addrRef.current}
-        />
+        <div className='subtext'>
+          <AddressDisp isLinked={false} addr={addrRef.current} />
+        </div>
         <Card className='address-details-card'>
           <Card.Body>
             <Container>
@@ -172,7 +160,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
               <Card.Body>
                 {accContracts
                   .slice(10 * contractPageIndex, 10 * contractPageIndex + 10)
-                  .map((contract: AccContract, index: number) => {
+                  .map((contract: ContractObj, index: number) => {
                     return <AccContractCard key={10 * contractPageIndex + index}
                       contract={contract} index={10 * contractPageIndex + index} />
                   })}

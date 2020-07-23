@@ -2,21 +2,20 @@ import React, { useContext, useState, useEffect, useRef } from 'react'
 import { Card, Container, Row, Col, Spinner } from 'react-bootstrap'
 
 import { QueryPreservingLink } from 'src/services/network/networkProvider'
-import InfoTabs from 'src/components/DetailsPages/InfoTabs/InfoTabs'
-import DefaultTab from 'src/components/DetailsPages/InfoTabs/DefaultTab'
-import CodeTab from 'src/components/DetailsPages/InfoTabs/CodeTab'
+import InfoTabs from 'src/components/DetailsPages/Misc/InfoTabs/InfoTabs'
+import DefaultTab from 'src/components/DetailsPages/Misc/InfoTabs/DefaultTab'
+import CodeTab from 'src/components/DetailsPages/Misc/InfoTabs/CodeTab'
 import { NetworkContext } from 'src/services/network/networkProvider'
 import { ContractData } from 'src/typings/api'
-import { qaToZil, addHexPrefix } from 'src/utils/Utils'
-import { fromBech32Address, toBech32Address } from '@zilliqa-js/crypto'
-import { validation } from '@zilliqa-js/util'
+import { qaToZil } from 'src/utils/Utils'
 
 import { faFileContract } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-import Copyable from '../../Copyable/Copyable'
-import LabelStar from '../../LabelComponent/LabelStar'
-import ViewBlockLink from '../../ViewBlockLink/ViewBlockLink'
+import AddressDisp from '../../Misc/Disp/AddressDisp/AddressDisp'
+import InitParamsTab from '../../Misc/InfoTabs/InitParamsTab'
+import LabelStar from '../../Misc/LabelComponent/LabelStar'
+import ViewBlockLink from '../../Misc/ViewBlockLink/ViewBlockLink'
 
 import '../AddressDetailsPage.css'
 
@@ -27,7 +26,7 @@ interface IProps {
 const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
 
   const networkContext = useContext(NetworkContext)
-  const { dataService, isIsolatedServer, nodeUrl } = networkContext!
+  const { dataService, isIsolatedServer, networkUrl } = networkContext!
 
   const addrRef = useRef(addr)
   const [contractData, setContractData] = useState<ContractData | null>(null)
@@ -79,7 +78,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
 
     tabs.tabHeaders.push('initParams')
     tabs.tabTitles.push('Init Parameters')
-    tabs.tabContents.push(<DefaultTab content={contractData.initParams} />)
+    tabs.tabContents.push(<InitParamsTab initParams={contractData.initParams} />)
 
     tabs.tabHeaders.push('State')
     tabs.tabTitles.push('State')
@@ -97,7 +96,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
     {contractData && (
       <>
         <div className='address-header'>
-          <h3>
+          <h3 className='mb-1'>
             <span className='mr-1'>
               <FontAwesomeIcon className='fa-icon' icon={faFileContract} />
             </span>
@@ -106,22 +105,11 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
             </span>
             <LabelStar type='Contract' />
           </h3>
-          <ViewBlockLink network={nodeUrl} type='address' identifier={addrRef.current} />
+          <ViewBlockLink network={networkUrl} type='address' identifier={addrRef.current} />
         </div>
-        {/* Bech32 */}
-        <Copyable
-          textToBeCopied={
-            validation.isBech32(addrRef.current)
-              ? addrRef.current
-              : toBech32Address(addrRef.current)}
-        />
-        {/* Hex */}
-        <Copyable
-          textToBeCopied={
-            validation.isBech32(addrRef.current)
-              ? addHexPrefix(fromBech32Address(addrRef.current).toLowerCase())
-              : addHexPrefix(addrRef.current)}
-        />
+        <div className='subtext'>
+          <AddressDisp isLinked={false} addr={addrRef.current} />
+        </div>
         <Card className='address-details-card'>
           <Card.Body>
             <Container>

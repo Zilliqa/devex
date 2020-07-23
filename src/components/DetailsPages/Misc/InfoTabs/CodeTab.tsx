@@ -1,3 +1,4 @@
+
 import React, { useContext } from 'react'
 import AceEditor from 'react-ace'
 
@@ -12,7 +13,7 @@ interface IProps {
 }
 
 const CodeTab: React.FC<IProps> = ({ code }) => {
-  
+
   const themeContext = useContext(ThemeContext)
   const { theme } = themeContext!
 

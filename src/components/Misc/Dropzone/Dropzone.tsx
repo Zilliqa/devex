@@ -2,29 +2,26 @@ import React, { useCallback } from 'react'
 import { Container } from 'react-bootstrap'
 import { useDropzone } from 'react-dropzone'
 
-import { LabelInfo } from 'src/services/userPref/userPrefProvider'
-
 import './Dropzone.css'
 
 interface IProps {
-  setLabelCb: (labelMap: Record<string, LabelInfo>) => void
+  dropCb: any,
+  fromJson: any
 }
 
-const Dropzone: React.FC<IProps> = ({ setLabelCb }) => {
+const Dropzone: React.FC<IProps> = ({ dropCb, fromJson }) => {
 
   const onDrop = useCallback((acceptedFiles: Blob[]) => {
     acceptedFiles.forEach((file: Blob) => {
       const reader = new FileReader()
 
-      reader.onabort = () => console.log('file reading was aborted')
-      reader.onerror = () => console.log('file reading has failed')
       reader.onload = () => {
         const parsedFile = JSON.parse(reader.result as string)
-        setLabelCb(parsedFile)
+        dropCb(fromJson(parsedFile))
       }
       reader.readAsText(file)
     })
-  }, [setLabelCb])
+  }, [dropCb, fromJson])
 
   const { getRootProps, getInputProps } = useDropzone({ accept: 'application/json', onDrop })
 

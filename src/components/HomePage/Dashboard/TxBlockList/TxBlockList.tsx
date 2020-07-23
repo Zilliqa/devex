@@ -14,9 +14,9 @@ import './TxBlockList.css'
 const TxBlockList: React.FC = () => {
 
   const networkContext = useContext(NetworkContext)
-  const { dataService, nodeUrl } = networkContext!
+  const { dataService, networkUrl } = networkContext!
 
-  useEffect(() => { setData(null) }, [nodeUrl]) // Unset data on url change
+  useEffect(() => { setData(null) }, [networkUrl]) // Unset data on url change
 
   const [data, setData] = useState<TxBlockObj[] | null>(null)
 

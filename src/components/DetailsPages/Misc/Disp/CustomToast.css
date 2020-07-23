@@ -1,0 +1,19 @@
+.custom-toast-success {
+  background-color: #00923a;
+  color: white;
+  padding: 0.2rem;
+}
+
+.custom-toast-icon {
+  vertical-align: middle !important;
+}
+
+.custom-toast-failure {
+  background-color: red;
+  color: white;
+  padding: 0.2rem;
+}
+
+.custom-toast-text {
+  font-size: 1rem;
+}

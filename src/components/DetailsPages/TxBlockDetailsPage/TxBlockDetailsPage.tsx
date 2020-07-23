@@ -15,8 +15,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
 import { faFileContract, faCubes, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 
-import Copyable from '../Copyable/Copyable'
-import LabelStar from '../LabelComponent/LabelStar'
+import HashDisp from '../Misc/Disp/HashDisp/HashDisp'
+import LabelStar from '../Misc/LabelComponent/LabelStar'
 import NotFoundPage from '../../ErrorPages/NotFoundPage'
 
 import './TxBlockDetailsPage.css'
@@ -44,9 +44,9 @@ const TxBlockDetailsPage: React.FC = () => {
     let txBlockObj: TxBlockObj
     let txBlockTxns: string[]
     const getData = async () => {
-      if (isNaN(blockNum))
-        throw new Error('Not a valid block number')
       try {
+        if (isNaN(blockNum))
+          throw new Error('Not a valid block number')
         if (isIsolatedServer) {
           txBlockTxns = await dataService.getISTransactionsForTxBlock(parseInt(blockNum))
           latestTxBlockNum = await dataService.getISBlockNum()
@@ -126,7 +126,7 @@ const TxBlockDetailsPage: React.FC = () => {
       Cell: ({ value }: { value: string }) => (
         <OverlayTrigger placement='right'
           overlay={<Tooltip id={'amt-tt'}>{qaToZil(value)}</Tooltip>}>
-          <div className='text-right'>{qaToZil(value)}</div>
+          <div className='text-right'>{qaToZil(value, 10)}</div>
         </OverlayTrigger>
       )
     }, {
@@ -170,7 +170,7 @@ const TxBlockDetailsPage: React.FC = () => {
       : <>
         {latestTxBlockNum &&
           <div className={isIsolatedServer ? 'txblock-header mb-3' : 'txblock-header'}>
-            <h3>
+            <h3 className='mb-1'>
               <span className='mr-1'>
                 <FontAwesomeIcon className='fa-icon' icon={faCubes} />
               </span>
@@ -203,7 +203,9 @@ const TxBlockDetailsPage: React.FC = () => {
         }
         {txBlockObj && (
           <>
-            <Copyable textToBeCopied={'0x' + txBlockObj.body.BlockHash} />
+            <div className='subtext'>
+              <HashDisp hash={'0x' + txBlockObj.body.BlockHash} />
+            </div>
             <Card className='txblock-details-card'>
               <Card.Body>
                 <Container>
