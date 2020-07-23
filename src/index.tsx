@@ -18,11 +18,11 @@ ReactDOM.render(
     <React.StrictMode>
       <Router>
         <ThemeProvider>
-          <NetworkProvider>
-            <UserPrefProvider>
+          <UserPrefProvider>
+            <NetworkProvider>
               <Layout />
-            </UserPrefProvider>
-          </NetworkProvider>
+            </NetworkProvider>
+          </UserPrefProvider>
         </ThemeProvider>
       </Router>
     </React.StrictMode>

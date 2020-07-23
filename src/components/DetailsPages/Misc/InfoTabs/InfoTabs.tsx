@@ -22,7 +22,7 @@ interface IProps {
 }
 
 export const generateTabsFromTxnDetails = (data: TransactionDetails): ReceiptTabs => {
-  
+
   const tabs: ReceiptTabs = {
     tabHeaders: [],
     tabTitles: [],
@@ -79,7 +79,7 @@ export const generateTabsFromTxnDetails = (data: TransactionDetails): ReceiptTab
 }
 
 const InfoTabs: React.FC<IProps> = ({ tabs }) => {
-  
+
   const { tabHeaders, tabTitles, tabContents } = tabs
   const [currTab, setCurrTab] = useState(tabHeaders[0])
 

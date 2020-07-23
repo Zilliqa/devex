@@ -10,9 +10,9 @@ import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamationCircle, faExchangeAlt, faFileContract } from '@fortawesome/free-solid-svg-icons'
 
-import Copyable from '../Copyable/Copyable'
-import InfoTabs, { generateTabsFromTxnDetails } from '../InfoTabs/InfoTabs'
-import LabelStar from '../LabelComponent/LabelStar'
+import InfoTabs, { generateTabsFromTxnDetails } from '../Misc/InfoTabs/InfoTabs'
+import HashDisp from '../Misc/Disp/HashDisp/HashDisp'
+import LabelStar from '../Misc/LabelComponent/LabelStar'
 import NotFoundPage from '../../ErrorPages/NotFoundPage'
 
 import './TxnDetailsPage.css'
@@ -61,7 +61,7 @@ const TxnDetailsPage: React.FC = () => {
       : data && data.txn.txParams.receipt && (
         <>
           <div>
-            <h3>
+            <h3 className='mb-1'>
               <span className='mr-1'>
                 {(data.txn.txParams.receipt.success === undefined || data.txn.txParams.receipt.success)
                   ? <FontAwesomeIcon color='green' icon={faExchangeAlt} />
@@ -73,7 +73,9 @@ const TxnDetailsPage: React.FC = () => {
               <LabelStar type='Transaction' />
             </h3>
           </div>
-          <Copyable textToBeCopied={'0x' + data.hash} />
+          <div className='subtext'>
+            <HashDisp hash={'0x' + data.hash} />
+          </div>
           <Card className='txn-details-card'>
             <Card.Body>
               <Container>

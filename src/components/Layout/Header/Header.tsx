@@ -2,10 +2,9 @@ import React, { useState, useContext, useEffect } from 'react'
 import { Navbar, Nav } from 'react-bootstrap'
 import { useLocation } from 'react-router-dom'
 
-import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import ZilLogo from 'src/assets/images/ZilLogo.png'
 import Searchbar from 'src/components/HomePage/Searchbar/Searchbar'
-import { NetworkContext } from 'src/services/network/networkProvider'
+import { NetworkContext, QueryPreservingLink } from 'src/services/network/networkProvider'
 
 import NetworkSwitcher from './NetworkSwitcher'
 
@@ -45,7 +44,8 @@ const Header: React.FC = () => {
               <span className='app-name'>DEVEX</span>
             </Navbar.Brand>
           </QueryPreservingLink>
-          <QueryPreservingLink className='label-link' to={'/labels'}>My Labels</QueryPreservingLink>
+          <QueryPreservingLink className='navbar-link' to={'/labels'}>Labels</QueryPreservingLink>
+          <QueryPreservingLink className='navbar-link' to={'/networks'}>Networks</QueryPreservingLink>
         </Nav>
         {showSearchbar
           ? <div className="header-searchbar">

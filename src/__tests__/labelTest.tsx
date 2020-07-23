@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
-import LabelStar from 'src/components/DetailsPages/LabelComponent/LabelStar'
+import LabelStar from 'src/components/DetailsPages/Misc/LabelComponent/LabelStar'
 import toJson from 'enzyme-to-json'
 
 jest.mock("react-router-dom", () => {
@@ -15,7 +15,8 @@ describe('<LabelStar />', () => {
 
   jest.spyOn(React, 'useContext').mockImplementation(() => ({
     labelMap: {},
-    setLabelMap: jest.fn()
+    setLabelMap: jest.fn(),
+    networkMap: new Map(),
   }))
   
   const labelStar = shallow(<LabelStar type='account' />)

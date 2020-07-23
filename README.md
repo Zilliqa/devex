@@ -15,7 +15,7 @@ Features
     * Transactions
     * DS Blocks
     * Transaction Blocks
-* Allows developers to add local testnet URLs to the list of default networks to switch between
+* Allows developers to add local testnets to the list of default networks to switch between
 * Supports exploring of Zilliqa Isolated Servers. More info on Isolated Servers here (https://github.com/Zilliqa/Zilliqa/blob/master/ISOLATED_SERVER_setup.md)
 * Labelling System that allows developers to save often-visited entities, and share it using the import/export feature
 * Dark Mode
@@ -33,17 +33,19 @@ Preloading Networks
 
 The explorer allows developers to define default networks to be shipped with the explorer
 
-This is done by adding a JSON file named `urls.json` into public folder `%PROJ_DIR%/public` before building the application
+This is done by adding a JSON file named `networks.json` into public folder `%PROJ_DIR%/public` before building the application
 or injecting it into the build post-build into the build's root directory `%BUILD_DIR%/`
 
-Format: Key-value pair where the network url is the key and the network name is the value
+Format: Array of key-value pairs where the network url is the key and the network name is the value
 
 An example is given below
 
 ```
   {
-    "https://api.zilliqa.com": "Mainnet",
-    "https://dev-api.zilliqa.com": "Testnet",
-    "https://zilliqa-isolated-server.zilliqa.com": "Isolated Server",
+    "networks": [
+      {"https://api.zilliqa.com" : "Mainnet"},
+      {"https://dev-api.zilliqa.com" : "Testnet"},
+      {"https://zilliqa-isolated-server.zilliqa.com" : "Isolated Server"}
+      ]
   }
 ```

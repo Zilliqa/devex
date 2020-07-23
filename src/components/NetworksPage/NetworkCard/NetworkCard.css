@@ -1,0 +1,9 @@
+.network-card {
+  border: 2px dashed var(--color-border);
+  padding: 1rem;
+}
+
+.network-card-div {
+  justify-content: space-between;
+  display: flex;
+}

@@ -2,18 +2,17 @@ import React, { useCallback } from 'react'
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { useDropzone } from 'react-dropzone'
 
-import { LabelInfo } from 'src/services/userPref/userPrefProvider'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUpload, faDownload } from '@fortawesome/free-solid-svg-icons'
 
+import { LabelMap, NetworkMap } from 'src/services/userPref/userPrefProvider'
+
 import './ImportExport.css'
 
-const exportToJson = (objectData: Record<string, LabelInfo>) => {
+const exportToJson = (fileName: string, toJson: any, map: NetworkMap | LabelMap) => {
   console.log('exporting json')
-  const fileName = "labels"
-  const json = JSON.stringify(objectData)
-  const blob = new Blob([json], { type: 'application/json' })
+  const jsonStr = JSON.stringify(toJson ? toJson(map) : map)
+  const blob = new Blob([jsonStr], { type: 'application/json' })
   const href = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = href
@@ -24,11 +23,14 @@ const exportToJson = (objectData: Record<string, LabelInfo>) => {
 }
 
 interface IProps {
-  labelMap: Record<string, LabelInfo>,
-  setLabelCb: (labelMap: Record<string, LabelInfo>) => void
+  fileName: string,
+  map: NetworkMap | LabelMap,
+  setMapCb: ((map: NetworkMap) => void) | ((map: LabelMap) => void),
+  fromJson?: any,
+  toJson?: any
 }
 
-const ImportExport: React.FC<IProps> = ({ labelMap, setLabelCb }) => {
+const ImportExport: React.FC<IProps> = ({ fileName, map, setMapCb, toJson, fromJson }) => {
 
   const onDrop = useCallback((acceptedFiles: Blob[]) => {
     acceptedFiles.forEach((file: Blob) => {
@@ -36,11 +38,11 @@ const ImportExport: React.FC<IProps> = ({ labelMap, setLabelCb }) => {
 
       reader.onload = () => {
         const parsedFile = JSON.parse(reader.result as string)
-        setLabelCb(parsedFile)
+        setMapCb(fromJson ? fromJson(parsedFile) : parsedFile)
       }
       reader.readAsText(file)
     })
-  }, [setLabelCb])
+  }, [setMapCb, fromJson])
 
   const { getRootProps, getInputProps } = useDropzone({ noDrag: true, onDrop })
 
@@ -50,7 +52,7 @@ const ImportExport: React.FC<IProps> = ({ labelMap, setLabelCb }) => {
         <span className='mr-1' {...getRootProps()}>
           <input {...getInputProps()} />
           <OverlayTrigger placement='top'
-            overlay={<Tooltip id={'import-tt'}>Import Labels</Tooltip>}>
+            overlay={<Tooltip id={'import-tt'}>Import Network</Tooltip>}>
             <Button>
               <FontAwesomeIcon
                 icon={faDownload}
@@ -60,10 +62,10 @@ const ImportExport: React.FC<IProps> = ({ labelMap, setLabelCb }) => {
         </span>
         <span className='ml-2'>
           <OverlayTrigger placement='top'
-            overlay={<Tooltip id={'export-tt'}>Export Labels</Tooltip>}>
+            overlay={<Tooltip id={'export-tt'}>Export Network</Tooltip>}>
             <Button
               onClick={() => {
-                exportToJson(labelMap)
+                exportToJson(fileName, toJson, map)
               }}>
               <FontAwesomeIcon
                 icon={faUpload}

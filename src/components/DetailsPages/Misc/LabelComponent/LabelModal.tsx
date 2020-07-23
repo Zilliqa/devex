@@ -24,7 +24,7 @@ const LabelModal: React.FC<IProps> = ({ show, handleCloseModal, addLabel }) => {
     addLabel(labelInput)
   }
 
-  return <Modal className={theme === 'dark' ? 'label-modal dark-theme' : 'label-modal light-theme'} show={show} onHide={handleCloseModal}>
+  return <Modal className={theme === 'dark' ? 'custom-modal dark-theme' : 'custom-modal light-theme'} show={show} onHide={handleCloseModal}>
     <div className='modal-header'>
       <h6>
         Add Label

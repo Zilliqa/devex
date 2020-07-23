@@ -1,8 +1,9 @@
 import React from 'react'
 
-import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import { qaToZil, hexAddrToZilAddr, isValidAddr } from 'src/utils/Utils'
 import { TransitionEntry } from '@zilliqa-js/core/src/types'
+
+import AddressDisp from '../Disp/AddressDisp/AddressDisp'
 
 interface IProps {
   transitions: TransitionEntry[]
@@ -19,7 +20,10 @@ const TransitionsTab: React.FC<IProps> = ({ transitions }) => (
           </tr>
           <tr>
             <th>Contract Address</th>
-            <td>{<QueryPreservingLink to={`/address/${hexAddrToZilAddr(transition.addr)}`}>{hexAddrToZilAddr(transition.addr)}</QueryPreservingLink>}</td>
+
+            <td>
+              <AddressDisp isLinked={true} addr={hexAddrToZilAddr(transition.addr)} />
+            </td>
           </tr>
           <tr>
             <th>Accepts $ZIL</th>
@@ -35,7 +39,9 @@ const TransitionsTab: React.FC<IProps> = ({ transitions }) => (
           </tr>
           <tr>
             <th>Recipient</th>
-            <td>{<QueryPreservingLink to={`/address/${hexAddrToZilAddr(transition.msg._recipient)}`}>{hexAddrToZilAddr(transition.msg._recipient)}</QueryPreservingLink>}</td>
+            <td>
+              <AddressDisp isLinked={true} addr={hexAddrToZilAddr(transition.msg._recipient)} />
+            </td>
           </tr>
           {transition.msg.params.length > 0 && (
             <>
@@ -55,9 +61,7 @@ const TransitionsTab: React.FC<IProps> = ({ transitions }) => (
                       : Array.isArray(param.value)
                         ? param.value.toString()
                         : isValidAddr(param.value)
-                          ? <QueryPreservingLink to={`/address/${param.value}`}>
-                            {param.value}
-                          </QueryPreservingLink>
+                          ? <AddressDisp isLinked={true} addr={param.value} />
                           : param.value
                     }
                   </td>

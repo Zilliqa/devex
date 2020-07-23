@@ -62,15 +62,15 @@ import { hexAddrToZilAddr, stripHexPrefix } from 'src/utils/Utils'
 
 export class DataService {
   zilliqa: Zilliqa
-  nodeUrl: string
+  networkUrl: string
 
-  constructor(nodeUrl: string | null) {
-    if (nodeUrl) {
-      this.nodeUrl = nodeUrl
-      this.zilliqa = new Zilliqa(nodeUrl)
+  constructor(networkUrl: string | null) {
+    if (networkUrl) {
+      this.networkUrl = networkUrl
+      this.zilliqa = new Zilliqa(networkUrl)
     }
     else {
-      this.nodeUrl = 'https://api.zilliqa.com'
+      this.networkUrl = 'https://api.zilliqa.com'
       this.zilliqa = new Zilliqa('https:/api.zilliqa.com')
     }
   }
@@ -320,7 +320,7 @@ export class DataService {
   async getISBlockNum(): Promise<number> {
     console.log('getting isolated server tx block num')
 
-    const response = await fetch(this.nodeUrl, {
+    const response = await fetch(this.networkUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -354,7 +354,7 @@ export class DataService {
 
   async getISTransactionsForTxBlock(blockNum: number): Promise<string[]> {
     console.log("getting transactions for Tx block")
-    const response = await fetch(this.nodeUrl, {
+    const response = await fetch(this.networkUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

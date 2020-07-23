@@ -12,6 +12,7 @@ import TxBlockDetailsPage from 'src/components/DetailsPages/TxBlockDetailsPage/T
 import TxnDetailsPage from 'src/components/DetailsPages/TxnDetailsPage/TxnDetailsPage'
 import NetworkErrPage from 'src/components/ErrorPages/NetworkErrPage'
 import LabelsPage from 'src/components/LabelsPage/LabelsPage'
+import NetworksPage from 'src/components/NetworksPage/NetworksPage'
 import NotFoundPage from 'src/components/ErrorPages/NotFoundPage'
 import { NetworkContext } from 'src/services/network/networkProvider'
 
@@ -30,6 +31,7 @@ const App: React.FC = () => {
           : <>
             <Switch>
               <Route exact path="/labels"><LabelsPage /></Route>
+              <Route exact path="/networks"><NetworksPage /></Route>
               {isValidUrl
                 ? <>
                   <Switch>

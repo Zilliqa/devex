@@ -1,45 +1,33 @@
-import React, { useState, useRef, useContext, useEffect } from 'react'
-import { Card } from 'react-bootstrap'
+import React, { useRef, useState, useEffect } from 'react'
 import ContentEditable, { ContentEditableEvent } from 'react-contenteditable'
 import { Link } from 'react-router-dom'
 
-import { UserPrefContext, LabelInfo, LabelMap } from 'src/services/userPref/userPrefProvider'
-import { timestampToTimeago, printableChars } from 'src/utils/Utils'
-
+import { printableChars } from 'src/utils/Utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 
-import './LabelCard.css'
+import './NetworkCard.css'
 
 interface IProps {
-  k: string,
-  v: LabelInfo
+  url: string,
+  name: string,
+  deleteNode: (k: string) => void,
+  editNode: (url: string, newName: string) => void
 }
 
-const LabelCard: React.FC<IProps> = ({ k, v }) => {
+const NetworkCard: React.FC<IProps> = ({ url, name, deleteNode, editNode }) => {
 
-  const userPrefContext = useContext(UserPrefContext)
-  const { labelMap, setLabelMap } = userPrefContext!
-
-  const text = useRef(v.name)
-  const [isEditing, setEditing] = useState(false)
+  const text = useRef(name)
   const inner = React.createRef<HTMLElement>()
-
-  const handleDelete = () => {
-    const temp: LabelMap = { ...labelMap }
-    delete temp[k]
-    setLabelMap(temp)
-  }
+  const [isEditing, setIsEditing] = useState(false)
 
   const handleChange = (e: ContentEditableEvent) => {
     text.current = e.target.value
   }
 
   const handleBlur = () => {
-    setEditing(false)
-    const temp: LabelMap = { ...labelMap }
-    temp[k].name = text.current
-    setLabelMap(temp)
+    setIsEditing(false)
+    editNode(url, text.current)
   }
 
   const moveCaretToEnd = (el: HTMLElement) => {
@@ -60,12 +48,12 @@ const LabelCard: React.FC<IProps> = ({ k, v }) => {
   useEffect(() => {
     if (!inner.current) return
     inner.current.focus()
-    moveCaretToEnd(inner.current)
+      moveCaretToEnd(inner.current)
   }, [isEditing, inner])
 
-  return <>
-    <Card className='label-card'>
-      <div className='label-card-div'>
+  return (
+    <div className='network-card'>
+      <div className='network-card-div'>
         <div>
           {isEditing
             ? <ContentEditable
@@ -79,30 +67,31 @@ const LabelCard: React.FC<IProps> = ({ k, v }) => {
               html={text.current}
               onBlur={handleBlur}
               onChange={handleChange} />
-            : <Link to={k}>{v.name}</Link>
+            : <Link to={{
+              pathname: '/',
+              search: '?' + new URLSearchParams({ network: url }).toString()
+            }}> {name}</Link>
           }
+          {' '}
+          <small className='subtext'>
+            ({url})
+          </small>
         </div>
         <div>
           <FontAwesomeIcon
-            onClick={() => setEditing(true)}
+            onClick={() => { setIsEditing(true) }}
             cursor='pointer'
+            className='ml-3'
             icon={faEdit} />
           <FontAwesomeIcon
-            onClick={handleDelete}
+            onClick={() => deleteNode(url)}
             cursor='pointer'
             className='ml-3'
             icon={faTrashAlt} />
         </div>
       </div>
-      <Card.Body>
-        Type: {v.type}
-        <br />
-        Network: {v.networkName}
-        <br />
-        Added: {timestampToTimeago(v.timeAdded * 1000)}
-      </Card.Body>
-    </Card>
-  </>
+    </div>
+  )
 }
 
-export default LabelCard
+export default NetworkCard

@@ -17,13 +17,13 @@
   font-size: 20px;
 }
 
-.label-link {
-  margin-left: 0.5rem;
+.navbar-link {
+  margin: 0 0.5rem;
   align-self: center;
   color: rgba(255, 255, 255, 0.7);
 }
 
-.label-link:hover {
+.navbar-link:hover {
   color: rgba(255, 255, 255, 0.9);
 }
 

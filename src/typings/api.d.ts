@@ -35,11 +35,6 @@ export interface AccData {
   nonce: string,
 }
 
-export interface AccContract {
-  address: string,
-  state: any,
-}
-
 export interface PendingTxnResultWithHash extends PendingTxnResult {
   hash: string
 }

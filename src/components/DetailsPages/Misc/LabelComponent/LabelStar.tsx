@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect, useCallback, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 
-import { useNetworkUrl } from 'src/services/network/networkProvider'
+import { useNetworkUrl, useNetworkName } from 'src/services/network/networkProvider'
 import { UserPrefContext, LabelInfo } from 'src/services/userPref/userPrefProvider'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -19,7 +19,9 @@ interface IProps {
 const LabelStar: React.FC<IProps> = ({ type }) => {
 
   const location = useLocation()
-  const network = useNetworkUrl()
+  const networkUrl = useNetworkUrl()
+  const networkName = useNetworkName()
+
   const userPrefContext = useContext(UserPrefContext)
   const { labelMap, setLabelMap } = userPrefContext!
 
@@ -38,7 +40,8 @@ const LabelStar: React.FC<IProps> = ({ type }) => {
     const newLabelInfo: LabelInfo = {
       name: labelName,
       type: type,
-      network: network,
+      networkUrl: networkUrl,
+      networkName: networkName,
       timeAdded: Date.now()
     }
     setLabelMap({ ...labelMap, [currPath]: newLabelInfo })

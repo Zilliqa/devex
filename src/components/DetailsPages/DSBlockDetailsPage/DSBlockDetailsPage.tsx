@@ -13,7 +13,7 @@ import { faCubes, faAngleUp, faAngleLeft, faAngleRight, faAngleDown } from '@for
 
 import NotFoundPage from '../../ErrorPages/NotFoundPage'
 import MinerTable from './MinerTable/MinerTable'
-import LabelStar from '../LabelComponent/LabelStar'
+import LabelStar from '../Misc/LabelComponent/LabelStar'
 
 import './DSBlockDetailsPage.css'
 
@@ -33,13 +33,14 @@ const DSBlockDetailsPage: React.FC = () => {
 
   // Fetch data
   useEffect(() => {
+    setIsLoading(true)
     if (!dataService) return
+    
     let latestDSBlockNum: number
     let receivedData: DsBlockObj
     let minerInfo: MinerInfo
     const getData = async () => {
       try {
-        setIsLoading(true)
         if (isNaN(blockNum))
           throw new Error('Not a valid block number')
         receivedData = await dataService.getDSBlockDetails(blockNum)
@@ -79,7 +80,7 @@ const DSBlockDetailsPage: React.FC = () => {
       : data && (
         <>
           <div className='dsblock-header'>
-            <h3>
+            <h3 className='mb-1'>
               <span className='mr-1'>
                 <FontAwesomeIcon className='fa-icon' icon={faCubes} />
               </span>
@@ -166,7 +167,7 @@ const DSBlockDetailsPage: React.FC = () => {
             <Card className='dsblock-details-card'>
               <Card.Body>
                 <Container className='mono'>
-                  <h6>PoW Winners</h6>
+                  <h6 className='mb-2'>PoW Winners</h6>
                   {data.header.PoWWinners.map((x, index) => <div key={index}>[{index}]
                     {'  '}
                     <QueryPreservingLink to={`/address/${pubKeyToZilAddr(x)}`}>{pubKeyToZilAddr(x)}</QueryPreservingLink></div>)}
