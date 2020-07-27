@@ -32,50 +32,43 @@ const EventsTab: React.FC<IProps> = ({ events }) => {
   return (
     <>
       {events.map((event: EventLogEntry, index: number) => (
-        <table key={index} className='receipt-table'>
-          <tbody>
-            <tr>
-              <th>Function</th>
-              <td>
-                <span className='event-name'>
-                  {event._eventname}
-                </span>
-                {' ('}{highlightEventParams(event.params)}{')'}
-              </td>
-            </tr>
-            <tr>
-              <th>Address</th>
-              <td>
-                <AddressDisp isLinked={true} addr={hexAddrToZilAddr(event.address)} />
-              </td>
-            </tr>
-            {event.params.length > 0 && (
-              <>
-                <tr><td><hr /></td></tr>
-                <tr>
-                  <td>Variable</td>
-                  <td>Value</td>
-                </tr>
-                {event.params.map((param, index) => (
-                  <tr key={index}>
-                    <td>{param.vname}</td>
-                    <td>
-                      {typeof param.value === 'object'
-                        ? <pre className='code-block'>
-                          {JSON.stringify(param.value, null, 2)}
-                        </pre>
-                        : Array.isArray(param.value)
-                          ? param.value.toString()
-                          : isValidAddr(param.value)
-                            ? <AddressDisp isLinked={true} addr={param.value} />
-                            : param.value}
-                    </td>
+        <>
+          <div className='mb-2'>
+            <span className='event-name'>
+              {event._eventname}
+            </span>
+            {' ('}{highlightEventParams(event.params)}{')'}
+          </div>
+          <AddressDisp isLinked={true} addr={hexAddrToZilAddr(event.address)} />
+          <table key={index} className='mt-3 mb-1 receipt-table'>
+            <tbody>
+              {event.params.length > 0 && (
+                <>
+                  <tr>
+                    <td className='subtext'>Variable</td>
+                    <td className='subtext'>Value</td>
                   </tr>
-                ))}
-              </>
-            )}
-          </tbody>
-        </table>
+                  {event.params.map((param, index) => (
+                    <tr key={index}>
+                      <td>{param.vname}</td>
+                      <td>
+                        {typeof param.value === 'object'
+                          ? <pre className='code-block'>
+                            {JSON.stringify(param.value, null, 2)}
+                          </pre>
+                          : Array.isArray(param.value)
+                            ? param.value.toString()
+                            : isValidAddr(param.value)
+                              ? <AddressDisp isLinked={true} addr={param.value} />
+                              : param.value}
+                      </td>
+                    </tr>
+                  ))}
+                </>
+              )}
+            </tbody>
+          </table>
+        </>
       )).reduce((acc: (React.ReactNode | null), x) => (
         acc === null
           ? x
