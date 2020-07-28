@@ -13,7 +13,7 @@
   --color-subtext: rgb(93, 106, 133);
   --color-zil-green: #019c99;
   --color-spinner: #6c757d;
-  --color-border: #b4b3b3;
+  --color-border: rgba(0, 0, 0, .125);
   --color-icon: darkslategray;
   --color-highlight: hsla(0, 0%, 80%, .1);
   --color-btn: white;
