@@ -47,10 +47,8 @@
 }
 
 .receipt-table th {
+  font-family: Muli;
   font-weight: 500;
-}
-
-.receipt-table td {
   min-width: 200px;
   vertical-align: top;
 }

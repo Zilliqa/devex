@@ -46,6 +46,6 @@ An example is given below
       {"https://api.zilliqa.com" : "Mainnet"},
       {"https://dev-api.zilliqa.com" : "Testnet"},
       {"https://zilliqa-isolated-server.zilliqa.com" : "Isolated Server"}
-      ]
+    ]
   }
 ```

@@ -34,31 +34,32 @@ const OverviewTab: React.FC<IProps> = ({ data }) => {
 
   return (
     <>
-      {tag ?
-        <>
+      <div className='mt-1 mb-3'>
+        {tag ?
+          <>
+            <span className='event-name'>
+              {tag}
+            </span>
+            {' ('}{highlightEventParams(params)}{')'}
+          </>
+          :
           <span className='event-name'>
-            {tag}
-          </span>
-          {' ('}{highlightEventParams(params)}{')'}
-        </>
-        :
-        <span className='event-name'>
-          Contract Parameters
+            Contract Parameters
         </span>
-      }
+        }
+      </div>
 
       <table className='receipt-table'>
         <tbody>
           {params.length > 0 && (
             <>
-              <tr><td><hr /></td></tr>
               <tr>
-                <td>Variable</td>
-                <td>Value</td>
+                <td className='subtext'>Variable</td>
+                <td className='subtext'>Value</td>
               </tr>
               {params.map((param: EventParam, index: number) => (
                 <tr key={index}>
-                  <td>{param.vname}</td>
+                  <th>{param.vname}</th>
                   <td>
                     {typeof param.value === 'object'
                       ? <pre className='code-block'>

@@ -28,12 +28,17 @@ const InitParamsTab: React.FC<IProps> = ({ initParams }) => {
             <td>{param.vname}</td>
             <td>{param.type}</td>
             <td>{Array.isArray(param.value)
-              ? param.value.map((x, index) => <AddressDisp key={index} isLinked={true} addr={x as string} />)
-                .reduce((acc: React.ReactNode | null, ele) => (
-                  acc === null
+              ? param.value.map((x, index) => (
+                isValidAddr(x as string)
+                  ? <AddressDisp key={index} isLinked={true} addr={x as string} />
+                  : x.toString()
+              ))
+                .map((ele: React.ReactNode, index) => (<div key={index}>{ele}</div>))
+                .reduce((acc: React.ReactNode | null, ele) => {
+                  return acc === null
                     ? <>{[ele]}</>
                     : <>{[acc, ele]}</>
-                ))
+                })
               : isValidAddr(param.value as string)
                 ? <AddressDisp isLinked={true} addr={param.value as string} />
                 : param.value}

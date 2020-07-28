@@ -76,6 +76,10 @@ a:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
+hr {
+  border-color: var(--color-border);
+}
+
 /* Themed Center Spinner */
 
 .center-spinner {
