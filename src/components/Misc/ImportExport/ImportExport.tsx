@@ -9,28 +9,28 @@ import { LabelMap, NetworkMap } from 'src/services/userPref/userPrefProvider'
 
 import './ImportExport.css'
 
-const exportToJson = (fileName: string, toJson: any, map: NetworkMap | LabelMap) => {
+const exportToJson = (type: string, toJson: any, map: NetworkMap | LabelMap) => {
   console.log('exporting json')
   const jsonStr = JSON.stringify(toJson ? toJson(map) : map)
   const blob = new Blob([jsonStr], { type: 'application/json' })
   const href = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = href
-  link.download = fileName + ".json"
+  link.download = type + ".json"
   document.body.appendChild(link)
   link.click()
   document.body.removeChild(link)
 }
 
 interface IProps {
-  fileName: string,
+  type: string,
   map: NetworkMap | LabelMap,
   setMapCb: ((map: NetworkMap) => void) | ((map: LabelMap) => void),
   fromJson?: any,
   toJson?: any
 }
 
-const ImportExport: React.FC<IProps> = ({ fileName, map, setMapCb, toJson, fromJson }) => {
+const ImportExport: React.FC<IProps> = ({ type, map, setMapCb, toJson, fromJson }) => {
 
   const onDrop = useCallback((acceptedFiles: Blob[]) => {
     acceptedFiles.forEach((file: Blob) => {
@@ -52,7 +52,7 @@ const ImportExport: React.FC<IProps> = ({ fileName, map, setMapCb, toJson, fromJ
         <span className='mr-1' {...getRootProps()}>
           <input {...getInputProps()} />
           <OverlayTrigger placement='top'
-            overlay={<Tooltip id={'import-tt'}>Import Network</Tooltip>}>
+            overlay={<Tooltip id={'import-tt'}>{type === 'labels' ? 'Import Labels' : 'Import Networks'}</Tooltip>}>
             <Button>
               <FontAwesomeIcon
                 icon={faDownload}
@@ -62,10 +62,10 @@ const ImportExport: React.FC<IProps> = ({ fileName, map, setMapCb, toJson, fromJ
         </span>
         <span className='ml-2'>
           <OverlayTrigger placement='top'
-            overlay={<Tooltip id={'export-tt'}>Export Network</Tooltip>}>
+            overlay={<Tooltip id={'export-tt'}>{type === 'labels' ? 'Export Labels' : 'Export Networks'}</Tooltip>}>
             <Button
               onClick={() => {
-                exportToJson(fileName, toJson, map)
+                exportToJson(type, toJson, map)
               }}>
               <FontAwesomeIcon
                 icon={faUpload}

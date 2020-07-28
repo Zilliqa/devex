@@ -46,7 +46,7 @@ const NetworksPage: React.FC = () => {
           <Button className='mr-3' onClick={() => setNetworkMap(new Map())}>Clear Networks</Button>
           <Button className='mr-auto' onClick={() => setNetworkMap(defaultNetworks)}>Reset to default</Button>
           <ImportExport
-            fileName='networks'
+            type='networks'
             map={networkMap}
             setMapCb={setNetworkMap}
             fromJson={(json: any) => new Map(json.networks.map((x: { [url: string]: string }) => Object.entries(x)[0]))}

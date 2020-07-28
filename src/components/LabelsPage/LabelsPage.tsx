@@ -72,7 +72,7 @@ const LabelsPage: React.FC = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => { setSearchFilter(e.target.value) }} />
           </div>
           <ImportExport
-            fileName='labels'
+            type='labels'
             map={labelMap}
             setMapCb={setLabelMap}
             />
