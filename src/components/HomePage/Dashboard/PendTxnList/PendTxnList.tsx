@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useContext } from 'react'
 import { Card, Spinner } from 'react-bootstrap'
+import CustomScroll from 'react-custom-scroll'
 
 import { refreshRate } from 'src/constants'
 import { NetworkContext } from 'src/services/network/networkProvider'
@@ -8,6 +9,7 @@ import { PendingTxnResultWithHash } from 'src/typings/api'
 import DisplayTable from '../DisplayTable/DisplayTable'
 
 import './PendTxnList.css'
+import 'react-custom-scroll/dist/customScroll.css'
 
 const PendTxnList: React.FC = () => {
 
@@ -82,8 +84,12 @@ const PendTxnList: React.FC = () => {
       <Card.Body>
         {data
           ? data.length > 0
-            ? <div className='pendtxlist-table'>
-              <DisplayTable columns={columns} data={data.sort((a, b) => a.code - b.code)} />
+            ? <div className='custom-scroll-div'>
+              <CustomScroll allowOuterScroll={true}>
+                <div className='pendtxlist-table'>
+                  <DisplayTable columns={columns} data={data.sort((a, b) => a.code - b.code)} />
+                </div>
+              </CustomScroll>
             </div>
             : 'No Pending Transactions'
           : <Spinner animation="border" role="status" />
