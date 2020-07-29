@@ -106,6 +106,7 @@ hr {
 /* Themed Form */
 
 .form-control::placeholder {
+  background-clip: none;
   color: var(--color-subtext);
 }
 
