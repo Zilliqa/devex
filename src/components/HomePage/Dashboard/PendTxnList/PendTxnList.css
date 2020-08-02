@@ -12,7 +12,10 @@
 
 .pendtxlist-table {
   max-height: 210px;
-  overflow: hidden auto;
+}
+
+.custom-scroll-div .rcs-inner-handle {
+  background-color: lightgrey !important;
 }
 
 .pendtxlist-status-div {

@@ -80,7 +80,7 @@ const TxnsPage: React.FC = () => {
         const fee = Number(value.txParams.gasPrice) * value.txParams.receipt!.cumulative_gas
         return <OverlayTrigger placement='top'
           overlay={<Tooltip id={'fee-tt'}>{qaToZil(fee)}</Tooltip>}>
-          <div className='text-center sm' >{qaToZil(fee)}</div>
+          <div className='text-center sm' >{qaToZil(fee, 4)}</div>
         </OverlayTrigger>
       }
     }], []
