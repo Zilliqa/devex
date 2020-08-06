@@ -3,9 +3,10 @@ import { OverlayTrigger, Tooltip, Card, Row as BRow, Col as BCol, Container, Spi
 import { useParams } from 'react-router-dom'
 import { Row } from 'react-table'
 
-import { QueryPreservingLink } from 'src/services/network/networkProvider'
+import HashDisp from 'src/components/Misc/Disp/HashDisp/HashDisp'
+import ToAddrDisp from 'src/components/Misc/Disp/ToAddrDisp/ToAddrDisp'
 import ViewAllTable from 'src/components/ViewAllPages/ViewAllTable/ViewAllTable'
-import { NetworkContext } from 'src/services/network/networkProvider'
+import { NetworkContext, QueryPreservingLink } from 'src/services/network/networkProvider'
 import { TransactionDetails } from 'src/typings/api'
 import { qaToZil, timestampToTimeago, hexAddrToZilAddr, timestampToDisplay, pubKeyToZilAddr } from 'src/utils/Utils'
 import { Transaction } from '@zilliqa-js/account/src/transaction'
@@ -13,9 +14,8 @@ import { TxBlockObj } from '@zilliqa-js/core/src/types'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCaretSquareLeft, faCaretSquareRight } from '@fortawesome/free-regular-svg-icons'
-import { faFileContract, faCubes, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
+import { faCubes, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 
-import HashDisp from '../Misc/Disp/HashDisp/HashDisp'
 import LabelStar from '../Misc/LabelComponent/LabelStar'
 import NotFoundPage from '../../ErrorPages/NotFoundPage'
 
@@ -94,16 +94,7 @@ const TxBlockDetailsPage: React.FC = () => {
       id: 'to-col',
       Header: 'To',
       Cell: ({ row }: { row: Row<TransactionDetails> }) => {
-        return (row.original.contractAddr
-          ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(row.original.contractAddr)}`}>
-            <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
-            {' '}
-            Contract Creation
-          </QueryPreservingLink>
-          : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(row.original.txn.txParams.toAddr)}`}>
-            {hexAddrToZilAddr(row.original.txn.txParams.toAddr)}
-          </QueryPreservingLink>
-        )
+        return <ToAddrDisp txnDetails={row.original} />
       }
     }, {
       id: 'hash-col',
@@ -137,7 +128,7 @@ const TxBlockDetailsPage: React.FC = () => {
         const fee = Number(value.txParams.gasPrice) * value.txParams.receipt!.cumulative_gas
         return <OverlayTrigger placement='top'
           overlay={<Tooltip id={'fee-tt'}>{qaToZil(fee)}</Tooltip>}>
-          <div className='text-center'>{qaToZil(fee)}</div>
+          <div className='text-center'>{qaToZil(fee, 4)}</div>
         </OverlayTrigger>
       }
     }], []

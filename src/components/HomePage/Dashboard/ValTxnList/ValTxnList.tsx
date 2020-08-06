@@ -2,14 +2,14 @@ import React, { useState, useEffect, useMemo, useContext } from 'react'
 import { OverlayTrigger, Tooltip, Card, Spinner } from 'react-bootstrap'
 import { Row } from 'react-table'
 
-import { QueryPreservingLink } from 'src/services/network/networkProvider'
+import ToAddrDisp from 'src/components/Misc/Disp/ToAddrDisp/ToAddrDisp'
 import { refreshRate } from 'src/constants'
-import { NetworkContext } from 'src/services/network/networkProvider'
+import { NetworkContext, QueryPreservingLink } from 'src/services/network/networkProvider'
 import { TransactionDetails } from 'src/typings/api'
 import { qaToZil, hexAddrToZilAddr } from 'src/utils/Utils'
 import { Transaction } from '@zilliqa-js/account/src/transaction'
 
-import { faFileContract, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
+import { faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 import DisplayTable from '../DisplayTable/DisplayTable'
@@ -38,15 +38,7 @@ const ValTxnList: React.FC = () => {
       id: 'to-col',
       Header: 'To',
       Cell: ({ row }: { row: Row<TransactionDetails> }) => {
-        return (row.original.contractAddr
-          ? <QueryPreservingLink to={`/address/${hexAddrToZilAddr(row.original.contractAddr)}`}>
-            <FontAwesomeIcon color='darkturquoise' icon={faFileContract} />
-            {' '}
-            Contract Creation
-          </QueryPreservingLink>
-          : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(row.original.txn.txParams.toAddr)}`}>
-            {hexAddrToZilAddr(row.original.txn.txParams.toAddr)}
-          </QueryPreservingLink>)
+        return <ToAddrDisp txnDetails={row.original} />
       }
     }, {
       id: 'hash-col',
@@ -69,7 +61,7 @@ const ValTxnList: React.FC = () => {
       Cell: ({ value }: { value: string }) => (
         <OverlayTrigger placement='right'
           overlay={<Tooltip id={'amt-tt'}>{qaToZil(value)}</Tooltip>}>
-          <div className='text-right sm'>{qaToZil(value)}</div>
+          <div className='text-right sm'>{qaToZil(value, 13)}</div>
         </OverlayTrigger>
       )
     }, {

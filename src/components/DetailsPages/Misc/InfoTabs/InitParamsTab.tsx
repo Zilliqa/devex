@@ -1,9 +1,8 @@
 import React from 'react'
 
+import AddressDisp from 'src/components/Misc/Disp/AddressDisp/AddressDisp'
 import { isValidAddr } from 'src/utils/Utils'
 import { Value } from '@zilliqa-js/contract/src/types'
-
-import AddressDisp from '../Disp/AddressDisp/AddressDisp'
 
 import './InitParamsTab.css'
 

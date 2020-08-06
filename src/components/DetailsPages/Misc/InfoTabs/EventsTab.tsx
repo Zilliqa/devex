@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react'
 
+import AddressDisp from 'src/components/Misc/Disp/AddressDisp/AddressDisp'
 import { hexAddrToZilAddr, isValidAddr } from 'src/utils/Utils'
 import { EventLogEntry, EventParam } from '@zilliqa-js/core/src/types'
-
-import AddressDisp from '../Disp/AddressDisp/AddressDisp'
 
 import './EventsTab.css'
 

@@ -1,9 +1,8 @@
 import React from 'react'
 
+import AddressDisp from 'src/components/Misc/Disp/AddressDisp/AddressDisp'
 import { qaToZil, hexAddrToZilAddr, isValidAddr } from 'src/utils/Utils'
 import { TransitionEntry } from '@zilliqa-js/core/src/types'
-
-import AddressDisp from '../Disp/AddressDisp/AddressDisp'
 
 interface IProps {
   transitions: TransitionEntry[]

@@ -91,7 +91,9 @@ const PendTxnList: React.FC = () => {
                 </div>
               </CustomScroll>
             </div>
-            : 'No Pending Transactions'
+            : <div className='ml-1'>
+              No Pending Transactions
+            </div>
           : <Spinner animation="border" role="status" />
         }
       </Card.Body>
