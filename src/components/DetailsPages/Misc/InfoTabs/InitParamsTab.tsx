@@ -29,8 +29,8 @@ const InitParamsTab: React.FC<IProps> = ({ initParams }) => {
             <td>{param.type}</td>
             <td>{Array.isArray(param.value)
               ? param.value.map((x, index) => (
-                isValidAddr(x as string)
-                  ? <AddressDisp key={index} isLinked={true} addr={x as string} />
+                isValidAddr(x.toString() as string)
+                  ? <AddressDisp key={index} isLinked={true} addr={x.toString() as string} />
                   : x.toString()
               ))
                 .map((ele: React.ReactNode, index) => (<div key={index}>{ele}</div>))

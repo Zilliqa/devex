@@ -58,7 +58,7 @@ const EventsTab: React.FC<IProps> = ({ events }) => {
                           </pre>
                           : Array.isArray(param.value)
                             ? param.value.toString()
-                            : isValidAddr(param.value)
+                            : isValidAddr(param.value.toString())
                               ? <AddressDisp isLinked={true} addr={param.value} />
                               : param.value}
                       </td>
