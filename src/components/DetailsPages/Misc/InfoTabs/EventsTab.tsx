@@ -53,7 +53,7 @@ const EventsTab: React.FC<IProps> = ({ events }) => {
                       <td>{param.vname}</td>
                       <td>
                         {typeof param.value === 'object'
-                          ? <pre className='code-block'>
+                          ? <pre className='display-block'>
                             {JSON.stringify(param.value, null, 2)}
                           </pre>
                           : Array.isArray(param.value)

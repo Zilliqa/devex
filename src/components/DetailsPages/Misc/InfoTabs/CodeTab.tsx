@@ -6,7 +6,7 @@ import { ThemeContext } from 'src/themes/themeProvider'
 
 import "ace-builds/src-noconflict/mode-ocaml"
 import "ace-builds/src-noconflict/theme-textmate"
-import "ace-builds/src-noconflict/theme-idle_fingers"
+import "ace-builds/src-noconflict/theme-solarized_dark"
 
 interface IProps {
   code: string
@@ -19,16 +19,19 @@ const CodeTab: React.FC<IProps> = ({ code }) => {
 
   return (
     <>
-      <AceEditor
-        mode="ocaml"
-        theme={theme === 'dark' ? "idle_fingers" : "textmate"}
-        width="100%"
-        fontSize='14px'
-        name="ace_editor"
-        readOnly={true}
-        value={code}
-        editorProps={{ $blockScrolling: true }}
-      />
+      <div className='code-block'>
+        <AceEditor
+          mode="ocaml"
+          theme={theme === 'dark' ? "solarized_dark" : "textmate"}
+          width="100%"
+          fontSize='12px'
+          name="ace_editor"
+          style={{ borderRadius: '10px' }}
+          readOnly={true}
+          value={code}
+          editorProps={{ $blockScrolling: true }}
+        />
+      </div>
     </>
   )
 }

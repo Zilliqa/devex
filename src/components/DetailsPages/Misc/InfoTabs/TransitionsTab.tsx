@@ -60,7 +60,7 @@ const TransitionsTab: React.FC<IProps> = ({ transitions }) => (
                     <th>{param.vname}</th>
                     <td>
                       {typeof param.value === 'object'
-                        ? <pre className='code-block'>
+                        ? <pre className='display-block'>
                           {JSON.stringify(param.value, null, '\t')}
                         </pre>
                         : Array.isArray(param.value)
