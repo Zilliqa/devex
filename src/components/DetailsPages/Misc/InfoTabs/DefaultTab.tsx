@@ -7,7 +7,7 @@ interface IProps {
 const DefaultTab: React.FC<IProps> = ({ content }) => {
   return (
     <>
-      <pre className='code-block'>
+      <pre className='display-block'>
         {typeof content === 'object'
           ? JSON.stringify(content, null, 2)
           : content.toString()

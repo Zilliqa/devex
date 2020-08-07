@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import { Card, Row, Col, Container, Spinner } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 
+import HashDisp from 'src/components/Misc/Disp/HashDisp/HashDisp'
 import { QueryPreservingLink } from 'src/services/network/networkProvider'
 import { NetworkContext } from 'src/services/network/networkProvider'
 import { TransactionDetails } from 'src/typings/api'
@@ -11,7 +12,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExclamationCircle, faExchangeAlt, faFileContract } from '@fortawesome/free-solid-svg-icons'
 
 import InfoTabs, { generateTabsFromTxnDetails } from '../Misc/InfoTabs/InfoTabs'
-import HashDisp from '../Misc/Disp/HashDisp/HashDisp'
 import LabelStar from '../Misc/LabelComponent/LabelStar'
 import NotFoundPage from '../../ErrorPages/NotFoundPage'
 

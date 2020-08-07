@@ -84,16 +84,16 @@
 /* Validated Transactions List */
 
 .display-table #from-col {
-  width: 80px;
+  width: 85px;
 }
 
 .display-table #to-col {
-  width: 80px;
+  width: 85px;
 }
 
 .display-table #hash-col {
-  padding-left: 35px;
-  width: 320px;
+  padding-left: 26px;
+  width: 315px;
 }
 
 .display-table #amount-col {

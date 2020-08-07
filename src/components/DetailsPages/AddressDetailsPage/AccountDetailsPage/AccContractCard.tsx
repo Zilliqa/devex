@@ -34,7 +34,7 @@ const AccContractCard: React.FC<IProps> = ({ contract, index }) => {
     </Card.Body>
     <Collapse in={showContractState}>
       <div>
-        <pre className='code-block'>
+        <pre className='display-block'>
           {JSON.stringify(contract.state, null, 2)}
         </pre>
       </div>

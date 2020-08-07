@@ -1,9 +1,8 @@
 import React, { useCallback } from 'react'
 
+import AddressDisp from 'src/components/Misc/Disp/AddressDisp/AddressDisp'
 import { isValidAddr } from 'src/utils/Utils'
 import { EventParam } from '@zilliqa-js/core/src/types'
-
-import AddressDisp from '../Disp/AddressDisp/AddressDisp'
 
 import './EventsTab.css'
 
@@ -62,12 +61,13 @@ const OverviewTab: React.FC<IProps> = ({ data }) => {
                   <th>{param.vname}</th>
                   <td>
                     {typeof param.value === 'object'
-                      ? <pre className='code-block'>
+                      ? <pre className='display-block'>
                         {JSON.stringify(param.value, null, 2)}
                       </pre>
                       : Array.isArray(param.value)
                         ? param.value.toString()
-                        : isValidAddr(param.value)
+                        : isValidAddr(param.value
+                        .toString())
                           ? <AddressDisp isLinked={true} addr={param.value} />
                           : param.value}
                   </td>
