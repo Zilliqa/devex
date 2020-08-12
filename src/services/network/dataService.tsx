@@ -248,10 +248,14 @@ export class DataService {
     if (txn.txParams && txn.txParams.toAddr === '0x0000000000000000000000000000000000000000') {
       const contractAddr = await this.getContractAddrFromTransaction(txnHash)
       // @ts-ignore
-      return { txn: txn, hash: txnHash, contractAddr: contractAddr } as TransactionDetails
+      return { txn: txn, hash: txnHash, contractAddr: contractAddr, isContractCreation: true } as TransactionDetails
+    } else if (await this.isContractAddr(txn.txParams.toAddr)) {
+      // @ts-ignore
+      return { txn: txn, hash: txnHash, contractAddr: txn.txParams.toAddr, isContractCreation: false } as TransactionDetails
+    } else {
+      // @ts-ignore
+      return { txn: txn, hash: txnHash } as TransactionDetails
     }
-    // @ts-ignore
-    return { txn: txn, hash: txnHash } as TransactionDetails
   }
 
   async getTransactionsForTxBlock(blockNum: number): Promise<string[]> {

@@ -71,9 +71,19 @@ a:hover {
   color: var(--color-subtext);
 }
 
-.code-block {
+.display-block {
+  border: solid 1px var(--color-border);
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: var(--color-highlight);
   color: var(--color-text);
-  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.code-block {
+  border: solid 1px var(--color-border);
+  border-radius: 10px;
+  background-color: var(--color-highlight);
+  color: var(--color-text);
 }
 
 hr {

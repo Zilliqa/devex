@@ -3,6 +3,9 @@ import { Modal, Button, Form } from 'react-bootstrap'
 
 import { ThemeContext } from 'src/themes/themeProvider'
 
+import { faLink, faTag } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import 'src/themes/theme.css'
 
 interface IProps {
@@ -35,30 +38,36 @@ const NetworkModal: React.FC<IProps> = ({ show, handleCloseModal, cb }) => {
     </div>
     <Modal.Body>
       <Form onSubmit={handleSubmit}>
-        <div className='mb-2'>
-          <Form.Control
-            required
-            type='text'
-            value={networkNameInput}
-            maxLength={20}
-            onChange={(e) => { setNetworkNameInput(e.target.value) }}
-            placeholder='Name' />
-        </div>
-        <div className='mb-4'>
-          <Form.Control
-            required
-            type='text'
-            value={networkUrlInput}
-            onChange={(e) => { setNetworkUrlInput(e.target.value) }}
-            placeholder='Url' />
-        </div>
+        <Form.Group>
+          <div className='d-flex align-items-center mb-2'>
+            <FontAwesomeIcon className='mr-3' icon={faTag} />
+            <Form.Control
+              required
+              type='text'
+              value={networkNameInput}
+              maxLength={20}
+              onChange={(e) => { setNetworkNameInput(e.target.value) }}
+              placeholder='Enter Name' />
+          </div>
+        </Form.Group>
+        <Form.Group>
+          <div className='d-flex align-items-center mb-4'>
+            <FontAwesomeIcon className='mr-3' icon={faLink} />
+            <Form.Control
+              required
+              type='text'
+              value={networkUrlInput}
+              onChange={(e) => { setNetworkUrlInput(e.target.value) }}
+              placeholder='Enter Url' />
+          </div>
+        </Form.Group>
         <div>
           <Button block type='submit'>
             Save
           </Button>
         </div>
       </Form>
-      </Modal.Body>
+    </Modal.Body>
   </Modal>
 }
 

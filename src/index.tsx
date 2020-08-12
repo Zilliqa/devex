@@ -13,6 +13,12 @@ import * as serviceWorker from './serviceWorker'
 
 import './index.css'
 
+const siteWidth = 1200
+const scale = window.screen.width / siteWidth
+
+document.querySelector('meta[name="viewport"]')!
+  .setAttribute('content', `width=${siteWidth}, initial-scale=${scale}`)
+
 ReactDOM.render(
   <>
     <React.StrictMode>

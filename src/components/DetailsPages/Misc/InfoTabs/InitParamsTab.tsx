@@ -1,9 +1,8 @@
 import React from 'react'
 
+import AddressDisp from 'src/components/Misc/Disp/AddressDisp/AddressDisp'
 import { isValidAddr } from 'src/utils/Utils'
 import { Value } from '@zilliqa-js/contract/src/types'
-
-import AddressDisp from '../Disp/AddressDisp/AddressDisp'
 
 import './InitParamsTab.css'
 
@@ -29,8 +28,8 @@ const InitParamsTab: React.FC<IProps> = ({ initParams }) => {
             <td>{param.type}</td>
             <td>{Array.isArray(param.value)
               ? param.value.map((x, index) => (
-                isValidAddr(x as string)
-                  ? <AddressDisp key={index} isLinked={true} addr={x as string} />
+                isValidAddr(x.toString() as string)
+                  ? <AddressDisp key={index} isLinked={true} addr={x.toString() as string} />
                   : x.toString()
               ))
                 .map((ele: React.ReactNode, index) => (<div key={index}>{ele}</div>))

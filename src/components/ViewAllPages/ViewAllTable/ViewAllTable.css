@@ -1,5 +1,6 @@
 .viewall-table {
   white-space: nowrap;
+  font-size: 15px;
   padding: 5px;
   border-radius: 10px;
   border: 1px solid var(--color-border);

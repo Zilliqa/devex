@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect, useRef, useCallback } from 'react'
 import { Card, Container, Row, Col, Pagination, Spinner } from 'react-bootstrap'
 
+import AddressDisp from 'src/components/Misc/Disp/AddressDisp/AddressDisp'
 import { NetworkContext } from 'src/services/network/networkProvider'
 import { AccData } from 'src/typings/api'
 import { qaToZil } from 'src/utils/Utils'
@@ -10,7 +11,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWallet } from '@fortawesome/free-solid-svg-icons'
 
 import AccContractCard from './AccContractCard'
-import AddressDisp from '../../Misc/Disp/AddressDisp/AddressDisp'
 import LabelStar from '../../Misc/LabelComponent/LabelStar'
 import ViewBlockLink from '../../Misc/ViewBlockLink/ViewBlockLink'
 

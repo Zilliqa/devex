@@ -1,9 +1,8 @@
 import React from 'react'
 
+import AddressDisp from 'src/components/Misc/Disp/AddressDisp/AddressDisp'
 import { qaToZil, hexAddrToZilAddr, isValidAddr } from 'src/utils/Utils'
 import { TransitionEntry } from '@zilliqa-js/core/src/types'
-
-import AddressDisp from '../Disp/AddressDisp/AddressDisp'
 
 interface IProps {
   transitions: TransitionEntry[]
@@ -60,12 +59,12 @@ const TransitionsTab: React.FC<IProps> = ({ transitions }) => (
                     <th>{param.vname}</th>
                     <td>
                       {typeof param.value === 'object'
-                        ? <pre className='code-block'>
+                        ? <pre className='display-block'>
                           {JSON.stringify(param.value, null, '\t')}
                         </pre>
                         : Array.isArray(param.value)
                           ? param.value.toString()
-                          : isValidAddr(param.value)
+                          : isValidAddr(param.value.toString())
                             ? <AddressDisp isLinked={true} addr={param.value} />
                             : param.value
                       }
