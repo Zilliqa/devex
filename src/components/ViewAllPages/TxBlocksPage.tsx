@@ -59,12 +59,23 @@ const TxBlocksPage: React.FC = () => {
         <div style={{ textOverflow: 'ellipsis', overflow: 'hidden' }} className='mono'>{'0x' + value}</div>
       )
     }, {
-      id: 'total-fees-col',
-      Header: 'Total Fees',
+      id: 'total-txn-fees-col',
+      Header: 'Total Txn Fees',
+      accessor: 'header.TxnFees',
+      Cell: ({ value }: { value: string }) => (
+        <OverlayTrigger placement='right'
+          overlay={<Tooltip id={'total-txn-fees-tt'}> {qaToZil(value)} </Tooltip>}>
+          <div className='text-right'>{qaToZil(value, 5)}</div>
+        </OverlayTrigger>
+      )
+    },
+    {
+      id: 'rewards-col',
+      Header: 'Rewards',
       accessor: 'header.Rewards',
       Cell: ({ value }: { value: string }) => (
         <OverlayTrigger placement='right'
-          overlay={<Tooltip id={'total-fees-tt'}> {qaToZil(value)} </Tooltip>}>
+          overlay={<Tooltip id={'rewards-tt'}> {qaToZil(value)} </Tooltip>}>
           <div className='text-right'>{qaToZil(value, 5)}</div>
         </OverlayTrigger>
       )
