@@ -40,8 +40,20 @@ const TxBlockList: React.FC = () => {
       ),
     },
     {
-      id: 'total-fees-col',
-      Header: 'Total Fees',
+      id: 'total-txn-fees-col',
+      Header: 'Total Txn Fees',
+      accessor: 'header.TxnFees',
+      Cell: ({ value }: { value: string }) => (
+        <div className='text-right'>
+          <OverlayTrigger placement='top'
+            overlay={<Tooltip id={'amt-tt'}> {qaToZil(value)} </Tooltip>}>
+            <span>{qaToZil(value, 5)}</span>
+          </OverlayTrigger>
+        </div>)
+    },
+    {
+      id: 'rewards-col',
+      Header: 'Rewards',
       accessor: 'header.Rewards',
       Cell: ({ value }: { value: string }) => (
         <div className='text-right'>
