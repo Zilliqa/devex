@@ -14,6 +14,7 @@ import { faExclamationCircle, faExchangeAlt, faFileContract } from '@fortawesome
 import InfoTabs, { generateTabsFromTxnDetails } from '../Misc/InfoTabs/InfoTabs'
 import LabelStar from '../Misc/LabelComponent/LabelStar'
 import NotFoundPage from '../../ErrorPages/NotFoundPage'
+import ViewBlockLink from '../Misc/ViewBlockLink/ViewBlockLink'
 
 import './TxnDetailsPage.css'
 
@@ -21,7 +22,7 @@ const TxnDetailsPage: React.FC = () => {
 
   const { txnHash } = useParams()
   const networkContext = useContext(NetworkContext)
-  const { dataService } = networkContext!
+  const { dataService, networkUrl } = networkContext!
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [error, setError] = useState<string | null>(null)
@@ -60,7 +61,7 @@ const TxnDetailsPage: React.FC = () => {
       ? <NotFoundPage />
       : data && data.txn.txParams.receipt && (
         <>
-          <div>
+          <div className='transaction-header'>
             <h3 className='mb-1'>
               <span className='mr-1'>
                 {(data.txn.txParams.receipt.success === undefined || data.txn.txParams.receipt.success)
@@ -72,6 +73,7 @@ const TxnDetailsPage: React.FC = () => {
               </span>
               <LabelStar type='Transaction' />
             </h3>
+            <ViewBlockLink network={networkUrl} type='tx' identifier={data.hash} />
           </div>
           <div className='subtext'>
             <HashDisp hash={'0x' + data.hash} />
