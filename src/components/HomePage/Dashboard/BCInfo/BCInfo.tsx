@@ -89,7 +89,7 @@ const BCInfo: React.FC = () => {
           ? <Container>
             <Row className='mb-3'>
               <Col>
-                <span className='subtext'>Current Tx Block:</span>
+                <span className='subtext'>Latest Tx Epoch:</span>
                 <br />
                 <span>{parseInt(data.NumTxBlocks).toLocaleString('en')}</span>
               </Col>
