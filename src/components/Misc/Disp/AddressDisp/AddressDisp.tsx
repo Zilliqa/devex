@@ -29,8 +29,14 @@ const AddressDisp: React.FC<IProps> = ({ addr, isLinked }) => {
     if (isValidAddr(addr)) {
       if (validation.isBech32(addr))
         setAddrPair([addr, fromBech32Address(addr).toLowerCase()])
-      else
-        setAddrPair([toBech32Address(addr), addr])
+      else {
+        try {
+          setAddrPair([toBech32Address(addr), addr])
+        }
+        catch(e) {
+          //Ignore the catch
+        }
+      }
     }
   }, [addr])
 
