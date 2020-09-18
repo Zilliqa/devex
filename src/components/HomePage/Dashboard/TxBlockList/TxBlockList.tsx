@@ -41,7 +41,7 @@ const TxBlockList: React.FC = () => {
     },
     {
       id: 'total-txn-fees-col',
-      Header: 'Total Txn Fees',
+      Header: 'Txn Fees',
       accessor: 'header.TxnFees',
       Cell: ({ value }: { value: string }) => (
         <div className='text-right'>

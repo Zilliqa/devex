@@ -60,7 +60,7 @@ const TxBlocksPage: React.FC = () => {
       )
     }, {
       id: 'total-txn-fees-col',
-      Header: 'Total Txn Fees',
+      Header: 'Txn Fees',
       accessor: 'header.TxnFees',
       Cell: ({ value }: { value: string }) => (
         <OverlayTrigger placement='right'

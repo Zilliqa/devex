@@ -235,7 +235,7 @@ const TxBlockDetailsPage: React.FC = () => {
                   <BRow>
                     <BCol>
                       <div className='txblock-detail'>
-                        <span>Total Txn Fees:</span>
+                        <span>Txn Fees:</span>
                         <span>{qaToZil(txBlockObj.header.TxnFees)}</span>
                       </div>
                     </BCol>
