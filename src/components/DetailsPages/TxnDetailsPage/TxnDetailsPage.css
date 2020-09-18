@@ -1,3 +1,11 @@
+/* Header */
+
+.transaction-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 /* Card */
 
 .txn-details-card {
