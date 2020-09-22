@@ -235,18 +235,24 @@ const TxBlockDetailsPage: React.FC = () => {
                   <BRow>
                     <BCol>
                       <div className='txblock-detail'>
-                        <span>Total Fees:</span>
+                        <span>Txn Fees:</span>
+                        <span>{qaToZil(txBlockObj.header.TxnFees)}</span>
+                      </div>
+                    </BCol>
+                    <BCol>
+                      <div className='txblock-detail'>
+                        <span>Rewards Fees:</span>
                         <span>{qaToZil(txBlockObj.header.Rewards)}</span>
                       </div>
                     </BCol>
+                  </BRow>
+                  <BRow>
                     <BCol>
                       <div className='txblock-detail'>
                         <span>DS Block:</span>
                         <span><QueryPreservingLink to={`/dsbk/${txBlockObj.header.DSBlockNum}`}>{txBlockObj.header.DSBlockNum}</QueryPreservingLink></span>
                       </div>
                     </BCol>
-                  </BRow>
-                  <BRow>
                     <BCol>
                       <div className='txblock-detail'>
                         <span>DS Leader:</span>
