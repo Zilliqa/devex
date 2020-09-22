@@ -1,4 +1,4 @@
-FROM node:12.16.3-alpine3.11 as build-stage
+FROM node:12.16.3 as build-stage
 ARG REACT_APP_DEPLOY_ENV="dev"
 ENV REACT_APP_DEPLOY_ENV=$REACT_APP_DEPLOY_ENV
 WORKDIR /app
