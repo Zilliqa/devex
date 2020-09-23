@@ -33,7 +33,7 @@ const TxBlockList: React.FC = () => {
     },
     {
       id: 'numTxns-col',
-      Header: 'Transactions',
+      Header: 'Txns',
       accessor: 'header.NumTxns',
       Cell: ({ value }: { value: string }) => (
         <div className='text-center'>{value}</div>
