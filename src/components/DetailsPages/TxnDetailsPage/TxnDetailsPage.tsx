@@ -103,7 +103,9 @@ const TxnDetailsPage: React.FC = () => {
                               {' '}
                               {hexAddrToZilAddr(data.contractAddr)}
                             </QueryPreservingLink>
-                            : '-'
+                            : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(data.txn.txParams.toAddr)}`}>
+                              {hexAddrToZilAddr(data.txn.txParams.toAddr)}
+                              </QueryPreservingLink>
                           : <QueryPreservingLink to={`/address/${hexAddrToZilAddr(data.txn.txParams.toAddr)}`}>
                             {hexAddrToZilAddr(data.txn.txParams.toAddr)}
                           </QueryPreservingLink>
