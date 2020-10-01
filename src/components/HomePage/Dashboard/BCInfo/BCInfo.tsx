@@ -106,7 +106,9 @@ const BCInfo: React.FC = () => {
               <Col>
                 <span className='subtext'>Sharding Structure:</span>
                 <br />
-                <span>[{data.ShardingStructure.NumPeers.toString()}]</span>
+                <span>[{data.ShardingStructure && data.ShardingStructure.NumPeers
+                      ? data.ShardingStructure.NumPeers.toString()
+                      : "no shards"}]</span>
               </Col>
             </Row>
             <Row className='mb-3'>
