@@ -1,6 +1,6 @@
 import moment from 'moment'
 import { units, BN, validation } from '@zilliqa-js/util'
-import { getAddressFromPublicKey, toBech32Address } from '@zilliqa-js/crypto'
+import { getAddressFromPublicKey, toBech32Address, fromBech32Address } from '@zilliqa-js/crypto'
 
 export const pubKeyToZilAddr: ((k: string) => string) = (pubKey: string) => {
   const strippedPubKey = stripHexPrefix(pubKey)
@@ -15,6 +15,13 @@ export const hexAddrToZilAddr: ((addr: string) => string) = (hexAddr: string) =>
     return 'Invalid hex-encoded address'
   else
     return toBech32Address(hexAddr)
+}
+
+export const zilAddrToHexAddr: ((addr: string) => string) = (zilAddr: string) => {
+  if (!validation.isBech32(zilAddr))
+    return 'Invalid hex-encoded address'
+  else
+    return fromBech32Address(zilAddr)
 }
 
 // Convert timestamp to display format, M/D/YYYY, h:mm:ssa
