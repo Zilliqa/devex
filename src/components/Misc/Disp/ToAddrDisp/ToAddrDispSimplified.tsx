@@ -14,34 +14,20 @@ interface IProps {
   txnDetails: TransactionDetails;
 }
 
-const ToAddrDispSimplified: any = ({ txnDetails }: any) => {
+const ToAddrDispSimplified: any = ({ txnDetails, ownAddress }: any) => {
   const networkContext = useContext(NetworkContext);
-  const { dataService, networkUrl } = networkContext!;
+  const { dataService } = networkContext!;
 
   const [details, setDetails] = useState(txnDetails);
 
   if (!dataService) return;
 
-  dataService
+  /*   dataService
     .getTransactionDetailsSimplified(txnDetails)
-    .then((details) => setDetails(details));
+    .then((details) => setDetails(details)); */
 
-  return details.contractAddr ? (
-    details.isContractCreation ? (
-      <QueryPreservingLink
-        to={`/address/${hexAddrToZilAddr(details.contractAddr)}`}
-      >
-        <FontAwesomeIcon color="darkturquoise" icon={faFileContract} /> Contract
-        Creation
-      </QueryPreservingLink>
-    ) : (
-      <QueryPreservingLink
-        to={`/address/${hexAddrToZilAddr(details.contractAddr)}`}
-      >
-        <FontAwesomeIcon color="darkorange" icon={faFileContract} /> Contract
-        Execution
-      </QueryPreservingLink>
-    )
+  return ownAddress === hexAddrToZilAddr(details.toAddr) ? (
+    <div>{hexAddrToZilAddr(details.toAddr)}</div>
   ) : (
     <QueryPreservingLink to={`/address/${hexAddrToZilAddr(details.toAddr)}`}>
       {hexAddrToZilAddr(details.toAddr)}

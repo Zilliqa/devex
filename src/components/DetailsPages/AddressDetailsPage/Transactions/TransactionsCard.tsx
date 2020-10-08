@@ -1,43 +1,28 @@
-import React, { useContext, useState, useEffect, useMemo } from "react";
-import { useParams } from "react-router-dom";
+import React, { useMemo } from "react";
 import { OverlayTrigger, Tooltip, Card, Spinner } from "react-bootstrap";
 
-import {
-  NetworkContext,
-  QueryPreservingLink,
-} from "src/services/network/networkProvider";
-import { isValidAddr } from "src/utils/Utils";
-import { Row } from "react-table";
+import { QueryPreservingLink } from "src/services/network/networkProvider";
+
 import { useQuery, gql } from "@apollo/client";
 
-import { TransactionDetails } from "src/typings/api";
-import { qaToZil, hexAddrToZilAddr, zilAddrToHexAddr, stripHexPrefix } from "src/utils/Utils";
-import { Transaction } from "@zilliqa-js/account/src/transaction";
+import {
+  qaToZil,
+  hexAddrToZilAddr,
+  zilAddrToHexAddr,
+  stripHexPrefix,
+} from "src/utils/Utils";
 
 import ToAddrDispSimplified from "src/components/Misc/Disp/ToAddrDisp/ToAddrDispSimplified";
-import { refreshRate } from "src/constants";
 import DisplayTable from "src/components/HomePage/Dashboard/DisplayTable/DisplayTable";
 
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import TxnsPage from "src/components/ViewAllPages/TxnsPage";
 
 interface IProps {
   addr: string | null;
 }
 
 const TransactionsCard: any = ({ addr }: { addr: string }) => {
-  /*   const networkContext = useContext(NetworkContext);
-  const { dataService } = networkContext!;
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null); */
-
-  const networkContext = useContext(NetworkContext);
-  const { dataService, networkUrl } = networkContext!;
-
-  console.log(addr);
-
   const hexAddress = stripHexPrefix(zilAddrToHexAddr(addr)).toLowerCase();
 
   const ACCOUNT_TRANSACTIONS = gql`
@@ -60,11 +45,20 @@ const TransactionsCard: any = ({ addr }: { addr: string }) => {
         id: "from-col",
         Header: "From",
         accessor: "from",
-        Cell: ({ value }: { value: string }) => (
-          <QueryPreservingLink to={`/address/${hexAddrToZilAddr(value)}`}>
-            {hexAddrToZilAddr(value)}
-          </QueryPreservingLink>
-        ),
+        Cell: ({ value }: { value: string }) => {
+          const ziladdr = hexAddrToZilAddr(value);
+          return (
+            <>
+              {addr === ziladdr ? (
+                addr
+              ) : (
+                <QueryPreservingLink to={`/address/${ziladdr}`}>
+                  {ziladdr}
+                </QueryPreservingLink>
+              )}
+            </>
+          );
+        },
       },
       {
         id: "to-col",
@@ -72,6 +66,7 @@ const TransactionsCard: any = ({ addr }: { addr: string }) => {
         Cell: ({ row }: { row: any }) => {
           return (
             <ToAddrDispSimplified
+              ownAddress={addr}
               txnDetails={{
                 txn: row.original,
                 hash: row.original.ID,
@@ -132,7 +127,7 @@ const TransactionsCard: any = ({ addr }: { addr: string }) => {
         },
       },
     ],
-    []
+    [addr]
   );
 
   const { loading, error, data: queryData } = useQuery(ACCOUNT_TRANSACTIONS);

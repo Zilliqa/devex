@@ -17,7 +17,7 @@ import {
 import AddressDisp from "src/components/Misc/Disp/AddressDisp/AddressDisp";
 import { NetworkContext } from "src/services/network/networkProvider";
 import { AccData } from "src/typings/api";
-import { qaToZil } from "src/utils/Utils";
+import { qaToZil, zilAddrToHexAddr } from "src/utils/Utils";
 import { ContractObj } from "@zilliqa-js/contract/src/types";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,6 +28,8 @@ import LabelStar from "../../Misc/LabelComponent/LabelStar";
 import ViewBlockLink from "../../Misc/ViewBlockLink/ViewBlockLink";
 
 import TransactionsCard from "../Transactions/TransactionsCard";
+
+import { useQuery, gql } from "@apollo/client";
 
 import "../AddressDetailsPage.css";
 
@@ -71,6 +73,28 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
     },
     []
   );
+
+  const ACCOUNT_TRANSACTIONS = gql`
+    {
+      txnsByAddr(addr: "${zilAddrToHexAddr(addrRef.current)}") {
+        ID
+        receipt {
+          success
+        }
+        from
+        toAddr
+        amount
+      }
+    }
+  `;
+
+  const { loading, error, data: accTransactions } = useQuery(
+    ACCOUNT_TRANSACTIONS
+  );
+
+  if (error) {
+    console.log(error);
+  }
 
   // Fetch data
   useEffect(() => {
@@ -143,6 +167,16 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
                     </div>
                   </Col>
                 </Row>
+                {accTransactions ? (
+                  <Row>
+                    <Col>
+                      <div className="address-detail">
+                        <span>Transactions:</span>
+                        <span>{accTransactions.txnsByAddr.length}</span>
+                      </div>
+                    </Col>
+                  </Row>
+                ) : null}
               </Container>
             </Card.Body>
           </Card>
