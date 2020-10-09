@@ -21,7 +21,7 @@ export const zilAddrToHexAddr: ((addr: string) => string) = (zilAddr: string) =>
   if (!validation.isBech32(zilAddr))
     return 'Invalid hex-encoded address'
   else
-    return fromBech32Address(zilAddr)
+    return fromBech32Address(zilAddr).toLowerCase();
 }
 
 // Convert timestamp to display format, M/D/YYYY, h:mm:ssa

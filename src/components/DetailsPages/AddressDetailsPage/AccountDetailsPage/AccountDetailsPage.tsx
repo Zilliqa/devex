@@ -19,6 +19,7 @@ import { NetworkContext } from "src/services/network/networkProvider";
 import { AccData } from "src/typings/api";
 import { qaToZil, zilAddrToHexAddr } from "src/utils/Utils";
 import { ContractObj } from "@zilliqa-js/contract/src/types";
+import { useQuery, gql } from "@apollo/client";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWallet } from "@fortawesome/free-solid-svg-icons";
@@ -26,10 +27,7 @@ import { faWallet } from "@fortawesome/free-solid-svg-icons";
 import AccContractCard from "./AccContractCard";
 import LabelStar from "../../Misc/LabelComponent/LabelStar";
 import ViewBlockLink from "../../Misc/ViewBlockLink/ViewBlockLink";
-
 import TransactionsCard from "../Transactions/TransactionsCard";
-
-import { useQuery, gql } from "@apollo/client";
 
 import "../AddressDetailsPage.css";
 
@@ -46,6 +44,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
   const [accData, setAccData] = useState<AccData | null>(null);
   const [accContracts, setAccContracts] = useState<ContractObj[] | null>(null);
   const [contractPageIndex, setContractPageIndex] = useState<number>(0);
+  const [transactionsCount, setTransactionsCount] = useState<number>(0);
 
   const generatePagination = useCallback(
     (currentPage: number, pageCount: number, delta = 2) => {
@@ -74,28 +73,6 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
     []
   );
 
-  const ACCOUNT_TRANSACTIONS = gql`
-    {
-      txnsByAddr(addr: "${zilAddrToHexAddr(addrRef.current)}") {
-        ID
-        receipt {
-          success
-        }
-        from
-        toAddr
-        amount
-      }
-    }
-  `;
-
-  const { loading, error, data: accTransactions } = useQuery(
-    ACCOUNT_TRANSACTIONS
-  );
-
-  if (error) {
-    console.log(error);
-  }
-
   // Fetch data
   useEffect(() => {
     if (!dataService) return;
@@ -121,6 +98,36 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
     };
     getData();
   }, [dataService]);
+
+  const ACCOUNT_TRANSACTIONS = gql`
+    query GetTransactions($addr: String!) {
+      txnsByAddr(addr: $addr) {
+        ID
+        receipt {
+          success
+        }
+        from
+        toAddr
+        amount
+      }
+    }
+  `;
+
+  const hexAddr = zilAddrToHexAddr(addr);
+
+  const { loading: transactionsLoading, error, data: txData } = useQuery(
+    ACCOUNT_TRANSACTIONS,
+    {
+      variables: { addr: hexAddr },
+    }
+  );
+
+  if (txData) {
+    if (transactionsCount !== txData.txnsByAddr.length) {
+      setTransactionsCount(txData.txnsByAddr.length);
+    }
+    console.log(txData);
+  }
 
   return (
     <>
@@ -167,30 +174,38 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
                     </div>
                   </Col>
                 </Row>
-                {accTransactions ? (
-                  <Row>
-                    <Col>
-                      <div className="address-detail">
-                        <span>Transactions:</span>
-                        <span>{accTransactions.txnsByAddr.length}</span>
-                      </div>
-                    </Col>
-                  </Row>
-                ) : null}
+                <Row>
+                  <Col>
+                    <div className="address-detail">
+                      <span>Transactions:</span>
+                      <span>{transactionsCount}</span>
+                    </div>
+                  </Col>
+                </Row>
               </Container>
             </Card.Body>
           </Card>
 
-          <TransactionsCard addr={addrRef.current} />
+          <h4 className="py-2">Transactions</h4>
+          <Card className="txblock-card mb-4">
+            <Card.Body>
+              {transactionsLoading ? (
+                <div className="center-spinner">
+                  <Spinner animation="border" />
+                </div>
+              ) : (
+                <TransactionsCard
+                  transactions={txData.txnsByAddr}
+                  addr={addrRef.current}
+                />
+              )}
+            </Card.Body>
+          </Card>
 
           {accContracts && accContracts.length > 0 && (
             <>
+              <h4 className="py-2">Deployed Contracts</h4>
               <Card className="address-details-card">
-                <Card.Header>
-                  <div className="dsblock-card-header">
-                    <span>Deployed Contracts</span>
-                  </div>
-                </Card.Header>
                 <div className="d-flex justify-content-between">
                   <span className="num-contracts">
                     Total: {accContracts.length}{" "}

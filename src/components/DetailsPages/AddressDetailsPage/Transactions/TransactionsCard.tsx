@@ -19,26 +19,11 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface IProps {
-  addr: string | null;
+  transactions: [];
+  addr: string;
 }
 
-const TransactionsCard: any = ({ addr }: { addr: string }) => {
-  const hexAddress = stripHexPrefix(zilAddrToHexAddr(addr)).toLowerCase();
-
-  const ACCOUNT_TRANSACTIONS = gql`
-    {
-      txnsByAddr(addr: "${hexAddress}") {
-        ID
-        receipt {
-          success
-        }
-        from
-        toAddr
-        amount
-      }
-    }
-  `;
-
+const TransactionsCard: React.FC<IProps> = ({ transactions, addr }) => {
   const columns = useMemo(
     () => [
       {
@@ -130,29 +115,7 @@ const TransactionsCard: any = ({ addr }: { addr: string }) => {
     [addr]
   );
 
-  const { loading, error, data: queryData } = useQuery(ACCOUNT_TRANSACTIONS);
-
-  if (error) {
-    console.log(error);
-  }
-
-  return (
-    <Card className="txblock-card">
-      <Card.Header>
-        <div className="dsblock-card-header">
-          <span>Transactions</span>
-        </div>
-      </Card.Header>
-      <Card.Body>
-        {loading ? (
-          <Spinner animation="border" role="status" />
-        ) : (
-          <DisplayTable columns={columns} data={queryData.txnsByAddr} />
-        )}
-        {error ? <div>{error.message}</div> : null}
-      </Card.Body>
-    </Card>
-  );
+  return <DisplayTable columns={columns} data={transactions} />;
 };
 
 export default TransactionsCard;
