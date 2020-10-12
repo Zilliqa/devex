@@ -23,7 +23,7 @@ document
   .setAttribute("content", `width=${siteWidth}, initial-scale=${scale}`);
 
 const client = new ApolloClient({
-  uri: "https://stg-devex-apollo.zilliqa.com",
+  uri: "http://localhost:5000",
   cache: new InMemoryCache(),
 });
 

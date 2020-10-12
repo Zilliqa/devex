@@ -100,15 +100,18 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
   }, [dataService]);
 
   const ACCOUNT_TRANSACTIONS = gql`
-    query GetTransactions($addr: String!) {
-      txnsByAddr(addr: $addr) {
+    query GetTransactions($addr: String!, $offset: Int, $limit: Int) {
+      txnsByAddr(addr: $addr, offset: $offset, limit: $limit) {
         ID
         receipt {
           success
+          cumulative_gas
         }
-        from
+        gasPrice
+        fromAddr
         toAddr
         amount
+        type
       }
     }
   `;
@@ -118,7 +121,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
   const { loading: transactionsLoading, error, data: txData } = useQuery(
     ACCOUNT_TRANSACTIONS,
     {
-      variables: { addr: hexAddr },
+      variables: { addr: hexAddr, offset: 0, limit: 10 },
     }
   );
 
@@ -126,7 +129,6 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
     if (transactionsCount !== txData.txnsByAddr.length) {
       setTransactionsCount(txData.txnsByAddr.length);
     }
-    console.log(txData);
   }
 
   return (
@@ -193,12 +195,14 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
                 <div className="center-spinner">
                   <Spinner animation="border" />
                 </div>
-              ) : (
+              ) : null}
+              {txData && txData.txnsByAddr ? (
                 <TransactionsCard
                   transactions={txData.txnsByAddr}
                   addr={addrRef.current}
                 />
-              )}
+              ) : null}
+              {error ? "Error while loading transactions" : null}
             </Card.Body>
           </Card>
 

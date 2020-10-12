@@ -3,13 +3,9 @@ import { OverlayTrigger, Tooltip, Card, Spinner } from "react-bootstrap";
 
 import { QueryPreservingLink } from "src/services/network/networkProvider";
 
-import { useQuery, gql } from "@apollo/client";
-
 import {
   qaToZil,
   hexAddrToZilAddr,
-  zilAddrToHexAddr,
-  stripHexPrefix,
 } from "src/utils/Utils";
 
 import ToAddrDispSimplified from "src/components/Misc/Disp/ToAddrDisp/ToAddrDispSimplified";
@@ -29,13 +25,13 @@ const TransactionsCard: React.FC<IProps> = ({ transactions, addr }) => {
       {
         id: "from-col",
         Header: "From",
-        accessor: "from",
+        accessor: "fromAddr",
         Cell: ({ value }: { value: string }) => {
           const ziladdr = hexAddrToZilAddr(value);
           return (
             <>
               {addr === ziladdr ? (
-                addr
+                <span className="text-muted">{addr}</span>
               ) : (
                 <QueryPreservingLink to={`/address/${ziladdr}`}>
                   {ziladdr}
@@ -51,12 +47,10 @@ const TransactionsCard: React.FC<IProps> = ({ transactions, addr }) => {
         Cell: ({ row }: { row: any }) => {
           return (
             <ToAddrDispSimplified
-              ownAddress={addr}
-              txnDetails={{
-                txn: row.original,
-                hash: row.original.ID,
-                toAddr: row.original.toAddr,
-              }}
+              fromAddr={row.original.fromAddr}
+              toAddr={row.original.toAddr}
+              txType={row.original.type}
+              addr={addr}
             />
           );
         },
@@ -98,13 +92,15 @@ const TransactionsCard: React.FC<IProps> = ({ transactions, addr }) => {
       {
         id: "fee-col",
         Header: "Fee",
-        accessor: "receipt",
-        Cell: ({ value }: { value: { cumulative_gas: string } }) => {
-          const fee = parseFloat(value.cumulative_gas) * 1000000;
+        Cell: ({ row }: any) => {
+          console.log(row.original.receipt);
+          const fee =
+            parseFloat(row.original.receipt.cumulative_gas) *
+            row.original.gasPrice;
           return (
             <OverlayTrigger
               placement="top"
-              overlay={<Tooltip id={"fee-tt"}>{qaToZil(fee)}</Tooltip>}
+              overlay={<Tooltip id={"fee-tt"}>{fee} Qa</Tooltip>}
             >
               <div className="text-center sm">{qaToZil(fee, 4)}</div>
             </OverlayTrigger>

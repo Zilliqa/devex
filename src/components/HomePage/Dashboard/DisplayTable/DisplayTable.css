@@ -30,6 +30,9 @@
 .display-table td {
   padding: 0.35rem 0.5rem;
 }
+.display-table td.type-cell {
+  width: 30px;
+}
 
 .display-table [role=cell] {
   overflow: hidden;

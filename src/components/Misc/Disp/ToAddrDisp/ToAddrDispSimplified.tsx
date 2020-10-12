@@ -1,12 +1,18 @@
 import React, { useContext, useState } from "react";
 
-import {
-  NetworkContext,
-  QueryPreservingLink,
-} from "src/services/network/networkProvider";
+import { QueryPreservingLink } from "src/services/network/networkProvider";
 import { TransactionDetails } from "src/typings/api";
-import { hexAddrToZilAddr } from "src/utils/Utils";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
+import {
+  hexAddrToZilAddr,
+  zilAddrToHexAddr,
+  stripHexPrefix,
+} from "src/utils/Utils";
+
+import { ReactComponent as LeftArrow } from "src/assets/images/left-arrow.svg";
+import { ReactComponent as RightArrow } from "src/assets/images/right-arrow.svg";
+import { ReactComponent as BothArrow } from "src/assets/images/both-arrow.svg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileContract } from "@fortawesome/free-solid-svg-icons";
 
@@ -14,24 +20,50 @@ interface IProps {
   txnDetails: TransactionDetails;
 }
 
-const ToAddrDispSimplified: any = ({ txnDetails, ownAddress }: any) => {
-  const networkContext = useContext(NetworkContext);
-  const { dataService } = networkContext!;
+const ToAddrDispSimplified: any = ({ toAddr, fromAddr, txType, addr }: any) => {
+  const hexAddr = stripHexPrefix(zilAddrToHexAddr(addr));
+  let type: any;
 
-  const [details, setDetails] = useState(txnDetails);
+  if (fromAddr.toLowerCase() === toAddr.toLowerCase()) {
+    type = <BothArrow width="20px" height="14px" fill="gray" />;
+  } else {
+    type =
+      fromAddr.toLowerCase() === hexAddr ? (
+        <RightArrow width="20px" height="14px" fill="red" />
+      ) : (
+        <LeftArrow width="20px" height="14px" fill="green" />
+      );
+  }
 
-  if (!dataService) return;
+  let txTypeIcon: any = undefined;
 
-  /*   dataService
-    .getTransactionDetailsSimplified(txnDetails)
-    .then((details) => setDetails(details)); */
+  if (txType === "contract-creation") {
+    txTypeIcon = (
+      <FontAwesomeIcon color="darkturquoise" icon={faFileContract} />
+    );
+  }
 
-  return ownAddress === hexAddrToZilAddr(details.toAddr) ? (
-    <div>{hexAddrToZilAddr(details.toAddr)}</div>
-  ) : (
-    <QueryPreservingLink to={`/address/${hexAddrToZilAddr(details.toAddr)}`}>
-      {hexAddrToZilAddr(details.toAddr)}
-    </QueryPreservingLink>
+  if (txType === "contract-call") {
+    txTypeIcon = <FontAwesomeIcon color="darkorange" icon={faFileContract} />;
+  }
+
+  return (
+    <OverlayTrigger
+      placement="top"
+      overlay={<Tooltip id={"overlay-to"}>{txType}</Tooltip>}
+    >
+      <div className="d-flex align-items-center">
+        <span className="badge">{type}</span>
+        {txTypeIcon ? <div className="mr-2">{txTypeIcon}</div> : null}
+        {toAddr.toLowerCase() !== hexAddr ? (
+          <QueryPreservingLink to={`/address/${hexAddrToZilAddr(toAddr)}`}>
+            {hexAddrToZilAddr(toAddr)}
+          </QueryPreservingLink>
+        ) : (
+          <span className="text-muted">{addr}</span>
+        )}
+      </div>
+    </OverlayTrigger>
   );
 };
 
