@@ -17,7 +17,7 @@ import {
 import AddressDisp from "src/components/Misc/Disp/AddressDisp/AddressDisp";
 import { NetworkContext } from "src/services/network/networkProvider";
 import { AccData } from "src/typings/api";
-import { qaToZil, zilAddrToHexAddr } from "src/utils/Utils";
+import { qaToZil, zilAddrToHexAddr, stripHexPrefix } from "src/utils/Utils";
 import { ContractObj } from "@zilliqa-js/contract/src/types";
 import { useQuery, gql } from "@apollo/client";
 
@@ -87,7 +87,6 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
         if (accData) setAccData(accData);
         if (accContracts) setAccContracts(accContracts);
       } catch (e) {
-        console.log(e);
         setAccData({
           balance: "0",
           nonce: "-",
@@ -100,36 +99,77 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
   }, [dataService]);
 
   const ACCOUNT_TRANSACTIONS = gql`
-    query GetTransactions($addr: String!, $offset: Int, $limit: Int) {
-      txnsByAddr(addr: $addr, offset: $offset, limit: $limit) {
-        ID
-        receipt {
-          success
-          cumulative_gas
+    query GetTransactions($addr: String!, $page: Int) {
+      txPagination(
+        page: $page
+        filter: {
+          OR: [
+            { fromAddr: $addr }
+            { toAddr: $addr }
+            { receipt: { transitions: { addr: $addr } } }
+            { receipt: { transitions: { msg: { _recipient: $addr } } } }
+          ]
         }
-        gasPrice
-        fromAddr
-        toAddr
-        amount
-        type
+      ) {
+        count
+        items {
+          ID
+          receipt {
+            success
+            cumulative_gas
+            transitions {
+              addr
+              msg {
+                _recipient
+              }
+            }
+          }
+          gasPrice
+          gasLimit
+          fromAddr
+          toAddr
+          amount
+          type
+        }
+        pageInfo {
+          currentPage
+          perPage
+          pageCount
+          itemCount
+          hasNextPage
+          hasPreviousPage
+        }
       }
     }
   `;
 
   const hexAddr = zilAddrToHexAddr(addr);
 
-  const { loading: transactionsLoading, error, data: txData } = useQuery(
-    ACCOUNT_TRANSACTIONS,
-    {
-      variables: { addr: hexAddr, offset: 0, limit: 10 },
-    }
-  );
+  const {
+    loading: transactionsLoading,
+    error,
+    data: txData,
+    fetchMore,
+  } = useQuery(ACCOUNT_TRANSACTIONS, {
+    variables: { addr: stripHexPrefix(hexAddr), page: 1 },
+    fetchPolicy: "cache-and-network",
+  });
 
-  if (txData) {
-    if (transactionsCount !== txData.txnsByAddr.length) {
-      setTransactionsCount(txData.txnsByAddr.length);
-    }
+  if (txData && transactionsCount !== txData.txPagination.count) {
+    setTransactionsCount(txData.txPagination.count);
   }
+
+  const localFetch = (page: Number) => {
+    return fetchMore({
+      variables: {
+        page,
+      },
+      updateQuery: (prev: any, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        return fetchMoreResult;
+      },
+    });
+  };
 
   return (
     <>
@@ -189,16 +229,81 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
           </Card>
 
           <h4 className="py-2">Transactions</h4>
-          <Card className="txblock-card mb-4">
+          <div className="row align-items-center mb-0">
+            <div className="col subtext">
+              Items Per Page: <strong>20</strong>
+            </div>
+            <div className="col">
+              {txData && txData.txPagination ? (
+                <Pagination className="justify-content-end">
+                  <Pagination.Prev
+                    onClick={() =>
+                      localFetch(txData.txPagination.pageInfo.currentPage - 1)
+                    }
+                    disabled={!txData.txPagination.pageInfo.hasPreviousPage}
+                  />
+                  {generatePagination(
+                    txData.txPagination.pageInfo.currentPage + 1,
+                    txData.txPagination.pageInfo.pageCount
+                  ).map((page) => {
+                    if (page === -1)
+                      return (
+                        <Pagination.Ellipsis
+                          key={page}
+                          onClick={() =>
+                            localFetch(
+                              txData.txPagination.pageInfo.currentPage - 5
+                            )
+                          }
+                        />
+                      );
+                    else if (page === -2)
+                      return (
+                        <Pagination.Ellipsis
+                          key={page}
+                          onClick={() =>
+                            localFetch(
+                              txData.txPagination.pageInfo.currentPage + 5
+                            )
+                          }
+                        />
+                      );
+                    else if (page === txData.txPagination.pageInfo.currentPage)
+                      return (
+                        <Pagination.Item key={page} active>
+                          {page}
+                        </Pagination.Item>
+                      );
+                    else
+                      return (
+                        <Pagination.Item
+                          key={page}
+                          onClick={() => localFetch(Number(page))}
+                        >
+                          {page}
+                        </Pagination.Item>
+                      );
+                  })}
+                  <Pagination.Next
+                    onClick={() =>
+                      localFetch(txData.txPagination.pageInfo.currentPage + 1)
+                    }
+                    disabled={!txData.txPagination.pageInfo.hasNextPage}
+                  />
+                </Pagination>
+              ) : null}
+            </div>
+          </div>
+          <Card className="txblock-card mt-0 mb-4">
             <Card.Body>
               {transactionsLoading ? (
                 <div className="center-spinner">
                   <Spinner animation="border" />
                 </div>
               ) : null}
-              {txData && txData.txnsByAddr ? (
+              {txData && txData.txPagination ? (
                 <TransactionsCard
-                  transactions={txData.txnsByAddr}
+                  transactions={txData.txPagination.items}
                   addr={addrRef.current}
                 />
               ) : null}

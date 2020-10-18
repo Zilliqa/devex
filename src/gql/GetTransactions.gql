@@ -1,0 +1,42 @@
+query GetTransactions($addr: String!) {
+  txPagination(
+    page: 1
+    filter: {
+      OR: [
+        { fromAddr: $addr }
+        { toAddr: $addr }
+        { receipt: { transitions: { addr: $addr } } }
+        { receipt: { transitions: { msg: { _recipient: $addr } } } }
+      ]
+    }
+  ) {
+    count
+    items {
+      ID
+      receipt {
+        success
+        cumulative_gas
+        transitions {
+          addr
+          msg {
+            _recipient
+          }
+        }
+      }
+      gasPrice
+      gasLimit
+      fromAddr
+      toAddr
+      amount
+      type
+    }
+    pageInfo {
+      currentPage
+      perPage
+      pageCount
+      itemCount
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}

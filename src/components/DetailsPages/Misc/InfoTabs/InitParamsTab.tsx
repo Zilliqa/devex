@@ -11,7 +11,6 @@ interface IProps {
 }
 
 const InitParamsTab: React.FC<IProps> = ({ initParams }) => {
-  console.log(initParams)
   return (
     <table className='init-params-table'>
       <tbody>

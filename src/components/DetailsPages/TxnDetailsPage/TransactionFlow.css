@@ -1,0 +1,6 @@
+.tx-block {
+  border: 1px solid #ccc;
+  min-height: 100px;
+  padding: 1rem;
+  font-size: 0.75rem;
+}

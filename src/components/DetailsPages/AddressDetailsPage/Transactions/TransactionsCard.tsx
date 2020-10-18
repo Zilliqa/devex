@@ -1,12 +1,9 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { OverlayTrigger, Tooltip, Card, Spinner } from "react-bootstrap";
 
 import { QueryPreservingLink } from "src/services/network/networkProvider";
 
-import {
-  qaToZil,
-  hexAddrToZilAddr,
-} from "src/utils/Utils";
+import { qaToZil, hexAddrToZilAddr } from "src/utils/Utils";
 
 import ToAddrDispSimplified from "src/components/Misc/Disp/ToAddrDisp/ToAddrDispSimplified";
 import DisplayTable from "src/components/HomePage/Dashboard/DisplayTable/DisplayTable";
@@ -16,10 +13,54 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface IProps {
   transactions: [];
+  fungibleToken?: any;
   addr: string;
 }
 
-const TransactionsCard: React.FC<IProps> = ({ transactions, addr }) => {
+const TransactionsCard: React.FC<IProps> = ({
+  transactions: txs,
+  addr,
+  fungibleToken,
+}) => {
+  const transactions: any[] = txs.flatMap(
+    (tx: { receipt: { transitions: [] } }) => {
+      if (fungibleToken && tx.receipt.transitions.length) {
+        console.log(tx.receipt.transitions)
+        const tokenTx: any | undefined = tx.receipt.transitions.find(
+          (transition: { msg: { _tag: string } }) =>
+            transition.msg._tag === "TransferSuccessCallBack"
+        );
+
+        if (tokenTx !== undefined) {
+          const toAddr = tokenTx.msg.params.find(
+            (p: any) => p.vname === "recipient"
+          );
+          const fromAddr = tokenTx.msg.params.find(
+            (p: any) => p.vname === "sender"
+          );
+          const amount = tokenTx.msg.params.find(
+            (p: any) => p.vname === "amount"
+          );
+          return [
+            { ...tx },
+            {
+              ...tx,
+              ID: "token-transfer",
+              toAddr: toAddr.value,
+              fromAddr: fromAddr.value,
+              amount: amount.value,
+              type: "token-transfer",
+              fungibleToken,
+            },
+          ];
+        }
+      }
+      return {
+        ...tx,
+      };
+    }
+  );
+
   const columns = useMemo(
     () => [
       {
@@ -60,7 +101,7 @@ const TransactionsCard: React.FC<IProps> = ({ transactions, addr }) => {
         Header: "Hash",
         accessor: "hash",
         Cell: ({ row }: { row: any }) => {
-          return (
+          return row.original.ID !== "token-transfer" ? (
             <QueryPreservingLink to={`/tx/0x${row.original.ID}`}>
               <div className="text-right mono">
                 {row.original.receipt && !row.original.receipt.success && (
@@ -73,27 +114,37 @@ const TransactionsCard: React.FC<IProps> = ({ transactions, addr }) => {
                 {"0x" + row.original.ID}
               </div>
             </QueryPreservingLink>
+          ) : (
+            `${fungibleToken.name.value} Transfer`
           );
         },
       },
       {
         id: "amount-col",
         Header: "Amount",
-        accessor: "amount",
-        Cell: ({ value }: { value: string }) => (
-          <OverlayTrigger
-            placement="right"
-            overlay={<Tooltip id={"amt-tt"}>{qaToZil(value)}</Tooltip>}
-          >
-            <div className="text-right sm">{qaToZil(value, 13)}</div>
-          </OverlayTrigger>
-        ),
+        Cell: ({ row }: any) => {
+          const value = row.original.amount;
+          let formattedValue: string = qaToZil(value);
+
+          if (row.original.ID === "token-transfer") {
+            formattedValue =
+              value / Math.pow(10, parseInt(fungibleToken.decimals.value)) +
+              ` ${fungibleToken.symbol.value}`;
+          }
+          return (
+            <OverlayTrigger
+              placement="right"
+              overlay={<Tooltip id={"amt-tt"}>{value}</Tooltip>}
+            >
+              <div className="text-right sm">{formattedValue}</div>
+            </OverlayTrigger>
+          );
+        },
       },
       {
         id: "fee-col",
         Header: "Fee",
         Cell: ({ row }: any) => {
-          console.log(row.original.receipt);
           const fee =
             parseFloat(row.original.receipt.cumulative_gas) *
             row.original.gasPrice;
@@ -111,7 +162,11 @@ const TransactionsCard: React.FC<IProps> = ({ transactions, addr }) => {
     [addr]
   );
 
-  return <DisplayTable columns={columns} data={transactions} />;
+  return (
+    <div>
+      <DisplayTable columns={columns} data={transactions} />
+    </div>
+  );
 };
 
 export default TransactionsCard;

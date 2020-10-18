@@ -15,8 +15,10 @@ import InfoTabs, { generateTabsFromTxnDetails } from '../Misc/InfoTabs/InfoTabs'
 import LabelStar from '../Misc/LabelComponent/LabelStar'
 import NotFoundPage from '../../ErrorPages/NotFoundPage'
 import ViewBlockLink from '../Misc/ViewBlockLink/ViewBlockLink'
+import TransactionFlow from "./TransactionFlow";
 
 import './TxnDetailsPage.css'
+
 
 const TxnDetailsPage: React.FC = () => {
 
@@ -177,6 +179,7 @@ const TxnDetailsPage: React.FC = () => {
               </Container>
             </Card.Body>
           </Card>
+          <TransactionFlow hash={txnHash} />
           <InfoTabs tabs={generateTabsFromTxnDetails(data)} />
         </>
       )}

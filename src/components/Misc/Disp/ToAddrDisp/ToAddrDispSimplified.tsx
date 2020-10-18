@@ -55,7 +55,9 @@ const ToAddrDispSimplified: any = ({ toAddr, fromAddr, txType, addr }: any) => {
       <div className="d-flex align-items-center">
         <span className="badge">{type}</span>
         {txTypeIcon ? <div className="mr-2">{txTypeIcon}</div> : null}
-        {toAddr.toLowerCase() !== hexAddr ? (
+        {txType === "contract-creation" ? (
+          <div>Contract</div>
+        ) : toAddr.toLowerCase() !== hexAddr ? (
           <QueryPreservingLink to={`/address/${hexAddrToZilAddr(toAddr)}`}>
             {hexAddrToZilAddr(toAddr)}
           </QueryPreservingLink>
