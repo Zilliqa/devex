@@ -110,6 +110,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
             { receipt: { transitions: { msg: { _recipient: $addr } } } }
           ]
         }
+        sort: TIMESTAMP_DESC
       ) {
         count
         items {
@@ -129,6 +130,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
           fromAddr
           toAddr
           amount
+          timestamp
           type
         }
         pageInfo {
@@ -151,7 +153,7 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
     data: txData,
     fetchMore,
   } = useQuery(ACCOUNT_TRANSACTIONS, {
-    variables: { addr: stripHexPrefix(hexAddr), page: 1 },
+    variables: { addr: hexAddr, page: 1 },
     fetchPolicy: "cache-and-network",
   });
 

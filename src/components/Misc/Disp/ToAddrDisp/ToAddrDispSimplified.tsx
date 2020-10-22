@@ -53,12 +53,11 @@ const ToAddrDispSimplified: any = ({ toAddr, fromAddr, txType, addr }: any) => {
       overlay={<Tooltip id={"overlay-to"}>{txType}</Tooltip>}
     >
       <div className="d-flex align-items-center">
-        <span className="badge">{type}</span>
         {txTypeIcon ? <div className="mr-2">{txTypeIcon}</div> : null}
         {txType === "contract-creation" ? (
           <div>Contract</div>
         ) : toAddr.toLowerCase() !== hexAddr ? (
-          <QueryPreservingLink to={`/address/${hexAddrToZilAddr(toAddr)}`}>
+          <QueryPreservingLink to={`/address/${hexAddrToZilAddr(toAddr)}`} className="ellipsis mono">
             {hexAddrToZilAddr(toAddr)}
           </QueryPreservingLink>
         ) : (

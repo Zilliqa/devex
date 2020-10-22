@@ -3,13 +3,18 @@ import { OverlayTrigger, Tooltip, Card, Spinner } from "react-bootstrap";
 
 import { QueryPreservingLink } from "src/services/network/networkProvider";
 
-import { qaToZil, hexAddrToZilAddr } from "src/utils/Utils";
+import { qaToZilSimplified, qaToZil, hexAddrToZilAddr } from "src/utils/Utils";
+import numbro from "numbro";
 
 import ToAddrDispSimplified from "src/components/Misc/Disp/ToAddrDisp/ToAddrDispSimplified";
 import DisplayTable from "src/components/HomePage/Dashboard/DisplayTable/DisplayTable";
+import TypeDisplay from "./TypeDisplay";
+import AgeDisplay from "./AgeDisplay";
 
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import "./TransactionsCard.css";
 
 interface IProps {
   transactions: [];
@@ -25,7 +30,7 @@ const TransactionsCard: React.FC<IProps> = ({
   const transactions: any[] = txs.flatMap(
     (tx: { receipt: { transitions: [] } }) => {
       if (fungibleToken && tx.receipt.transitions.length) {
-        console.log(tx.receipt.transitions)
+        console.log(tx.receipt.transitions);
         const tokenTx: any | undefined = tx.receipt.transitions.find(
           (transition: { msg: { _tag: string } }) =>
             transition.msg._tag === "TransferSuccessCallBack"
@@ -64,6 +69,39 @@ const TransactionsCard: React.FC<IProps> = ({
   const columns = useMemo(
     () => [
       {
+        id: "alert-col",
+        Header: "",
+        Cell: ({ row }: { row: any }) => {
+          return (
+            <div className="d-flex align-items-center justify-content-start">
+              {row.original.receipt && !row.original.receipt.success && (
+                <FontAwesomeIcon icon={faExclamationCircle} color="red" />
+              )}
+              <AgeDisplay className="ml-2" timestamp={row.original.timestamp} />
+            </div>
+          );
+        },
+      },
+      {
+        id: "hash-col",
+        Header: "Hash",
+        accessor: "hash",
+        Cell: ({ row }: { row: any }) => {
+          return row.original.ID !== "token-transfer" ? (
+            <QueryPreservingLink
+              to={`/tx/0x${row.original.ID}`}
+              className="d-flex"
+            >
+              <div className="text-right mono ellipsis">
+                {"0x" + row.original.ID}
+              </div>
+            </QueryPreservingLink>
+          ) : (
+            `${fungibleToken.name.value} Transfer`
+          );
+        },
+      },
+      {
         id: "from-col",
         Header: "From",
         accessor: "fromAddr",
@@ -83,6 +121,21 @@ const TransactionsCard: React.FC<IProps> = ({
         },
       },
       {
+        id: "type-col",
+        Header: "",
+        Cell: ({ row }: { row: any }) => {
+          return (
+            <>
+              <TypeDisplay
+                fromAddr={row.original.fromAddr}
+                toAddr={row.original.toAddr}
+                addr={addr}
+              />
+            </>
+          );
+        },
+      },
+      {
         id: "to-col",
         Header: "To",
         Cell: ({ row }: { row: any }) => {
@@ -97,34 +150,15 @@ const TransactionsCard: React.FC<IProps> = ({
         },
       },
       {
-        id: "hash-col",
-        Header: "Hash",
-        accessor: "hash",
-        Cell: ({ row }: { row: any }) => {
-          return row.original.ID !== "token-transfer" ? (
-            <QueryPreservingLink to={`/tx/0x${row.original.ID}`}>
-              <div className="text-right mono">
-                {row.original.receipt && !row.original.receipt.success && (
-                  <FontAwesomeIcon
-                    className="mr-1"
-                    icon={faExclamationCircle}
-                    color="red"
-                  />
-                )}
-                {"0x" + row.original.ID}
-              </div>
-            </QueryPreservingLink>
-          ) : (
-            `${fungibleToken.name.value} Transfer`
-          );
-        },
-      },
-      {
         id: "amount-col",
         Header: "Amount",
         Cell: ({ row }: any) => {
           const value = row.original.amount;
-          let formattedValue: string = qaToZil(value);
+          let formattedValue: string =
+            numbro(qaToZilSimplified(value)).format({
+              thousandSeparated: true,
+              mantissa: 3,
+            }) + " ZIL";
 
           if (row.original.ID === "token-transfer") {
             formattedValue =
@@ -133,8 +167,12 @@ const TransactionsCard: React.FC<IProps> = ({
           }
           return (
             <OverlayTrigger
-              placement="right"
-              overlay={<Tooltip id={"amt-tt"}>{value}</Tooltip>}
+              placement="top"
+              overlay={
+                <Tooltip id={"amt-tt"}>
+                  {numbro(value).format({ thousandSeparated: true })}
+                </Tooltip>
+              }
             >
               <div className="text-right sm">{formattedValue}</div>
             </OverlayTrigger>

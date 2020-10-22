@@ -26,7 +26,8 @@ import {
 import { ContractObj } from "@zilliqa-js/contract/src/types";
 import { useQuery, gql } from "@apollo/client";
 
-import * as d3 from "d3";
+
+import TxBlock from "./TxBlock";
 
 import "./TransactionFlow.css";
 
@@ -37,9 +38,6 @@ interface IProps {
 const TransactionFlow: React.FC<IProps> = ({ hash }) => {
   const [transaction, setTransaction] = useState<any>(undefined);
   const [transitions, setTransitions] = useState<any>(undefined);
-
-  const width = 1000;
-  const height = 460;
 
   const ref: any = useRef<SVGElement>();
 
@@ -112,127 +110,53 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
         });
       });
 
-      const margin = { top: 10, right: 30, bottom: 30, left: 40 },
-        width = 1000 - margin.left - margin.right,
-        height = 600 - margin.top - margin.bottom;
+      const nodesTree: any = [];
 
-      // append the svg object to the body of the page
-      const svg = d3
-        .select(ref.current)
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-      const dW = 240;
-      const dH = 30;
-
-      const link: any = svg
-        .selectAll("line")
-        .data(links)
-        .enter()
-        .append("line")
-        .attr("class", "link")
-        .style("stroke", "#aaa");
-
-      const node = svg
-        .append("g")
-        .attr("class", "nodes")
-        .selectAll("rect")
-        .data(nodes)
-        .enter()
-        .append("rect")
-        .attr("x", 10)
-        .attr("y", 10)
-        .attr("width", dW)
-        .attr("height", dH);
-
-      const label = svg
-        .append("g")
-        .attr("class", "labels")
-        .selectAll("text")
-        .data(nodes)
-        .enter()
-        .append("text")
-        .attr("class", "label")
-        .text(function (d: any) {
-          return d.id;
-        });
-
-      // This function is run at each iteration of the force algorithm, updating the nodes position.
-      const ticked = function () {
-        link
-          .attr("x1", function (d: any) {
-            return d.source.x + dW;
-          })
-          .attr("y1", function (d: any) {
-            return d.source.y;
-          })
-          .attr("x2", function (d: any) {
-            return d.target.x + dW;
-          })
-          .attr("y2", function (d: any) {
-            return d.target.y;
+      links.forEach((link: { data: {}; source: string; target: string }) => {
+        if (link.source === transaction.fromAddr)
+          return nodesTree.push({
+            ...link,
           });
 
-        node
-          .style("fill", "#d9d9d9")
-          .style("stroke", "#969696")
-          .style("stroke-width", "1px")
-          .attr("x", function (d: any) {
-            return d.x;
-          })
-          .attr("y", function (d: any) {
-            return d.y;
-          });
+        const parentIndex = links.findIndex(
+          (n: any) => n.target === link.source
+        );
 
-        label
-          .attr("x", function (d: any) {
-            return d.x + dW;
-          })
-          .attr("y", function (d: any) {
-            return d.y - dH / 1.5;
-          })
-          .style("font-size", "10px")
-          .style("fill", "#000");
-      };
+        if (!links[parentIndex].children) {
+          return (links[parentIndex].children = [link]);
+        }
 
-      console.log(nodes, links);
-
-      // Let's list the force we wanna apply on the network
-      const simulation = d3
-        .forceSimulation(nodes) // Force algorithm is applied to data.nodes
-        .force("alpha", function (alpha) {
-          for (let i = 0, n = nodes.length, node, k = alpha * 0.1; i < n; ++i) {
-            node = nodes[i];
-            node.x = dW * i + (20 * i);
-            node.y = 10;
-          }
-        })
-        /* .force("center", d3.forceCenter(width / 4, height / 2))
-        .force("charge", d3.forceManyBody().strength(-100)) */
-        /* .force(
-          "link",
-          d3
-            .forceLink() // This force provides links between nodes
-            .id(function (d: any) {
-              return d.id;
-            }) // This provide  the id of a node
-            .distance(function () {
-              return 200
-            })
-            .links(links) // and this the list of links
-        ) */
-        .on("end", ticked);
-
-      console.log(simulation);
+        links[parentIndex].children.push(link);
+      });
 
       if (links !== transitions) {
         setTransitions(links);
       }
     }
   }, [transaction]);
+
+  const recursiveBlocks = (links: any): any => {
+    return links.map(
+      (
+        link: {
+          children: any[];
+          source: string;
+          target: string;
+          data?: { msg?: any };
+        },
+        index: number
+      ) => {
+        return (
+          <div className="d-flex align-items-center" key={index}>
+            <TxBlock link={link} />
+            {link.children ? (
+              <div className="children">{recursiveBlocks(link.children)}</div>
+            ) : null}
+          </div>
+        );
+      }
+    );
+  };
 
   return (
     <div>
@@ -245,8 +169,16 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
         <div className="alert alert-danger">{error}</div>
       ) : (
         transaction && (
-          <div className="d-flex">
-            <div id="d3-viewer" ref={ref}></div>
+          <div className="mt-4">
+            <h3 className="mb-4">Transaction Flow</h3>
+            <div className="transaction-flow d-flex">
+              {transitions && transitions[0] ? (
+                <div className="transactions-flow">
+                  {recursiveBlocks([transitions[0]])}
+                </div>
+              ) : null}
+              <div id="d3-viewer" ref={ref}></div>
+            </div>
           </div>
         )
       )}

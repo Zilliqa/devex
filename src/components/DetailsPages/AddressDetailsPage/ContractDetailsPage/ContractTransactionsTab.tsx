@@ -60,58 +60,51 @@ const ContractTransactionsTab: React.FC<IProps> = ({
   );
 
   const ACCOUNT_TRANSACTIONS = gql`
-    query GetTransactions($addr: String!, $page: Int) {
-      txPagination(
-        page: $page
-        filter: {
-          OR: [
-            { fromAddr: $addr }
-            { toAddr: $addr }
-            { receipt: { transitions: { addr: $addr } } }
-            { receipt: { transitions: { msg: { _recipient: $addr } } } }
-          ]
-        }
-      ) {
-        count
-        items {
-          ID
-          receipt {
-            success
-            cumulative_gas
-            transitions {
-              accepted
-              addr
-              msg {
-                _recipient
-                _amount
-                _tag
-                params {
-                  vname
-                  value
-                }
-              }
+  query GetTransactions($addr: String!, $page: Int) {
+    txPagination(
+      page: $page
+      filter: {
+        OR: [
+          { fromAddr: $addr }
+          { toAddr: $addr }
+          { receipt: { transitions: { addr: $addr } } }
+          { receipt: { transitions: { msg: { _recipient: $addr } } } }
+        ]
+      }
+      sort: TIMESTAMP_DESC
+    ) {
+      count
+      items {
+        ID
+        receipt {
+          success
+          cumulative_gas
+          transitions {
+            addr
+            msg {
+              _recipient
             }
           }
-          gasPrice
-          gasLimit
-          fromAddr
-          toAddr
-          amount
-          type
         }
-        pageInfo {
-          currentPage
-          perPage
-          pageCount
-          itemCount
-          hasNextPage
-          hasPreviousPage
-        }
+        gasPrice
+        gasLimit
+        fromAddr
+        toAddr
+        amount
+        timestamp
+        type
+      }
+      pageInfo {
+        currentPage
+        perPage
+        pageCount
+        itemCount
+        hasNextPage
+        hasPreviousPage
       }
     }
+  }
   `;
-
-  console.log(contractAddr);
 
   const hexAddr = zilAddrToHexAddr(contractAddr);
 
@@ -121,7 +114,7 @@ const ContractTransactionsTab: React.FC<IProps> = ({
     data: txData,
     fetchMore,
   } = useQuery(ACCOUNT_TRANSACTIONS, {
-    variables: { addr: stripHexPrefix(hexAddr), page: 1 },
+    variables: { addr: hexAddr, page: 1 },
     fetchPolicy: "cache-and-network",
   });
 
