@@ -2,7 +2,7 @@
   built on top of Zilliqa's Javascript SDK */
 import { Transaction } from '@zilliqa-js/account/src/transaction'
 import { Value } from '@zilliqa-js/contract/src/types'
-import { PendingTxnResult, DsBlockObj, TxBlockObj } from '@zilliqa-js/core/src/types'
+import { DsBlockObj, TxBlockObj } from '@zilliqa-js/core/src/types'
 
 export interface DsBlockObjWithHash extends DsBlockObj {
   Hash: string
@@ -34,10 +34,6 @@ export interface ContractData {
 export interface AccData {
   balance: string,
   nonce: string,
-}
-
-export interface PendingTxnResultWithHash extends PendingTxnResult {
-  hash: string
 }
 
 export interface IISInfo {

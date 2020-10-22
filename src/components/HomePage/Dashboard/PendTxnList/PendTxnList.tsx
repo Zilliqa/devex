@@ -4,7 +4,7 @@ import CustomScroll from 'react-custom-scroll'
 
 import { refreshRate } from 'src/constants'
 import { NetworkContext } from 'src/services/network/networkProvider'
-import { PendingTxnResultWithHash } from 'src/typings/api'
+import { TransactionStatus } from '@zilliqa-js/core/src/types'
 
 import DisplayTable from '../DisplayTable/DisplayTable'
 
@@ -18,13 +18,13 @@ const PendTxnList: React.FC = () => {
 
   useEffect(() => { setData(null) }, [networkUrl]) // Unset data on url change
 
-  const [data, setData] = useState<PendingTxnResultWithHash[] | null>(null)
+  const [data, setData] = useState<TransactionStatus[] | null>(null)
 
   const columns = useMemo(
     () => [{
       id: 'pend-hash-col',
       Header: 'Hash',
-      accessor: 'hash',
+      accessor: 'TxnHash',
       Cell: ({ value }: { value: string }) => (
         <div className='mono'>{'0x' + value}</div>
       )
@@ -52,7 +52,7 @@ const PendTxnList: React.FC = () => {
     let isCancelled = false
     if (!dataService) return
 
-    let receivedData: PendingTxnResultWithHash[]
+    let receivedData: TransactionStatus[]
     const getData = async () => {
       try {
         receivedData = await dataService.getLatest5PendingTransactions()

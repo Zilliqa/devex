@@ -24,7 +24,7 @@
   4) getTransactionsForTxBlock(blockNum: number): Promise<string[]>
   5) getTransactionsDetails(txnHashes: string[]): Promise<TransactionDetails[]>
   6) getRecentTransactions(): Promise<TxList>
-  7) getLatest5PendingTransactions(): Promise<PendingTxnResultWithHash[]>
+  7) getLatest5PendingTransactions(): Promise<TransactionStatus[]>
 
   Account-related:
   1) getAccData(accAddr: string): Promise<AccData>
@@ -52,11 +52,11 @@
 
 import { Zilliqa } from '@zilliqa-js/zilliqa'
 import { ContractObj } from '@zilliqa-js/contract/src/types'
-import { BlockchainInfo, DsBlockObj, TxBlockObj, TxList, MinerInfo, TransactionObj } from '@zilliqa-js/core/src/types'
+import { BlockchainInfo, DsBlockObj, TxBlockObj, TxList, MinerInfo, TransactionObj,TransactionStatus } from '@zilliqa-js/core/src/types'
 
 import {
   DsBlockObjWithHashListing, TxBlockObjListing, TransactionDetails, ContractData,
-  AccData, DsBlockObjWithHash, PendingTxnResultWithHash, IISInfo
+  AccData, DsBlockObjWithHash, IISInfo
 } from 'src/typings/api'
 import { hexAddrToZilAddr, stripHexPrefix } from 'src/utils/Utils'
 
@@ -282,19 +282,10 @@ export class DataService {
     return response.result as TxList
   }
 
-  async getLatest5PendingTransactions(): Promise<PendingTxnResultWithHash[]> {
+  async getLatest5PendingTransactions(): Promise<TransactionStatus[]> {
     console.log("getting 5 pending tx")
     const pendingTxns = await this.zilliqa.blockchain.getPendingTxns()
-    const txnHashes = pendingTxns.Txns.map((x) => x.TxnHash)
-    const output = await Promise.all(
-      txnHashes.map(async (txnHash: string) => {
-        const pendingTxn = await this.zilliqa.blockchain.getPendingTxn(txnHash)
-        return {
-          ...pendingTxn,
-          hash: txnHash,
-        } as PendingTxnResultWithHash
-      }))
-    return output as PendingTxnResultWithHash[]
+    return pendingTxns.Txns as TransactionStatus[]
   }
 
   //================================================================================
