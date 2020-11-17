@@ -14,23 +14,32 @@ interface IProps {
   fromAddr: string;
   toAddr: string;
   addr: string;
+  type?: string;
 }
 
-const TypeDisplay: React.FC<IProps> = ({ fromAddr, toAddr, addr }) => {
+const TypeDisplay: React.FC<IProps> = ({ fromAddr, toAddr, addr, type }) => {
   const hexAddr = zilAddrToHexAddr(addr);
-  let type: any;
+  let type2: any;
   let typeText: string;
 
+  // sender
+  if (hexAddr === fromAddr.toLowerCase()) {
+    type2 = <RightArrow width="20px" height="14px" fill="red" />;
+  }
+
+  // receiver
+  if (hexAddr === toAddr) {
+    if (type === "contract-call") {
+      type2 = <RightArrow width="20px" height="14px" fill="green" />;
+    } else {
+      type2 = <RightArrow width="20px" height="14px" fill="green" />;
+    }
+  }
+
   if (fromAddr.toLowerCase() === toAddr.toLowerCase()) {
-    type = <BothArrow width="20px" height="14px" fill="gray" />;
+    type2 = <BothArrow width="20px" height="14px" fill="gray" />;
     typeText = "SELF";
   } else {
-    type =
-      fromAddr.toLowerCase() === hexAddr ? (
-        <RightArrow width="20px" height="14px" fill="red" />
-      ) : (
-        <LeftArrow width="20px" height="14px" fill="green" />
-      );
     typeText = fromAddr.toLowerCase() === hexAddr ? "OUT" : "IN";
   }
 
@@ -39,7 +48,7 @@ const TypeDisplay: React.FC<IProps> = ({ fromAddr, toAddr, addr }) => {
       placement="top"
       overlay={<Tooltip id={"overlay-to"}>{typeText}</Tooltip>}
     >
-      <div>{type}</div>
+      <div>{type2}</div>
     </OverlayTrigger>
   );
 };

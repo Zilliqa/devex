@@ -26,7 +26,6 @@ import {
 import { ContractObj } from "@zilliqa-js/contract/src/types";
 import { useQuery, gql } from "@apollo/client";
 
-
 import TxBlock from "./TxBlock";
 
 import "./TransactionFlow.css";
@@ -42,18 +41,35 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
   const ref: any = useRef<SVGElement>();
 
   const TRANSACTION_QUERY = gql`
-    query GetTransition($customId: String!) {
+    query GetTransaction($customId: String!) {
       txFindByCustomId(customId: $customId) {
         fromAddr
         toAddr
         amount
-        transitions {
-          addr
-          msg {
-            _tag
-            _amount
-            _recipient
-            params
+        receipt {
+          event_logs {
+            address
+            _eventname
+            params {
+              vname
+              type
+              value
+            }
+          }
+          transitions {
+            accepted
+            addr
+            depth
+            msg {
+              _tag
+              _amount
+              _recipient
+              params {
+                vname
+                type
+                value
+              }
+            }
           }
         }
       }
@@ -74,11 +90,13 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
   }
 
   useEffect(() => {
-    if (transaction && transaction.transitions.length) {
+    if (transaction && transaction.receipt.transitions.length) {
       const links: any = [
         {
           source: transaction.fromAddr,
           target: transaction.toAddr,
+          amount: transaction.amount,
+          index: 0,
         },
       ];
 
@@ -91,7 +109,9 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
         },
       ];
 
-      transaction.transitions.forEach((tr: any) => {
+      let ioo = 0;
+      transaction.receipt.transitions.forEach((tr: any) => {
+        ioo++;
         if (!nodes.find((node: any) => node.id === tr.addr)) {
           nodes.push({
             id: tr.addr,
@@ -103,39 +123,60 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
           });
         }
 
+        const events = transaction.receipt.event_logs.filter(
+          (evv: any) => evv.address === tr.msg._recipient
+        );
+
         links.push({
           source: tr.addr,
           target: tr.msg._recipient,
           data: { ...tr },
+          index: ioo,
+          events: events,
         });
       });
 
-      const nodesTree: any = [];
+      const nest = (items: any, parent: any, nodes: any = []) => {
+        const nested: any = [];
 
-      links.forEach((link: { data: {}; source: string; target: string }) => {
-        if (link.source === transaction.fromAddr)
-          return nodesTree.push({
-            ...link,
-          });
+        Object.values(items).forEach((item: any) => {
+          // parent can be a string or a number
+          /* eslint-disable-next-line eqeqeq */
+          if (item.source === parent) {
+            nodes.push(item.source);
 
-        const parentIndex = links.findIndex(
-          (n: any) => n.target === link.source
-        );
+            if (!nodes.includes(item.target)) {
+              const children: any = nest(items, item.target, nodes);
 
-        if (!links[parentIndex].children) {
-          return (links[parentIndex].children = [link]);
-        }
+              if (children.length) {
+                /* eslint-disable-next-line no-param-reassign */
+                item.children = children;
+              }
+            }
 
-        links[parentIndex].children.push(link);
-      });
+            nested.push(item);
+          }
+        });
+
+        return nested;
+      };
+
+      const tree = nest(links, transaction.fromAddr);
 
       if (links !== transitions) {
-        setTransitions(links);
+        console.log("----------");
+        console.log("----------");
+        console.log("----------");
+        console.log(tree);
+        console.log("----------");
+        console.log("----------");
+        console.log("----------");
+        setTransitions(tree);
       }
     }
   }, [transaction]);
 
-  const recursiveBlocks = (links: any): any => {
+  const recursiveBlocks = (links: any, parent: any = undefined): any => {
     return links.map(
       (
         link: {
@@ -143,14 +184,25 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
           source: string;
           target: string;
           data?: { msg?: any };
+          index?: any;
         },
         index: number
       ) => {
         return (
           <div className="d-flex align-items-center" key={index}>
-            <TxBlock link={link} />
+            {link.index === 0 ? (
+              <TxBlock
+                link={{ ...link, index: -9 }}
+                noDetails={true}
+                parent={parent}
+              />
+            ) : null}
+
+            <TxBlock link={link} parent={parent} />
             {link.children ? (
-              <div className="children">{recursiveBlocks(link.children)}</div>
+              <div className="children">
+                {recursiveBlocks(link.children, link)}
+              </div>
             ) : null}
           </div>
         );
@@ -172,11 +224,14 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
           <div className="mt-4">
             <h3 className="mb-4">Transaction Flow</h3>
             <div className="transaction-flow d-flex">
-              {transitions && transitions[0] ? (
-                <div className="transactions-flow">
-                  {recursiveBlocks([transitions[0]])}
+              <div className="transactions-flow">
+                <div className="d-flex align-items-center">
+                  {transitions && transitions[0] ? (
+                    <>{recursiveBlocks(transitions, undefined)}</>
+                  ) : null}
                 </div>
-              ) : null}
+              </div>
+
               <div id="d3-viewer" ref={ref}></div>
             </div>
           </div>

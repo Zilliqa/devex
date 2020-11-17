@@ -23,7 +23,7 @@ document
   .setAttribute("content", `width=${siteWidth}, initial-scale=${scale}`);
 
 const client = new ApolloClient({
-  uri: "http://localhost:5000",
+  uri: "http://52.40.225.128:5000",
   cache: new InMemoryCache(),
 });
 

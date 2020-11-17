@@ -15,7 +15,7 @@ import InfoTabs, { generateTabsFromTxnDetails } from '../Misc/InfoTabs/InfoTabs'
 import LabelStar from '../Misc/LabelComponent/LabelStar'
 import NotFoundPage from '../../ErrorPages/NotFoundPage'
 import ViewBlockLink from '../Misc/ViewBlockLink/ViewBlockLink'
-import TransactionFlow from "./TransactionFlow";
+import TransactionFlow from "./TransactionFlowNew";
 
 import './TxnDetailsPage.css'
 

@@ -124,12 +124,14 @@ const TransactionsCard: React.FC<IProps> = ({
         id: "type-col",
         Header: "",
         Cell: ({ row }: { row: any }) => {
+          console.log(row.original);
           return (
             <>
               <TypeDisplay
                 fromAddr={row.original.fromAddr}
                 toAddr={row.original.toAddr}
                 addr={addr}
+                type={row.original.type}
               />
             </>
           );
