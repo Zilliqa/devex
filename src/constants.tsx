@@ -1,1 +1,1 @@
-export const refreshRate = 5000 // In milliseconds
+export const refreshRate = 30000 // In milliseconds
