@@ -1,12 +1,8 @@
 import React from "react";
 import { useTable, HeaderGroup, Column, Row, Cell } from "react-table";
 
-import { TransactionDetails } from "src/typings/api";
-import {
-  DsBlockObj,
-  TxBlockObj,
-  PendingTxnResult,
-} from "@zilliqa-js/core/src/types";
+import { TransactionDetails } from 'src/typings/api'
+import { DsBlockObj, TxBlockObj, TransactionStatus } from '@zilliqa-js/core/src/types'
 
 import "./DisplayTable.css";
 
@@ -15,31 +11,20 @@ interface IDisplayTableParams<T extends object> {
   data: T[];
 }
 
-// React Table for DSBlocks, TxBlocks and TransactionDetails on Dashboard
-const DisplayTable: React.FC<IDisplayTableParams<
-  DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult
->> = ({ columns, data }) => {
-  const { getTableProps, headerGroups, rows, prepareRow } = useTable<
-    DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult
-  >({
-    columns,
-    data,
-  });
+// React Table for DSBlocks, TxBlocks and TransactionDetails on Dashboard 
+const DisplayTable: React.FC<IDisplayTableParams<DsBlockObj | TxBlockObj | TransactionDetails | TransactionStatus>> =
+  ({ columns, data }) => {
+    const { getTableProps, headerGroups, rows, prepareRow } = useTable<DsBlockObj | TxBlockObj | TransactionDetails | TransactionStatus>({
+      columns,
+      data,
+    })
 
-  return (
-    <div className="display-table">
-      <table {...getTableProps()}>
-        <thead>
-          {headerGroups.map(
-            (
-              headerGroup: HeaderGroup<
-                DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult
-              >
-            ) => (
-              <tr
-                {...headerGroup.getHeaderGroupProps()}
-                key={headerGroup.getHeaderGroupProps().key}
-              >
+    return (
+      <div className='display-table'>
+        <table {...getTableProps()}>
+          <thead>
+            {headerGroups.map((headerGroup: HeaderGroup<DsBlockObj | TxBlockObj | TransactionDetails | TransactionStatus>) => (
+              <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.getHeaderGroupProps().key}>
                 {headerGroup.headers.map((column) => (
                   <th
                     {...column.getHeaderProps()}
@@ -50,42 +35,21 @@ const DisplayTable: React.FC<IDisplayTableParams<
                   </th>
                 ))}
               </tr>
-            )
-          )}
-        </thead>
-        <tbody>
-          {rows.map(
-            (
-              row: Row<
-                DsBlockObj | TxBlockObj | TransactionDetails | PendingTxnResult
-              >
-            ) => {
-              prepareRow(row);
+            ))}
+          </thead>
+          <tbody>
+            {rows.map((row: Row<DsBlockObj | TxBlockObj | TransactionDetails | TransactionStatus >) => {
+              prepareRow(row)
               return (
                 <tr {...row.getRowProps()} key={row.getRowProps().key}>
-                  {row.cells.map(
-                    (
-                      cell: Cell<
-                        | DsBlockObj
-                        | TxBlockObj
-                        | TransactionDetails
-                        | PendingTxnResult
-                      > & { column: { className?: string } }
-                    ) => {
-                      return (
-                        <td
-                          {...cell.getCellProps({
-                            className: cell.column.className
-                              ? cell.column.className
-                              : "",
-                          })}
-                          key={cell.getCellProps().key}
-                        >
-                          {cell.render("Cell")}
-                        </td>
-                      );
-                    }
-                  )}
+                  {row.cells.map((cell: Cell<DsBlockObj | TxBlockObj | TransactionDetails | TransactionStatus>) => {
+                    return (
+                      <td {...cell.getCellProps()}
+                        key={cell.getCellProps().key}>
+                        {cell.render('Cell')}
+                      </td>
+                    )
+                  })}
                 </tr>
               );
             }
