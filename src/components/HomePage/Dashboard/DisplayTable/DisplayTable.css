@@ -66,6 +66,11 @@
   width: 60px;
 }
 
+.display-table #mbs-count-col {
+  width: 90px;
+  text-align: center;
+}
+
 .display-table #numTxns-col {
   width: 50px;
   text-align: center;

@@ -30,6 +30,16 @@ const TxBlocksPage: React.FC = () => {
       )
     },
     {
+      id: 'mbs-count-col',
+      Header: 'MB Count',
+      accessor: 'body.MicroBlockInfos',
+      Cell: ({ value }: { value: string }) => (
+        <div className='text-center'>
+            {value.length > 0 ? value.length : '0'}
+        </div>
+      )
+    },
+    {
       id: 'numTxns-col',
       Header: 'Txns',
       accessor: 'header.NumTxns',
