@@ -67,6 +67,11 @@
   text-align: center;
 }
 
+.viewall-table #mbs-count-col {
+  width: 90px;
+  text-align: center;
+}
+
 .viewall-table #total-txn-fees-col {
   width: 120px;
   text-align: right;
