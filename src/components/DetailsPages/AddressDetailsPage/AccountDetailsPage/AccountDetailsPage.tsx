@@ -37,7 +37,7 @@ interface IProps {
 
 const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
   const networkContext = useContext(NetworkContext);
-  const { dataService, networkUrl } = networkContext!;
+  const { dataService, networkUrl, apolloUrl } = networkContext!;
 
   const addrRef = useRef(addr);
   const [isLoading, setIsLoading] = useState(false);
@@ -154,6 +154,9 @@ const AccountDetailsPage: React.FC<IProps> = ({ addr }) => {
     fetchMore,
   } = useQuery(ACCOUNT_TRANSACTIONS, {
     variables: { addr: hexAddr, page: 1 },
+    context: {
+      uri: apolloUrl,
+    },
     fetchPolicy: "cache-and-network",
   });
 

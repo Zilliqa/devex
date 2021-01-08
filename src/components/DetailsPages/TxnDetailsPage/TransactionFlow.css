@@ -19,10 +19,17 @@ body.has-modal-open .overlayy {
   border-radius: 5px;
 }
 
+.transaction-flow .node-rect {
+  cursor: pointer;
+}
+
+.transaction-flow .node-rect:hover {
+  /* fill: #333; */
+}
+
+
 .transaction-flow {
-  overflow-x: scroll;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
+  overflow: hidden;
 }
 
 .transaction-flow .tx-block {

@@ -1,6 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import React from "react";
+import React, { useContext } from "react";
+import { NetworkContext } from "src/services/network/networkProvider";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 
@@ -23,7 +24,7 @@ document
   .setAttribute("content", `width=${siteWidth}, initial-scale=${scale}`);
 
 const client = new ApolloClient({
-  uri: "http://52.40.225.128:5000",
+  uri: 'http://localhost:5000',
   cache: new InMemoryCache(),
 });
 
