@@ -92,14 +92,17 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
   useEffect(() => {
     setIsLoading(false);
 
-    if (
-      data &&
-      data.txFindByCustomId.length &&
-      data.txFindByCustomId[0] !== transaction
-    ) {
-      setTransaction(data.txFindByCustomId[0]);
-    } else {
-      setIsError(new Error("transaction was not found on the apollo-server."));
+    if (data) {
+      if (
+        data.txFindByCustomId.length &&
+        data.txFindByCustomId[0] !== transaction
+      ) {
+        setTransaction(data.txFindByCustomId[0]);
+      } else {
+        setIsError(
+          new Error("transaction was not found on the apollo-server.")
+        );
+      }
     }
   }, [data]);
 
