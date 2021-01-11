@@ -237,8 +237,8 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
       const nodeHeight = 40;
 
       // set the dimensions and margins of the graph
-      const width = 1100,
-        height = 550;
+      const width = 1200,
+        height = 570;
 
       // append the svg object to the body of the page
       const svg = d3
@@ -274,7 +274,7 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
 
       linkTextContainer.append("title").text(function (d: any) {
         if (d.index === 0) {
-          return "contract-call";
+          return "";
         }
         if (d.data && d.data.msg && d.data.msg._tag) {
           return d.data.msg._tag;
@@ -287,10 +287,12 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
         .attr("class", "linkText")
         .text(function (d: any, i) {
           if (d.index === 0) {
-            return "contract-call";
+            return "";
           }
           if (d.data && d.data.msg && d.data.msg._tag) {
-            return d.data.msg._tag;
+            return d.data.msg._tag.length > 15
+              ? d.data.msg._tag.substring(0, 15) + "..."
+              : d.data.msg._tag;
           }
           return "";
         })
@@ -302,7 +304,11 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
         });
 
       // Initialize the nodes
-      const nodeg = svg.selectAll("rect").data(nodes).enter().append<Element>("g");
+      const nodeg = svg
+        .selectAll("rect")
+        .data(nodes)
+        .enter()
+        .append<Element>("g");
 
       const node = nodeg
         .append<Element>("rect")
@@ -413,14 +419,8 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
         .force("center", d3.forceCenter(width / 3, height / 2)) // This force attracts nodes to the center of the svg area
         //.force("x", d3.forceX())
         //.force("y", d3.forceY())
-        .force("collide", d3.forceCollide(180))
+        .force("collide", d3.forceCollide(160))
         .on("end", ticked);
-
-      node.call(
-        d3.drag().on("drag", () => {
-          console.log("dragg");
-        })
-      );
     }
   }, [nodes, links]);
 

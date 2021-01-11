@@ -76,17 +76,17 @@ export let defaultNetworks: NetworkMap =
         ],
       ]);
 
-export const apolloServers = new Map([
-  ["Mainnet", "http://54.202.48.149:5000"],
-  ["Testnet", "http://52.202.48.148:5000"],
+export const defaultApolloServers = new Map([
+  ["Mainnet", "https://devex-apollo.zilliqa.com/"],
+  ["Testnet", "https://devex-apollo-testnet.zilliqa.com/"],
 ]);
 
 export const useApolloServerAddress = (): string => {
   const networkName = useNetworkName();
 
   return (
-    apolloServers.get(networkName) ||
-    apolloServers.get("Mainnet") ||
+    defaultApolloServers.get(networkName) ||
+    defaultApolloServers.get("Mainnet") ||
     "http://localhost:5000"
   );
 };
