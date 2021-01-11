@@ -78,7 +78,7 @@ export let defaultNetworks: NetworkMap =
 
 export const defaultApolloServers = new Map([
   ["Mainnet", "https://devex-apollo.zilliqa.com/"],
-  ["Testnet", "https://devex-apollo-testnet.zilliqa.com/"],
+  ["Testnet", "https://stg-devex-apollo.zilliqa.com/"],
 ]);
 
 export const useApolloServerAddress = (): string => {
