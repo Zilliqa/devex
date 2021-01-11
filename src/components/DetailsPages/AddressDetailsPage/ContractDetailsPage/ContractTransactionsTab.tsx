@@ -1,21 +1,17 @@
 import React, {
-  useContext,
   useState,
-  useEffect,
-  useRef,
   useCallback,
+  useContext
 } from "react";
 
-import AddressDisp from "src/components/Misc/Disp/AddressDisp/AddressDisp";
-import { isValidAddr } from "src/utils/Utils";
-import { Value } from "@zilliqa-js/contract/src/types";
 
-import { qaToZil, zilAddrToHexAddr, stripHexPrefix } from "src/utils/Utils";
+import { Value } from "@zilliqa-js/contract/src/types";
+import { NetworkContext } from "src/services/network/networkProvider";
+
+import { zilAddrToHexAddr } from "src/utils/Utils";
 import { useQuery, gql } from "@apollo/client";
 import TransactionsCard from "../Transactions/TransactionsCard";
 import { Spinner, Pagination } from "react-bootstrap";
-
-// import "./ContractTransactionsTab.css";
 
 interface IProps {
   initParams: Value[];
@@ -25,12 +21,14 @@ interface IProps {
 }
 
 const ContractTransactionsTab: React.FC<IProps> = ({
-  initParams,
   contractAddr,
   onTransactionsCount,
   fungibleToken,
 }) => {
   const [transactionsCount, setTransactionsCount] = useState<number>(0);
+
+  const networkContext = useContext(NetworkContext);
+  const { apolloUrl } = networkContext!;
 
   const generatePagination = useCallback(
     (currentPage: number, pageCount: number, delta = 2) => {
@@ -115,6 +113,9 @@ const ContractTransactionsTab: React.FC<IProps> = ({
     fetchMore,
   } = useQuery(ACCOUNT_TRANSACTIONS, {
     variables: { addr: hexAddr, page: 1 },
+    context: {
+      uri: apolloUrl,
+    },
     fetchPolicy: "cache-and-network",
   });
 

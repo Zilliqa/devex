@@ -1,7 +1,6 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import React, { useContext } from "react";
-import { NetworkContext } from "src/services/network/networkProvider";
+import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 

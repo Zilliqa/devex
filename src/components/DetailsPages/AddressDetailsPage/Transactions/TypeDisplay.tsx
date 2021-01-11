@@ -2,13 +2,10 @@ import React from "react";
 
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
-import { ReactComponent as LeftArrow } from "src/assets/images/left-arrow.svg";
 import { ReactComponent as RightArrow } from "src/assets/images/right-arrow.svg";
 import { ReactComponent as BothArrow } from "src/assets/images/both-arrow.svg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileContract } from "@fortawesome/free-solid-svg-icons";
 
-import { zilAddrToHexAddr, stripHexPrefix } from "src/utils/Utils";
+import { zilAddrToHexAddr } from "src/utils/Utils";
 
 interface IProps {
   fromAddr: string;

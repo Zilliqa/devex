@@ -17,7 +17,7 @@ import {
 import AddressDisp from "src/components/Misc/Disp/AddressDisp/AddressDisp";
 import { NetworkContext } from "src/services/network/networkProvider";
 import { AccData } from "src/typings/api";
-import { qaToZil, zilAddrToHexAddr, stripHexPrefix } from "src/utils/Utils";
+import { qaToZil, zilAddrToHexAddr } from "src/utils/Utils";
 import { ContractObj } from "@zilliqa-js/contract/src/types";
 import { useQuery, gql } from "@apollo/client";
 

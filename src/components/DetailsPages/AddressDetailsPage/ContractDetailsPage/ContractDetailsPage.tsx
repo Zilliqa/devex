@@ -31,6 +31,7 @@ const ContractDetailsPage: React.FC<IProps> = ({ addr }) => {
   const addrRef = useRef(addr);
   const [contractData, setContractData] = useState<ContractData | null>(null);
   const [creationTxnHash, setCreationTxnHash] = useState<string | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [owner, setOwner] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [transactionsCount, setTransactionsCount] = useState<number>(0);

@@ -3,18 +3,11 @@ import React, {
   useState,
   useEffect,
   useRef,
-  useCallback,
 } from "react";
 import {
-  Card,
-  Container,
-  Row,
-  Col,
-  Pagination,
   Spinner,
 } from "react-bootstrap";
 
-import AddressDisp from "src/components/Misc/Disp/AddressDisp/AddressDisp";
 import { NetworkContext } from "src/services/network/networkProvider";
 
 import { hexAddrToZilAddr, stripHexPrefix } from "src/utils/Utils";
@@ -292,7 +285,7 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
         return "";
       });
 
-      const linkText = linkTextContainer
+      linkTextContainer
         .append("textPath")
         .attr("class", "linkText")
         .text(function (d: any, i) {
@@ -414,7 +407,7 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
       };
 
       // Let's list the force we wanna apply on the network
-      const simulation = d3
+      d3
         .forceSimulation(nodes) // Force algorithm is applied to data.nodes
         .force(
           "link",

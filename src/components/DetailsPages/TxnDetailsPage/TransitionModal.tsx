@@ -1,13 +1,11 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 
 import {
   qaToZil,
   hexAddrToZilAddr,
   isValidAddr,
-  qaToZilSimplified,
 } from "src/utils/Utils";
 
-import { QueryPreservingLink } from "src/services/network/networkProvider";
 import AddressDisp from "src/components/Misc/Disp/AddressDisp/AddressDisp";
 import { EventLogEntry, EventParam } from "@zilliqa-js/core/src/types";
 import "./TransactionFlow.css";

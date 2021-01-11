@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from "react";
-import { OverlayTrigger, Tooltip, Card, Spinner } from "react-bootstrap";
+import React, { useMemo } from "react";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 import { QueryPreservingLink } from "src/services/network/networkProvider";
 
