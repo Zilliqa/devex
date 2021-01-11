@@ -9,6 +9,8 @@ import { timestampToTimeago, printableChars } from 'src/utils/Utils'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrashAlt } from '@fortawesome/free-regular-svg-icons'
 
+import sanitizeHtml from 'sanitize-html';
+
 import './LabelCard.css'
 
 interface IProps {
@@ -32,13 +34,13 @@ const LabelCard: React.FC<IProps> = ({ k, v }) => {
   }
 
   const handleChange = (e: ContentEditableEvent) => {
-    text.current = e.target.value
+    text.current = sanitizeHtml(e.target.value)
   }
 
   const handleBlur = () => {
     setEditing(false)
     const temp: LabelMap = { ...labelMap }
-    temp[k].name = text.current
+    temp[k].name = sanitizeHtml(text.current)
     setLabelMap(temp)
   }
 
