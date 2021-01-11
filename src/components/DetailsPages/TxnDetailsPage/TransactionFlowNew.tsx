@@ -34,6 +34,7 @@ interface IProps {
 const TransactionFlow: React.FC<IProps> = ({ hash }) => {
   const [transaction, setTransaction] = useState<any>(undefined);
   const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState<Error | false>(false);
   const [modalDisplay, setModalDisplay] = useState(false);
   const [modalData, setModalData] = useState(undefined);
   const [nodes, setNodes] = useState([]);
@@ -88,13 +89,19 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
     fetchPolicy: "cache-and-network",
   });
 
-  if (
-    data &&
-    data.txFindByCustomId.length &&
-    data.txFindByCustomId[0] !== transaction
-  ) {
-    setTransaction(data.txFindByCustomId[0]);
-  }
+  useEffect(() => {
+    setIsLoading(false);
+
+    if (
+      data &&
+      data.txFindByCustomId.length &&
+      data.txFindByCustomId[0] !== transaction
+    ) {
+      setTransaction(data.txFindByCustomId[0]);
+    } else {
+      setIsError(new Error("transaction was not found on the apollo-server."));
+    }
+  }, [data]);
 
   const getNodeColor = async (node: {
     id: string;
@@ -147,7 +154,7 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
   };
 
   useEffect(() => {
-    if (transaction) {
+    if (transaction !== undefined) {
       const links: any = [
         {
           source: hexAddrToZilAddr(transaction.fromAddr),
@@ -436,8 +443,11 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
           <Spinner animation="border" />
         </div>
       ) : null}
-      {error ? (
-        <div className="alert alert-danger">{error}</div>
+      {error || isError ? (
+        <div className="alert alert-info">
+          Transaction Flow error:{" "}
+          {error ? error.message : isError ? isError.message : null}
+        </div>
       ) : (
         transaction && (
           <div className="mt-4">
