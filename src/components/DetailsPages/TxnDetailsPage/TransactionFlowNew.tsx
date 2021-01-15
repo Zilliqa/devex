@@ -1,12 +1,5 @@
-import React, {
-  useContext,
-  useState,
-  useEffect,
-  useRef,
-} from "react";
-import {
-  Spinner,
-} from "react-bootstrap";
+import React, { useContext, useState, useEffect, useRef } from "react";
+import { Spinner } from "react-bootstrap";
 
 import { NetworkContext } from "src/services/network/networkProvider";
 
@@ -17,14 +10,16 @@ import { useQuery, gql } from "@apollo/client";
 import * as d3 from "d3";
 
 import TransitionModal from "./TransitionModal";
+import TransitionFlowDetails from "./TransactionFlowDetails";
 
 import "./TransactionFlow.css";
 
 interface IProps {
   hash: string;
+  txn: any;
 }
 
-const TransactionFlow: React.FC<IProps> = ({ hash }) => {
+const TransactionFlow: React.FC<IProps> = ({ hash, txn }) => {
   const [transaction, setTransaction] = useState<any>(undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState<Error | false>(false);
@@ -271,35 +266,38 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
       const linkTextContainer = link
         .enter()
         .append("text")
-        .attr("transform", "translate(0,15)")
+        .attr("transform", "translate(0,0)")
         .style("cursor", "pointer")
         .on("click", openModal);
 
       linkTextContainer.append("title").text(function (d: any) {
         if (d.index === 0) {
-          return "";
+          return d.index + 1;
         }
         if (d.data && d.data.msg && d.data.msg._tag) {
-          return d.data.msg._tag;
+          return d.data.msg._tag.length > 15
+            ? `${d.index + 1}. ${d.data.msg._tag.substring(0, 15)}...`
+            : `${d.index + 1}. ${d.data.msg._tag}`;
         }
-        return "";
+        return d.index + 1;
       });
 
       linkTextContainer
         .append("textPath")
         .attr("class", "linkText")
+        .attr("transform", "translate(56,0)")
         .text(function (d: any, i) {
           if (d.index === 0) {
-            return "";
+            return d.index + 1;
           }
           if (d.data && d.data.msg && d.data.msg._tag) {
             return d.data.msg._tag.length > 15
-              ? d.data.msg._tag.substring(0, 15) + "..."
-              : d.data.msg._tag;
+              ? `${d.index + 1}. ${d.data.msg._tag.substring(0, 15)}...`
+              : `${d.index + 1}. ${d.data.msg._tag}`;
           }
-          return "";
+          return d.index + 1;
         })
-        .style("font-size", "14px")
+        .style("font-size", "16px")
         .style("font-family", "monospace")
         .attr("fill", "#fff")
         .attr("xlink:xlink:href", (d: any, index: number) => {
@@ -359,19 +357,23 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
         .attr("fill", "#fff")
         .attr("d", "M0,-5L10,0L0,5");
 
+      const arcs: string[] = [];
+
       const linkArc = (d: any) => {
         const fromx = d.source.x + nodeWidth / 2;
         const fromy =
           d.target.y > d.source.y ? d.source.y + nodeHeight : d.source.y;
 
-        const tox =
-          d.target.y > d.source.y
-            ? d.target.x + nodeWidth / 2
-            : d.target.x + nodeWidth / 2;
+        let tox = d.target.x + nodeWidth / 2;
         const toy =
           d.target.y > d.source.y
             ? d.target.y - 3
             : d.target.y + nodeHeight + 3;
+
+        if (arcs.includes(`${d.source.x}-${d.source.y}-${d.target.x}-${d.target.y}`)) {
+          tox = tox + 70;
+        }
+        arcs.push(`${d.source.x}-${d.source.y}-${d.target.x}-${d.target.y}`);
 
         return `
           M${fromx},${fromy}
@@ -399,16 +401,19 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
             return d.y + nodeHeight / 2 + 5;
           });
 
-        linkTextContainer.attr("x", function (d: any) {
-          return 70;
+        linkTextContainer.attr("dx", function (d: any) {
+          return 50;
+        });
+
+        linkTextContainer.attr("dy", function (d: any) {
+          return -5;
         });
 
         setIsLoading(false);
       };
 
       // Let's list the force we wanna apply on the network
-      d3
-        .forceSimulation(nodes) // Force algorithm is applied to data.nodes
+      d3.forceSimulation(nodes) // Force algorithm is applied to data.nodes
         .force(
           "link",
           d3
@@ -447,7 +452,7 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
       ) : (
         transaction && (
           <div className="mt-4">
-            <h3 className="mb-4">Transaction Flow</h3>
+            <h3 className="mb-4">Transaction call-graph</h3>
 
             <div className="transaction-flow d-flex p-0">
               <TransitionModal
@@ -457,6 +462,7 @@ const TransactionFlow: React.FC<IProps> = ({ hash }) => {
               />
               <div id="d3-viewer" ref={ref}></div>
             </div>
+            <TransitionFlowDetails links={links} txn={txn} />
           </div>
         )
       )}
