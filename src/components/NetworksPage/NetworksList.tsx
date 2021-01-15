@@ -29,7 +29,7 @@ const NetworksList: React.FC = () => {
 
   const editNode = (url: string, newName: string) => {
     const temp = new Map(networkMap)
-    temp.set(url, newName)
+    temp.set(url, newName.toString())
     setNetworkMap(temp)
   }
 
