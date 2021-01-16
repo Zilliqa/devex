@@ -1,5 +1,5 @@
-import React, { useContext, useState, useEffect, useRef } from "react";
-import { qaToZil, hexAddrToZilAddr } from "src/utils/Utils";
+import React, { useState } from "react";
+import { qaToZil } from "src/utils/Utils";
 import AddressDisp from "src/components/Misc/Disp/AddressDisp/AddressDisp";
 import { isValidAddr } from "src/utils/Utils";
 
@@ -68,9 +68,11 @@ interface IProps {
 
 const TransactionFlowDetails: React.FC<IProps> = ({ links, txn }) => {
   const txData = JSON.parse(txn.data);
-  return (
-    <div className="transaction-flow-details p-2 mt-4">
-      <h5>Flow details</h5>
+  const [loading, setLoading] = useState(false);
+
+  return loading ? null : (
+    <div className="transaction-flow-details mt-4">
+      <h3 className="mb-4">Transaction flow</h3>
       {links &&
         links.length &&
         links.map((l) => (

@@ -276,8 +276,8 @@ const TransactionFlow: React.FC<IProps> = ({ hash, txn }) => {
         }
         if (d.data && d.data.msg && d.data.msg._tag) {
           return d.data.msg._tag.length > 15
-            ? `${d.index + 1}. ${d.data.msg._tag.substring(0, 15)}...`
-            : `${d.index + 1}. ${d.data.msg._tag}`;
+            ? `${d.index + 1}.${d.data.msg._tag.substring(0, 15)}...`
+            : `${d.index + 1}.${d.data.msg._tag}`;
         }
         return d.index + 1;
       });
@@ -292,8 +292,8 @@ const TransactionFlow: React.FC<IProps> = ({ hash, txn }) => {
           }
           if (d.data && d.data.msg && d.data.msg._tag) {
             return d.data.msg._tag.length > 15
-              ? `${d.index + 1}. ${d.data.msg._tag.substring(0, 15)}...`
-              : `${d.index + 1}. ${d.data.msg._tag}`;
+              ? `${d.index + 1}.${d.data.msg._tag.substring(0, 15)}...`
+              : `${d.index + 1}.${d.data.msg._tag}`;
           }
           return d.index + 1;
         })
@@ -370,7 +370,11 @@ const TransactionFlow: React.FC<IProps> = ({ hash, txn }) => {
             ? d.target.y - 3
             : d.target.y + nodeHeight + 3;
 
-        if (arcs.includes(`${d.source.x}-${d.source.y}-${d.target.x}-${d.target.y}`)) {
+        if (
+          arcs.includes(
+            `${d.source.x}-${d.source.y}-${d.target.x}-${d.target.y}`
+          )
+        ) {
           tox = tox + 70;
         }
         arcs.push(`${d.source.x}-${d.source.y}-${d.target.x}-${d.target.y}`);
