@@ -1,0 +1,188 @@
+body .overlayy {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9998;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: none;
+}
+
+body.has-modal-open .overlayy {
+  display: block;
+}
+
+.transaction-flow {
+  border: 1px solid var(--color-card-bg);
+  padding: 1rem;
+  border-radius: 5px;
+}
+
+.transaction-flow .node-rect {
+  cursor: pointer;
+}
+
+.transaction-flow .node-rect:hover {
+  /* fill: #333; */
+}
+
+
+.transaction-flow {
+  overflow: hidden;
+}
+
+.transaction-flow .tx-block {
+  width: 330px;
+  height: 100px;
+  margin: 1.5rem 2rem;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  transition: all 0.25s ease-in-out;
+}
+
+.transaction-flow .tx-block .details {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background-color: var(--color-card-bg);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.transaction-flow .tx-modal {
+  width: 80%;
+  height: 600px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-card-bg);
+  z-index: 9999;
+  display: none;
+}
+
+.transaction-flow .tx-modal.open {
+  display: block;
+}
+
+.transaction-flow .tx-modal .modal-details {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow-y: scroll;
+  padding: 2rem;
+}
+
+.transaction-flow .tx-modal .close-modal {
+  position: fixed;
+  top: 1rem;
+  right: 2rem;
+  z-index: 10000;
+  cursor: pointer;
+}
+
+.transaction-flow .tx-block .justy {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 90%;
+}
+
+.transaction-flow .tx-block .to {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 1rem;
+  position: absolute;
+  z-index: 3;
+  width: 80%;
+  bottom: 0;
+  transform: translateY(-50%);
+  transition: all 0.25s ease-in-out;
+  text-align: center;
+}
+
+.transaction-flow .tx-block .from {
+  position: absolute;
+  top: 0;
+  font-size: 0.75rem;
+  color: #aaa;
+  z-index: 1;
+  transition: all 0.25s ease-in-out;
+}
+
+.transaction-flow .tx-block .details .extended-info {
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.25s ease-in-out;
+}
+
+.transaction-flow .tx-block .details .simple-info {
+  display: none;
+}
+
+.transaction-flow .tx-block .details .extended-info .extended-data {
+  display: none;
+  color: #fff;
+  font-size: 0.85rem;
+  margin-top: 1rem;
+  width: 100%;
+  height: 200px;
+  overflow: auto;
+}
+
+.transaction-flow .tx-block.expanded {
+  width: 500px;
+  min-height: 300px;
+  height: auto;
+}
+
+.transaction-flow .tx-block:hover .details .extended-info {
+  opacity: 1;
+}
+
+.transaction-flow .tx-block.expanded .details .extended-info {
+  opacity: 1;
+  width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  align-items: flex-start;
+}
+
+.transaction-flow .tx-block.expanded .details .extended-info .expand-button {
+  display: none;
+}
+
+.transaction-flow .tx-block.expanded .details .extended-info .extended-data {
+  display: block;
+}
+
+.transaction-flow .tx-block:hover .to {
+  width: 100%;
+  font-size: 0.85rem;
+  text-align: center;
+  transform: translateY(1.75rem);
+}
+
+.transaction-flow .tx-block.expanded .to {
+  width: 100%;
+  font-size: 1rem;
+  text-align: center;
+  transform: translateY(2rem);
+}
+
+.transaction-flow .tx-block:hover .from,
+.transaction-flow .tx-block.expanded .from {
+  transform: translateY(-1.5rem);
+}

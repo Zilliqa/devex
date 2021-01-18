@@ -22,7 +22,8 @@ export interface TransactionDetails {
   txn: Transaction,
   hash: string,
   contractAddr?: string,
-  isContractCreation?: boolean
+  isContractCreation?: boolean,
+  toAddr: string
 }
 
 export interface ContractData {

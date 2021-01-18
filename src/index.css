@@ -71,6 +71,10 @@ a:hover {
   color: var(--color-subtext);
 }
 
+.text-small {
+  font-size: 80%;
+}
+
 .display-block {
   border: solid 1px var(--color-border);
   padding: 1rem;

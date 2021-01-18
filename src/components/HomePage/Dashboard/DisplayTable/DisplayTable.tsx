@@ -1,14 +1,14 @@
-import React from 'react'
-import { useTable, HeaderGroup, Column, Row, Cell } from 'react-table'
+import React from "react";
+import { useTable, HeaderGroup, Column, Row, Cell } from "react-table";
 
 import { TransactionDetails } from 'src/typings/api'
 import { DsBlockObj, TxBlockObj, TransactionStatus } from '@zilliqa-js/core/src/types'
 
-import './DisplayTable.css'
+import "./DisplayTable.css";
 
 interface IDisplayTableParams<T extends object> {
-  columns: Column<T>[],
-  data: T[],
+  columns: Column<T>[];
+  data: T[];
 }
 
 // React Table for DSBlocks, TxBlocks and TransactionDetails on Dashboard 
@@ -26,8 +26,12 @@ const DisplayTable: React.FC<IDisplayTableParams<DsBlockObj | TxBlockObj | Trans
             {headerGroups.map((headerGroup: HeaderGroup<DsBlockObj | TxBlockObj | TransactionDetails | TransactionStatus>) => (
               <tr {...headerGroup.getHeaderGroupProps()} key={headerGroup.getHeaderGroupProps().key}>
                 {headerGroup.headers.map((column) => (
-                  <th {...column.getHeaderProps()} key={column.getHeaderProps().key} id={column.id}>
-                    {column.render('Header')}
+                  <th
+                    {...column.getHeaderProps()}
+                    key={column.getHeaderProps().key}
+                    id={column.id}
+                  >
+                    {column.render("Header")}
                   </th>
                 ))}
               </tr>
@@ -47,12 +51,13 @@ const DisplayTable: React.FC<IDisplayTableParams<DsBlockObj | TxBlockObj | Trans
                     )
                   })}
                 </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
-    )
-  }
+              );
+            }
+          )}
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
-export default DisplayTable
+export default DisplayTable;
