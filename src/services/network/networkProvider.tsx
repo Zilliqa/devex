@@ -77,7 +77,7 @@ export let defaultNetworks: NetworkMap =
       ]);
 
 export const defaultApolloServers = new Map([
-  ["Mainnet", "https://devex-apollo.zilliqa.com/"],
+  ["Mainnet", "http://localhost:5000"],
   ["Testnet", "https://stg-devex-apollo.zilliqa.com/"],
 ]);
 

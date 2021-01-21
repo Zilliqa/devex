@@ -4,6 +4,7 @@ import AddressDisp from "src/components/Misc/Disp/AddressDisp/AddressDisp";
 import { isValidAddr } from "src/utils/Utils";
 
 import "./TransactionFlowDetails.css";
+import TxBlock from "./TxBlock";
 
 interface IProps {
   links: {
@@ -67,7 +68,10 @@ interface IProps {
 }
 
 const TransactionFlowDetails: React.FC<IProps> = ({ links, txn }) => {
-  const txData = JSON.parse(txn.data);
+  let txData: any = undefined;
+  if (txn.data !== "") {
+    txData = JSON.parse(txn.data);
+  }
   const [loading, setLoading] = useState(false);
 
   return loading ? null : (
@@ -96,33 +100,35 @@ const TransactionFlowDetails: React.FC<IProps> = ({ links, txn }) => {
                   <span className="badge badge-warning">{l.target.id}</span>
                 </div>
 
-                <div className="my-2 font-weight-bold text-warning">
-                  Transaction parameters:
-                </div>
-                {txData.params && txData.params.length ? (
-                  <div className="parameters-container">
-                    {txData.params.map(
-                      (param: {
-                        type: string;
-                        value: string;
-                        vname: string;
-                      }) => (
-                        <div
-                          className="d-flex align-items-center"
-                          key={`param-${param.vname}`}
-                        >
-                          <span className="mr-2">{param.vname}:</span>
-                          {isValidAddr(param.value as string) ? (
-                            <AddressDisp
-                              isLinked={true}
-                              addr={param.value as string}
-                            />
-                          ) : (
-                            param.value
-                          )}
-                        </div>
-                      )
-                    )}
+                {txData && txData.params && txData.params.length ? (
+                  <div>
+                    <div className="my-2 font-weight-bold text-warning">
+                      Transaction parameters:
+                    </div>
+                    <div className="parameters-container">
+                      {txData.params.map(
+                        (param: {
+                          type: string;
+                          value: string;
+                          vname: string;
+                        }) => (
+                          <div
+                            className="d-flex align-items-center"
+                            key={`param-${param.vname}`}
+                          >
+                            <span className="mr-2">{param.vname}:</span>
+                            {isValidAddr(param.value as string) ? (
+                              <AddressDisp
+                                isLinked={true}
+                                addr={param.value as string}
+                              />
+                            ) : (
+                              param.value
+                            )}
+                          </div>
+                        )
+                      )}
+                    </div>
                   </div>
                 ) : null}
               </div>
@@ -215,13 +221,15 @@ const TransactionFlowDetails: React.FC<IProps> = ({ links, txn }) => {
                                     key={`param-event-${param.vname}`}
                                   >
                                     <span className="mr-2">{param.vname}:</span>
-                                    {isValidAddr(param.value as string) ? (
+                                    {isValidAddr(
+                                      param.value.toString() as string
+                                    ) ? (
                                       <AddressDisp
                                         isLinked={true}
-                                        addr={param.value as string}
+                                        addr={param.value.toString() as string}
                                       />
                                     ) : (
-                                      param.value
+                                      param.value.toString()
                                     )}
                                   </div>
                                 )
