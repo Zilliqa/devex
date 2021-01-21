@@ -117,7 +117,7 @@ const TransactionFlowDetails: React.FC<IProps> = ({ links, txn }) => {
                             key={`param-${param.vname}`}
                           >
                             <span className="mr-2">{param.vname}:</span>
-                            {isValidAddr(param.value as string) ? (
+                            {param.value !== undefined && isValidAddr(param.value as string) ? (
                               <AddressDisp
                                 isLinked={true}
                                 addr={param.value as string}
