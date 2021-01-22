@@ -1,0 +1,32 @@
+.transaction-flow-details .link-index {
+  font-size: 1.15rem;
+  font-weight: bold;
+}
+
+.transaction-flow-details .txData-tag {
+  font-weight: bold;
+}
+
+.transaction-flow-details span.badge {
+  font-family: monospace;
+  font-size: 1rem;
+  font-weight: 400;
+  border-radius: 2px;
+  color: #fff;
+}
+
+.transaction-flow-details span.badge.badge-warning {
+  background-color: orange;
+}
+
+.transaction-flow-details .events-container {
+  border-radius: 3px;
+  border: 1px dashed #17a2b8;
+  padding: 0.5rem;
+}
+
+.transaction-flow-details .parameters-container {
+  border-radius: 3px;
+  border: 1px dashed #ffc107;
+  padding: 0.5rem;
+}
