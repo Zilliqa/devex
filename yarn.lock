@@ -2488,61 +2488,61 @@
   resolved "https://registry.yarnpkg.com/@xtuc/long/-/long-4.2.2.tgz#d291c6a4e97989b5c61d9acf396ae4fe133a718d"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
 
-"@zilliqa-js/account@2.0.0-alpha.1":
-  version "2.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@zilliqa-js/account/-/account-2.0.0-alpha.1.tgz#ff6b849d7c0ca621d6c7e9aa9f8e7740e9dbd827"
-  integrity sha512-m/LYs+khGErqugBZY3N54dJ8TYy2Kmx0FGxXmZSXCWCxGxT7plk0hrUpUcP5UXpw7cPJ3BhCjoayj+E5rfwbVg==
+"@zilliqa-js/account@2.3.0-alpha.0":
+  version "2.3.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@zilliqa-js/account/-/account-2.3.0-alpha.0.tgz#5bd6140031733a48a5f3e217712b42c4273fa6b7"
+  integrity sha512-rmkq/d7zY8X5wquk5U6zMsduMTkCtV09KKlqpy0H+vBFYWLwYHTGaGknltt5PkmOrxTonVFEh/z/s+6JHfkArQ==
   dependencies:
     "@types/bip39" "^2.4.0"
     "@types/hdkey" "^0.7.0"
-    "@zilliqa-js/core" "2.0.0-alpha.1"
-    "@zilliqa-js/crypto" "2.0.0-alpha.1"
-    "@zilliqa-js/proto" "0.11.1"
-    "@zilliqa-js/util" "0.11.1"
+    "@zilliqa-js/core" "2.3.0-alpha.0"
+    "@zilliqa-js/crypto" "2.3.0-alpha.0"
+    "@zilliqa-js/proto" "2.2.0"
+    "@zilliqa-js/util" "2.2.0"
     bip39 "^2.5.0"
     hdkey "^1.1.0"
 
-"@zilliqa-js/blockchain@2.0.0-alpha.1":
-  version "2.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@zilliqa-js/blockchain/-/blockchain-2.0.0-alpha.1.tgz#c7274f288b3f0a859229d960eb23f5f3acf119ec"
-  integrity sha512-mapA7fdZ7xl96cHhL2fCjGa33rdPXsnTIHIj55aMn/L62JpwefO+u5eFf0sksj1Lr2OlioNRvtHLycWv1fU/Ow==
+"@zilliqa-js/blockchain@2.3.0-alpha.0":
+  version "2.3.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@zilliqa-js/blockchain/-/blockchain-2.3.0-alpha.0.tgz#297c07b67d39de66b5b3cc3f008e3a5dcfb18713"
+  integrity sha512-1O3Lj1mO7bVk93XRqiLvmQa2UmEyHfIeJsgexnCnqYp12AGxwVhRnx3xjG5zAzeMCCHzrWuHLIZIZskxj2NFIQ==
   dependencies:
-    "@zilliqa-js/account" "2.0.0-alpha.1"
-    "@zilliqa-js/contract" "2.0.0-alpha.1"
-    "@zilliqa-js/core" "2.0.0-alpha.1"
-    "@zilliqa-js/crypto" "2.0.0-alpha.1"
-    "@zilliqa-js/util" "0.11.1"
+    "@zilliqa-js/account" "2.3.0-alpha.0"
+    "@zilliqa-js/contract" "2.3.0-alpha.0"
+    "@zilliqa-js/core" "2.3.0-alpha.0"
+    "@zilliqa-js/crypto" "2.3.0-alpha.0"
+    "@zilliqa-js/util" "2.2.0"
     utility-types "^3.4.1"
 
-"@zilliqa-js/contract@2.0.0-alpha.1":
-  version "2.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@zilliqa-js/contract/-/contract-2.0.0-alpha.1.tgz#6a9e15e28f5547e2e19ee43c2245565391d9083d"
-  integrity sha512-VqyDZEadwp+vrLRgdIvcrdM3eJBy1CpFTdM7cjv2OAgq0xmdAnnjOQgLf3hrvNuAGPm+6VbooB+/BKve6G4cfA==
+"@zilliqa-js/contract@2.3.0-alpha.0":
+  version "2.3.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@zilliqa-js/contract/-/contract-2.3.0-alpha.0.tgz#4687a646053a1620db51cb18a563a2280f181ddb"
+  integrity sha512-PCYMCqB72/NN4l7mJboISoRX5QVHog/H274vltK1j4NXBJE0bjVmgHX+aeeCnsxQlPHJL0nfeoUHV6ro1OHyww==
   dependencies:
-    "@zilliqa-js/account" "2.0.0-alpha.1"
-    "@zilliqa-js/blockchain" "2.0.0-alpha.1"
-    "@zilliqa-js/core" "2.0.0-alpha.1"
-    "@zilliqa-js/crypto" "2.0.0-alpha.1"
-    "@zilliqa-js/util" "0.11.1"
+    "@zilliqa-js/account" "2.3.0-alpha.0"
+    "@zilliqa-js/blockchain" "2.3.0-alpha.0"
+    "@zilliqa-js/core" "2.3.0-alpha.0"
+    "@zilliqa-js/crypto" "2.3.0-alpha.0"
+    "@zilliqa-js/util" "2.2.0"
     hash.js "^1.1.5"
     utility-types "^2.1.0"
 
-"@zilliqa-js/core@2.0.0-alpha.1":
-  version "2.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@zilliqa-js/core/-/core-2.0.0-alpha.1.tgz#915352b733ad6299fed52f43514032047d89ca84"
-  integrity sha512-2PU8jsetw5vY8juQ9yt2YfJTc1dR7XDFPbEor24X/53Wwa10JMU/5HhToqr+X4ucw5P+h6xtMMhL+oRKIMFoew==
+"@zilliqa-js/core@2.3.0-alpha.0":
+  version "2.3.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@zilliqa-js/core/-/core-2.3.0-alpha.0.tgz#fbb6b48c6fa4cc9c0c6385d8e789bf2ade05d594"
+  integrity sha512-6kgHPIgwKWfnTsZn5eXrAPzUIkS1b/43I2qCHliY5h7Ax567oPpLS0bveoqwS1zRn/iIhaZsRaTG3CNZnctAFw==
   dependencies:
-    "@zilliqa-js/crypto" "2.0.0-alpha.1"
-    "@zilliqa-js/util" "0.11.1"
+    "@zilliqa-js/crypto" "2.3.0-alpha.0"
+    "@zilliqa-js/util" "2.2.0"
     cross-fetch "^2.2.2"
     mitt "^1.1.3"
 
-"@zilliqa-js/crypto@2.0.0-alpha.1":
-  version "2.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@zilliqa-js/crypto/-/crypto-2.0.0-alpha.1.tgz#e3cc1d5fbd570d8508985350c7aa800396228795"
-  integrity sha512-kIKqdBKg29cicEVIyIfn8zBKnnRWhDl5cCiEVXRfU03z8hKcDgb8kKgk6vF32rzwhi8V5r9iCS/dhVrq7MyF5Q==
+"@zilliqa-js/crypto@2.3.0-alpha.0":
+  version "2.3.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@zilliqa-js/crypto/-/crypto-2.3.0-alpha.0.tgz#a08924fe0014b920d2feadef37fd1439827f0a45"
+  integrity sha512-ZYw7qRg/Wb/9L8iWsuZ+WElAEUeSDvDpdsp9dMG2uHll/zs4VYmsHWOWDozCu9lp/0W2FWZNk3uX3tZpz8aHwA==
   dependencies:
-    "@zilliqa-js/util" "0.11.1"
+    "@zilliqa-js/util" "2.2.0"
     aes-js "^3.1.1"
     bsert "^0.0.4"
     elliptic "^6.5.0"
@@ -2550,11 +2550,10 @@
     hmac-drbg "^1.0.1"
     pbkdf2 "^3.0.16"
     randombytes "^2.0.6"
+    scrypt-js "^3.0.1"
     scryptsy "^2.1.0"
     sodium-native "^3.2.0"
     uuid "^3.3.2"
-  optionalDependencies:
-    scrypt.js "^0.3.0"
 
 "@zilliqa-js/crypto@^2.1.0":
   version "2.1.0"
@@ -2575,19 +2574,19 @@
   optionalDependencies:
     scrypt.js "^0.3.0"
 
-"@zilliqa-js/proto@0.11.1":
-  version "0.11.1"
-  resolved "https://registry.yarnpkg.com/@zilliqa-js/proto/-/proto-0.11.1.tgz#0738efb976393b5bae6c4b1a66832f3cc3b4b1f3"
-  integrity sha512-8fIXnh4uuoZU7bMCSAMoelGOeEpQlCUtc+e6/g9vjijsA0SoBMOpqfzdZpVvyBkmPqZV+yUCXFGb2HyS3n1dcg==
+"@zilliqa-js/proto@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@zilliqa-js/proto/-/proto-2.2.0.tgz#c3fea22daf4a8e385e5f239119765a0d60f18df7"
+  integrity sha512-0QPNJdvafT0ItPGrqEff7KMYNCT/DkWCn0/x2/UwVoVANy5BHL3WkwDV3y49KthVwdZUotQVzRaweHTs6PIcuA==
   dependencies:
     protobufjs "^6.8.8"
 
-"@zilliqa-js/subscriptions@2.0.0-alpha.1":
-  version "2.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@zilliqa-js/subscriptions/-/subscriptions-2.0.0-alpha.1.tgz#65ad444431e31906535b0fb570f327116341c0e6"
-  integrity sha512-l5sGZaP52m7GEA5Qg7QlXX3WpfUUnXXLn6Rx2piZ6Zf8FGXTVoUSYL85mAkb+DH3zR8j+HdzgUZu0Nn8zZiWBA==
+"@zilliqa-js/subscriptions@2.3.0-alpha.0":
+  version "2.3.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@zilliqa-js/subscriptions/-/subscriptions-2.3.0-alpha.0.tgz#305f5451427cc3db2434e6d7c959d90d6c52dcab"
+  integrity sha512-xUvywQWbm/rNbfZMloaIbfsuGKkpTOB0aPtq87urgd36bDjqWwsPi1V+K+x5KF//FOZKjQWWvTZ6q2AcFq+sQg==
   dependencies:
-    "@zilliqa-js/core" "2.0.0-alpha.1"
+    "@zilliqa-js/core" "2.3.0-alpha.0"
     mock-socket "^9.0.2"
     websocket "^1.0.28"
 
@@ -2601,18 +2600,28 @@
     bn.js "^4.11.8"
     long "^4.0.0"
 
-"@zilliqa-js/zilliqa@2.0.0-alpha.1":
-  version "2.0.0-alpha.1"
-  resolved "https://registry.yarnpkg.com/@zilliqa-js/zilliqa/-/zilliqa-2.0.0-alpha.1.tgz#3f5f24d2f820252aecc7d4a8eb41ea89f56af181"
-  integrity sha512-2EiMn4arXecSOfR4SVAmapGAmZVEY7rrmOzN3uMXsKtxNhvAorp44m4Ea1hmaGcs55XeVCVB9MJGBc/vXdZDHQ==
+"@zilliqa-js/util@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@zilliqa-js/util/-/util-2.2.0.tgz#6f64adc5494596c93dd0eff566f830b316eba677"
+  integrity sha512-bzThiraMQKDumhQY0HMsutX28HPgqB+KKqiet8M8QQbCFvQODxAGpuxJX6bZiX+6K6tZUk8yDSW8Ri3dgOdRDg==
   dependencies:
-    "@zilliqa-js/account" "2.0.0-alpha.1"
-    "@zilliqa-js/blockchain" "2.0.0-alpha.1"
-    "@zilliqa-js/contract" "2.0.0-alpha.1"
-    "@zilliqa-js/core" "2.0.0-alpha.1"
-    "@zilliqa-js/crypto" "2.0.0-alpha.1"
-    "@zilliqa-js/subscriptions" "2.0.0-alpha.1"
-    "@zilliqa-js/util" "0.11.1"
+    "@types/bn.js" "^4.11.3"
+    "@types/long" "^4.0.0"
+    bn.js "^4.11.8"
+    long "^4.0.0"
+
+"@zilliqa-js/zilliqa@2.3.0-alpha.0":
+  version "2.3.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@zilliqa-js/zilliqa/-/zilliqa-2.3.0-alpha.0.tgz#65ebe157976eba2b5d7c1871fbad18862be55aae"
+  integrity sha512-P0LBWQcE0DWBXP1RGLhXUAtLBrqqMiYw8yEziuwnDvxyyZlbuMAdNeuipxhs8zhWUye8kBvtEUWBlQR6FXikNg==
+  dependencies:
+    "@zilliqa-js/account" "2.3.0-alpha.0"
+    "@zilliqa-js/blockchain" "2.3.0-alpha.0"
+    "@zilliqa-js/contract" "2.3.0-alpha.0"
+    "@zilliqa-js/core" "2.3.0-alpha.0"
+    "@zilliqa-js/crypto" "2.3.0-alpha.0"
+    "@zilliqa-js/subscriptions" "2.3.0-alpha.0"
+    "@zilliqa-js/util" "2.2.0"
 
 abab@^2.0.0:
   version "2.0.3"
@@ -11485,6 +11494,11 @@ schema-utils@^2.5.0, schema-utils@^2.6.0, schema-utils@^2.6.1, schema-utils@^2.6
     "@types/json-schema" "^7.0.4"
     ajv "^6.12.2"
     ajv-keywords "^3.4.1"
+
+scrypt-js@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/scrypt-js/-/scrypt-js-3.0.1.tgz#d314a57c2aef69d1ad98a138a21fe9eafa9ee312"
+  integrity sha512-cdwTTnqPu0Hyvf5in5asVdZocVDTNRmR7XEcJuIzMjJeSHybHl7vpB66AzwTaIg6CLSbtjcxc8fqcySfnTkccA==
 
 scrypt.js@^0.3.0:
   version "0.3.0"
