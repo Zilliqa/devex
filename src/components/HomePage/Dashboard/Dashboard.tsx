@@ -7,7 +7,7 @@ import BCInfo from './BCInfo/BCInfo'
 import DSBlockList from './DSBlockList/DSBlockList'
 import TxBlockList from './TxBlockList/TxBlockList'
 import ValTxnList from './ValTxnList/ValTxnList'
-import PendTxnList from './PendTxnList/PendTxnList'
+// import PendTxnList from './PendTxnList/PendTxnList'
 
 import './Dashboard.css'
 import ISInfo from './ISInfo/ISInfo'
@@ -62,11 +62,11 @@ const Dashboard: React.FC = () => {
                 <ValTxnList />
               </Col>
             </Row>
-            <Row className='mt-3'>
+            {/* <Row className='mt-3'>
               <Col className='p-0'>
                 <PendTxnList />
               </Col>
-            </Row>
+            </Row> */}
           </Container>
         </>
       }
