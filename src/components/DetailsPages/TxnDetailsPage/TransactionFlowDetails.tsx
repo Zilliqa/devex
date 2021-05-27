@@ -117,14 +117,15 @@ const TransactionFlowDetails: React.FC<IProps> = ({ links, txn }) => {
                             key={`param-${param.vname}`}
                           >
                             <span className="mr-2">{param.vname}:</span>
-                            {param.value !== undefined && isValidAddr(param.value.toString()) ? (
+                            {param.value !== undefined &&
+                            isValidAddr(param.value.toString()) ? (
                               <AddressDisp
                                 isLinked={true}
                                 addr={param.value as string}
                               />
-                            ) : (
+                            ) : param.value ? (
                               param.value.toString()
-                            )}
+                            ) : null}
                           </div>
                         )
                       )}
@@ -175,9 +176,9 @@ const TransactionFlowDetails: React.FC<IProps> = ({ links, txn }) => {
                                     isLinked={true}
                                     addr={param.value as string}
                                   />
-                                ) : (
+                                ) : param.value ? (
                                   param.value.toString()
-                                )}
+                                ) : null}
                               </div>
                             )
                           )
@@ -228,9 +229,9 @@ const TransactionFlowDetails: React.FC<IProps> = ({ links, txn }) => {
                                         isLinked={true}
                                         addr={param.value.toString() as string}
                                       />
-                                    ) : (
+                                    ) : param.value ? (
                                       param.value.toString()
-                                    )}
+                                    ) : null}
                                   </div>
                                 )
                               )}
