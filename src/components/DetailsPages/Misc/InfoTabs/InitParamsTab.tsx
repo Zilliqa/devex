@@ -25,7 +25,13 @@ const InitParamsTab: React.FC<IProps> = ({ initParams }) => {
             <td>{index}</td>
             <td>{param.vname}</td>
             <td>{param.type}</td>
-            <td>{Array.isArray(param.value)
+            <td>{param.value !== undefined ?
+                        typeof param.value === "object" ? (
+                          <pre className="display-block">
+                            {JSON.stringify(param.value, null, 2)}
+                          </pre>
+                        )
+                        :Array.isArray(param.value)
               ? param.value.map((x, index) => (
                 isValidAddr(x.toString() as string)
                   ? <AddressDisp key={index} isLinked={true} addr={x.toString() as string} />
@@ -39,7 +45,8 @@ const InitParamsTab: React.FC<IProps> = ({ initParams }) => {
                 })
               : isValidAddr(param.value as string)
                 ? <AddressDisp isLinked={true} addr={param.value as string} />
-                : param.value}
+                : param.value
+                : null}
             </td>
           </tr>
         ))}
